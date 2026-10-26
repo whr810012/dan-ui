@@ -1,0 +1,98 @@
+.dan-notification {
+  position: fixed;
+  z-index: var(--dan-z-index-message);
+  display: flex;
+  flex-direction: column;
+  gap: var(--dan-spacing-sm);
+  width: 330px;
+  max-width: calc(100vw - 24px);
+  pointer-events: none;
+}
+
+.dan-notification--top-right {
+  top: 16px;
+  right: 16px;
+}
+
+.dan-notification--top-left {
+  top: 16px;
+  left: 16px;
+}
+
+.dan-notification--bottom-right {
+  right: 16px;
+  bottom: 16px;
+}
+
+.dan-notification--bottom-left {
+  left: 16px;
+  bottom: 16px;
+}
+
+.dan-notification__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--dan-spacing-sm);
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+  box-shadow: var(--dan-shadow-md);
+  border: 1px solid var(--dan-color-border-light);
+  color: var(--dan-color-text);
+  pointer-events: auto;
+}
+
+.dan-notification__icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.dan-notification__item.dan-notification--success .dan-notification__icon {
+  color: var(--dan-color-success);
+}
+
+.dan-notification__item.dan-notification--warning .dan-notification__icon {
+  color: var(--dan-color-warning);
+}
+
+.dan-notification__item.dan-notification--info .dan-notification__icon {
+  color: var(--dan-color-info);
+}
+
+.dan-notification__item.dan-notification--error .dan-notification__icon {
+  color: var(--dan-color-danger);
+}
+
+.dan-notification__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.dan-notification__title {
+  margin-bottom: 4px;
+  font-size: var(--dan-font-size-md);
+  font-weight: var(--dan-font-weight-semibold);
+  line-height: 1.4;
+}
+
+.dan-notification__content {
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.dan-notification__close {
+  display: inline-flex;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--dan-color-text-secondary);
+  cursor: pointer;
+}
+
+.dan-notification__close:hover {
+  color: var(--dan-color-text);
+}

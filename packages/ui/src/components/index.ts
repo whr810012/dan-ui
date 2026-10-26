@@ -124,6 +124,24 @@ export type { MessageOptions, MessageType, MessageHandler } from './message'
 export { DanDialog } from './dialog'
 export type { DanDialogInstance } from './dialog'
 
+export { DanDrawer } from './drawer'
+export type { DanDrawerInstance } from './drawer'
+
+export { DanMessageBox } from './message-box'
+export type {
+  MessageBoxAction,
+  MessageBoxOptions,
+  MessageBoxType,
+} from './message-box'
+
+export { DanNotification } from './notification'
+export type {
+  NotificationHandler,
+  NotificationOptions,
+  NotificationPosition,
+  NotificationType,
+} from './notification'
+
 export { DanTooltip } from './tooltip'
 export type { DanTooltipInstance } from './tooltip'
 
