@@ -40,8 +40,8 @@
 }
 
 .dan-input__inner {
-  flex: 1;
-  width: 100%;
+  flex: 1 1 auto;
+  width: 0;
   min-width: 0;
   height: 100%;
   border: 0;
@@ -58,13 +58,17 @@
 .dan-input__prefix,
 .dan-input__suffix,
 .dan-input__clear {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   color: var(--dan-color-text-secondary);
 }
 
 .dan-input__clear {
   margin-left: var(--dan-spacing-xs);
+  width: 1em;
+  height: 1em;
   cursor: pointer;
   font-size: 14px;
   line-height: 1;
