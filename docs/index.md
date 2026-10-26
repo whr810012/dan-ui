@@ -17,8 +17,8 @@ hero:
 features:
   - title: 布局与表单
     details: Layout / Grid、Button、Input、Select、Form 校验等，快速搭中后台骨架。
-  - title: 数据展示
-    details: Table 支持列筛选与列显隐；另有 Card、Carousel、Descriptions、Timeline 等。
+  - title: 数据展示与导航
+    details: Table 支持列筛选与列显隐；Tabs、Menu、Breadcrumb、Pagination 覆盖常见导航。
   - title: 反馈浮层
     details: Dialog、Message、Tooltip、Popover、Dropdown，浮层定位与主题 Token 一致。
   - title: AI 与富文本

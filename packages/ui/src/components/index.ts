@@ -115,6 +115,25 @@ export type {
 export { DanCarousel, DanCarouselItem } from './carousel'
 export type { DanCarouselInstance, DanCarouselItemInstance } from './carousel'
 
+export { DanTabs, DanTabPane } from './tabs'
+export type { DanTabsInstance, DanTabPaneInstance } from './tabs'
+
+export { DanMenu, DanMenuItem, DanSubMenu } from './menu'
+export type {
+  DanMenuInstance,
+  DanMenuItemInstance,
+  DanSubMenuInstance,
+} from './menu'
+
+export { DanBreadcrumb, DanBreadcrumbItem } from './breadcrumb'
+export type {
+  DanBreadcrumbInstance,
+  DanBreadcrumbItemInstance,
+} from './breadcrumb'
+
+export { DanPagination } from './pagination'
+export type { DanPaginationInstance } from './pagination'
+
 export { DanLoading } from './loading'
 export type { DanLoadingInstance } from './loading'
 

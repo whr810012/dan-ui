@@ -1,0 +1,99 @@
+.dan-menu {
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  box-sizing: border-box;
+  background: var(--dan-color-bg);
+  color: var(--dan-color-text);
+  border-right: 1px solid var(--dan-color-border-light);
+}
+
+.dan-menu--horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  padding: 0 8px;
+  border-right: 0;
+  border-bottom: 1px solid var(--dan-color-border);
+}
+
+.dan-menu-item,
+.dan-sub-menu__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--dan-radius-sm);
+  cursor: pointer;
+  line-height: 1.4;
+  transition:
+    background-color var(--dan-duration-fast) var(--dan-ease),
+    color var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-menu-item:hover:not(.is-disabled),
+.dan-sub-menu__title:hover {
+  background: var(--dan-color-fill);
+  color: var(--dan-color-primary);
+}
+
+.dan-menu-item.is-active {
+  color: var(--dan-color-primary);
+  background: var(--dan-color-primary-light);
+  font-weight: var(--dan-font-weight-medium);
+}
+
+.dan-menu-item.is-disabled,
+.dan-sub-menu.is-disabled .dan-sub-menu__title {
+  color: var(--dan-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.dan-sub-menu {
+  position: relative;
+  list-style: none;
+}
+
+.dan-sub-menu__title {
+  justify-content: space-between;
+}
+
+.dan-sub-menu__arrow {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+  opacity: 0.65;
+  transition: transform var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-sub-menu.is-opened > .dan-sub-menu__title .dan-sub-menu__arrow {
+  transform: rotate(180deg);
+}
+
+.dan-sub-menu__list {
+  margin: 0;
+  padding: 0 0 0 12px;
+  list-style: none;
+}
+
+.dan-menu--horizontal > .dan-menu-item,
+.dan-menu--horizontal > .dan-sub-menu {
+  display: inline-flex;
+}
+
+.dan-menu--horizontal .dan-sub-menu__list {
+  position: absolute;
+  z-index: var(--dan-z-index-dropdown);
+  min-width: 140px;
+  padding: 4px;
+  background: var(--dan-color-bg-elevated);
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  box-shadow: var(--dan-shadow-md);
+}
+
+.dan-menu.is-collapse .dan-sub-menu__list {
+  display: none;
+}

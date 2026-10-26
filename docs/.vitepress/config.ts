@@ -66,6 +66,15 @@ const componentsSidebar = collapsible([
     ],
   },
   {
+    text: '导航',
+    items: [
+      { text: 'Tabs（标签页）', link: '/components/tabs' },
+      { text: 'Menu（菜单）', link: '/components/menu' },
+      { text: 'Breadcrumb（面包屑）', link: '/components/breadcrumb' },
+      { text: 'Pagination（分页）', link: '/components/pagination' },
+    ],
+  },
+  {
     text: '反馈',
     items: [
       { text: 'Loading（加载）', link: '/components/loading' },
