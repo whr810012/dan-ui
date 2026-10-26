@@ -2,9 +2,11 @@
 
 ## 0.0.1
 
-- 底座：ConfigProvider、Icon、`@dan-ui/theme`
-- 表单：Button、Input、Textarea、Checkbox、Radio、Switch、Select、Form
+- 基础：ConfigProvider、Button、Icon、Space、Divider、`@dan-ui/theme`
+- 表单：Input、Textarea、Checkbox、Radio、Switch、Select、Form
+- 展示：Tag、Badge、Avatar、Alert、Empty
+- 反馈：Loading、Message、Dialog
 - AI：Chat 系列、Markdown、StreamText、CodeBlock、Thinking、Suggestion、GenerationControl、ModelSelect、TokenUsage、Attachment、Prompt
 - 富文本：RichText、EditorToolbar、EditorBubbleMenu（TipTap）
-- 工程：全量 / 按需导出、`DanUIResolver`、VitePress 文档站
-- 质量门禁：`pnpm build && pnpm test && pnpm docs:build && pnpm lint`
+- 文档：AI / 富文本并入「组件」侧栏，不再单独顶栏
+- 工程：全量 / 按需导出、`DanUIResolver`、质量门禁

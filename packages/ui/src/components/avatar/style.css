@@ -1,0 +1,52 @@
+.dan-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: var(--dan-color-fill);
+  color: var(--dan-color-text-secondary);
+  font-weight: var(--dan-font-weight-medium);
+  vertical-align: middle;
+  user-select: none;
+}
+
+.dan-avatar--circle {
+  border-radius: var(--dan-radius-full);
+}
+
+.dan-avatar--square {
+  border-radius: var(--dan-radius-md);
+}
+
+.dan-avatar--small {
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+}
+
+.dan-avatar--default {
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+}
+
+.dan-avatar--large {
+  width: 56px;
+  height: 56px;
+  font-size: 22px;
+}
+
+.dan-avatar__image {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.dan-avatar__fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}

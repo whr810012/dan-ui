@@ -1,0 +1,97 @@
+.dan-alert {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--dan-spacing-sm);
+  box-sizing: border-box;
+  padding: var(--dan-spacing-md) var(--dan-spacing-lg);
+  border: 1px solid transparent;
+  border-radius: var(--dan-radius-md);
+  font-size: var(--dan-font-size-md);
+}
+
+.dan-alert__icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.dan-alert__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.dan-alert__title {
+  font-weight: var(--dan-font-weight-medium);
+  line-height: 1.4;
+}
+
+.dan-alert.is-with-description .dan-alert__title {
+  margin-bottom: 4px;
+}
+
+.dan-alert__description {
+  color: inherit;
+  opacity: 0.9;
+  line-height: 1.5;
+  font-size: var(--dan-font-size-sm);
+}
+
+.dan-alert__close {
+  flex-shrink: 0;
+  display: inline-flex;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.dan-alert__close:hover {
+  opacity: 1;
+}
+
+.dan-alert--success.dan-alert--light {
+  background: var(--dan-color-success-light);
+  border-color: transparent;
+  color: var(--dan-color-success);
+}
+
+.dan-alert--warning.dan-alert--light {
+  background: var(--dan-color-warning-light);
+  border-color: transparent;
+  color: var(--dan-color-warning);
+}
+
+.dan-alert--info.dan-alert--light {
+  background: var(--dan-color-info-light);
+  border-color: transparent;
+  color: var(--dan-color-info);
+}
+
+.dan-alert--error.dan-alert--light {
+  background: var(--dan-color-danger-light);
+  border-color: transparent;
+  color: var(--dan-color-danger);
+}
+
+.dan-alert--success.dan-alert--dark {
+  background: var(--dan-color-success);
+  color: var(--dan-color-text-inverse);
+}
+
+.dan-alert--warning.dan-alert--dark {
+  background: var(--dan-color-warning);
+  color: var(--dan-color-text-inverse);
+}
+
+.dan-alert--info.dan-alert--dark {
+  background: var(--dan-color-info);
+  color: var(--dan-color-text-inverse);
+}
+
+.dan-alert--error.dan-alert--dark {
+  background: var(--dan-color-danger);
+  color: var(--dan-color-text-inverse);
+}

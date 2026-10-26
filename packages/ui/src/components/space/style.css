@@ -1,0 +1,17 @@
+.dan-space {
+  display: inline-flex;
+  box-sizing: border-box;
+}
+
+.dan-space--horizontal {
+  flex-direction: row;
+}
+
+.dan-space--vertical {
+  flex-direction: column;
+  width: 100%;
+}
+
+.dan-space.is-wrap {
+  flex-wrap: wrap;
+}

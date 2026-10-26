@@ -1,0 +1,40 @@
+.dan-loading {
+  position: relative;
+  display: block;
+  min-height: 48px;
+}
+
+.dan-loading.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: var(--dan-z-index-modal);
+  min-height: 100%;
+}
+
+.dan-loading__target {
+  height: 100%;
+}
+
+.dan-loading__mask {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(255 255 255 / 72%);
+}
+
+.dan-loading__spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--dan-spacing-sm);
+  color: var(--dan-color-primary);
+}
+
+.dan-loading__text {
+  margin: 0;
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+}

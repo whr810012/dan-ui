@@ -33,6 +33,36 @@ export type { DanSelectInstance, SelectOption } from './select'
 export { DanForm, DanFormItem } from './form'
 export type { DanFormInstance, DanFormItemInstance } from './form'
 
+export { DanSpace } from './space'
+export type { DanSpaceInstance } from './space'
+
+export { DanDivider } from './divider'
+export type { DanDividerInstance } from './divider'
+
+export { DanTag } from './tag'
+export type { DanTagInstance } from './tag'
+
+export { DanBadge } from './badge'
+export type { DanBadgeInstance } from './badge'
+
+export { DanAvatar } from './avatar'
+export type { DanAvatarInstance } from './avatar'
+
+export { DanAlert } from './alert'
+export type { DanAlertInstance } from './alert'
+
+export { DanEmpty } from './empty'
+export type { DanEmptyInstance } from './empty'
+
+export { DanLoading } from './loading'
+export type { DanLoadingInstance } from './loading'
+
+export { DanMessage } from './message'
+export type { MessageOptions, MessageType, MessageHandler } from './message'
+
+export { DanDialog } from './dialog'
+export type { DanDialogInstance } from './dialog'
+
 export { DanChat } from './chat'
 export type { DanChatInstance } from './chat'
 

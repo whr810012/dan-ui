@@ -1,0 +1,154 @@
+.dan-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-sizing: border-box;
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: var(--dan-radius-sm);
+  font-size: var(--dan-font-size-sm);
+  line-height: 1;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: default;
+}
+
+.dan-tag--small {
+  height: 20px;
+  padding: 0 6px;
+  font-size: var(--dan-font-size-xs);
+}
+
+.dan-tag--large {
+  height: 28px;
+  padding: 0 10px;
+  font-size: var(--dan-font-size-md);
+}
+
+.dan-tag.is-round {
+  border-radius: var(--dan-radius-full);
+}
+
+.dan-tag.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.dan-tag--default.dan-tag--light {
+  background: var(--dan-color-fill);
+  color: var(--dan-color-text);
+}
+
+.dan-tag--primary.dan-tag--light {
+  background: var(--dan-color-primary-light);
+  color: var(--dan-color-primary);
+}
+
+.dan-tag--success.dan-tag--light {
+  background: var(--dan-color-success-light);
+  color: var(--dan-color-success);
+}
+
+.dan-tag--warning.dan-tag--light {
+  background: var(--dan-color-warning-light);
+  color: var(--dan-color-warning);
+}
+
+.dan-tag--danger.dan-tag--light {
+  background: var(--dan-color-danger-light);
+  color: var(--dan-color-danger);
+}
+
+.dan-tag--info.dan-tag--light {
+  background: var(--dan-color-info-light);
+  color: var(--dan-color-info);
+}
+
+.dan-tag--default.dan-tag--dark {
+  background: var(--dan-color-text-secondary);
+  color: var(--dan-color-text-inverse);
+}
+
+.dan-tag--primary.dan-tag--dark {
+  background: var(--dan-color-primary);
+  color: var(--dan-color-text-inverse);
+}
+
+.dan-tag--success.dan-tag--dark {
+  background: var(--dan-color-success);
+  color: var(--dan-color-text-inverse);
+}
+
+.dan-tag--warning.dan-tag--dark {
+  background: var(--dan-color-warning);
+  color: var(--dan-color-text-inverse);
+}
+
+.dan-tag--danger.dan-tag--dark {
+  background: var(--dan-color-danger);
+  color: var(--dan-color-text-inverse);
+}
+
+.dan-tag--info.dan-tag--dark {
+  background: var(--dan-color-info);
+  color: var(--dan-color-text-inverse);
+}
+
+.dan-tag--default.dan-tag--plain {
+  border-color: var(--dan-color-border);
+  background: transparent;
+  color: var(--dan-color-text);
+}
+
+.dan-tag--primary.dan-tag--plain {
+  border-color: var(--dan-color-primary);
+  background: transparent;
+  color: var(--dan-color-primary);
+}
+
+.dan-tag--success.dan-tag--plain {
+  border-color: var(--dan-color-success);
+  background: transparent;
+  color: var(--dan-color-success);
+}
+
+.dan-tag--warning.dan-tag--plain {
+  border-color: var(--dan-color-warning);
+  background: transparent;
+  color: var(--dan-color-warning);
+}
+
+.dan-tag--danger.dan-tag--plain {
+  border-color: var(--dan-color-danger);
+  background: transparent;
+  color: var(--dan-color-danger);
+}
+
+.dan-tag--info.dan-tag--plain {
+  border-color: var(--dan-color-info);
+  background: transparent;
+  color: var(--dan-color-info);
+}
+
+.dan-tag__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--dan-radius-full);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.dan-tag__close:hover:not(:disabled) {
+  opacity: 1;
+}
+
+.dan-tag__close:disabled {
+  cursor: not-allowed;
+}

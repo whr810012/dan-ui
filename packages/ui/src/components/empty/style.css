@@ -1,0 +1,29 @@
+.dan-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: var(--dan-spacing-2xl) var(--dan-spacing-lg);
+  text-align: center;
+}
+
+.dan-empty__image {
+  margin-bottom: var(--dan-spacing-md);
+  line-height: 0;
+}
+
+.dan-empty__image svg {
+  width: 100%;
+  height: auto;
+}
+
+.dan-empty__description {
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-md);
+  line-height: 1.5;
+}
+
+.dan-empty__extra {
+  margin-top: var(--dan-spacing-md);
+}

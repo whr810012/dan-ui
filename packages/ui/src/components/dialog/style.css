@@ -1,0 +1,74 @@
+.dan-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: var(--dan-z-index-modal);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.dan-dialog__mask {
+  position: absolute;
+  inset: 0;
+  background: var(--dan-color-mask);
+}
+
+.dan-dialog__panel {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  border-radius: var(--dan-radius-lg);
+  background: var(--dan-color-bg);
+  box-shadow: var(--dan-shadow-lg);
+}
+
+.dan-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--dan-spacing-md);
+  padding: var(--dan-spacing-lg) var(--dan-spacing-xl);
+  border-bottom: 1px solid var(--dan-color-border-light);
+}
+
+.dan-dialog__title {
+  color: var(--dan-color-text);
+  font-size: var(--dan-font-size-lg);
+  font-weight: var(--dan-font-weight-semibold);
+  line-height: 1.4;
+}
+
+.dan-dialog__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 4px;
+  border: 0;
+  border-radius: var(--dan-radius-sm);
+  background: transparent;
+  color: var(--dan-color-text-secondary);
+  cursor: pointer;
+}
+
+.dan-dialog__close:hover {
+  background: var(--dan-color-fill);
+  color: var(--dan-color-text);
+}
+
+.dan-dialog__body {
+  padding: var(--dan-spacing-xl);
+  color: var(--dan-color-text);
+  font-size: var(--dan-font-size-md);
+  line-height: 1.6;
+}
+
+.dan-dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--dan-spacing-sm);
+  padding: var(--dan-spacing-md) var(--dan-spacing-xl) var(--dan-spacing-xl);
+}

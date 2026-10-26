@@ -104,7 +104,9 @@ scripts/         工程脚本
 
 ## 当前能力
 
-- 底座：ConfigProvider、Icon、主题 Token
-- 表单：Button、Input、Textarea、Checkbox、Radio、Switch、Select、Form
+- 基础：ConfigProvider、Button、Icon、Space、Divider、主题 Token
+- 表单：Input、Textarea、Checkbox、Radio、Switch、Select、Form
+- 展示：Tag、Badge、Avatar、Alert、Empty
+- 反馈：Loading、Message、Dialog
 - AI：Chat、ChatMessage、ChatInput、Markdown、StreamText、CodeBlock、Thinking、Suggestion、GenerationControl、ModelSelect、TokenUsage、Attachment、Prompt
 - 富文本：RichText、EditorToolbar、EditorBubbleMenu（TipTap，支持 html/json）
