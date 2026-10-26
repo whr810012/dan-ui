@@ -1,0 +1,48 @@
+.dan-textarea {
+  display: inline-flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--dan-spacing-sm) var(--dan-spacing-md);
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+  color: var(--dan-color-text);
+  font-size: var(--dan-font-size-md);
+  transition:
+    border-color var(--dan-duration-fast) var(--dan-ease),
+    box-shadow var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-textarea.is-focus {
+  border-color: var(--dan-color-primary);
+  box-shadow: 0 0 0 3px var(--dan-color-primary-light);
+}
+
+.dan-textarea.is-disabled {
+  background: var(--dan-color-fill);
+  color: var(--dan-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.dan-textarea__inner {
+  width: 100%;
+  border: 0;
+  outline: none;
+  resize: vertical;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: var(--dan-line-height);
+}
+
+.dan-textarea__inner::placeholder {
+  color: var(--dan-color-text-placeholder);
+}
+
+.dan-textarea__count {
+  margin-top: var(--dan-spacing-xs);
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-xs);
+  text-align: right;
+}

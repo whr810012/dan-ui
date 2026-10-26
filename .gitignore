@@ -15,7 +15,6 @@ coverage
 !.vscode/extensions.json
 
 # Local planning / design docs — keep out of commits
-README.md
 docs/plans/
 docs/DOC_PLAN.md
 docs/components-roadmap.md

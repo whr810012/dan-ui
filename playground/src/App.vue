@@ -1,60 +1,114 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import {
   DanButton,
+  DanCheckbox,
+  DanCheckboxGroup,
   DanConfigProvider,
+  DanForm,
+  DanFormItem,
   DanIcon,
+  DanInput,
+  DanRadio,
+  DanRadioGroup,
+  DanSelect,
+  DanSwitch,
+  DanTextarea,
   useNamespace,
+  type DanFormInstance,
 } from '@dan-ui/ui'
 
 const ns = useNamespace('playground')
-const loading = ref(false)
+const formRef = ref<DanFormInstance>()
+const model = reactive({
+  name: '',
+  bio: '',
+  role: 'dev',
+  skills: ['vue'],
+  city: 'shanghai',
+  newsletter: true,
+  profile: {
+    email: '',
+  },
+})
 
-function onLoad() {
-  loading.value = true
-  window.setTimeout(() => {
-    loading.value = false
-  }, 1200)
+const rules = {
+  name: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
+  'profile.email': [
+    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    {
+      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      message: '邮箱格式不正确',
+      trigger: 'blur',
+    },
+  ],
+}
+
+const cityOptions = [
+  { label: '上海', value: 'shanghai' },
+  { label: '北京', value: 'beijing' },
+  { label: '深圳', value: 'shenzhen' },
+]
+
+async function onSubmit() {
+  const ok = await formRef.value?.validate()
+  window.alert(ok ? '校验通过' : '校验失败')
+}
+
+function onReset() {
+  formRef.value?.resetFields()
 }
 </script>
 
 <template>
-  <DanConfigProvider
-    size="default"
-    :theme="{ 'color-primary': '#2563eb' }"
-  >
+  <DanConfigProvider>
     <main :class="ns.b()">
       <h1>dan-ui playground</h1>
-      <p>ConfigProvider + Button + Icon 全链路</p>
+      <p>表单体系联调：Input / Select / Checkbox / Radio / Switch / Form</p>
 
-      <section :class="ns.e('section')">
-        <h2>Button</h2>
-        <div :class="ns.e('row')">
-          <DanButton>默认</DanButton>
-          <DanButton type="primary">主要</DanButton>
-          <DanButton type="success">成功</DanButton>
-          <DanButton type="warning">警告</DanButton>
-          <DanButton type="danger">危险</DanButton>
-        </div>
-        <div :class="ns.e('row')">
-          <DanButton type="primary" plain>描边</DanButton>
-          <DanButton type="primary" round>圆角</DanButton>
-          <DanButton type="primary" :loading="loading" @click="onLoad">
-            加载
-          </DanButton>
-          <DanButton type="primary" disabled>禁用</DanButton>
-        </div>
-      </section>
-
-      <section :class="ns.e('section')">
-        <h2>Icon</h2>
-        <div :class="ns.e('row')">
-          <DanIcon name="plus" :size="20" />
-          <DanIcon name="check" :size="20" color="var(--dan-color-success)" />
-          <DanIcon name="close" :size="20" color="var(--dan-color-danger)" />
-          <DanIcon name="loading" spin :size="20" />
-        </div>
-      </section>
+      <DanForm
+        ref="formRef"
+        :model="model"
+        :rules="rules"
+        label-width="88px"
+      >
+        <DanFormItem label="姓名" prop="name">
+          <DanInput v-model="model.name" placeholder="请输入姓名" clearable />
+        </DanFormItem>
+        <DanFormItem label="邮箱" prop="profile.email">
+          <DanInput v-model="model.profile.email" placeholder="name@example.com" />
+        </DanFormItem>
+        <DanFormItem label="简介">
+          <DanTextarea v-model="model.bio" :rows="3" maxlength="80" show-word-limit />
+        </DanFormItem>
+        <DanFormItem label="角色">
+          <DanRadioGroup v-model="model.role">
+            <DanRadio label="dev">开发</DanRadio>
+            <DanRadio label="design">设计</DanRadio>
+            <DanRadio label="pm">产品</DanRadio>
+          </DanRadioGroup>
+        </DanFormItem>
+        <DanFormItem label="技能">
+          <DanCheckboxGroup v-model="model.skills">
+            <DanCheckbox label="vue">Vue</DanCheckbox>
+            <DanCheckbox label="ts">TypeScript</DanCheckbox>
+            <DanCheckbox label="css">CSS</DanCheckbox>
+          </DanCheckboxGroup>
+        </DanFormItem>
+        <DanFormItem label="城市">
+          <DanSelect v-model="model.city" :options="cityOptions" clearable />
+        </DanFormItem>
+        <DanFormItem label="订阅">
+          <DanSwitch v-model="model.newsletter" />
+        </DanFormItem>
+        <DanFormItem>
+          <div :class="ns.e('row')">
+            <DanButton type="primary" @click="onSubmit">提交</DanButton>
+            <DanButton @click="onReset">重置</DanButton>
+            <DanIcon name="check" color="var(--dan-color-success)" :size="18" />
+          </div>
+        </DanFormItem>
+      </DanForm>
     </main>
   </DanConfigProvider>
 </template>
@@ -77,19 +131,9 @@ h1 {
   letter-spacing: -0.02em;
 }
 
-h2 {
-  margin: 0 0 var(--dan-spacing-md);
-  font-size: var(--dan-font-size-lg);
-}
-
 p {
   margin: 0 0 var(--dan-spacing-xl);
   color: var(--dan-color-text-secondary);
-  font-size: var(--dan-font-size-md);
-}
-
-.dan-playground__section + .dan-playground__section {
-  margin-top: var(--dan-spacing-xl);
 }
 
 .dan-playground__row {
@@ -97,9 +141,5 @@ p {
   flex-wrap: wrap;
   gap: var(--dan-spacing-sm);
   align-items: center;
-}
-
-.dan-playground__row + .dan-playground__row {
-  margin-top: var(--dan-spacing-sm);
 }
 </style>

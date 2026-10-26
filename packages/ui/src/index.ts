@@ -29,7 +29,15 @@ export {
   injectFormItem,
   formItemContextKey,
 } from './hooks/useFormContext'
-export type { FormContext, FormItemContext } from './hooks/useFormContext'
+export type {
+  FormContext,
+  FormItemContext,
+  FormRule,
+  FormRules,
+} from './hooks/useFormContext'
+export { useFormItem } from './hooks/useFormItem'
+export { validateValue } from './utils/validate'
+export { getByPath, setByPath } from './utils/path'
 
 export {
   provideChat,

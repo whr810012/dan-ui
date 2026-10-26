@@ -1,0 +1,79 @@
+.dan-input {
+  --dan-input-height: var(--dan-control-height-md);
+  --dan-input-font-size: var(--dan-font-size-md);
+
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--dan-input-height);
+  padding: 0 var(--dan-spacing-md);
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+  color: var(--dan-color-text);
+  font-size: var(--dan-input-font-size);
+  transition:
+    border-color var(--dan-duration-fast) var(--dan-ease),
+    box-shadow var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-input--small {
+  --dan-input-height: var(--dan-control-height-sm);
+  --dan-input-font-size: var(--dan-font-size-sm);
+}
+
+.dan-input--large {
+  --dan-input-height: var(--dan-control-height-lg);
+  --dan-input-font-size: var(--dan-font-size-lg);
+}
+
+.dan-input.is-focus {
+  border-color: var(--dan-color-primary);
+  box-shadow: 0 0 0 3px var(--dan-color-primary-light);
+}
+
+.dan-input.is-disabled {
+  background: var(--dan-color-fill);
+  color: var(--dan-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.dan-input__inner {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.dan-input__inner::placeholder {
+  color: var(--dan-color-text-placeholder);
+}
+
+.dan-input__prefix,
+.dan-input__suffix,
+.dan-input__clear {
+  display: inline-flex;
+  align-items: center;
+  color: var(--dan-color-text-secondary);
+}
+
+.dan-input__clear {
+  margin-left: var(--dan-spacing-xs);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.dan-input__prefix {
+  margin-right: var(--dan-spacing-xs);
+}
+
+.dan-input__suffix {
+  margin-left: var(--dan-spacing-xs);
+}

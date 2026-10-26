@@ -27,6 +27,18 @@ export default defineConfig({
             { text: 'Icon', link: '/components/icon' },
           ],
         },
+        {
+          text: '表单组件',
+          items: [
+            { text: 'Input', link: '/components/input' },
+            { text: 'Textarea', link: '/components/textarea' },
+            { text: 'Checkbox', link: '/components/checkbox' },
+            { text: 'Radio', link: '/components/radio' },
+            { text: 'Switch', link: '/components/switch' },
+            { text: 'Select', link: '/components/select' },
+            { text: 'Form', link: '/components/form' },
+          ],
+        },
       ],
     },
     socialLinks: [],

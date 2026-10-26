@@ -1,0 +1,61 @@
+.dan-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--dan-spacing-xs);
+  margin-right: var(--dan-spacing-md);
+  font-size: var(--dan-font-size-md);
+  color: var(--dan-color-text);
+  cursor: pointer;
+  user-select: none;
+}
+
+.dan-radio.is-disabled {
+  color: var(--dan-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.dan-radio__input {
+  position: relative;
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+}
+
+.dan-radio__original {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+
+.dan-radio__inner {
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--dan-color-border);
+  border-radius: 50%;
+  background: var(--dan-color-bg);
+}
+
+.dan-radio.is-checked .dan-radio__inner {
+  border-color: var(--dan-color-primary);
+}
+
+.dan-radio.is-checked .dan-radio__inner::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dan-color-primary);
+}
+
+.dan-radio-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+}

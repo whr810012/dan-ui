@@ -1,0 +1,53 @@
+.dan-form {
+  display: block;
+  width: 100%;
+}
+
+.dan-form-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: var(--dan-spacing-lg);
+}
+
+.dan-form--label-top .dan-form-item {
+  flex-direction: column;
+  gap: var(--dan-spacing-xs);
+}
+
+.dan-form-item__label {
+  box-sizing: border-box;
+  padding-right: var(--dan-spacing-md);
+  color: var(--dan-color-text);
+  font-size: var(--dan-font-size-md);
+  line-height: var(--dan-control-height-md);
+  text-align: right;
+}
+
+.dan-form--label-top .dan-form-item__label {
+  text-align: left;
+  line-height: 1.4;
+  padding-right: 0;
+}
+
+.dan-form-item.is-required .dan-form-item__label::before {
+  content: '*';
+  margin-right: 4px;
+  color: var(--dan-color-danger);
+}
+
+.dan-form-item__content {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.dan-form-item__error {
+  margin-top: var(--dan-spacing-xs);
+  color: var(--dan-color-danger);
+  font-size: var(--dan-font-size-xs);
+  line-height: 1.4;
+}
+
+.dan-form-item.is-error :is(.dan-input, .dan-textarea, .dan-select) {
+  border-color: var(--dan-color-danger);
+}

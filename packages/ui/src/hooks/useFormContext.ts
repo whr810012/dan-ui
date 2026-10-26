@@ -1,10 +1,13 @@
 import type { Ref } from 'vue'
 import { createContext } from '../utils/createContext'
+import type { FormRule, FormRules } from '../utils/validate'
 
 export interface FormContext {
   model: Ref<Record<string, unknown>>
+  rules: Ref<FormRules>
   disabled: Ref<boolean>
-  size?: Ref<'small' | 'default' | 'large'>
+  size?: Ref<'small' | 'default' | 'large' | undefined>
+  labelWidth?: Ref<string | undefined>
   addField: (field: FormItemContext) => void
   removeField: (field: FormItemContext) => void
 }
@@ -15,6 +18,8 @@ export interface FormItemContext {
   resetField: () => void
   clearValidate: () => void
 }
+
+export type { FormRule, FormRules }
 
 export const [provideForm, injectForm, formContextKey] =
   createContext<FormContext>('DanForm')

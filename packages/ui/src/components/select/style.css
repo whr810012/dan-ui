@@ -1,0 +1,58 @@
+.dan-select {
+  --dan-select-height: var(--dan-control-height-md);
+  --dan-select-font-size: var(--dan-font-size-md);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  height: var(--dan-select-height);
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+  font-size: var(--dan-select-font-size);
+  transition:
+    border-color var(--dan-duration-fast) var(--dan-ease),
+    box-shadow var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-select--small {
+  --dan-select-height: var(--dan-control-height-sm);
+  --dan-select-font-size: var(--dan-font-size-sm);
+}
+
+.dan-select--large {
+  --dan-select-height: var(--dan-control-height-lg);
+  --dan-select-font-size: var(--dan-font-size-lg);
+}
+
+.dan-select.is-focus {
+  border-color: var(--dan-color-primary);
+  box-shadow: 0 0 0 3px var(--dan-color-primary-light);
+}
+
+.dan-select.is-disabled {
+  background: var(--dan-color-fill);
+  color: var(--dan-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.dan-select__inner {
+  width: 100%;
+  height: 100%;
+  padding: 0 28px 0 var(--dan-spacing-md);
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--dan-color-text);
+  font: inherit;
+  cursor: inherit;
+  appearance: none;
+}
+
+.dan-select__clear {
+  position: absolute;
+  right: 10px;
+  color: var(--dan-color-text-secondary);
+  cursor: pointer;
+}

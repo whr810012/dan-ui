@@ -1,28 +1,28 @@
 # 介绍
 
-**dan-ui** 是一套 Vue 3 通用基础 UI 组件库，一期覆盖：
+**dan-ui** 是一套 Vue 3 通用基础 UI 组件库，面向中后台与 AI 应用界面。
 
-1. 底座：ConfigProvider、Icon、主题 Token  
-2. 表单：Button、Input、Textarea、Checkbox、Radio、Switch、Select、Form  
-3. AI：Chat 系列、Markdown、StreamText 等  
-4. 富文本：TipTap 封装（RichText + Toolbar）
+## 能做什么
 
-## 安装（预览）
+- 搭建基础表单与数据录入界面
+- 组合 AI 对话相关展示与输入组件
+- 集成富文本编辑能力
+- 通过 CSS 变量快速调整主题
 
-脚手架阶段包尚未发布到 npm，本地开发请使用 monorepo：
+## 设计原则
 
-```bash
-pnpm install
-pnpm build
-pnpm dev:play
-pnpm dev:docs
-```
+- 只做 Vue 3
+- 样式基于 CSS 变量，便于覆盖与暗色扩展
+- AI 组件不内置具体大模型接口，由业务侧自行对接
+- 组件提供清晰的 Props、Events、Slots，便于按需使用
 
-业务侧未来用法：
+## 安装
 
 ```bash
 pnpm add @dan-ui/ui @dan-ui/theme
 ```
+
+## 快速使用
 
 ```ts
 import { createApp } from 'vue'
@@ -33,7 +33,11 @@ import App from './App.vue'
 createApp(App).use(DanUI).mount('#app')
 ```
 
-## 相关文档
+本地预览文档与演示：
 
-- [设计纪要](/plans/2026-10-26-dan-ui-design)
-- [实施计划](/plans/2026-10-26-dan-ui-implementation)
+```bash
+pnpm install
+pnpm build
+pnpm dev:docs
+pnpm dev:play
+```
