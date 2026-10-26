@@ -106,7 +106,7 @@ scripts/         工程脚本
 
 - 基础：ConfigProvider、Button、Icon、Space、Divider、主题 Token
 - 表单：Input、Textarea、Checkbox、Radio、Switch、Select、Form
-- 展示：Tag、Badge、Avatar、Alert、Empty
+- 展示：Tag、Badge、Avatar、Alert、Empty、Progress、Skeleton、Statistic、Result、Descriptions、Timeline、Collapse、Image
 - 反馈：Loading、Message、Dialog
 - AI：Chat、ChatMessage、ChatInput、Markdown、StreamText、CodeBlock、Thinking、Suggestion、GenerationControl、ModelSelect、TokenUsage、Attachment、Prompt
 - 富文本：RichText、EditorToolbar、EditorBubbleMenu（TipTap，支持 html/json）

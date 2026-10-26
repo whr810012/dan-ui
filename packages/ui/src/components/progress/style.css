@@ -1,0 +1,70 @@
+.dan-progress {
+  display: inline-flex;
+  width: 100%;
+  box-sizing: border-box;
+  color: var(--dan-color-text);
+  font-size: var(--dan-font-size-sm);
+}
+
+.dan-progress--circle {
+  width: auto;
+}
+
+.dan-progress__bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--dan-spacing-sm);
+  width: 100%;
+}
+
+.dan-progress__bar-outer {
+  flex: 1;
+  overflow: hidden;
+  border-radius: var(--dan-radius-full);
+  background: var(--dan-color-fill);
+}
+
+.dan-progress__bar-inner {
+  height: 100%;
+  border-radius: inherit;
+  transition: width var(--dan-duration-normal) var(--dan-ease);
+}
+
+.dan-progress__text {
+  flex-shrink: 0;
+  min-width: 2.5em;
+  color: var(--dan-color-text-secondary);
+  text-align: right;
+  line-height: 1;
+}
+
+.dan-progress__circle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dan-progress__circle svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.dan-progress__circle-track {
+  stroke: var(--dan-color-fill);
+}
+
+.dan-progress__circle-path {
+  transition: stroke-dashoffset var(--dan-duration-normal) var(--dan-ease);
+}
+
+.dan-progress__circle-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--dan-font-size-md);
+  font-weight: var(--dan-font-weight-medium);
+}

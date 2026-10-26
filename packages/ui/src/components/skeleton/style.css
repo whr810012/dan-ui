@@ -1,0 +1,54 @@
+.dan-skeleton {
+  display: flex;
+  gap: var(--dan-spacing-md);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dan-skeleton__avatar {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--dan-radius-full);
+  background: var(--dan-color-fill);
+}
+
+.dan-skeleton__content {
+  flex: 1;
+  display: grid;
+  gap: var(--dan-spacing-sm);
+  min-width: 0;
+}
+
+.dan-skeleton__item {
+  height: 14px;
+  border-radius: var(--dan-radius-sm);
+  background: var(--dan-color-fill);
+}
+
+.dan-skeleton__title {
+  width: 40%;
+  height: 18px;
+  margin-bottom: 4px;
+}
+
+.dan-skeleton.is-animated .dan-skeleton__item,
+.dan-skeleton.is-animated .dan-skeleton__avatar {
+  background: linear-gradient(
+    90deg,
+    var(--dan-color-fill) 25%,
+    var(--dan-color-fill-hover) 37%,
+    var(--dan-color-fill) 63%
+  );
+  background-size: 400% 100%;
+  animation: dan-skeleton-loading 1.4s ease infinite;
+}
+
+@keyframes dan-skeleton-loading {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}

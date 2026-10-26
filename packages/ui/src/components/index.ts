@@ -54,6 +54,33 @@ export type { DanAlertInstance } from './alert'
 export { DanEmpty } from './empty'
 export type { DanEmptyInstance } from './empty'
 
+export { DanProgress } from './progress'
+export type { DanProgressInstance } from './progress'
+
+export { DanSkeleton } from './skeleton'
+export type { DanSkeletonInstance } from './skeleton'
+
+export { DanStatistic } from './statistic'
+export type { DanStatisticInstance } from './statistic'
+
+export { DanResult } from './result'
+export type { DanResultInstance } from './result'
+
+export { DanDescriptions, DanDescriptionsItem } from './descriptions'
+export type {
+  DanDescriptionsInstance,
+  DanDescriptionsItemInstance,
+} from './descriptions'
+
+export { DanTimeline, DanTimelineItem } from './timeline'
+export type { DanTimelineInstance, DanTimelineItemInstance } from './timeline'
+
+export { DanCollapse, DanCollapseItem } from './collapse'
+export type { DanCollapseInstance, DanCollapseItemInstance } from './collapse'
+
+export { DanImage } from './image'
+export type { DanImageInstance } from './image'
+
 export { DanLoading } from './loading'
 export type { DanLoadingInstance } from './loading'
 

@@ -1,0 +1,30 @@
+.dan-statistic {
+  display: inline-block;
+  box-sizing: border-box;
+  color: var(--dan-color-text);
+  line-height: 1.4;
+}
+
+.dan-statistic__title {
+  margin-bottom: var(--dan-spacing-xs);
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+}
+
+.dan-statistic__content {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 28px;
+  font-weight: var(--dan-font-weight-semibold);
+}
+
+.dan-statistic__prefix,
+.dan-statistic__suffix {
+  font-size: 0.55em;
+  font-weight: var(--dan-font-weight-medium);
+}
+
+.dan-statistic__value {
+  font-variant-numeric: tabular-nums;
+}
