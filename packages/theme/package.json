@@ -1,0 +1,22 @@
+{
+  "name": "@dan-ui/theme",
+  "version": "0.0.1",
+  "description": "CSS design tokens for dan-ui",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.css",
+  "exports": {
+    ".": "./dist/index.css",
+    "./index.css": "./dist/index.css",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}

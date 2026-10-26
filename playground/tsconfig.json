@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@dan-ui/ui": ["../packages/ui/src/index.ts"],
+      "@dan-ui/theme": ["../packages/theme/src/index.css"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.vue", "src/**/*.d.ts", "vite.config.ts"]
+}

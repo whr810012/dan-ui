@@ -1,0 +1,21 @@
+node_modules
+dist
+*.local
+.DS_Store
+*.log
+.vite
+**/.vitepress/cache
+**/.vitepress/dist
+docs/.vitepress/dist
+coverage
+*.tsbuildinfo
+.turbo
+.idea
+.vscode/*
+!.vscode/extensions.json
+
+# Local planning / design docs — keep out of commits
+README.md
+docs/plans/
+docs/DOC_PLAN.md
+docs/components-roadmap.md

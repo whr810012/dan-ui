@@ -1,0 +1,21 @@
+{
+  "name": "@dan-ui/docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "dependencies": {
+    "@dan-ui/theme": "workspace:*",
+    "@dan-ui/ui": "workspace:*",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "vitepress": "^1.6.3",
+    "vue-tsc": "^2.2.10"
+  }
+}
