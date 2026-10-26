@@ -11,6 +11,7 @@ export default defineConfig({
       { text: '指南', link: '/guide/introduction' },
       { text: '组件', link: '/components/button' },
       { text: 'AI', link: '/ai/overview' },
+      { text: '编辑器', link: '/editor/rich-text' },
     ],
     sidebar: {
       '/guide/': [
@@ -59,6 +60,15 @@ export default defineConfig({
             { text: 'TokenUsage', link: '/ai/token-usage' },
             { text: 'Attachment', link: '/ai/attachment' },
             { text: 'Prompt', link: '/ai/prompt' },
+          ],
+        },
+      ],
+      '/editor/': [
+        {
+          text: '富文本',
+          items: [
+            { text: 'RichText', link: '/editor/rich-text' },
+            { text: '扩展说明', link: '/editor/extensions' },
           ],
         },
       ],

@@ -4,6 +4,17 @@ import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
 import { resolve } from 'node:path'
 
+const tiptapExternals = [
+  '@tiptap/vue-3',
+  '@tiptap/starter-kit',
+  '@tiptap/extension-link',
+  '@tiptap/extension-placeholder',
+  '@tiptap/extension-image',
+  '@tiptap/extension-underline',
+  '@tiptap/pm',
+  /^@tiptap\//,
+]
+
 export default defineConfig({
   plugins: [
     vue(),
@@ -23,7 +34,7 @@ export default defineConfig({
       fileName: (format) => (format === 'es' ? 'index.js' : 'index.cjs'),
     },
     rollupOptions: {
-      external: ['vue'],
+      external: ['vue', ...tiptapExternals],
       output: {
         globals: {
           vue: 'Vue',

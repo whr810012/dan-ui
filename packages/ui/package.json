@@ -26,13 +26,43 @@
     "test": "vitest run --passWithNoTests"
   },
   "peerDependencies": {
+    "@tiptap/extension-image": "^3.0.0",
+    "@tiptap/extension-placeholder": "^3.0.0",
+    "@tiptap/pm": "^3.0.0",
+    "@tiptap/starter-kit": "^3.0.0",
+    "@tiptap/vue-3": "^3.0.0",
     "vue": "^3.5.0"
+  },
+  "peerDependenciesMeta": {
+    "@tiptap/vue-3": {
+      "optional": true
+    },
+    "@tiptap/starter-kit": {
+      "optional": true
+    },
+    "@tiptap/extension-placeholder": {
+      "optional": true
+    },
+    "@tiptap/extension-image": {
+      "optional": true
+    },
+    "@tiptap/pm": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@dan-ui/theme": "workspace:*",
     "markdown-it": "^15.0.3"
   },
   "devDependencies": {
+    "@tiptap/extension-bubble-menu": "^3.32.0",
+    "@tiptap/extension-image": "^3.32.0",
+    "@tiptap/extension-link": "^3.32.0",
+    "@tiptap/extension-placeholder": "^3.32.0",
+    "@tiptap/extension-underline": "^3.32.0",
+    "@tiptap/pm": "^3.32.0",
+    "@tiptap/starter-kit": "^3.32.0",
+    "@tiptap/vue-3": "^3.32.0",
     "@types/markdown-it": "^14.2.0",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vue/test-utils": "^2.4.6",

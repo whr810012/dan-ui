@@ -1,0 +1,12 @@
+.dan-editor-bubble-menu {
+  position: absolute;
+  z-index: var(--dan-z-index-dropdown, 1000);
+  display: inline-flex;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+  box-shadow: var(--dan-shadow-md);
+  transform: translate(-50%, 0);
+}

@@ -74,4 +74,4 @@ scripts/         工程脚本
 - 底座：ConfigProvider、Icon、主题 Token
 - 表单：Button、Input、Textarea、Checkbox、Radio、Switch、Select、Form
 - AI：Chat、ChatMessage、ChatInput、Markdown、StreamText、CodeBlock、Thinking、Suggestion、GenerationControl、ModelSelect、TokenUsage、Attachment、Prompt
-- 后续将继续补充富文本编辑器
+- 富文本：RichText、EditorToolbar、EditorBubbleMenu（TipTap，支持 html/json）

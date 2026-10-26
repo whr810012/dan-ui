@@ -1,0 +1,78 @@
+.dan-rich-text {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+}
+
+.dan-rich-text.is-disabled {
+  background: var(--dan-color-fill);
+  opacity: 0.75;
+}
+
+.dan-rich-text__toolbar-wrap {
+  border-bottom: 1px solid var(--dan-color-border-light);
+  background: var(--dan-color-bg-muted);
+}
+
+.dan-rich-text__body {
+  min-height: var(--dan-rich-text-min-height, 160px);
+}
+
+.dan-rich-text__content {
+  min-height: inherit;
+}
+
+.dan-rich-text__content .tiptap {
+  min-height: var(--dan-rich-text-min-height, 160px);
+  padding: 12px 14px;
+  outline: none;
+  color: var(--dan-color-text);
+  font-size: var(--dan-font-size-md);
+  line-height: 1.7;
+}
+
+.dan-rich-text__content .tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  color: var(--dan-color-text-placeholder);
+  pointer-events: none;
+}
+
+.dan-rich-text__content .tiptap :where(h1, h2, h3) {
+  margin: 0.8em 0 0.4em;
+  line-height: 1.3;
+}
+
+.dan-rich-text__content .tiptap :where(ul, ol) {
+  padding-left: 1.4em;
+}
+
+.dan-rich-text__content .tiptap blockquote {
+  margin: 0.6em 0;
+  padding-left: 12px;
+  border-left: 3px solid var(--dan-color-border);
+  color: var(--dan-color-text-secondary);
+}
+
+.dan-rich-text__content .tiptap pre {
+  padding: 10px 12px;
+  overflow: auto;
+  border-radius: var(--dan-radius-sm);
+  background: #0b1220;
+  color: #e2e8f0;
+}
+
+.dan-rich-text__content .tiptap img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--dan-radius-sm);
+}
+
+.dan-rich-text__content .tiptap a {
+  color: var(--dan-color-primary);
+  text-decoration: underline;
+}

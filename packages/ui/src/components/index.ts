@@ -74,3 +74,15 @@ export type { DanAttachmentInstance } from './attachment'
 
 export { DanPrompt } from './prompt'
 export type { DanPromptInstance } from './prompt'
+
+export {
+  DanRichText,
+  DanEditorToolbar,
+  DanEditorBubbleMenu,
+} from './rich-text'
+export type {
+  DanRichTextInstance,
+  DanEditorToolbarInstance,
+  DanEditorBubbleMenuInstance,
+  RichTextOutput,
+} from './rich-text'

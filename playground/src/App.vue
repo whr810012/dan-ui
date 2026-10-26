@@ -10,6 +10,7 @@ import {
   DanGenerationControl,
   DanInput,
   DanModelSelect,
+  DanRichText,
   DanSuggestion,
   DanTokenUsage,
   useNamespace,
@@ -18,7 +19,7 @@ import {
 } from '@dan-ui/ui'
 
 const ns = useNamespace('playground')
-const tab = ref<'form' | 'chat'>('chat')
+const tab = ref<'form' | 'chat' | 'editor'>('chat')
 
 const formRef = ref<DanFormInstance>()
 const formModel = reactive({
@@ -30,6 +31,14 @@ const formRules = {
   'profile.email': [
     { required: true, message: '请输入邮箱', trigger: 'blur' },
   ],
+}
+
+const editorRef = ref<DanFormInstance>()
+const editorModel = reactive({
+  content: '<p>在 playground 里试试富文本。</p>',
+})
+const editorRules = {
+  content: [{ required: true, message: '请输入正文', trigger: 'blur' }],
 }
 
 const messages = ref<ChatMessageModel[]>([
@@ -109,6 +118,15 @@ async function onSubmit() {
   const ok = await formRef.value?.validate()
   window.alert(ok ? '校验通过' : '校验失败')
 }
+
+async function onEditorSubmit() {
+  const ok = await editorRef.value?.validate()
+  window.alert(ok ? '校验通过' : '校验失败')
+}
+
+async function onImageUpload(file: File) {
+  return URL.createObjectURL(file)
+}
 </script>
 
 <template>
@@ -127,6 +145,12 @@ async function onSubmit() {
           @click="tab = 'form'"
         >
           Form
+        </DanButton>
+        <DanButton
+          :type="tab === 'editor' ? 'primary' : 'default'"
+          @click="tab = 'editor'"
+        >
+          RichText
         </DanButton>
       </div>
 
@@ -159,7 +183,7 @@ async function onSubmit() {
         </DanChat>
       </section>
 
-      <section v-else :class="ns.e('section')">
+      <section v-else-if="tab === 'form'" :class="ns.e('section')">
         <DanForm
           ref="formRef"
           :model="formModel"
@@ -174,6 +198,25 @@ async function onSubmit() {
           </DanFormItem>
           <DanFormItem>
             <DanButton type="primary" @click="onSubmit">提交</DanButton>
+          </DanFormItem>
+        </DanForm>
+      </section>
+
+      <section v-else :class="ns.e('section')">
+        <DanForm
+          ref="editorRef"
+          :model="editorModel"
+          :rules="editorRules"
+          label-width="72px"
+        >
+          <DanFormItem label="正文" prop="content">
+            <DanRichText
+              v-model="editorModel.content"
+              :on-image-upload="onImageUpload"
+            />
+          </DanFormItem>
+          <DanFormItem>
+            <DanButton type="primary" @click="onEditorSubmit">提交</DanButton>
           </DanFormItem>
         </DanForm>
       </section>
