@@ -3,5 +3,11 @@ import { DanButton } from '@dan-ui/ui'
 </script>
 
 <template>
-  <DanButton>Button</DanButton>
+  <div style="display: flex; flex-wrap: wrap; gap: 8px">
+    <DanButton>默认</DanButton>
+    <DanButton type="primary">主要</DanButton>
+    <DanButton type="success">成功</DanButton>
+    <DanButton type="warning">警告</DanButton>
+    <DanButton type="danger">危险</DanButton>
+  </div>
 </template>

@@ -1,3 +1,228 @@
 .dan-button {
-  /* TODO: styles */
+  --dan-button-height: var(--dan-control-height-md);
+  --dan-button-padding-x: var(--dan-spacing-lg);
+  --dan-button-font-size: var(--dan-font-size-md);
+  --dan-button-bg: var(--dan-color-fill);
+  --dan-button-border: var(--dan-color-border);
+  --dan-button-text: var(--dan-color-text);
+  --dan-button-hover-bg: var(--dan-color-fill-hover);
+  --dan-button-hover-border: var(--dan-color-border);
+  --dan-button-hover-text: var(--dan-color-text);
+  --dan-button-active-bg: var(--dan-color-fill-hover);
+  --dan-button-active-border: var(--dan-color-border);
+  --dan-button-active-text: var(--dan-color-text);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--dan-spacing-xs);
+  box-sizing: border-box;
+  height: var(--dan-button-height);
+  padding: 0 var(--dan-button-padding-x);
+  border: 1px solid var(--dan-button-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-button-bg);
+  color: var(--dan-button-text);
+  font-family: var(--dan-font-family);
+  font-size: var(--dan-button-font-size);
+  font-weight: var(--dan-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--dan-duration-fast) var(--dan-ease),
+    border-color var(--dan-duration-fast) var(--dan-ease),
+    color var(--dan-duration-fast) var(--dan-ease),
+    box-shadow var(--dan-duration-fast) var(--dan-ease),
+    opacity var(--dan-duration-fast) var(--dan-ease);
+  user-select: none;
+  appearance: none;
+}
+
+.dan-button:hover {
+  background: var(--dan-button-hover-bg);
+  border-color: var(--dan-button-hover-border);
+  color: var(--dan-button-hover-text);
+}
+
+.dan-button:active {
+  background: var(--dan-button-active-bg);
+  border-color: var(--dan-button-active-border);
+  color: var(--dan-button-active-text);
+}
+
+.dan-button:focus-visible {
+  outline: 2px solid var(--dan-color-primary-light);
+  outline-offset: 2px;
+}
+
+.dan-button--small {
+  --dan-button-height: var(--dan-control-height-sm);
+  --dan-button-padding-x: var(--dan-spacing-md);
+  --dan-button-font-size: var(--dan-font-size-sm);
+}
+
+.dan-button--large {
+  --dan-button-height: var(--dan-control-height-lg);
+  --dan-button-padding-x: var(--dan-spacing-xl);
+  --dan-button-font-size: var(--dan-font-size-lg);
+}
+
+.dan-button--primary {
+  --dan-button-bg: var(--dan-color-primary);
+  --dan-button-border: var(--dan-color-primary);
+  --dan-button-text: #fff;
+  --dan-button-hover-bg: var(--dan-color-primary-hover);
+  --dan-button-hover-border: var(--dan-color-primary-hover);
+  --dan-button-hover-text: #fff;
+  --dan-button-active-bg: var(--dan-color-primary-active);
+  --dan-button-active-border: var(--dan-color-primary-active);
+  --dan-button-active-text: #fff;
+}
+
+.dan-button--success {
+  --dan-button-bg: var(--dan-color-success);
+  --dan-button-border: var(--dan-color-success);
+  --dan-button-text: #fff;
+  --dan-button-hover-bg: #15803d;
+  --dan-button-hover-border: #15803d;
+  --dan-button-hover-text: #fff;
+  --dan-button-active-bg: #166534;
+  --dan-button-active-border: #166534;
+  --dan-button-active-text: #fff;
+}
+
+.dan-button--warning {
+  --dan-button-bg: var(--dan-color-warning);
+  --dan-button-border: var(--dan-color-warning);
+  --dan-button-text: #fff;
+  --dan-button-hover-bg: #b45309;
+  --dan-button-hover-border: #b45309;
+  --dan-button-hover-text: #fff;
+  --dan-button-active-bg: #92400e;
+  --dan-button-active-border: #92400e;
+  --dan-button-active-text: #fff;
+}
+
+.dan-button--danger {
+  --dan-button-bg: var(--dan-color-danger);
+  --dan-button-border: var(--dan-color-danger);
+  --dan-button-text: #fff;
+  --dan-button-hover-bg: #b91c1c;
+  --dan-button-hover-border: #b91c1c;
+  --dan-button-hover-text: #fff;
+  --dan-button-active-bg: #991b1b;
+  --dan-button-active-border: #991b1b;
+  --dan-button-active-text: #fff;
+}
+
+.dan-button--info {
+  --dan-button-bg: var(--dan-color-info);
+  --dan-button-border: var(--dan-color-info);
+  --dan-button-text: #fff;
+  --dan-button-hover-bg: #475569;
+  --dan-button-hover-border: #475569;
+  --dan-button-hover-text: #fff;
+  --dan-button-active-bg: #334155;
+  --dan-button-active-border: #334155;
+  --dan-button-active-text: #fff;
+}
+
+.dan-button.is-plain.dan-button--primary {
+  --dan-button-bg: var(--dan-color-primary-light);
+  --dan-button-border: var(--dan-color-primary);
+  --dan-button-text: var(--dan-color-primary);
+  --dan-button-hover-bg: var(--dan-color-primary);
+  --dan-button-hover-border: var(--dan-color-primary);
+  --dan-button-hover-text: #fff;
+}
+
+.dan-button.is-plain.dan-button--success {
+  --dan-button-bg: var(--dan-color-success-light);
+  --dan-button-border: var(--dan-color-success);
+  --dan-button-text: var(--dan-color-success);
+  --dan-button-hover-bg: var(--dan-color-success);
+  --dan-button-hover-border: var(--dan-color-success);
+  --dan-button-hover-text: #fff;
+}
+
+.dan-button.is-plain.dan-button--warning {
+  --dan-button-bg: var(--dan-color-warning-light);
+  --dan-button-border: var(--dan-color-warning);
+  --dan-button-text: var(--dan-color-warning);
+  --dan-button-hover-bg: var(--dan-color-warning);
+  --dan-button-hover-border: var(--dan-color-warning);
+  --dan-button-hover-text: #fff;
+}
+
+.dan-button.is-plain.dan-button--danger {
+  --dan-button-bg: var(--dan-color-danger-light);
+  --dan-button-border: var(--dan-color-danger);
+  --dan-button-text: var(--dan-color-danger);
+  --dan-button-hover-bg: var(--dan-color-danger);
+  --dan-button-hover-border: var(--dan-color-danger);
+  --dan-button-hover-text: #fff;
+}
+
+.dan-button.is-plain.dan-button--info {
+  --dan-button-bg: var(--dan-color-info-light);
+  --dan-button-border: var(--dan-color-info);
+  --dan-button-text: var(--dan-color-info);
+  --dan-button-hover-bg: var(--dan-color-info);
+  --dan-button-hover-border: var(--dan-color-info);
+  --dan-button-hover-text: #fff;
+}
+
+.dan-button.is-round {
+  border-radius: var(--dan-radius-full);
+}
+
+.dan-button.is-circle {
+  width: var(--dan-button-height);
+  padding: 0;
+  border-radius: var(--dan-radius-full);
+}
+
+.dan-button.is-text,
+.dan-button.is-link {
+  height: auto;
+  padding: 0 var(--dan-spacing-xs);
+  border-color: transparent;
+  background: transparent;
+  color: var(--dan-color-primary);
+}
+
+.dan-button.is-text:hover,
+.dan-button.is-link:hover {
+  background: var(--dan-color-primary-light);
+  border-color: transparent;
+  color: var(--dan-color-primary-hover);
+}
+
+.dan-button.is-link {
+  padding: 0;
+}
+
+.dan-button.is-link:hover {
+  background: transparent;
+  text-decoration: underline;
+}
+
+.dan-button.is-disabled,
+.dan-button.is-loading {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.dan-button.is-disabled:hover,
+.dan-button.is-loading:hover {
+  background: var(--dan-button-bg);
+  border-color: var(--dan-button-border);
+  color: var(--dan-button-text);
+}
+
+.dan-button__icon,
+.dan-button__text {
+  display: inline-flex;
+  align-items: center;
 }
