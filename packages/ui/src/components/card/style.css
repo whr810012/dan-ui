@@ -1,0 +1,49 @@
+.dan-card {
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid var(--dan-color-border-light);
+  border-radius: var(--dan-radius-lg);
+  background: var(--dan-color-bg);
+  color: var(--dan-color-text);
+  transition: box-shadow var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-card--shadow-always {
+  box-shadow: var(--dan-shadow-sm);
+}
+
+.dan-card--shadow-hover:hover {
+  box-shadow: var(--dan-shadow-md);
+}
+
+.dan-card--shadow-never {
+  box-shadow: none;
+}
+
+.dan-card__header {
+  padding: var(--dan-spacing-md) var(--dan-spacing-lg);
+  border-bottom: 1px solid var(--dan-color-border-light);
+  font-size: var(--dan-font-size-md);
+  font-weight: var(--dan-font-weight-semibold);
+  line-height: 1.5;
+}
+
+.dan-card__cover {
+  line-height: 0;
+}
+
+.dan-card__cover :deep(img) {
+  display: block;
+  width: 100%;
+}
+
+.dan-card__body {
+  padding: var(--dan-spacing-lg);
+  font-size: var(--dan-font-size-md);
+  line-height: 1.6;
+}
+
+.dan-card__footer {
+  padding: var(--dan-spacing-md) var(--dan-spacing-lg);
+  border-top: 1px solid var(--dan-color-border-light);
+}

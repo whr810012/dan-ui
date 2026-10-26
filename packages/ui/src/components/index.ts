@@ -81,6 +81,12 @@ export type { DanCollapseInstance, DanCollapseItemInstance } from './collapse'
 export { DanImage } from './image'
 export type { DanImageInstance } from './image'
 
+export { DanCard } from './card'
+export type { DanCardInstance } from './card'
+
+export { DanCarousel, DanCarouselItem } from './carousel'
+export type { DanCarouselInstance, DanCarouselItemInstance } from './carousel'
+
 export { DanLoading } from './loading'
 export type { DanLoadingInstance } from './loading'
 

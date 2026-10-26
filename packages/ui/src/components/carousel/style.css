@@ -1,0 +1,105 @@
+.dan-carousel {
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: var(--dan-radius-lg);
+  background: var(--dan-color-fill);
+}
+
+.dan-carousel__container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.dan-carousel-item {
+  position: absolute;
+  inset: 0;
+  display: none;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity var(--dan-duration-normal) var(--dan-ease);
+}
+
+.dan-carousel-item.is-active {
+  display: block;
+  opacity: 1;
+  z-index: 1;
+}
+
+.dan-carousel-item :deep(img) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dan-carousel__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--dan-radius-full);
+  background: rgb(15 23 42 / 45%);
+  color: #fff;
+  cursor: pointer;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-carousel--arrow-always .dan-carousel__arrow,
+.dan-carousel--arrow-hover.is-hover .dan-carousel__arrow,
+.dan-carousel--arrow-hover:hover .dan-carousel__arrow {
+  opacity: 1;
+}
+
+.dan-carousel__arrow-left {
+  left: 12px;
+}
+
+.dan-carousel__arrow-right {
+  right: 12px;
+}
+
+.dan-carousel__arrow:hover {
+  background: rgb(15 23 42 / 65%);
+}
+
+.dan-carousel__indicators {
+  position: absolute;
+  right: 0;
+  bottom: 12px;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dan-carousel__indicator button {
+  display: block;
+  width: 8px;
+  height: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--dan-radius-full);
+  background: rgb(255 255 255 / 45%);
+  cursor: pointer;
+}
+
+.dan-carousel__indicator.is-active button {
+  width: 18px;
+  background: #fff;
+}

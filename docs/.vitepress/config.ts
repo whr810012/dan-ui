@@ -40,6 +40,8 @@ const componentsSidebar = [
       { text: 'Timeline', link: '/components/timeline' },
       { text: 'Collapse', link: '/components/collapse' },
       { text: 'Image', link: '/components/image' },
+      { text: 'Card', link: '/components/card' },
+      { text: 'Carousel', link: '/components/carousel' },
     ],
   },
   {
