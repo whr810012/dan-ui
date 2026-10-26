@@ -5,4 +5,4 @@ export const DanIcon = withInstall(Icon, undefined, 'DanIcon')
 export default DanIcon
 export type DanIconInstance = InstanceType<typeof Icon>
 export type { IconName } from './icons'
-export { iconMap } from './icons'
+export { iconMap, iconNames } from './icons'

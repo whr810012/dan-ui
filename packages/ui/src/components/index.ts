@@ -9,7 +9,7 @@ export type {
 export { DanConfigProvider } from './config-provider'
 export type { DanConfigProviderInstance } from './config-provider'
 
-export { DanIcon, iconMap } from './icon'
+export { DanIcon, iconMap, iconNames } from './icon'
 export type { DanIconInstance, IconName } from './icon'
 
 export { DanInput } from './input'

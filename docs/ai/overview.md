@@ -1,15 +1,29 @@
+<script setup>
+import DemoBlock from '../.vitepress/components/DemoBlock.vue'
+import FakeSse from './demos/chat/fake-sse.vue'
+import fakeSseSrc from './demos/chat/fake-sse.vue?raw'
+</script>
+
 # AI 组件概览
 
 dan-ui 的 AI 组件只负责界面、事件与插槽，不内置任何大模型接口。
 
-常见接入方式：
+## 快速体验
 
-1. 用 `DanChat` 展示消息列表
-2. 用 `DanChatInput` 收集用户输入并触发 `send`
-3. 业务侧请求 SSE / WebSocket，把增量内容写回消息的 `content`
-4. 需要停止时响应 `stop`，并把消息 `status` 设为 `stopped`
+下面是完整假流式对话演示：
 
-消息模型：
+<DemoBlock :source="fakeSseSrc">
+  <FakeSse />
+</DemoBlock>
+
+## 接入方式
+
+1. 用 `DanChat` 展示消息列表  
+2. 用 `DanChatInput` 收集输入并触发 `send`  
+3. 业务侧请求 SSE / WebSocket，把增量写入消息 `content`  
+4. 响应 `stop`，并把消息 `status` 设为 `stopped`
+
+## 消息模型
 
 ```ts
 interface ChatMessageModel {

@@ -11,5 +11,5 @@ const options = [
 </script>
 
 <template>
-  <DanSelect v-model="value" :options="options" clearable />
+  <DanSelect v-model="value" :options="options" style="max-width: 280px" />
 </template>

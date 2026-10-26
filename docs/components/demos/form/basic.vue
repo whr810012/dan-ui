@@ -29,7 +29,7 @@ async function onSubmit() {
 <template>
   <DanForm ref="formRef" :model="model" :rules="rules" label-width="72px">
     <DanFormItem label="姓名" prop="name">
-      <DanInput v-model="model.name" placeholder="请输入姓名" />
+      <DanInput v-model="model.name" placeholder="请输入姓名" clearable />
     </DanFormItem>
     <DanFormItem label="邮箱" prop="profile.email">
       <DanInput v-model="model.profile.email" placeholder="name@example.com" />

@@ -6,5 +6,10 @@ const value = ref('')
 </script>
 
 <template>
-  <DanTextarea v-model="value" placeholder="请输入简介" :rows="4" maxlength="100" show-word-limit />
+  <DanTextarea
+    v-model="value"
+    placeholder="请输入简介"
+    :rows="4"
+    style="max-width: 480px"
+  />
 </template>
