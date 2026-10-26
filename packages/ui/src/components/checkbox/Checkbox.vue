@@ -101,7 +101,12 @@ function onChange(event: Event) {
         :disabled="isDisabled"
         @change="onChange"
       />
-      <span :class="ns.e('inner')" />
+      <span :class="ns.e('inner')">
+        <span
+          v-if="isChecked || indeterminate"
+          :class="[ns.e('icon'), ns.is('indeterminate', indeterminate)]"
+        />
+      </span>
     </span>
     <span v-if="$slots.default || label != null" :class="ns.e('label')">
       <slot>{{ label }}</slot>

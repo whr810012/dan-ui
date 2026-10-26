@@ -4,9 +4,11 @@
   gap: var(--dan-spacing-xs);
   margin-right: var(--dan-spacing-md);
   font-size: var(--dan-font-size-md);
+  line-height: var(--dan-control-height-md);
   color: var(--dan-color-text);
   cursor: pointer;
   user-select: none;
+  vertical-align: middle;
 }
 
 .dan-radio.is-disabled {
@@ -17,6 +19,9 @@
 .dan-radio__input {
   position: relative;
   display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
   width: 16px;
   height: 16px;
 }
@@ -31,31 +36,40 @@
 }
 
 .dan-radio__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
   width: 16px;
   height: 16px;
   border: 1px solid var(--dan-color-border);
   border-radius: 50%;
   background: var(--dan-color-bg);
+  font-size: 0;
+  line-height: 0;
+  transition: border-color var(--dan-duration-fast) var(--dan-ease);
 }
 
 .dan-radio.is-checked .dan-radio__inner {
   border-color: var(--dan-color-primary);
 }
 
-.dan-radio.is-checked .dan-radio__inner::after {
-  content: '';
-  position: absolute;
-  top: 3px;
-  left: 3px;
+.dan-radio__dot {
+  display: block;
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: var(--dan-color-primary);
+  flex-shrink: 0;
+}
+
+.dan-radio__label {
+  line-height: 1.5;
 }
 
 .dan-radio-group {
   display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
+  min-height: var(--dan-control-height-md);
 }

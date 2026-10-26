@@ -67,7 +67,9 @@ function onChange() {
         :disabled="isDisabled"
         @change="onChange"
       />
-      <span :class="ns.e('inner')" />
+      <span :class="ns.e('inner')">
+        <span v-if="isChecked" :class="ns.e('dot')" />
+      </span>
     </span>
     <span v-if="$slots.default || label != null" :class="ns.e('label')">
       <slot>{{ label }}</slot>

@@ -37,8 +37,18 @@
 
 .dan-form-item__content {
   position: relative;
+  display: flex;
   flex: 1;
+  flex-direction: column;
+  justify-content: center;
   min-width: 0;
+  min-height: var(--dan-control-height-md);
+  line-height: var(--dan-control-height-md);
+}
+
+.dan-form--label-top .dan-form-item__content {
+  justify-content: flex-start;
+  line-height: normal;
 }
 
 .dan-form-item__error {

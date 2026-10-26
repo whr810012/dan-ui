@@ -52,7 +52,10 @@
 
 .dan-select__clear {
   position: absolute;
+  top: 50%;
   right: 10px;
   color: var(--dan-color-text-secondary);
   cursor: pointer;
+  transform: translateY(-50%);
+  line-height: 1;
 }
