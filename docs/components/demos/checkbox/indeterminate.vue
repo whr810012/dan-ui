@@ -17,10 +17,7 @@ const indeterminate = computed(
 
 <template>
   <div style="display: grid; gap: 12px">
-    <DanCheckbox
-      v-model="checkAll"
-      :indeterminate="indeterminate"
-    >
+    <DanCheckbox v-model="checkAll" :indeterminate="indeterminate">
       全选
     </DanCheckbox>
     <DanCheckboxGroup v-model="checked">

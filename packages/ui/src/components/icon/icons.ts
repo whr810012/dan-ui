@@ -14,7 +14,12 @@ const svgProps = {
 }
 
 function icon(paths: string[]): IconSvg {
-  return () => h('svg', svgProps, paths.map((d) => h('path', { d })))
+  return () =>
+    h(
+      'svg',
+      svgProps,
+      paths.map((d) => h('path', { d })),
+    )
 }
 
 export const LoadingIcon = icon([
@@ -24,7 +29,10 @@ export const CloseIcon = icon(['M18 6 6 18', 'm6 6 12 12'])
 export const CheckIcon = icon(['m5 12 5 5L20 7'])
 export const PlusIcon = icon(['M12 5v14', 'M5 12h14'])
 export const MinusIcon = icon(['M5 12h14'])
-export const SearchIcon = icon(['m21 21-4.3-4.3', 'M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z'])
+export const SearchIcon = icon([
+  'm21 21-4.3-4.3',
+  'M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z',
+])
 export const EditIcon = icon([
   'M12 20h9',
   'M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z',
@@ -81,10 +89,7 @@ export const SettingIcon = icon([
   'M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z',
   'M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9c.3.6.9 1 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z',
 ])
-export const HomeIcon = icon([
-  'm3 9 9-7 9 7',
-  'M9 22V12h6v10',
-])
+export const HomeIcon = icon(['m3 9 9-7 9 7', 'M9 22V12h6v10'])
 export const MenuIcon = icon(['M4 6h16', 'M4 12h16', 'M4 18h16'])
 export const MoreIcon = icon([
   'M12 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2z',
@@ -125,10 +130,7 @@ export const MailIcon = icon([
   'M4 6h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z',
   'm22 8-10 7L2 8',
 ])
-export const RefreshIcon = icon([
-  'M21 12a9 9 0 1 1-2.6-6.4',
-  'M21 3v6h-6',
-])
+export const RefreshIcon = icon(['M21 12a9 9 0 1 1-2.6-6.4', 'M21 3v6h-6'])
 export const FilterIcon = icon(['M22 3H2l8 9.5V19l4 2v-8.5L22 3z'])
 export const SendIcon = icon(['m22 2-7 20-4-9-9-4Z', 'M22 2 11 13'])
 export const StopIcon = icon([

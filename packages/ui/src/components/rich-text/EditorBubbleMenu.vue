@@ -14,9 +14,7 @@ const props = defineProps<{
 
 const ns = useNamespace('editor-bubble-menu')
 const ctx = inject(richTextContextKey, undefined)
-const currentEditor = computed(
-  () => props.editor ?? ctx?.editor.value ?? null,
-)
+const currentEditor = computed(() => props.editor ?? ctx?.editor.value ?? null)
 
 const visible = ref(false)
 const style = ref<Record<string, string>>({
@@ -79,12 +77,7 @@ onBeforeUnmount(() => detach?.())
 
 <template>
   <Teleport to="body">
-    <div
-      v-show="visible"
-      :class="ns.b()"
-      :style="style"
-      @mousedown.prevent
-    >
+    <div v-show="visible" :class="ns.b()" :style="style" @mousedown.prevent>
       <DanButton
         size="small"
         text

@@ -75,7 +75,12 @@ function onReset() {
       <DanSelect v-model="model.city" :options="cityOptions" clearable />
     </DanFormItem>
     <DanFormItem label="简介">
-      <DanTextarea v-model="model.bio" :rows="3" maxlength="80" show-word-limit />
+      <DanTextarea
+        v-model="model.bio"
+        :rows="3"
+        maxlength="80"
+        show-word-limit
+      />
     </DanFormItem>
     <DanFormItem label="订阅">
       <DanSwitch v-model="model.newsletter" />

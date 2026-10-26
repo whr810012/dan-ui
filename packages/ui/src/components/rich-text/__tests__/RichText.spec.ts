@@ -38,7 +38,9 @@ describe('DanRichText', () => {
           formRef,
           model,
           rules: {
-            content: [{ required: true, message: '请填写正文', trigger: 'blur' }],
+            content: [
+              { required: true, message: '请填写正文', trigger: 'blur' },
+            ],
           },
         }
       },

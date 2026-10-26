@@ -125,7 +125,11 @@ onBeforeUnmount(() => {
       ns.is('required', isRequired),
     ]"
   >
-    <label v-if="label || $slots.label" :class="ns.e('label')" :style="labelStyle">
+    <label
+      v-if="label || $slots.label"
+      :class="ns.e('label')"
+      :style="labelStyle"
+    >
       <slot name="label">{{ label }}</slot>
     </label>
     <div :class="ns.e('content')">

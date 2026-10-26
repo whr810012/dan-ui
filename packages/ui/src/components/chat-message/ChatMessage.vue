@@ -40,7 +40,10 @@ const roleLabel = computed(() => {
       <slot name="avatar">
         <span :class="ns.e('role')">{{ roleLabel }}</span>
       </slot>
-      <span v-if="message.status && message.status !== 'done'" :class="ns.e('status')">
+      <span
+        v-if="message.status && message.status !== 'done'"
+        :class="ns.e('status')"
+      >
         {{ message.status }}
       </span>
     </header>
@@ -61,10 +64,7 @@ const roleLabel = computed(() => {
       </slot>
     </div>
 
-    <div
-      v-if="message.attachments?.length"
-      :class="ns.e('attachments')"
-    >
+    <div v-if="message.attachments?.length" :class="ns.e('attachments')">
       <DanAttachment
         v-for="(file, index) in message.attachments"
         :key="file.id || `${file.name}-${index}`"

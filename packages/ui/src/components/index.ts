@@ -19,10 +19,7 @@ export { DanTextarea } from './textarea'
 export type { DanTextareaInstance } from './textarea'
 
 export { DanCheckbox, DanCheckboxGroup } from './checkbox'
-export type {
-  DanCheckboxInstance,
-  DanCheckboxGroupInstance,
-} from './checkbox'
+export type { DanCheckboxInstance, DanCheckboxGroupInstance } from './checkbox'
 
 export { DanRadio, DanRadioGroup } from './radio'
 export type { DanRadioInstance, DanRadioGroupInstance } from './radio'
@@ -75,11 +72,7 @@ export type { DanAttachmentInstance } from './attachment'
 export { DanPrompt } from './prompt'
 export type { DanPromptInstance } from './prompt'
 
-export {
-  DanRichText,
-  DanEditorToolbar,
-  DanEditorBubbleMenu,
-} from './rich-text'
+export { DanRichText, DanEditorToolbar, DanEditorBubbleMenu } from './rich-text'
 export type {
   DanRichTextInstance,
   DanEditorToolbarInstance,

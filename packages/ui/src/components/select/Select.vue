@@ -58,6 +58,11 @@ function onClear() {
   emit('clear')
   emitChange('change')
 }
+
+function onBlur() {
+  focused.value = false
+  emitChange('blur')
+}
 </script>
 
 <template>
@@ -76,7 +81,7 @@ function onClear() {
       v-bind="attrs"
       @change="onChange"
       @focus="focused = true"
-      @blur="focused = false; emitChange('blur')"
+      @blur="onBlur"
     >
       <option v-if="placeholder" disabled value="">
         {{ placeholder }}

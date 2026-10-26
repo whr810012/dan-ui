@@ -83,7 +83,11 @@ defineExpose({
 
 <template>
   <form
-    :class="[ns.b(), ns.m(`label-${labelPosition}`), ns.is('disabled', disabled)]"
+    :class="[
+      ns.b(),
+      ns.m(`label-${labelPosition}`),
+      ns.is('disabled', disabled),
+    ]"
     @submit.prevent
   >
     <slot />

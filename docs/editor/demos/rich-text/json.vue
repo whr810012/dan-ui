@@ -26,6 +26,6 @@ const value = ref({
         color: #e2e8f0;
         font-size: 12px;
       "
-    >{{ JSON.stringify(value, null, 2) }}</pre>
+      >{{ JSON.stringify(value, null, 2) }}</pre>
   </div>
 </template>

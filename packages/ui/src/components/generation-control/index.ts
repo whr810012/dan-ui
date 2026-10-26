@@ -7,4 +7,6 @@ export const DanGenerationControl = withInstall(
   'DanGenerationControl',
 )
 export default DanGenerationControl
-export type DanGenerationControlInstance = InstanceType<typeof GenerationControl>
+export type DanGenerationControlInstance = InstanceType<
+  typeof GenerationControl
+>

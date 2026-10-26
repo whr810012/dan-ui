@@ -4,10 +4,7 @@ import * as components from './components'
 export * from './components'
 
 export { withInstall, withInstallFunction } from './utils/withInstall'
-export type {
-  SFCWithInstall,
-  SFCInstallWithContext,
-} from './utils/withInstall'
+export type { SFCWithInstall, SFCInstallWithContext } from './utils/withInstall'
 export { createContext } from './utils/createContext'
 export type { CreateContextReturn } from './utils/createContext'
 
@@ -39,11 +36,7 @@ export { useFormItem } from './hooks/useFormItem'
 export { validateValue } from './utils/validate'
 export { getByPath, setByPath } from './utils/path'
 
-export {
-  provideChat,
-  injectChat,
-  chatContextKey,
-} from './hooks/useChatContext'
+export { provideChat, injectChat, chatContextKey } from './hooks/useChatContext'
 export type { ChatContext } from './hooks/useChatContext'
 export type {
   ChatMessageModel,

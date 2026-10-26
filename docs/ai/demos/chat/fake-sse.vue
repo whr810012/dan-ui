@@ -87,7 +87,9 @@ async function fakeStream(prompt: string) {
 function onStop() {
   clearTimer()
   generating.value = false
-  const last = [...messages.value].reverse().find((item) => item.role === 'assistant')
+  const last = [...messages.value]
+    .reverse()
+    .find((item) => item.role === 'assistant')
   if (last && last.status === 'streaming') last.status = 'stopped'
 }
 

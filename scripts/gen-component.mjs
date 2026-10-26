@@ -1,10 +1,5 @@
 #!/usr/bin/env node
-import {
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  writeFileSync,
-} from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -151,11 +146,16 @@ if (barrel.includes('export {}')) {
 const exportLine = `export { ${exportName} } from './${kebab}'\n`
 if (!barrel.includes(exportLine)) {
   barrel = `${barrel.trimEnd()}\n${exportLine}`.replace(/^\n+/, '')
-  writeFileSync(componentsBarrel, barrel.endsWith('\n') ? barrel : `${barrel}\n`)
+  writeFileSync(
+    componentsBarrel,
+    barrel.endsWith('\n') ? barrel : `${barrel}\n`,
+  )
 }
 
 console.log(`[gen] created ${exportName}`)
 console.log(`  - packages/ui/src/components/${kebab}/`)
 console.log(`  - docs/components/${kebab}.md`)
 console.log(`  - docs/components/demos/${kebab}/basic.vue`)
-console.log('  Remember: packages/ui/src/index.ts already re-exports ./components')
+console.log(
+  '  Remember: packages/ui/src/index.ts already re-exports ./components',
+)

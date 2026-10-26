@@ -24,9 +24,7 @@ const emit = defineEmits<{
   'update:modelValue': [
     value: boolean | string | number | Array<string | number | boolean>,
   ]
-  change: [
-    value: boolean | string | number | Array<string | number | boolean>,
-  ]
+  change: [value: boolean | string | number | Array<string | number | boolean>]
 }>()
 
 const ns = useNamespace('checkbox')
@@ -71,10 +69,13 @@ function onChange(event: Event) {
     const index = next.indexOf(label)
     if (checked && index === -1) next.push(label)
     if (!checked && index > -1) next.splice(index, 1)
-  } else if (typeof props.modelValue === 'boolean' || props.modelValue == null) {
+  } else if (
+    typeof props.modelValue === 'boolean' ||
+    props.modelValue == null
+  ) {
     next = checked
   } else {
-    next = checked ? (props.label as any) : undefined as any
+    next = checked ? (props.label as any) : (undefined as any)
   }
 
   emit('update:modelValue', next)

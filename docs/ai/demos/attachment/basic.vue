@@ -10,11 +10,6 @@ const file = ref<ChatAttachment | null>({
 </script>
 
 <template>
-  <DanAttachment
-    v-if="file"
-    :file="file"
-    removable
-    @remove="file = null"
-  />
+  <DanAttachment v-if="file" :file="file" removable @remove="file = null" />
   <span v-else style="color: var(--dan-color-text-secondary)">附件已移除</span>
 </template>

@@ -28,9 +28,7 @@ const formModel = reactive({
 })
 const formRules = {
   name: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
-  'profile.email': [
-    { required: true, message: '请输入邮箱', trigger: 'blur' },
-  ],
+  'profile.email': [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
 }
 
 const editorRef = ref<DanFormInstance>()

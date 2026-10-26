@@ -31,7 +31,9 @@ const size = ref<'small' | 'default' | 'large'>('large')
       </DanButton>
     </div>
     <DanConfigProvider :size="size">
-      <div style="display: flex; gap: 8px; align-items: center; max-width: 420px">
+      <div
+        style="display: flex; gap: 8px; align-items: center; max-width: 420px"
+      >
         <DanInput placeholder="继承尺寸" style="flex: 1" />
         <DanButton type="primary">按钮</DanButton>
       </div>

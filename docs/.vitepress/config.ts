@@ -5,11 +5,7 @@ export default defineConfig({
   title: 'dan-ui',
   description: 'Vue 3 通用基础 UI 组件库',
   lang: 'zh-CN',
-  srcExclude: [
-    '**/plans/**',
-    'DOC_PLAN.md',
-    'components-roadmap.md',
-  ],
+  srcExclude: ['**/plans/**', 'DOC_PLAN.md', 'components-roadmap.md'],
   themeConfig: {
     logo: undefined,
     nav: [

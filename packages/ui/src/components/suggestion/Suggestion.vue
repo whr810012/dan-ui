@@ -4,7 +4,7 @@ import './style.css'
 
 defineOptions({ name: 'DanSuggestion' })
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     items?: string[]
   }>(),

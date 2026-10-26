@@ -88,6 +88,7 @@ pnpm dev:docs
 |------|------|
 | `pnpm build` | 构建 theme 与 ui |
 | `pnpm test` | 运行单元测试 |
+| `pnpm lint` | ESLint + Prettier 检查 |
 | `pnpm gen <name>` | 生成组件脚手架 |
 | `pnpm docs:build` | 构建文档站 |
 

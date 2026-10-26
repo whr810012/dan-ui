@@ -20,15 +20,12 @@ const props = withDefaults(
 
 const ns = useNamespace('icon')
 
-const ResolvedIcon = computed(() =>
-  props.name ? iconMap[props.name] : null,
-)
+const ResolvedIcon = computed(() => (props.name ? iconMap[props.name] : null))
 
 const style = computed(() => {
   const result: Record<string, string> = {}
   if (props.size != null) {
-    const size =
-      typeof props.size === 'number' ? `${props.size}px` : props.size
+    const size = typeof props.size === 'number' ? `${props.size}px` : props.size
     result.fontSize = size
     result.width = size
     result.height = size
@@ -41,11 +38,7 @@ const style = computed(() => {
 </script>
 
 <template>
-  <i
-    :class="[ns.b(), ns.is('spin', spin)]"
-    :style="style"
-    role="img"
-  >
+  <i :class="[ns.b(), ns.is('spin', spin)]" :style="style" role="img">
     <component :is="ResolvedIcon" v-if="ResolvedIcon" />
     <slot v-else />
   </i>

@@ -47,11 +47,7 @@ function toggle() {
 
 <template>
   <button
-    :class="[
-      ns.b(),
-      ns.is('checked', checked),
-      ns.is('disabled', isDisabled),
-    ]"
+    :class="[ns.b(), ns.is('checked', checked), ns.is('disabled', isDisabled)]"
     type="button"
     role="switch"
     :aria-checked="checked"

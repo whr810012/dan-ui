@@ -21,9 +21,7 @@ const emit = defineEmits<{
 const ns = useNamespace('editor-toolbar')
 const ctx = inject(richTextContextKey, undefined)
 
-const currentEditor = computed(
-  () => props.editor ?? ctx?.editor.value ?? null,
-)
+const currentEditor = computed(() => props.editor ?? ctx?.editor.value ?? null)
 const isDisabled = computed(
   () => props.disabled || ctx?.disabled.value === true || !currentEditor.value,
 )
@@ -156,12 +154,7 @@ function setLink() {
     <DanButton size="small" text :disabled="isDisabled" @click="setLink">
       <DanIcon name="link" />
     </DanButton>
-    <DanButton
-      size="small"
-      text
-      :disabled="isDisabled"
-      @click="emit('image')"
-    >
+    <DanButton size="small" text :disabled="isDisabled" @click="emit('image')">
       <DanIcon name="upload" />
     </DanButton>
 

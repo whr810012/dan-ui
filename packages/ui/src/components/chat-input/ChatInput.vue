@@ -42,7 +42,8 @@ watch(
 
 const generating = computed(() => chat?.generating.value === true)
 const canSend = computed(
-  () => localValue.value.trim().length > 0 && !props.disabled && !generating.value,
+  () =>
+    localValue.value.trim().length > 0 && !props.disabled && !generating.value,
 )
 
 function sync(value: string) {
@@ -84,19 +85,10 @@ function onKeydown(event: KeyboardEvent) {
     />
     <div :class="ns.e('actions')">
       <slot name="actions" />
-      <DanButton
-        v-if="generating"
-        type="danger"
-        @click="onStop"
-      >
+      <DanButton v-if="generating" type="danger" @click="onStop">
         停止
       </DanButton>
-      <DanButton
-        v-else
-        type="primary"
-        :disabled="!canSend"
-        @click="onSend"
-      >
+      <DanButton v-else type="primary" :disabled="!canSend" @click="onSend">
         发送
       </DanButton>
     </div>

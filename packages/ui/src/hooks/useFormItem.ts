@@ -9,8 +9,7 @@ import {
 export function useFormItem() {
   const form = inject(formContextKey, undefined) as FormContext | undefined
   const formItem = inject(formItemContextKey, undefined) as
-    | FormItemContext
-    | undefined
+    FormItemContext | undefined
 
   const emitChange = (trigger: 'change' | 'blur' = 'change') => {
     formItem?.validate?.(trigger).catch(() => undefined)

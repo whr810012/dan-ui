@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { computed, toRef } from 'vue'
-import {
-  provideChat,
-  type ChatContext,
-} from '../../hooks/useChatContext'
+import { provideChat, type ChatContext } from '../../hooks/useChatContext'
 import type { ChatMessageModel } from '../../types/chat'
 import { useNamespace } from '../../hooks/useNamespace'
 import { DanChatMessage } from '../chat-message'

@@ -42,6 +42,8 @@ async function onCopy() {
         {{ copied ? '已复制' : '复制' }}
       </button>
     </div>
-    <pre :class="ns.e('pre')"><code :class="ns.e('code')">{{ code }}</code></pre>
+    <pre
+      :class="ns.e('pre')"
+    ><code :class="ns.e('code')">{{ code }}</code></pre>
   </div>
 </template>

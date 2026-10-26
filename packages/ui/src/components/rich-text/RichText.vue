@@ -54,7 +54,10 @@ const isDisabled = computed(
 )
 const canEdit = computed(() => props.editable && !isDisabled.value)
 
-function readOutput(editorInstance: { getJSON: () => JSONContent; getHTML: () => string }) {
+function readOutput(editorInstance: {
+  getJSON: () => JSONContent
+  getHTML: () => string
+}) {
   return props.output === 'json'
     ? editorInstance.getJSON()
     : editorInstance.getHTML()
@@ -81,11 +84,11 @@ function isSameContent(
 
 const initialContent =
   props.output === 'json'
-    ? ((props.modelValue as JSONContent) || {
+    ? (props.modelValue as JSONContent) || {
         type: 'doc',
         content: [{ type: 'paragraph' }],
-      })
-    : ((props.modelValue as string) || '')
+      }
+    : (props.modelValue as string) || ''
 
 const editor = useEditor({
   extensions: [
@@ -181,16 +184,16 @@ defineExpose({
     :style="{ '--dan-rich-text-min-height': minHeight }"
   >
     <div v-if="showToolbar" :class="ns.e('toolbar-wrap')">
-      <slot name="toolbar" :editor="editor" :open-image-picker="openImagePicker">
+      <slot
+        name="toolbar"
+        :editor="editor"
+        :open-image-picker="openImagePicker"
+      >
         <EditorToolbar :editor="editor" @image="openImagePicker" />
       </slot>
     </div>
 
-    <slot
-      v-if="showBubbleMenu && editor"
-      name="bubble-menu"
-      :editor="editor"
-    >
+    <slot v-if="showBubbleMenu && editor" name="bubble-menu" :editor="editor">
       <EditorBubbleMenu :editor="editor" />
     </slot>
 

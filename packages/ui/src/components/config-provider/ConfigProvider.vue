@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { computed, toRef } from 'vue'
-import {
-  provideConfig,
-  type DanSize,
-} from '../../hooks/useConfig'
+import { provideConfig, type DanSize } from '../../hooks/useConfig'
 import { useNamespace } from '../../hooks/useNamespace'
 import './style.css'
 
@@ -37,9 +34,7 @@ const themeStyle = computed(() => {
   const style: Record<string, string> = {}
   for (const [key, value] of Object.entries(props.theme)) {
     if (!key || value == null) continue
-    const varName = key.startsWith('--')
-      ? key
-      : `--${props.namespace}-${key}`
+    const varName = key.startsWith('--') ? key : `--${props.namespace}-${key}`
     style[varName] = value
   }
   return style

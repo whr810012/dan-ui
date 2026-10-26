@@ -48,7 +48,9 @@ describe('DanChat', () => {
 
     generating.value = true
     await nextTick()
-    const stopBtn = wrapper.findAll('button').find((btn) => btn.text() === '停止')
+    const stopBtn = wrapper
+      .findAll('button')
+      .find((btn) => btn.text() === '停止')
     expect(stopBtn).toBeTruthy()
     await stopBtn!.trigger('click')
     expect(onStop).toHaveBeenCalled()

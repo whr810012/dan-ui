@@ -98,7 +98,9 @@ export async function validateValue(
         try {
           const result = rule.validator?.(rule, value, done)
           if (result && typeof (result as Promise<void>).then === 'function') {
-            ;(result as Promise<void>).then(() => done()).catch((err) => done(err))
+            ;(result as Promise<void>)
+              .then(() => done())
+              .catch((err) => done(err))
           }
         } catch (err) {
           done(err as Error)

@@ -23,11 +23,7 @@ const displaySource = computed(() => props.source.trim())
       <slot />
     </div>
     <div v-if="displaySource" class="dan-doc-demo__meta">
-      <button
-        type="button"
-        class="dan-doc-demo__toggle"
-        @click="open = !open"
-      >
+      <button type="button" class="dan-doc-demo__toggle" @click="open = !open">
         {{ open ? '收起代码' : '查看代码' }}
       </button>
     </div>
@@ -56,7 +52,8 @@ const displaySource = computed(() => props.source.trim())
 .dan-doc-demo__preview {
   padding: 24px 20px;
   background:
-    linear-gradient(90deg, rgb(148 163 184 / 8%) 1px, transparent 1px) 0 0 / 16px 16px,
+    linear-gradient(90deg, rgb(148 163 184 / 8%) 1px, transparent 1px) 0 0 /
+      16px 16px,
     linear-gradient(rgb(148 163 184 / 8%) 1px, transparent 1px) 0 0 / 16px 16px,
     var(--vp-c-bg);
 }

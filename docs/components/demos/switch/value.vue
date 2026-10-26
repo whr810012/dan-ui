@@ -7,11 +7,7 @@ const value = ref('on')
 
 <template>
   <div style="display: flex; gap: 12px; align-items: center">
-    <DanSwitch
-      v-model="value"
-      active-value="on"
-      inactive-value="off"
-    />
+    <DanSwitch v-model="value" active-value="on" inactive-value="off" />
     <span style="font-size: 13px; color: var(--dan-color-text-secondary)">
       当前值：{{ value }}
     </span>
