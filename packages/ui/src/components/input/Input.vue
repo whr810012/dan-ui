@@ -56,6 +56,20 @@ const showClear = computed(
     String(props.modelValue ?? '').length > 0,
 )
 
+/** class / style 落在外层容器，避免 max-width 只作用到 inner 导致后缀错位 */
+const rootClass = computed(() => attrs.class)
+const rootStyle = computed(
+  () => attrs.style as string | Record<string, string> | undefined,
+)
+const inputAttrs = computed(() => {
+  const result: Record<string, unknown> = {}
+  for (const [key, value] of Object.entries(attrs)) {
+    if (key === 'class' || key === 'style') continue
+    result[key] = value
+  }
+  return result
+})
+
 function onInput(event: Event) {
   const value = (event.target as HTMLInputElement).value
   emit('update:modelValue', value)
@@ -95,7 +109,9 @@ function onClear() {
       ns.m(resolvedSize),
       ns.is('disabled', isDisabled),
       ns.is('focus', focused),
+      rootClass,
     ]"
+    :style="rootStyle"
   >
     <span v-if="$slots.prefix" :class="ns.e('prefix')">
       <slot name="prefix" />
@@ -108,7 +124,7 @@ function onClear() {
       :readonly="readonly"
       :placeholder="placeholder"
       :maxlength="maxlength"
-      v-bind="attrs"
+      v-bind="inputAttrs"
       @input="onInput"
       @change="onChange"
       @blur="onBlur"

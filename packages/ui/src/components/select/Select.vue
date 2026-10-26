@@ -56,6 +56,19 @@ const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )
 
+const rootClass = computed(() => attrs.class)
+const rootStyle = computed(
+  () => attrs.style as string | Record<string, string> | undefined,
+)
+const triggerAttrs = computed(() => {
+  const result: Record<string, unknown> = {}
+  for (const [key, value] of Object.entries(attrs)) {
+    if (key === 'class' || key === 'style') continue
+    result[key] = value
+  }
+  return result
+})
+
 const selectedLabel = computed(() => {
   const matched = props.options.find(
     (item) => String(item.value) === String(props.modelValue),
@@ -172,14 +185,16 @@ onBeforeUnmount(() => {
       ns.is('disabled', isDisabled),
       ns.is('focus', focused || opened),
       ns.is('opened', opened),
+      rootClass,
     ]"
+    :style="rootStyle"
     @click="togglePanel"
   >
     <button
       type="button"
       :class="ns.e('trigger')"
       :disabled="isDisabled"
-      v-bind="attrs"
+      v-bind="triggerAttrs"
       @focus="onFocus"
       @blur="onBlur"
     >

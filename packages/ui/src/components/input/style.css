@@ -2,6 +2,7 @@
   --dan-input-height: var(--dan-control-height-md);
   --dan-input-font-size: var(--dan-font-size-md);
 
+  position: relative;
   display: inline-flex;
   align-items: center;
   box-sizing: border-box;
@@ -58,7 +59,7 @@
 .dan-input__prefix,
 .dan-input__suffix,
 .dan-input__clear {
-  flex-shrink: 0;
+  flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
