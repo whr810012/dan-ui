@@ -28,10 +28,13 @@ pnpm add @dan-ui/ui @dan-ui/theme
 import { createApp } from 'vue'
 import DanUI from '@dan-ui/ui'
 import '@dan-ui/theme'
+import '@dan-ui/ui/style.css'
 import App from './App.vue'
 
 createApp(App).use(DanUI).mount('#app')
 ```
+
+按需引入时同样需要主题与组件样式；富文本请额外安装 TipTap peer 依赖，详见编辑器文档。
 
 本地预览文档与演示：
 

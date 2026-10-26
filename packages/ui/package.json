@@ -15,6 +15,12 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
+    "./style.css": "./dist/style.css",
+    "./resolver": {
+      "types": "./dist/resolver.d.ts",
+      "import": "./dist/resolver.js",
+      "require": "./dist/resolver.cjs"
+    },
     "./package.json": "./package.json"
   },
   "sideEffects": [

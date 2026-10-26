@@ -23,15 +23,23 @@ export default defineConfig({
       outDir: 'dist',
       rollupTypes: true,
       insertTypesEntry: true,
+      entryRoot: 'src',
     }),
   ],
   build: {
     emptyOutDir: true,
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: {
+        index: resolve(__dirname, 'src/index.ts'),
+        resolver: resolve(__dirname, 'src/resolver.ts'),
+      },
       name: 'DanUI',
       formats: ['es', 'cjs'],
-      fileName: (format) => (format === 'es' ? 'index.js' : 'index.cjs'),
+      fileName: (format, entryName) => {
+        const base = entryName === 'resolver' ? 'resolver' : 'index'
+        return format === 'es' ? `${base}.js` : `${base}.cjs`
+      },
+      cssFileName: 'style',
     },
     rollupOptions: {
       external: ['vue', ...tiptapExternals],
