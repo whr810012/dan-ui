@@ -5,3 +5,124 @@
 .VPDoc .dan-doc-demo p {
   margin: 0;
 }
+
+/* —— Home —— */
+.VPHome {
+  padding-bottom: 48px;
+}
+
+.VPHome .VPHero {
+  padding-top: 56px;
+  padding-bottom: 28px;
+}
+
+.VPHome .VPHero .name {
+  background: linear-gradient(120deg, #1d4ed8 0%, #0f172a 55%, #2563eb 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: -0.03em;
+}
+
+.VPHome .VPHero .text {
+  color: var(--vp-c-text-1);
+  letter-spacing: -0.02em;
+}
+
+.VPHome .VPHero .tagline {
+  max-width: 40rem;
+  color: var(--vp-c-text-2);
+}
+
+.VPHome .VPFeatures {
+  margin-top: 12px;
+}
+
+.VPHome .VPFeature {
+  border-radius: 12px;
+  background: linear-gradient(
+    160deg,
+    rgb(37 99 235 / 6%) 0%,
+    var(--vp-c-bg-soft) 42%,
+    var(--vp-c-bg-soft) 100%
+  );
+  border: 1px solid var(--vp-c-divider);
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.VPHome .VPFeature:hover {
+  border-color: rgb(37 99 235 / 35%);
+  box-shadow: 0 10px 28px rgb(15 23 42 / 6%);
+  transform: translateY(-2px);
+}
+
+.dan-home-extra {
+  max-width: 960px;
+  margin: 40px auto 0;
+  padding: 0 24px 48px;
+}
+
+.dan-home-extra h2 {
+  margin: 0 0 16px;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+  border: none;
+  padding: 0;
+}
+
+.dan-home-extra table {
+  width: 100%;
+  display: table;
+  margin: 0;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid var(--vp-c-divider);
+}
+
+.dan-home-extra th,
+.dan-home-extra td {
+  padding: 12px 16px;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg);
+}
+
+.dan-home-extra th {
+  background: var(--vp-c-bg-soft);
+  text-align: left;
+  font-weight: 600;
+}
+
+.dan-home-extra p {
+  margin-top: 16px;
+  color: var(--vp-c-text-2);
+  font-size: 0.95rem;
+}
+
+html.dark .VPHome .VPHero .name {
+  background: linear-gradient(120deg, #60a5fa 0%, #f8fafc 50%, #93c5fd 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+html.dark .VPHome .VPFeature {
+  background: linear-gradient(
+    160deg,
+    rgb(59 130 246 / 12%) 0%,
+    var(--vp-c-bg-soft) 45%,
+    var(--vp-c-bg-soft) 100%
+  );
+}
+
+/* —— Sidebar collapse affordance —— */
+.VPSidebar .group .title {
+  font-weight: 600;
+}
+
+.VPSidebarItem.level-0.is-active > .item .link {
+  color: var(--vp-c-brand-1);
+}
