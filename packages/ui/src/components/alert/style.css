@@ -78,20 +78,20 @@
 
 .dan-alert--success.dan-alert--dark {
   background: var(--dan-color-success);
-  color: var(--dan-color-text-inverse);
+  color: var(--dan-color-text-on-color);
 }
 
 .dan-alert--warning.dan-alert--dark {
   background: var(--dan-color-warning);
-  color: var(--dan-color-text-inverse);
+  color: var(--dan-color-text-on-color);
 }
 
 .dan-alert--info.dan-alert--dark {
   background: var(--dan-color-info);
-  color: var(--dan-color-text-inverse);
+  color: var(--dan-color-text-on-color);
 }
 
 .dan-alert--error.dan-alert--dark {
   background: var(--dan-color-danger);
-  color: var(--dan-color-text-inverse);
+  color: var(--dan-color-text-on-color);
 }

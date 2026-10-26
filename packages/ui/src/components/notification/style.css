@@ -36,7 +36,7 @@
   box-sizing: border-box;
   padding: 14px 16px;
   border-radius: var(--dan-radius-md);
-  background: var(--dan-color-bg);
+  background: var(--dan-color-bg-elevated);
   box-shadow: var(--dan-shadow-md);
   border: 1px solid var(--dan-color-border-light);
   color: var(--dan-color-text);

@@ -51,11 +51,20 @@ const displaySource = computed(() => props.source.trim())
 
 .dan-doc-demo__preview {
   padding: 24px 20px;
+  color: var(--dan-color-text);
   background:
-    linear-gradient(90deg, rgb(148 163 184 / 8%) 1px, transparent 1px) 0 0 /
-      16px 16px,
-    linear-gradient(rgb(148 163 184 / 8%) 1px, transparent 1px) 0 0 / 16px 16px,
-    var(--vp-c-bg);
+    linear-gradient(
+        90deg,
+        var(--dan-demo-grid, rgb(148 163 184 / 8%)) 1px,
+        transparent 1px
+      )
+      0 0 / 16px 16px,
+    linear-gradient(
+        var(--dan-demo-grid, rgb(148 163 184 / 8%)) 1px,
+        transparent 1px
+      )
+      0 0 / 16px 16px,
+    var(--dan-color-bg-muted, var(--vp-c-bg));
 }
 
 .dan-doc-demo__meta {

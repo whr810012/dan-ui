@@ -20,7 +20,7 @@
   width: 420px;
   max-width: calc(100vw - 32px);
   border-radius: var(--dan-radius-lg);
-  background: var(--dan-color-bg);
+  background: var(--dan-color-bg-elevated);
   box-shadow: var(--dan-shadow-lg);
 }
 

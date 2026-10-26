@@ -35,7 +35,7 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--dan-color-constant-white);
   box-shadow: var(--dan-shadow-sm);
   transform: translateY(-50%);
   transition:

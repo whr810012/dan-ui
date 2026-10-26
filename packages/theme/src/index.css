@@ -1,18 +1,28 @@
 /* dan-ui design tokens */
 
 :root {
+  color-scheme: light;
+
   /* Brand / status */
   --dan-color-primary: #2563eb;
   --dan-color-primary-hover: #1d4ed8;
   --dan-color-primary-active: #1e40af;
   --dan-color-primary-light: #dbeafe;
   --dan-color-success: #16a34a;
+  --dan-color-success-hover: #15803d;
+  --dan-color-success-active: #166534;
   --dan-color-success-light: #dcfce7;
   --dan-color-warning: #d97706;
+  --dan-color-warning-hover: #b45309;
+  --dan-color-warning-active: #92400e;
   --dan-color-warning-light: #fef3c7;
   --dan-color-danger: #dc2626;
+  --dan-color-danger-hover: #b91c1c;
+  --dan-color-danger-active: #991b1b;
   --dan-color-danger-light: #fee2e2;
   --dan-color-info: #64748b;
+  --dan-color-info-hover: #475569;
+  --dan-color-info-active: #334155;
   --dan-color-info-light: #f1f5f9;
 
   /* Text / surface */
@@ -21,14 +31,28 @@
   --dan-color-text-placeholder: #94a3b8;
   --dan-color-text-disabled: #cbd5e1;
   --dan-color-text-inverse: #ffffff;
+  --dan-color-text-on-color: #ffffff;
+  --dan-color-constant-white: #ffffff;
   --dan-color-border: #e2e8f0;
   --dan-color-border-light: #f1f5f9;
   --dan-color-bg: #ffffff;
   --dan-color-bg-muted: #f8fafc;
+  --dan-color-bg-elevated: #ffffff;
   --dan-color-bg-overlay: rgb(15 23 42 / 45%);
   --dan-color-fill: #f1f5f9;
   --dan-color-fill-hover: #e2e8f0;
   --dan-color-mask: rgb(15 23 42 / 55%);
+  --dan-color-loading-mask: rgb(255 255 255 / 72%);
+  --dan-color-overlay-soft: rgb(15 23 42 / 45%);
+  --dan-color-overlay-strong: rgb(15 23 42 / 65%);
+  --dan-color-on-overlay: #ffffff;
+
+  /* Code surfaces (shared light/dark look, slight dark-mode tweak) */
+  --dan-color-code-bg: #0b1220;
+  --dan-color-code-text: #e2e8f0;
+  --dan-color-code-muted: #94a3b8;
+  --dan-color-code-border: rgb(255 255 255 / 8%);
+  --dan-color-code-header: rgb(255 255 255 / 4%);
 
   /* Typography */
   --dan-font-size-xs: 12px;
@@ -83,37 +107,62 @@
 }
 
 html.dark,
+html.dark body,
+.dark,
 [data-theme='dark'] {
+  color-scheme: dark;
+
   --dan-color-primary: #3b82f6;
   --dan-color-primary-hover: #60a5fa;
   --dan-color-primary-active: #2563eb;
-  --dan-color-primary-light: rgb(37 99 235 / 24%);
+  --dan-color-primary-light: rgb(59 130 246 / 22%);
   --dan-color-success: #22c55e;
-  --dan-color-success-light: rgb(34 197 94 / 18%);
+  --dan-color-success-hover: #4ade80;
+  --dan-color-success-active: #16a34a;
+  --dan-color-success-light: rgb(34 197 94 / 16%);
   --dan-color-warning: #f59e0b;
-  --dan-color-warning-light: rgb(245 158 11 / 18%);
-  --dan-color-danger: #f87171;
-  --dan-color-danger-light: rgb(248 113 113 / 18%);
+  --dan-color-warning-hover: #fbbf24;
+  --dan-color-warning-active: #d97706;
+  --dan-color-warning-light: rgb(245 158 11 / 16%);
+  --dan-color-danger: #ef4444;
+  --dan-color-danger-hover: #f87171;
+  --dan-color-danger-active: #dc2626;
+  --dan-color-danger-light: rgb(239 68 68 / 16%);
   --dan-color-info: #94a3b8;
+  --dan-color-info-hover: #cbd5e1;
+  --dan-color-info-active: #64748b;
   --dan-color-info-light: rgb(148 163 184 / 16%);
 
-  --dan-color-text: #f8fafc;
+  --dan-color-text: #f1f5f9;
   --dan-color-text-secondary: #cbd5e1;
-  --dan-color-text-placeholder: #64748b;
-  --dan-color-text-disabled: #475569;
+  --dan-color-text-placeholder: #94a3b8;
+  --dan-color-text-disabled: #64748b;
   --dan-color-text-inverse: #0f172a;
+  --dan-color-text-on-color: #ffffff;
+  --dan-color-constant-white: #ffffff;
   --dan-color-border: #334155;
   --dan-color-border-light: #1e293b;
-  --dan-color-bg: #0f172a;
+  --dan-color-bg: #0b1220;
   --dan-color-bg-muted: #111827;
+  --dan-color-bg-elevated: #1e293b;
   --dan-color-bg-overlay: rgb(2 6 23 / 65%);
   --dan-color-fill: #1e293b;
   --dan-color-fill-hover: #334155;
-  --dan-color-mask: rgb(2 6 23 / 70%);
+  --dan-color-mask: rgb(2 6 23 / 72%);
+  --dan-color-loading-mask: rgb(11 18 32 / 72%);
+  --dan-color-overlay-soft: rgb(0 0 0 / 42%);
+  --dan-color-overlay-strong: rgb(0 0 0 / 58%);
+  --dan-color-on-overlay: #ffffff;
 
-  --dan-shadow-sm: 0 1px 2px rgb(0 0 0 / 35%);
-  --dan-shadow-md: 0 4px 12px rgb(0 0 0 / 40%);
-  --dan-shadow-lg: 0 12px 32px rgb(0 0 0 / 45%);
+  --dan-color-code-bg: #020617;
+  --dan-color-code-text: #e2e8f0;
+  --dan-color-code-muted: #94a3b8;
+  --dan-color-code-border: rgb(148 163 184 / 16%);
+  --dan-color-code-header: rgb(148 163 184 / 8%);
+
+  --dan-shadow-sm: 0 1px 2px rgb(0 0 0 / 45%);
+  --dan-shadow-md: 0 8px 24px rgb(0 0 0 / 45%);
+  --dan-shadow-lg: 0 16px 40px rgb(0 0 0 / 55%);
 }
 
 /* Minimal reset scoped to dan-ui consumers who import theme */

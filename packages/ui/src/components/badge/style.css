@@ -17,7 +17,7 @@
   padding: 0 5px;
   border: 1px solid var(--dan-color-bg);
   border-radius: var(--dan-radius-full);
-  color: var(--dan-color-text-inverse);
+  color: var(--dan-color-text-on-color);
   font-size: 12px;
   line-height: 1;
   white-space: nowrap;

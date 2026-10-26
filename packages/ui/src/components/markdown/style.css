@@ -26,8 +26,8 @@
   padding: 12px;
   overflow: auto;
   border-radius: var(--dan-radius-md);
-  background: #0b1220;
-  color: #e2e8f0;
+  background: var(--dan-color-code-bg);
+  color: var(--dan-color-code-text);
 }
 
 .dan-markdown :where(pre code) {

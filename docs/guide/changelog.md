@@ -10,3 +10,4 @@
 - 富文本：RichText、EditorToolbar、EditorBubbleMenu（TipTap）
 - 文档：侧栏中英对照、本地搜索、分组折叠；AI / 富文本并入「组件」侧栏
 - 工程：全量 / 按需导出、`DanUIResolver`、质量门禁
+- 主题：完善暗色 Token（elevated / overlay / code / loading），浮层与按钮适配暗黑模式

@@ -21,7 +21,7 @@
   max-height: calc(100vh - 48px);
   overflow: auto;
   border-radius: var(--dan-radius-lg);
-  background: var(--dan-color-bg);
+  background: var(--dan-color-bg-elevated);
   box-shadow: var(--dan-shadow-lg);
 }
 

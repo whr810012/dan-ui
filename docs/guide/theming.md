@@ -57,4 +57,20 @@ import '@dan-ui/ui/style.css'
 
 ## 暗色
 
-一期可用业务侧切换根节点 class / data 属性覆盖 Token。完整暗色预设将在后续版本提供。
+在根节点加上 `dark` class 或 `data-theme="dark"` 即可启用内置暗色 Token（与 VitePress 文档站暗色开关一致）：
+
+```html
+<html class="dark">
+  <!-- 或 -->
+<html data-theme="dark">
+```
+
+暗色预设会覆盖主色、文本、边框、背景、浮层、阴影与代码块色板；浮层组件使用 `--dan-color-bg-elevated`，加载遮罩使用 `--dan-color-loading-mask`。
+
+也可在暗色下继续局部覆盖：
+
+```css
+html.dark {
+  --dan-color-primary: #38bdf8;
+}
+```

@@ -71,61 +71,61 @@
 .dan-button--primary {
   --dan-button-bg: var(--dan-color-primary);
   --dan-button-border: var(--dan-color-primary);
-  --dan-button-text: #fff;
+  --dan-button-text: var(--dan-color-text-on-color);
   --dan-button-hover-bg: var(--dan-color-primary-hover);
   --dan-button-hover-border: var(--dan-color-primary-hover);
-  --dan-button-hover-text: #fff;
+  --dan-button-hover-text: var(--dan-color-text-on-color);
   --dan-button-active-bg: var(--dan-color-primary-active);
   --dan-button-active-border: var(--dan-color-primary-active);
-  --dan-button-active-text: #fff;
+  --dan-button-active-text: var(--dan-color-text-on-color);
 }
 
 .dan-button--success {
   --dan-button-bg: var(--dan-color-success);
   --dan-button-border: var(--dan-color-success);
-  --dan-button-text: #fff;
-  --dan-button-hover-bg: #15803d;
-  --dan-button-hover-border: #15803d;
-  --dan-button-hover-text: #fff;
-  --dan-button-active-bg: #166534;
-  --dan-button-active-border: #166534;
-  --dan-button-active-text: #fff;
+  --dan-button-text: var(--dan-color-text-on-color);
+  --dan-button-hover-bg: var(--dan-color-success-hover);
+  --dan-button-hover-border: var(--dan-color-success-hover);
+  --dan-button-hover-text: var(--dan-color-text-on-color);
+  --dan-button-active-bg: var(--dan-color-success-active);
+  --dan-button-active-border: var(--dan-color-success-active);
+  --dan-button-active-text: var(--dan-color-text-on-color);
 }
 
 .dan-button--warning {
   --dan-button-bg: var(--dan-color-warning);
   --dan-button-border: var(--dan-color-warning);
-  --dan-button-text: #fff;
-  --dan-button-hover-bg: #b45309;
-  --dan-button-hover-border: #b45309;
-  --dan-button-hover-text: #fff;
-  --dan-button-active-bg: #92400e;
-  --dan-button-active-border: #92400e;
-  --dan-button-active-text: #fff;
+  --dan-button-text: var(--dan-color-text-on-color);
+  --dan-button-hover-bg: var(--dan-color-warning-hover);
+  --dan-button-hover-border: var(--dan-color-warning-hover);
+  --dan-button-hover-text: var(--dan-color-text-on-color);
+  --dan-button-active-bg: var(--dan-color-warning-active);
+  --dan-button-active-border: var(--dan-color-warning-active);
+  --dan-button-active-text: var(--dan-color-text-on-color);
 }
 
 .dan-button--danger {
   --dan-button-bg: var(--dan-color-danger);
   --dan-button-border: var(--dan-color-danger);
-  --dan-button-text: #fff;
-  --dan-button-hover-bg: #b91c1c;
-  --dan-button-hover-border: #b91c1c;
-  --dan-button-hover-text: #fff;
-  --dan-button-active-bg: #991b1b;
-  --dan-button-active-border: #991b1b;
-  --dan-button-active-text: #fff;
+  --dan-button-text: var(--dan-color-text-on-color);
+  --dan-button-hover-bg: var(--dan-color-danger-hover);
+  --dan-button-hover-border: var(--dan-color-danger-hover);
+  --dan-button-hover-text: var(--dan-color-text-on-color);
+  --dan-button-active-bg: var(--dan-color-danger-active);
+  --dan-button-active-border: var(--dan-color-danger-active);
+  --dan-button-active-text: var(--dan-color-text-on-color);
 }
 
 .dan-button--info {
   --dan-button-bg: var(--dan-color-info);
   --dan-button-border: var(--dan-color-info);
-  --dan-button-text: #fff;
-  --dan-button-hover-bg: #475569;
-  --dan-button-hover-border: #475569;
-  --dan-button-hover-text: #fff;
-  --dan-button-active-bg: #334155;
-  --dan-button-active-border: #334155;
-  --dan-button-active-text: #fff;
+  --dan-button-text: var(--dan-color-text-on-color);
+  --dan-button-hover-bg: var(--dan-color-info-hover);
+  --dan-button-hover-border: var(--dan-color-info-hover);
+  --dan-button-hover-text: var(--dan-color-text-on-color);
+  --dan-button-active-bg: var(--dan-color-info-active);
+  --dan-button-active-border: var(--dan-color-info-active);
+  --dan-button-active-text: var(--dan-color-text-on-color);
 }
 
 .dan-button.is-plain.dan-button--primary {
@@ -134,7 +134,7 @@
   --dan-button-text: var(--dan-color-primary);
   --dan-button-hover-bg: var(--dan-color-primary);
   --dan-button-hover-border: var(--dan-color-primary);
-  --dan-button-hover-text: #fff;
+  --dan-button-hover-text: var(--dan-color-text-on-color);
 }
 
 .dan-button.is-plain.dan-button--success {
@@ -143,7 +143,7 @@
   --dan-button-text: var(--dan-color-success);
   --dan-button-hover-bg: var(--dan-color-success);
   --dan-button-hover-border: var(--dan-color-success);
-  --dan-button-hover-text: #fff;
+  --dan-button-hover-text: var(--dan-color-text-on-color);
 }
 
 .dan-button.is-plain.dan-button--warning {
@@ -152,7 +152,7 @@
   --dan-button-text: var(--dan-color-warning);
   --dan-button-hover-bg: var(--dan-color-warning);
   --dan-button-hover-border: var(--dan-color-warning);
-  --dan-button-hover-text: #fff;
+  --dan-button-hover-text: var(--dan-color-text-on-color);
 }
 
 .dan-button.is-plain.dan-button--danger {
@@ -161,7 +161,7 @@
   --dan-button-text: var(--dan-color-danger);
   --dan-button-hover-bg: var(--dan-color-danger);
   --dan-button-hover-border: var(--dan-color-danger);
-  --dan-button-hover-text: #fff;
+  --dan-button-hover-text: var(--dan-color-text-on-color);
 }
 
 .dan-button.is-plain.dan-button--info {
@@ -170,7 +170,7 @@
   --dan-button-text: var(--dan-color-info);
   --dan-button-hover-bg: var(--dan-color-info);
   --dan-button-hover-border: var(--dan-color-info);
-  --dan-button-hover-text: #fff;
+  --dan-button-hover-text: var(--dan-color-text-on-color);
 }
 
 .dan-button.is-round {

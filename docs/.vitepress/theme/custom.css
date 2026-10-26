@@ -1,9 +1,34 @@
+:root {
+  --dan-demo-grid: rgb(148 163 184 / 10%);
+}
+
+html.dark {
+  --dan-demo-grid: rgb(148 163 184 / 14%);
+}
+
 .dan-doc-demo + .dan-doc-demo {
   margin-top: 0;
 }
 
 .VPDoc .dan-doc-demo p {
   margin: 0;
+}
+
+/* Keep demo surfaces aligned with dan-ui dark tokens */
+html.dark .dan-doc-demo {
+  border-color: var(--dan-color-border);
+  background: var(--dan-color-bg);
+}
+
+html.dark .dan-doc-demo__meta {
+  background: var(--dan-color-bg-muted);
+  border-color: var(--dan-color-border-light);
+}
+
+html.dark .dan-doc-demo__code {
+  background: var(--dan-color-code-bg);
+  color: var(--dan-color-code-text);
+  border-color: var(--dan-color-border-light);
 }
 
 /* —— Home —— */

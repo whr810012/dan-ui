@@ -20,7 +20,7 @@
   min-width: 180px;
   padding: 10px 14px;
   border-radius: var(--dan-radius-md);
-  background: var(--dan-color-bg);
+  background: var(--dan-color-bg-elevated);
   box-shadow: var(--dan-shadow-md);
   color: var(--dan-color-text);
   font-size: var(--dan-font-size-md);

@@ -67,32 +67,32 @@
 
 .dan-tag--default.dan-tag--dark {
   background: var(--dan-color-text-secondary);
-  color: var(--dan-color-text-inverse);
+  color: var(--dan-color-text-on-color);
 }
 
 .dan-tag--primary.dan-tag--dark {
   background: var(--dan-color-primary);
-  color: var(--dan-color-text-inverse);
+  color: var(--dan-color-text-on-color);
 }
 
 .dan-tag--success.dan-tag--dark {
   background: var(--dan-color-success);
-  color: var(--dan-color-text-inverse);
+  color: var(--dan-color-text-on-color);
 }
 
 .dan-tag--warning.dan-tag--dark {
   background: var(--dan-color-warning);
-  color: var(--dan-color-text-inverse);
+  color: var(--dan-color-text-on-color);
 }
 
 .dan-tag--danger.dan-tag--dark {
   background: var(--dan-color-danger);
-  color: var(--dan-color-text-inverse);
+  color: var(--dan-color-text-on-color);
 }
 
 .dan-tag--info.dan-tag--dark {
   background: var(--dan-color-info);
-  color: var(--dan-color-text-inverse);
+  color: var(--dan-color-text-on-color);
 }
 
 .dan-tag--default.dan-tag--plain {

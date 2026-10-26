@@ -47,8 +47,8 @@
   padding: 0;
   border: 0;
   border-radius: var(--dan-radius-full);
-  background: rgb(15 23 42 / 45%);
-  color: #fff;
+  background: var(--dan-color-overlay-soft);
+  color: var(--dan-color-on-overlay);
   cursor: pointer;
   transform: translateY(-50%);
   opacity: 0;
@@ -70,7 +70,7 @@
 }
 
 .dan-carousel__arrow:hover {
-  background: rgb(15 23 42 / 65%);
+  background: var(--dan-color-overlay-strong);
 }
 
 .dan-carousel__indicators {
@@ -95,11 +95,12 @@
   padding: 0;
   border: 0;
   border-radius: var(--dan-radius-full);
-  background: rgb(255 255 255 / 45%);
+  background: rgb(255 255 255 / 40%);
+  box-shadow: 0 0 0 1px rgb(15 23 42 / 25%);
   cursor: pointer;
 }
 
 .dan-carousel__indicator.is-active button {
   width: 18px;
-  background: #fff;
+  background: var(--dan-color-constant-white);
 }

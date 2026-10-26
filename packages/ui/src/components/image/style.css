@@ -63,7 +63,7 @@
   padding: 0;
   border: 0;
   border-radius: var(--dan-radius-full);
-  background: rgb(15 23 42 / 55%);
-  color: #fff;
+  background: var(--dan-color-overlay-strong);
+  color: var(--dan-color-on-overlay);
   cursor: pointer;
 }

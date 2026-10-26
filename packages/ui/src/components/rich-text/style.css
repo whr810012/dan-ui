@@ -62,8 +62,8 @@
   padding: 10px 12px;
   overflow: auto;
   border-radius: var(--dan-radius-sm);
-  background: #0b1220;
-  color: #e2e8f0;
+  background: var(--dan-color-code-bg);
+  color: var(--dan-color-code-text);
 }
 
 .dan-rich-text__content .tiptap img {
