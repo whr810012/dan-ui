@@ -44,6 +44,7 @@ const componentsSidebar = [
       { text: 'Image', link: '/components/image' },
       { text: 'Card', link: '/components/card' },
       { text: 'Carousel', link: '/components/carousel' },
+      { text: 'Table', link: '/components/table' },
     ],
   },
   {

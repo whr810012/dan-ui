@@ -1,0 +1,63 @@
+import { mount } from '@vue/test-utils'
+import { describe, expect, it } from 'vitest'
+import { nextTick } from 'vue'
+import { DanTable } from '../index'
+import type { TableColumn } from '../types'
+
+const columns: TableColumn[] = [
+  { prop: 'name', label: '姓名', filterable: true },
+  {
+    prop: 'role',
+    label: '角色',
+    filterable: {
+      type: 'select',
+      options: [
+        { label: '管理', value: 'admin' },
+        { label: '成员', value: 'member' },
+      ],
+    },
+  },
+  { prop: 'age', label: '年龄', sortable: true },
+]
+
+const data = [
+  { id: 1, name: '张三', role: 'admin', age: 28 },
+  { id: 2, name: '李四', role: 'member', age: 22 },
+  { id: 3, name: '王五', role: 'member', age: 31 },
+]
+
+describe('DanTable', () => {
+  it('renders rows and shows empty state', async () => {
+    const wrapper = mount(DanTable, {
+      props: { columns, data, border: true },
+    })
+    expect(wrapper.findAll('tbody tr')).toHaveLength(3)
+    expect(wrapper.text()).toContain('张三')
+
+    await wrapper.setProps({ data: [] })
+    expect(wrapper.find('.dan-empty').exists()).toBe(true)
+  })
+
+  it('filters rows locally by text', async () => {
+    const wrapper = mount(DanTable, {
+      props: { columns, data, filters: { name: '李' } },
+    })
+    await nextTick()
+    expect(wrapper.findAll('tbody tr')).toHaveLength(1)
+    expect(wrapper.text()).toContain('李四')
+  })
+
+  it('hides columns via visibleColumns', async () => {
+    const wrapper = mount(DanTable, {
+      props: {
+        columns,
+        data,
+        visibleColumns: ['name', 'age'],
+      },
+    })
+    await nextTick()
+    expect(wrapper.findAll('thead th')).toHaveLength(2)
+    expect(wrapper.text()).not.toContain('角色')
+    expect(wrapper.text()).toContain('姓名')
+  })
+})

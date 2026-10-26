@@ -99,6 +99,19 @@ export type { DanImageInstance } from './image'
 export { DanCard } from './card'
 export type { DanCardInstance } from './card'
 
+export { DanTable } from './table'
+export type {
+  DanTableInstance,
+  TableAlign,
+  TableColumn,
+  TableColumnFilter,
+  TableFilterOption,
+  TableFilters,
+  TableRow,
+  TableSortOrder,
+  TableSortState,
+} from './table'
+
 export { DanCarousel, DanCarouselItem } from './carousel'
 export type { DanCarouselInstance, DanCarouselItemInstance } from './carousel'
 
