@@ -47,7 +47,9 @@ describe('DanDropdown', () => {
     const items = popper.querySelectorAll('.dan-dropdown-item')
     await items[0].dispatchEvent(new MouseEvent('click', { bubbles: true }))
     await nextTick()
-    expect((wrapper.vm as { commands: string[] }).commands).toContain('edit')
+    expect(
+      (wrapper.vm as unknown as { commands: string[] }).commands,
+    ).toContain('edit')
     expect(popper.style.display).toBe('none')
 
     wrapper.unmount()
