@@ -70,8 +70,8 @@ function updatePosition() {
     props.offset,
   )
   popperStyle.value = {
-    top: `${Math.max(0, point.top)}px`,
-    left: `${Math.max(0, point.left)}px`,
+    top: `${point.top}px`,
+    left: `${point.left}px`,
   }
 }
 
@@ -106,9 +106,8 @@ function toggle() {
   else void open()
 }
 
-function onTriggerClick(event: MouseEvent) {
+function onTriggerClick() {
   if (props.trigger !== 'click') return
-  event.preventDefault()
   toggle()
 }
 

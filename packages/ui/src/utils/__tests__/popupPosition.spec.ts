@@ -27,4 +27,23 @@ describe('calcPopupPosition', () => {
     expect(point.top).toBe(148)
     expect(point.left).toBe(110)
   })
+
+  it('clamps into viewport near edges', () => {
+    const edge = {
+      top: 2,
+      left: 2,
+      bottom: 22,
+      right: 42,
+      width: 40,
+      height: 20,
+      x: 2,
+      y: 2,
+      toJSON() {
+        return this
+      },
+    } as DOMRect
+    const point = calcPopupPosition(edge, 80, 40, 'top', 8, 4)
+    expect(point.top).toBe(4)
+    expect(point.left).toBe(4)
+  })
 })

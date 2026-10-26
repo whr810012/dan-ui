@@ -2,7 +2,7 @@
 
 ## 0.0.1
 
-- 基础：ConfigProvider、Button、Icon、Space、Divider、`@dan-ui/theme`
+- 基础：ConfigProvider、Button、Icon、Space、Divider、Layout、Row/Col、`@dan-ui/theme`
 - 表单：Input、Textarea、Checkbox、Radio、Switch、Select、Form
 - 展示：Tag、Badge、Avatar、Alert、Empty、Progress、Skeleton、Statistic、Result、Descriptions、Timeline、Collapse、Image、Card、Carousel
 - 反馈：Loading、Message、Dialog、Tooltip、Popover、Dropdown

@@ -10,6 +10,8 @@ const componentsSidebar = [
       { text: 'Icon', link: '/components/icon' },
       { text: 'Space', link: '/components/space' },
       { text: 'Divider', link: '/components/divider' },
+      { text: 'Layout', link: '/components/layout' },
+      { text: 'Grid', link: '/components/grid' },
     ],
   },
   {

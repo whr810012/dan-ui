@@ -39,6 +39,21 @@ export type { DanSpaceInstance } from './space'
 export { DanDivider } from './divider'
 export type { DanDividerInstance } from './divider'
 
+export { DanLayout, DanHeader, DanAside, DanMain, DanFooter } from './layout'
+export type {
+  DanLayoutInstance,
+  DanHeaderInstance,
+  DanAsideInstance,
+  DanMainInstance,
+  DanFooterInstance,
+} from './layout'
+
+export { DanRow } from './row'
+export type { DanRowInstance } from './row'
+
+export { DanCol } from './col'
+export type { DanColInstance } from './col'
+
 export { DanTag } from './tag'
 export type { DanTagInstance } from './tag'
 
