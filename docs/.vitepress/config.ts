@@ -50,6 +50,9 @@ const componentsSidebar = [
       { text: 'Loading', link: '/components/loading' },
       { text: 'Message', link: '/components/message' },
       { text: 'Dialog', link: '/components/dialog' },
+      { text: 'Tooltip', link: '/components/tooltip' },
+      { text: 'Popover', link: '/components/popover' },
+      { text: 'Dropdown', link: '/components/dropdown' },
     ],
   },
   {

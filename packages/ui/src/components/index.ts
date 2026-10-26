@@ -96,6 +96,19 @@ export type { MessageOptions, MessageType, MessageHandler } from './message'
 export { DanDialog } from './dialog'
 export type { DanDialogInstance } from './dialog'
 
+export { DanTooltip } from './tooltip'
+export type { DanTooltipInstance } from './tooltip'
+
+export { DanDropdown, DanDropdownMenu, DanDropdownItem } from './dropdown'
+export type {
+  DanDropdownInstance,
+  DanDropdownMenuInstance,
+  DanDropdownItemInstance,
+} from './dropdown'
+
+export { DanPopover } from './popover'
+export type { DanPopoverInstance } from './popover'
+
 export { DanChat } from './chat'
 export type { DanChatInstance } from './chat'
 

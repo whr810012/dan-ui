@@ -1,0 +1,27 @@
+.dan-popover {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.dan-popover__popper {
+  position: fixed;
+  z-index: var(--dan-z-index-dropdown);
+  padding: 12px;
+  color: var(--dan-color-text);
+  font-size: var(--dan-font-size-md, 14px);
+  line-height: 1.5;
+  background: var(--dan-color-bg);
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md, 6px);
+  box-shadow: var(--dan-shadow-md, 0 4px 12px rgb(0 0 0 / 12%));
+}
+
+.dan-popover__title {
+  margin-bottom: 8px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.dan-popover__body {
+  color: var(--dan-color-text-secondary, var(--dan-color-text));
+}

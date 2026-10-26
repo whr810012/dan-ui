@@ -1,0 +1,19 @@
+.dan-tooltip {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.dan-tooltip__popper {
+  position: fixed;
+  z-index: var(--dan-z-index-dropdown);
+  max-width: 280px;
+  padding: 6px 10px;
+  color: var(--dan-color-text-inverse);
+  font-size: var(--dan-font-size-sm, 12px);
+  line-height: 1.5;
+  word-break: break-word;
+  background: var(--dan-color-text);
+  border-radius: var(--dan-radius-sm, 4px);
+  box-shadow: var(--dan-shadow-md, 0 4px 12px rgb(0 0 0 / 12%));
+  pointer-events: auto;
+}
