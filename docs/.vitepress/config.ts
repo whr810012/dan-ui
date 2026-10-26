@@ -5,6 +5,11 @@ export default defineConfig({
   title: 'dan-ui',
   description: 'Vue 3 通用基础 UI 组件库',
   lang: 'zh-CN',
+  srcExclude: [
+    '**/plans/**',
+    'DOC_PLAN.md',
+    'components-roadmap.md',
+  ],
   themeConfig: {
     logo: undefined,
     nav: [
@@ -17,7 +22,13 @@ export default defineConfig({
       '/guide/': [
         {
           text: '指南',
-          items: [{ text: '介绍', link: '/guide/introduction' }],
+          items: [
+            { text: '介绍', link: '/guide/introduction' },
+            { text: '快速开始', link: '/guide/quickstart' },
+            { text: '引入方式', link: '/guide/import' },
+            { text: '主题定制', link: '/guide/theming' },
+            { text: 'Changelog', link: '/guide/changelog' },
+          ],
         },
       ],
       '/components/': [

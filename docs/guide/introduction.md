@@ -44,3 +44,9 @@ pnpm build
 pnpm dev:docs
 pnpm dev:play
 ```
+
+## 文档导航
+
+- [快速开始](/guide/quickstart)
+- [引入方式](/guide/import)
+- [主题定制](/guide/theming)

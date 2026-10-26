@@ -6,8 +6,8 @@ hero:
   tagline: 表单基础 · AI 对话界面 · 富文本编辑
   actions:
     - theme: brand
-      text: 了解介绍
-      link: /guide/introduction
+      text: 快速开始
+      link: /guide/quickstart
     - theme: alt
       text: 查看组件
       link: /components/button
