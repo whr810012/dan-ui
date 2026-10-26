@@ -4,9 +4,10 @@ import { DanAvatar, DanSpace } from '@dan-ui/ui'
 
 <template>
   <DanSpace>
-    <DanAvatar>D</DanAvatar>
+    <DanAvatar src="/images/starburst.png" alt="星空" />
+    <DanAvatar src="/images/blackhole.png" alt="黑洞" size="large" />
+    <DanAvatar src="/images/wall-sunset.png" alt="日落" shape="square" />
     <DanAvatar size="small">S</DanAvatar>
-    <DanAvatar size="large">L</DanAvatar>
-    <DanAvatar shape="square">方</DanAvatar>
+    <DanAvatar>D</DanAvatar>
   </DanSpace>
 </template>

@@ -1,13 +1,27 @@
 ﻿<script setup>
 import { DanImage, DanSpace } from '@dan-ui/ui'
 </script>
+
 <template>
-  <DanSpace>
+  <DanSpace wrap>
     <DanImage
-      src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=240&h=160&fit=crop"
-      style="width: 160px; height: 100px; border-radius: 8px"
+      src="/images/wall-sunset.png"
+      alt="城墙日落"
+      style="width: 180px; height: 112px; border-radius: 8px"
       preview
     />
-    <DanImage src="" style="width: 160px; height: 100px; border-radius: 8px" />
+    <DanImage
+      src="/images/city-rainbow.png"
+      alt="城市彩虹"
+      style="width: 180px; height: 112px; border-radius: 8px"
+      preview
+    />
+    <DanImage
+      src="/images/blackhole.png"
+      alt="黑洞"
+      style="width: 180px; height: 112px; border-radius: 8px"
+      preview
+    />
+    <DanImage src="" style="width: 180px; height: 112px; border-radius: 8px" />
   </DanSpace>
 </template>
