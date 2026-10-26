@@ -1,20 +1,34 @@
+/* dan-ui design tokens */
+
 :root {
-  /* Color */
+  /* Brand / status */
   --dan-color-primary: #2563eb;
   --dan-color-primary-hover: #1d4ed8;
   --dan-color-primary-active: #1e40af;
+  --dan-color-primary-light: #dbeafe;
   --dan-color-success: #16a34a;
+  --dan-color-success-light: #dcfce7;
   --dan-color-warning: #d97706;
+  --dan-color-warning-light: #fef3c7;
   --dan-color-danger: #dc2626;
+  --dan-color-danger-light: #fee2e2;
   --dan-color-info: #64748b;
+  --dan-color-info-light: #f1f5f9;
 
+  /* Text / surface */
   --dan-color-text: #0f172a;
   --dan-color-text-secondary: #475569;
   --dan-color-text-placeholder: #94a3b8;
+  --dan-color-text-disabled: #cbd5e1;
+  --dan-color-text-inverse: #ffffff;
   --dan-color-border: #e2e8f0;
+  --dan-color-border-light: #f1f5f9;
   --dan-color-bg: #ffffff;
   --dan-color-bg-muted: #f8fafc;
+  --dan-color-bg-overlay: rgb(15 23 42 / 45%);
   --dan-color-fill: #f1f5f9;
+  --dan-color-fill-hover: #e2e8f0;
+  --dan-color-mask: rgb(15 23 42 / 55%);
 
   /* Typography */
   --dan-font-size-xs: 12px;
@@ -22,8 +36,15 @@
   --dan-font-size-md: 14px;
   --dan-font-size-lg: 16px;
   --dan-font-size-xl: 18px;
-  --dan-font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --dan-font-family:
+    'Segoe UI', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei',
+    sans-serif;
+  --dan-font-family-mono:
+    ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
   --dan-line-height: 1.5;
+  --dan-font-weight-regular: 400;
+  --dan-font-weight-medium: 500;
+  --dan-font-weight-semibold: 600;
 
   /* Spacing */
   --dan-spacing-xs: 4px;
@@ -31,11 +52,14 @@
   --dan-spacing-md: 12px;
   --dan-spacing-lg: 16px;
   --dan-spacing-xl: 24px;
+  --dan-spacing-2xl: 32px;
 
   /* Radius */
   --dan-radius-sm: 4px;
   --dan-radius-md: 6px;
   --dan-radius-lg: 8px;
+  --dan-radius-xl: 12px;
+  --dan-radius-full: 9999px;
 
   /* Shadow */
   --dan-shadow-sm: 0 1px 2px rgb(15 23 42 / 6%);
@@ -48,8 +72,60 @@
   --dan-duration-slow: 320ms;
   --dan-ease: cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Control sizes */
+  /* Control */
   --dan-control-height-sm: 28px;
   --dan-control-height-md: 32px;
   --dan-control-height-lg: 40px;
+  --dan-z-index-affix: 100;
+  --dan-z-index-dropdown: 1000;
+  --dan-z-index-modal: 2000;
+  --dan-z-index-message: 3000;
+}
+
+html.dark,
+[data-theme='dark'] {
+  --dan-color-primary: #3b82f6;
+  --dan-color-primary-hover: #60a5fa;
+  --dan-color-primary-active: #2563eb;
+  --dan-color-primary-light: rgb(37 99 235 / 24%);
+  --dan-color-success: #22c55e;
+  --dan-color-success-light: rgb(34 197 94 / 18%);
+  --dan-color-warning: #f59e0b;
+  --dan-color-warning-light: rgb(245 158 11 / 18%);
+  --dan-color-danger: #f87171;
+  --dan-color-danger-light: rgb(248 113 113 / 18%);
+  --dan-color-info: #94a3b8;
+  --dan-color-info-light: rgb(148 163 184 / 16%);
+
+  --dan-color-text: #f8fafc;
+  --dan-color-text-secondary: #cbd5e1;
+  --dan-color-text-placeholder: #64748b;
+  --dan-color-text-disabled: #475569;
+  --dan-color-text-inverse: #0f172a;
+  --dan-color-border: #334155;
+  --dan-color-border-light: #1e293b;
+  --dan-color-bg: #0f172a;
+  --dan-color-bg-muted: #111827;
+  --dan-color-bg-overlay: rgb(2 6 23 / 65%);
+  --dan-color-fill: #1e293b;
+  --dan-color-fill-hover: #334155;
+  --dan-color-mask: rgb(2 6 23 / 70%);
+
+  --dan-shadow-sm: 0 1px 2px rgb(0 0 0 / 35%);
+  --dan-shadow-md: 0 4px 12px rgb(0 0 0 / 40%);
+  --dan-shadow-lg: 0 12px 32px rgb(0 0 0 / 45%);
+}
+
+/* Minimal reset scoped to dan-ui consumers who import theme */
+.dan-reset,
+.dan-reset * {
+  box-sizing: border-box;
+}
+
+.dan-reset {
+  font-family: var(--dan-font-family);
+  font-size: var(--dan-font-size-md);
+  line-height: var(--dan-line-height);
+  color: var(--dan-color-text);
+  background-color: var(--dan-color-bg);
 }

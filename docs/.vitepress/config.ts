@@ -9,7 +9,7 @@ export default defineConfig({
     logo: undefined,
     nav: [
       { text: '指南', link: '/guide/introduction' },
-      { text: '计划', link: '/plans/2026-10-26-dan-ui-design' },
+      { text: '组件', link: '/components/button' },
     ],
     sidebar: {
       '/guide/': [
@@ -18,16 +18,10 @@ export default defineConfig({
           items: [{ text: '介绍', link: '/guide/introduction' }],
         },
       ],
-      '/plans/': [
+      '/components/': [
         {
-          text: '内部计划',
-          items: [
-            { text: '设计纪要', link: '/plans/2026-10-26-dan-ui-design' },
-            {
-              text: '实施计划',
-              link: '/plans/2026-10-26-dan-ui-implementation',
-            },
-          ],
+          text: '基础组件',
+          items: [{ text: 'Button', link: '/components/button' }],
         },
       ],
     },

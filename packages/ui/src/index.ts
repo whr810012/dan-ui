@@ -1,13 +1,60 @@
 import type { App, Plugin } from 'vue'
+import * as components from './components'
 
-export { withInstall } from './utils/withInstall'
-export type { SFCWithInstall } from './utils/withInstall'
-export { useNamespace } from './hooks/useNamespace'
+export * from './components'
+
+export { withInstall, withInstallFunction } from './utils/withInstall'
+export type {
+  SFCWithInstall,
+  SFCInstallWithContext,
+} from './utils/withInstall'
+export { createContext } from './utils/createContext'
+export type { CreateContextReturn } from './utils/createContext'
+
+export { useNamespace, defaultNamespace } from './hooks/useNamespace'
 export type { UseNamespaceReturn } from './hooks/useNamespace'
 
+export {
+  provideConfig,
+  injectConfig,
+  configProviderContextKey,
+} from './hooks/useConfig'
+export type { ConfigProviderContext, DanSize } from './hooks/useConfig'
+
+export {
+  provideForm,
+  injectForm,
+  formContextKey,
+  provideFormItem,
+  injectFormItem,
+  formItemContextKey,
+} from './hooks/useFormContext'
+export type { FormContext, FormItemContext } from './hooks/useFormContext'
+
+export {
+  provideChat,
+  injectChat,
+  chatContextKey,
+} from './hooks/useChatContext'
+export type {
+  ChatContext,
+  ChatMessageModel,
+  ChatMessageStatus,
+  ChatRole,
+} from './hooks/useChatContext'
+
 const DanUI: Plugin = {
-  install(_app: App) {
-    // Components will be registered in later tasks.
+  install(app: App) {
+    for (const component of Object.values(components)) {
+      if (
+        component &&
+        typeof component === 'object' &&
+        'install' in component &&
+        typeof (component as Plugin).install === 'function'
+      ) {
+        app.use(component as Plugin)
+      }
+    }
   },
 }
 

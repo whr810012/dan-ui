@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useNamespace } from '@dan-ui/ui'
+import { DanButton, useNamespace } from '@dan-ui/ui'
 
 const ns = useNamespace('playground')
 </script>
@@ -7,7 +7,8 @@ const ns = useNamespace('playground')
 <template>
   <main :class="ns.b()">
     <h1>dan-ui playground ready</h1>
-    <p>Monorepo scaffold is working. Theme CSS and @dan-ui/ui are linked.</p>
+    <p>Theme tokens + utils ready. Button stub from <code>pnpm gen</code>:</p>
+    <DanButton>DanButton</DanButton>
   </main>
 </template>
 

@@ -43,7 +43,15 @@ export function useNamespace(block: string, namespace = defaultNamespace) {
       ? _bem(namespace, block, blockSuffix, element, modifier)
       : ''
   const is = (name: string, state?: boolean | undefined) =>
-    name && state ? `is-${name}` : ''
+    name && state !== false && state !== undefined && state !== null
+      ? `is-${name}`
+      : ''
+
+  /** CSS variable name: `--dan-color-primary` */
+  const cssVar = (name: string) => `--${namespace}-${name}`
+  /** CSS variable usage: `var(--dan-color-primary)` */
+  const cssVarBlock = (name: string) => `var(--${namespace}-${block}-${name})`
+  const cssVarName = (name: string) => `var(--${namespace}-${name})`
 
   return {
     namespace,
@@ -55,5 +63,10 @@ export function useNamespace(block: string, namespace = defaultNamespace) {
     bm,
     bem,
     is,
+    cssVar,
+    cssVarBlock,
+    cssVarName,
   }
 }
+
+export { defaultNamespace }

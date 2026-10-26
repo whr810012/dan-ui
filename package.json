@@ -11,7 +11,8 @@
     "build:ui": "pnpm --filter @dan-ui/ui build",
     "docs:build": "pnpm --filter @dan-ui/docs build",
     "test": "pnpm --filter @dan-ui/ui test",
-    "lint": "echo \"lint: not configured yet\""
+    "lint": "echo \"lint: not configured yet\"",
+    "gen": "node ./scripts/gen-component.mjs"
   },
   "engines": {
     "node": ">=18.0.0",
