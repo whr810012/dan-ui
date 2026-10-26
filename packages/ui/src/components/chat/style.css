@@ -1,0 +1,29 @@
+.dan-chat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dan-spacing-md);
+  min-height: 320px;
+}
+
+.dan-chat__list {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--dan-spacing-md);
+  padding: var(--dan-spacing-md);
+  overflow: auto;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-lg);
+  background: var(--dan-color-bg-muted);
+}
+
+.dan-chat__empty {
+  margin: auto;
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+}
+
+.dan-chat__footer {
+  display: grid;
+  gap: var(--dan-spacing-sm);
+}

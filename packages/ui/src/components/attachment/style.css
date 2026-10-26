@@ -1,0 +1,37 @@
+.dan-attachment {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--dan-spacing-sm);
+  max-width: 240px;
+  padding: 6px 10px;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+  font-size: var(--dan-font-size-sm);
+}
+
+.dan-attachment__meta {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.dan-attachment__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dan-attachment__size {
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-xs);
+}
+
+.dan-attachment__remove {
+  border: 0;
+  background: transparent;
+  color: var(--dan-color-text-secondary);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+}

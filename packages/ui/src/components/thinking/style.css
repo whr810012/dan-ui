@@ -1,0 +1,26 @@
+.dan-thinking {
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg-muted);
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+}
+
+.dan-thinking__trigger {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+.dan-thinking__body {
+  padding: 0 12px 12px;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}

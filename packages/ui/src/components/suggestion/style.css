@@ -1,0 +1,24 @@
+.dan-suggestion {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--dan-spacing-sm);
+}
+
+.dan-suggestion__item {
+  padding: 6px 12px;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-full);
+  background: var(--dan-color-bg);
+  color: var(--dan-color-text);
+  cursor: pointer;
+  font-size: var(--dan-font-size-sm);
+  transition:
+    border-color var(--dan-duration-fast) var(--dan-ease),
+    background-color var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-suggestion__item:hover {
+  border-color: var(--dan-color-primary);
+  background: var(--dan-color-primary-light);
+  color: var(--dan-color-primary);
+}

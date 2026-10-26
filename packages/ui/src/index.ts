@@ -44,12 +44,13 @@ export {
   injectChat,
   chatContextKey,
 } from './hooks/useChatContext'
+export type { ChatContext } from './hooks/useChatContext'
 export type {
-  ChatContext,
   ChatMessageModel,
   ChatMessageStatus,
   ChatRole,
-} from './hooks/useChatContext'
+  ChatAttachment,
+} from './types/chat'
 
 const DanUI: Plugin = {
   install(app: App) {

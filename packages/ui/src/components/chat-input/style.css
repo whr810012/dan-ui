@@ -1,0 +1,15 @@
+.dan-chat-input {
+  display: grid;
+  gap: var(--dan-spacing-sm);
+  padding: var(--dan-spacing-md);
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-lg);
+  background: var(--dan-color-bg);
+}
+
+.dan-chat-input__actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--dan-spacing-sm);
+}

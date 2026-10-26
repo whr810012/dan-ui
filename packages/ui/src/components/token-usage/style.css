@@ -1,0 +1,11 @@
+.dan-token-usage {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-xs);
+}
+
+.dan-token-usage__sep {
+  opacity: 0.6;
+}

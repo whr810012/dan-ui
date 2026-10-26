@@ -10,6 +10,7 @@ export default defineConfig({
     nav: [
       { text: '指南', link: '/guide/introduction' },
       { text: '组件', link: '/components/button' },
+      { text: 'AI', link: '/ai/overview' },
     ],
     sidebar: {
       '/guide/': [
@@ -37,6 +38,27 @@ export default defineConfig({
             { text: 'Switch', link: '/components/switch' },
             { text: 'Select', link: '/components/select' },
             { text: 'Form', link: '/components/form' },
+          ],
+        },
+      ],
+      '/ai/': [
+        {
+          text: 'AI 组件',
+          items: [
+            { text: '概览', link: '/ai/overview' },
+            { text: 'Chat', link: '/ai/chat' },
+            { text: 'ChatMessage', link: '/ai/chat-message' },
+            { text: 'ChatInput', link: '/ai/chat-input' },
+            { text: 'Markdown', link: '/ai/markdown' },
+            { text: 'StreamText', link: '/ai/stream-text' },
+            { text: 'CodeBlock', link: '/ai/code-block' },
+            { text: 'Thinking', link: '/ai/thinking' },
+            { text: 'Suggestion', link: '/ai/suggestion' },
+            { text: 'GenerationControl', link: '/ai/generation-control' },
+            { text: 'ModelSelect', link: '/ai/model-select' },
+            { text: 'TokenUsage', link: '/ai/token-usage' },
+            { text: 'Attachment', link: '/ai/attachment' },
+            { text: 'Prompt', link: '/ai/prompt' },
           ],
         },
       ],

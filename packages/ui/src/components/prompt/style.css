@@ -1,0 +1,29 @@
+.dan-prompt {
+  display: block;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-lg);
+  background: var(--dan-color-bg);
+  color: var(--dan-color-text);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color var(--dan-duration-fast) var(--dan-ease),
+    box-shadow var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-prompt:hover {
+  border-color: var(--dan-color-primary);
+  box-shadow: var(--dan-shadow-sm);
+}
+
+.dan-prompt__title {
+  font-weight: var(--dan-font-weight-medium);
+}
+
+.dan-prompt__desc {
+  margin-top: 4px;
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+}

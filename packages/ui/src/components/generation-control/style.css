@@ -1,0 +1,5 @@
+.dan-generation-control {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--dan-spacing-sm);
+}
