@@ -109,4 +109,28 @@ describe('DanTable', () => {
     expect(wrapper.findAll('tbody tr')).toHaveLength(2)
     expect(wrapper.text()).toContain('研发')
   })
+
+  it('virtually renders a window of rows', async () => {
+    const many = Array.from({ length: 200 }, (_, i) => ({
+      id: i + 1,
+      name: `行${i + 1}`,
+    }))
+    const wrapper = mount(DanTable, {
+      props: {
+        columns: [{ prop: 'name', label: '名称' }],
+        data: many,
+        virtual: true,
+        height: 240,
+        rowHeight: 40,
+        virtualBuffer: 2,
+      },
+    })
+    await nextTick()
+    const bodyRows = wrapper
+      .findAll('tbody tr')
+      .filter((row) => !row.classes().includes('dan-table__virtual-pad'))
+    expect(bodyRows.length).toBeLessThan(40)
+    expect(bodyRows.length).toBeGreaterThan(5)
+    expect(wrapper.text()).toContain('行1')
+  })
 })

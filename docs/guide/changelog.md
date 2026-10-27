@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Table：支持多级表头（`columns[].children`）、树形数据（`tree` / `expandRowKeys`）
+- Table：支持多级表头（`columns[].children`）、树形数据（`tree` / `expandRowKeys`）、虚拟滚动（`virtual`）
 - 无障碍：Select / Dropdown 支持方向键与 Enter；MessageBox 焦点陷阱与 `aria-labelledby`；Notification `aria-live`
 - 主题：暗色 placeholder / disabled 文本加深；Table 表头强制使用 muted Token，避免被文档站全局 `th` 样式覆盖
 

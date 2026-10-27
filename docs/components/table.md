@@ -3,14 +3,16 @@ import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/table/basic.vue'
 import MultiHeader from './demos/table/multi-header.vue'
 import TreeDemo from './demos/table/tree.vue'
+import VirtualDemo from './demos/table/virtual.vue'
 import basicSrc from './demos/table/basic.vue?raw'
 import multiHeaderSrc from './demos/table/multi-header.vue?raw'
 import treeSrc from './demos/table/tree.vue?raw'
+import virtualSrc from './demos/table/virtual.vue?raw'
 </script>
 
 # Table 表格
 
-基础数据表格，支持**列筛选**、**列显示/隐藏**、**多级表头**与**树形数据**。
+基础数据表格，支持**列筛选**、**列显示/隐藏**、**多级表头**、**树形数据**与**虚拟滚动**。
 
 ## 基础用法
 
@@ -36,6 +38,14 @@ import treeSrc from './demos/table/tree.vue?raw'
   <TreeDemo />
 </DemoBlock>
 
+## 虚拟滚动
+
+大数据量时开启 `virtual`，需提供容器 `height` 与定高 `rowHeight`（不支持动态行高）。
+
+<DemoBlock :source="virtualSrc">
+  <VirtualDemo />
+</DemoBlock>
+
 ## Props
 
 | 属性 | 说明 | 类型 | 默认值 |
@@ -55,6 +65,10 @@ import treeSrc from './demos/table/tree.vue?raw'
 | defaultExpandAll | 默认展开全部 | `boolean` | `false` |
 | expandRowKeys | 受控展开行 key | `(string \| number)[]` | — |
 | indent | 树节点每级缩进（px） | `number` | `16` |
+| virtual | 启用虚拟滚动 | `boolean` | `false` |
+| height | 虚拟滚动容器高度 | `number \| string` | `400` |
+| rowHeight | 虚拟行高（px） | `number` | `48` |
+| virtualBuffer | 视口外缓冲行数 | `number` | `5` |
 
 ## TableColumn
 

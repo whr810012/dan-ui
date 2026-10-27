@@ -57,6 +57,14 @@ const props = withDefaults(
     expandRowKeys?: Array<string | number>
     /** 每级缩进（px） */
     indent?: number
+    /** 启用虚拟滚动（定高行） */
+    virtual?: boolean
+    /** 虚拟滚动容器高度 */
+    height?: number | string
+    /** 虚拟行高（px） */
+    rowHeight?: number
+    /** 视口外缓冲行数 */
+    virtualBuffer?: number
   }>(),
   {
     data: () => [],
@@ -74,6 +82,10 @@ const props = withDefaults(
     defaultExpandAll: false,
     expandRowKeys: undefined,
     indent: 16,
+    virtual: false,
+    height: 400,
+    rowHeight: 48,
+    virtualBuffer: 5,
   },
 )
 
@@ -93,6 +105,7 @@ const innerFilters = ref<TableFilters>({})
 const innerVisible = ref<string[]>([])
 const innerExpandKeys = ref<Array<string | number>>([])
 const sortState = ref<TableSortState>({ prop: null, order: null })
+const scrollTop = ref(0)
 
 const isFiltersControlled = computed(() => props.filters !== undefined)
 const isVisibleControlled = computed(() => props.visibleColumns !== undefined)
@@ -329,16 +342,6 @@ const processedTree = computed(() => {
     : [...rows].sort(compareRows)
 })
 
-const filteredData = computed(() => {
-  if (!props.tree) return processedTree.value
-  return flattenTreeRows(
-    processedTree.value,
-    props.treeChildren,
-    expandedKeySet.value,
-    resolveTreeKey,
-  ).map((item) => item.row)
-})
-
 const displayRows = computed(() => {
   if (!props.tree) {
     return processedTree.value.map((row, index) => ({
@@ -361,6 +364,51 @@ const treeColumnProp = computed(() => displayColumns.value[0]?.prop)
 
 const isEmpty = computed(() => displayRows.value.length === 0)
 
+const viewportHeight = computed(() => {
+  if (typeof props.height === 'number') return props.height
+  const parsed = Number.parseInt(String(props.height), 10)
+  return Number.isFinite(parsed) ? parsed : 400
+})
+
+const wrapperStyle = computed(() => {
+  if (!props.virtual) return undefined
+  const h =
+    typeof props.height === 'number'
+      ? `${props.height}px`
+      : String(props.height)
+  return { maxHeight: h, height: h }
+})
+
+const virtualState = computed(() => {
+  if (!props.virtual) {
+    return {
+      enabled: false,
+      rows: displayRows.value,
+      topPad: 0,
+      bottomPad: 0,
+      colSpan: displayColumns.value.length || 1,
+    }
+  }
+  const total = displayRows.value.length
+  const rh = props.rowHeight
+  const buffer = props.virtualBuffer
+  const visibleCount = Math.ceil(viewportHeight.value / rh) + buffer * 2
+  const start = Math.max(0, Math.floor(scrollTop.value / rh) - buffer)
+  const end = Math.min(total, start + visibleCount)
+  return {
+    enabled: true,
+    rows: displayRows.value.slice(start, end),
+    topPad: start * rh,
+    bottomPad: Math.max(0, (total - end) * rh),
+    colSpan: displayColumns.value.length || 1,
+  }
+})
+
+function onWrapperScroll(event: Event) {
+  if (!props.virtual) return
+  scrollTop.value = (event.target as HTMLElement).scrollTop
+}
+
 function colWidth(col: TableColumn) {
   if (col.width == null) return undefined
   return typeof col.width === 'number' ? `${col.width}px` : col.width
@@ -380,6 +428,7 @@ function colMinWidth(col: TableColumn) {
       ns.is('stripe', stripe),
       ns.is('empty', isEmpty),
       ns.is('tree', tree),
+      ns.is('virtual', virtual),
     ]"
   >
     <div v-if="showSettings" :class="ns.e('toolbar')">
@@ -410,7 +459,11 @@ function colMinWidth(col: TableColumn) {
       </DanDropdown>
     </div>
 
-    <div :class="ns.e('wrapper')">
+    <div
+      :class="[ns.e('wrapper'), ns.is('virtual', virtual)]"
+      :style="wrapperStyle"
+      @scroll="onWrapperScroll"
+    >
       <table :class="ns.e('table')">
         <colgroup>
           <col
@@ -536,7 +589,26 @@ function colMinWidth(col: TableColumn) {
           </tr>
         </thead>
         <tbody v-if="!isEmpty">
-          <tr v-for="item in displayRows" :key="item.key" :class="ns.e('row')">
+          <tr
+            v-if="virtualState.enabled && virtualState.topPad > 0"
+            :class="ns.e('virtual-pad')"
+            aria-hidden="true"
+          >
+            <td
+              :colspan="virtualState.colSpan"
+              :style="{
+                height: `${virtualState.topPad}px`,
+                padding: 0,
+                border: 0,
+              }"
+            />
+          </tr>
+          <tr
+            v-for="item in virtualState.rows"
+            :key="item.key"
+            :class="ns.e('row')"
+            :style="virtual ? { height: `${rowHeight}px` } : undefined"
+          >
             <td
               v-for="col in displayColumns"
               :key="col.prop"
@@ -579,6 +651,20 @@ function colMinWidth(col: TableColumn) {
                 {{ cellText(item.row, col.prop as string) }}
               </slot>
             </td>
+          </tr>
+          <tr
+            v-if="virtualState.enabled && virtualState.bottomPad > 0"
+            :class="ns.e('virtual-pad')"
+            aria-hidden="true"
+          >
+            <td
+              :colspan="virtualState.colSpan"
+              :style="{
+                height: `${virtualState.bottomPad}px`,
+                padding: 0,
+                border: 0,
+              }"
+            />
           </tr>
         </tbody>
       </table>

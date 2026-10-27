@@ -41,6 +41,16 @@
   border-radius: var(--dan-radius-md);
 }
 
+.dan-table__wrapper.is-virtual {
+  overscroll-behavior: contain;
+}
+
+.dan-table.is-virtual thead .dan-table__header-cell {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
 .dan-table.is-border .dan-table__wrapper {
   border-color: var(--dan-color-border);
 }
