@@ -2,6 +2,8 @@
 
 Vue 3 通用基础 UI 组件库，覆盖表单基础、AI 对话界面与富文本编辑能力。
 
+**官网：** [https://dandanhub.vip/dan-ui](https://dandanhub.vip/dan-ui)
+
 ## 特性
 
 - 基于 Vue 3.5+ 与 TypeScript
