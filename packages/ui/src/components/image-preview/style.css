@@ -1,0 +1,34 @@
+.dan-image-preview {
+  position: fixed;
+  inset: 0;
+  z-index: var(--dan-z-index-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--dan-color-mask);
+}
+
+.dan-image-preview__img {
+  max-width: min(92vw, 1200px);
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: var(--dan-radius-md);
+  box-shadow: var(--dan-shadow-lg);
+}
+
+.dan-image-preview__close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--dan-radius-full);
+  background: var(--dan-color-bg-elevated);
+  color: var(--dan-color-text);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}

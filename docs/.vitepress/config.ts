@@ -69,9 +69,12 @@ const componentsSidebar = collapsible([
       { text: 'Timeline（时间线）', link: '/components/timeline' },
       { text: 'Collapse（折叠面板）', link: '/components/collapse' },
       { text: 'Image（图片）', link: '/components/image' },
+      { text: 'ImagePreview（图片预览）', link: '/components/image-preview' },
       { text: 'Card（卡片）', link: '/components/card' },
       { text: 'Carousel（走马灯）', link: '/components/carousel' },
       { text: 'Table（表格）', link: '/components/table' },
+      { text: 'Tree（树形控件）', link: '/components/tree' },
+      { text: 'Calendar（日历）', link: '/components/calendar' },
     ],
   },
   {

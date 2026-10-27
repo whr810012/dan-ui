@@ -144,6 +144,15 @@ export type { DanCollapseInstance, DanCollapseItemInstance } from './collapse'
 export { DanImage } from './image'
 export type { DanImageInstance } from './image'
 
+export { DanImagePreview } from './image-preview'
+export type { DanImagePreviewInstance } from './image-preview'
+
+export { DanTree } from './tree'
+export type { DanTreeInstance, TreeNode } from './tree'
+
+export { DanCalendar } from './calendar'
+export type { DanCalendarInstance } from './calendar'
+
 export { DanCard } from './card'
 export type { DanCardInstance } from './card'
 

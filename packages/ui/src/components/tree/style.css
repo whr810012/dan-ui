@@ -1,0 +1,44 @@
+.dan-tree {
+  color: var(--dan-color-text);
+  font-family: var(--dan-font-family);
+  font-size: var(--dan-font-size-md);
+  line-height: 1.5;
+}
+
+.dan-tree-node__content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  border-radius: var(--dan-radius-sm);
+  cursor: pointer;
+  user-select: none;
+}
+
+.dan-tree-node__content:hover {
+  background: var(--dan-color-fill);
+}
+
+.dan-tree-node__content.is-disabled {
+  color: var(--dan-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.dan-tree-node__expand {
+  display: inline-flex;
+  width: 14px;
+  justify-content: center;
+  color: var(--dan-color-text-secondary);
+}
+
+.dan-tree-node__expand.is-leaf {
+  visibility: hidden;
+}
+
+.dan-tree-node__checkbox {
+  margin: 0;
+}
+
+.dan-tree-node__label {
+  min-width: 0;
+}
