@@ -29,6 +29,12 @@ export type {
   UploadUserFile,
 } from './upload'
 
+export { DanSlider } from './slider'
+export type { DanSliderInstance } from './slider'
+
+export { DanRate } from './rate'
+export type { DanRateInstance } from './rate'
+
 export { DanTextarea } from './textarea'
 export type { DanTextareaInstance } from './textarea'
 
