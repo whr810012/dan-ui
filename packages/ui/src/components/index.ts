@@ -35,6 +35,16 @@ export type { DanSliderInstance } from './slider'
 export { DanRate } from './rate'
 export type { DanRateInstance } from './rate'
 
+export { DanDatePicker } from './date-picker'
+export type { DanDatePickerInstance, CalendarCell } from './date-picker'
+export {
+  WEEK_LABELS,
+  buildCalendarDays,
+  formatDate,
+  isSameDay,
+  parseDate,
+} from './date-picker'
+
 export { DanTextarea } from './textarea'
 export type { DanTextareaInstance } from './textarea'
 

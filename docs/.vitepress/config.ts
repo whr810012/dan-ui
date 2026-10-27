@@ -40,6 +40,7 @@ const componentsSidebar = collapsible([
       { text: 'Upload（上传）', link: '/components/upload' },
       { text: 'Slider（滑块）', link: '/components/slider' },
       { text: 'Rate（评分）', link: '/components/rate' },
+      { text: 'DatePicker（日期选择）', link: '/components/date-picker' },
       { text: 'Textarea（文本域）', link: '/components/textarea' },
       { text: 'Checkbox（多选框）', link: '/components/checkbox' },
       { text: 'Radio（单选框）', link: '/components/radio' },
