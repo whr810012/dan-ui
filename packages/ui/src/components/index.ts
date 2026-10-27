@@ -18,6 +18,17 @@ export type { DanInputInstance } from './input'
 export { DanInputNumber } from './input-number'
 export type { DanInputNumberInstance } from './input-number'
 
+export { DanUpload } from './upload'
+export type {
+  DanUploadInstance,
+  UploadFile,
+  UploadRawFile,
+  UploadRequestHandler,
+  UploadRequestOptions,
+  UploadStatus,
+  UploadUserFile,
+} from './upload'
+
 export { DanTextarea } from './textarea'
 export type { DanTextareaInstance } from './textarea'
 

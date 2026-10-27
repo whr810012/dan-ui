@@ -1,0 +1,174 @@
+.dan-upload {
+  box-sizing: border-box;
+  width: 100%;
+  color: var(--dan-color-text);
+  font-family: var(--dan-font-family);
+  font-size: var(--dan-font-size-md);
+  line-height: var(--dan-line-height);
+}
+
+.dan-upload *,
+.dan-upload *::before,
+.dan-upload *::after {
+  box-sizing: border-box;
+}
+
+.dan-upload__input {
+  display: none;
+}
+
+.dan-upload__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--dan-control-height-md);
+  margin: 0;
+  padding: 0 var(--dan-spacing-lg);
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-fill);
+  color: var(--dan-color-text);
+  font: inherit;
+  font-weight: var(--dan-font-weight-medium);
+  cursor: pointer;
+  transition:
+    background-color var(--dan-duration-fast) var(--dan-ease),
+    border-color var(--dan-duration-fast) var(--dan-ease),
+    color var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-upload__button:hover:not(:disabled) {
+  color: var(--dan-color-primary);
+  border-color: var(--dan-color-primary);
+  background: var(--dan-color-primary-light);
+}
+
+.dan-upload__button:disabled {
+  color: var(--dan-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.dan-upload__dragger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+  padding: var(--dan-spacing-xl);
+  border: 1px dashed var(--dan-color-border);
+  border-radius: var(--dan-radius-lg);
+  background: var(--dan-color-bg-muted);
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color var(--dan-duration-fast) var(--dan-ease),
+    background-color var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-upload__dragger:hover,
+.dan-upload__dragger.is-dragover {
+  border-color: var(--dan-color-primary);
+  background: var(--dan-color-primary-light);
+}
+
+.dan-upload__dragger:focus-visible {
+  outline: 2px solid var(--dan-color-primary-light);
+  outline-offset: 2px;
+}
+
+.dan-upload.is-disabled .dan-upload__dragger {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.dan-upload__tip-title {
+  margin: 0;
+  color: var(--dan-color-text);
+  font-weight: var(--dan-font-weight-medium);
+}
+
+.dan-upload__tip-sub {
+  margin: var(--dan-spacing-xs) 0 0;
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+}
+
+.dan-upload__list {
+  margin: var(--dan-spacing-md) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dan-upload__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--dan-spacing-sm);
+  padding: var(--dan-spacing-sm) var(--dan-spacing-md);
+  border: 1px solid var(--dan-color-border-light);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+}
+
+.dan-upload__item + .dan-upload__item {
+  margin-top: var(--dan-spacing-sm);
+}
+
+.dan-upload__item-info {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--dan-spacing-sm);
+}
+
+.dan-upload__item-name {
+  overflow: hidden;
+  max-width: 100%;
+  color: var(--dan-color-text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dan-upload__item-size,
+.dan-upload__item-status {
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+}
+
+.dan-upload__item-status.is-success {
+  color: var(--dan-color-success);
+}
+
+.dan-upload__item-status.is-fail {
+  color: var(--dan-color-danger);
+}
+
+.dan-upload__item-status.is-uploading {
+  color: var(--dan-color-primary);
+}
+
+.dan-upload__item-remove {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--dan-radius-sm);
+  background: transparent;
+  color: var(--dan-color-text-secondary);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dan-upload__item-remove:hover:not(:disabled) {
+  color: var(--dan-color-danger);
+  background: var(--dan-color-danger-light);
+}
+
+.dan-upload__item-remove:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
