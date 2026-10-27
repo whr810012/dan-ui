@@ -47,6 +47,7 @@ const { form, emitChange } = useFormItem()
 const ns = useNamespace('select')
 const focused = ref(false)
 const opened = ref(false)
+const highlightIndex = ref(-1)
 const rootRef = ref<HTMLElement | null>(null)
 const panelRef = ref<HTMLElement | null>(null)
 const panelStyle = ref<Record<string, string>>({})
@@ -91,16 +92,51 @@ function updatePanelPosition() {
   }
 }
 
+function enabledIndexes() {
+  return props.options
+    .map((item, index) => (item.disabled ? -1 : index))
+    .filter((index) => index >= 0)
+}
+
+function syncHighlightFromValue() {
+  const current = props.options.findIndex(
+    (item) => !item.disabled && String(item.value) === String(props.modelValue),
+  )
+  const enabled = enabledIndexes()
+  highlightIndex.value = current >= 0 ? current : (enabled[0] ?? -1)
+}
+
+function moveHighlight(step: 1 | -1) {
+  const enabled = enabledIndexes()
+  if (!enabled.length) return
+  const pos = enabled.indexOf(highlightIndex.value)
+  const nextPos =
+    pos < 0
+      ? step > 0
+        ? 0
+        : enabled.length - 1
+      : (pos + step + enabled.length) % enabled.length
+  highlightIndex.value = enabled[nextPos]
+  void nextTick(() => {
+    const el = panelRef.value?.querySelector<HTMLElement>(
+      '.dan-select__option.is-highlighted',
+    )
+    el?.scrollIntoView?.({ block: 'nearest' })
+  })
+}
+
 async function openPanel() {
   if (isDisabled.value) return
   opened.value = true
   focused.value = true
+  syncHighlightFromValue()
   await nextTick()
   updatePanelPosition()
 }
 
 function closePanel() {
   opened.value = false
+  highlightIndex.value = -1
 }
 
 function togglePanel() {
@@ -136,8 +172,26 @@ function onDocumentClick(event: MouseEvent) {
 }
 
 function onKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape' && opened.value) {
+  if (isDisabled.value) return
+  const key = event.key
+  if (key === 'Escape' && opened.value) {
+    event.preventDefault()
     closePanel()
+    return
+  }
+  if (key === 'ArrowDown' || key === 'ArrowUp') {
+    event.preventDefault()
+    if (!opened.value) {
+      void openPanel()
+      return
+    }
+    moveHighlight(key === 'ArrowDown' ? 1 : -1)
+    return
+  }
+  if ((key === 'Enter' || key === ' ') && opened.value) {
+    event.preventDefault()
+    const item = props.options[highlightIndex.value]
+    if (item) selectOption(item)
   }
 }
 
@@ -163,14 +217,12 @@ function onScrollOrResize() {
 
 onMounted(() => {
   document.addEventListener('click', onDocumentClick, true)
-  document.addEventListener('keydown', onKeydown)
   window.addEventListener('scroll', onScrollOrResize, true)
   window.addEventListener('resize', onScrollOrResize)
 })
 
 onBeforeUnmount(() => {
   document.removeEventListener('click', onDocumentClick, true)
-  document.removeEventListener('keydown', onKeydown)
   window.removeEventListener('scroll', onScrollOrResize, true)
   window.removeEventListener('resize', onScrollOrResize)
 })
@@ -194,9 +246,12 @@ onBeforeUnmount(() => {
       type="button"
       :class="ns.e('trigger')"
       :disabled="isDisabled"
+      aria-haspopup="listbox"
+      :aria-expanded="opened"
       v-bind="triggerAttrs"
       @focus="onFocus"
       @blur="onBlur"
+      @keydown="onKeydown"
     >
       <span :class="[ns.e('value'), ns.is('placeholder', !selectedLabel)]">
         {{ selectedLabel || placeholder }}
@@ -224,7 +279,7 @@ onBeforeUnmount(() => {
       @click.stop
     >
       <li
-        v-for="item in options"
+        v-for="(item, index) in options"
         :key="String(item.value)"
         :class="[
           ns.e('option'),
@@ -232,6 +287,7 @@ onBeforeUnmount(() => {
             'selected',
             modelValue != null && String(item.value) === String(modelValue),
           ),
+          ns.is('highlighted', index === highlightIndex),
           ns.is('disabled', item.disabled),
         ]"
         role="option"
@@ -239,6 +295,7 @@ onBeforeUnmount(() => {
           modelValue != null && String(item.value) === String(modelValue)
         "
         @click="selectOption(item)"
+        @mouseenter="!item.disabled && (highlightIndex = index)"
       >
         {{ item.label }}
       </li>

@@ -10,6 +10,9 @@ describe('DanMessageBox', () => {
     await nextTick()
     const panel = document.querySelector('.dan-message-box__panel')
     expect(panel?.textContent).toContain('确认删除？')
+    expect(panel?.getAttribute('role')).toBe('alertdialog')
+    expect(panel?.getAttribute('aria-labelledby')).toBeTruthy()
+    expect(panel?.getAttribute('aria-describedby')).toBeTruthy()
 
     const buttons = document.querySelectorAll('.dan-message-box__footer button')
     ;(buttons[buttons.length - 1] as HTMLButtonElement).click()

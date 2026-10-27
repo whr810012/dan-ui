@@ -54,4 +54,51 @@ describe('DanDropdown', () => {
 
     wrapper.unmount()
   })
+
+  it('supports arrow keys and enter', async () => {
+    const wrapper = mount(
+      {
+        components: {
+          DanDropdown,
+          DanDropdownMenu,
+          DanDropdownItem,
+          DanButton,
+        },
+        template: `
+          <DanDropdown @command="onCommand">
+            <DanButton>菜单</DanButton>
+            <template #dropdown>
+              <DanDropdownMenu>
+                <DanDropdownItem command="edit">编辑</DanDropdownItem>
+                <DanDropdownItem command="share">分享</DanDropdownItem>
+              </DanDropdownMenu>
+            </template>
+          </DanDropdown>
+        `,
+        setup() {
+          const commands: Array<string | number | object> = []
+          function onCommand(command: string | number | object) {
+            commands.push(command)
+          }
+          return { onCommand, commands }
+        },
+      },
+      { attachTo: document.body },
+    )
+
+    await wrapper.find('.dan-dropdown').trigger('click')
+    await nextTick()
+    document.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
+    )
+    document.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }),
+    )
+    await nextTick()
+    expect(
+      (wrapper.vm as unknown as { commands: string[] }).commands,
+    ).toContain('share')
+
+    wrapper.unmount()
+  })
 })

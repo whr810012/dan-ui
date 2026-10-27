@@ -1,3 +1,9 @@
+<script setup>
+import DemoBlock from '../.vitepress/components/DemoBlock.vue'
+import Basic from './demos/extensions/basic.vue'
+import basicSrc from './demos/extensions/basic.vue?raw'
+</script>
+
 # 编辑器扩展
 
 RichText 默认启用以下能力：
@@ -14,5 +20,13 @@ RichText 默认启用以下能力：
 | 链接 | StarterKit Link |
 | 占位符 | `@tiptap/extension-placeholder` |
 | 图片 | `@tiptap/extension-image`（需 `onImageUpload`） |
+
+## 能力演示
+
+下方 Demo 预置了标题、列表、引用与代码块，可用工具栏继续编辑。
+
+<DemoBlock :source="basicSrc">
+  <Basic />
+</DemoBlock>
 
 自定义更多扩展时，可通过 `toolbar` / `bubble-menu` 插槽拿到 `editor` 自行 `editor.chain()...`。

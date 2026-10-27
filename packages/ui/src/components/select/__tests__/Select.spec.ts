@@ -42,4 +42,30 @@ describe('DanSelect', () => {
 
     wrapper.unmount()
   })
+
+  it('supports arrow keys and enter to select', async () => {
+    const wrapper = mount(DanSelect, {
+      attachTo: document.body,
+      props: {
+        modelValue: 'sh',
+        options,
+        'onUpdate:modelValue': (value: string | number | boolean | null) =>
+          wrapper.setProps({ modelValue: value }),
+      },
+    })
+
+    const trigger = wrapper.find('.dan-select__trigger')
+    await trigger.trigger('keydown', { key: 'ArrowDown' })
+    await nextTick()
+    expect(
+      document.querySelector('.dan-select__dropdown') as HTMLElement,
+    ).toBeTruthy()
+
+    await trigger.trigger('keydown', { key: 'ArrowDown' })
+    await trigger.trigger('keydown', { key: 'Enter' })
+    await nextTick()
+    expect(wrapper.props('modelValue')).toBe('bj')
+
+    wrapper.unmount()
+  })
 })

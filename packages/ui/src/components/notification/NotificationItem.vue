@@ -61,6 +61,8 @@ onBeforeUnmount(clearTimer)
   <div
     :class="[ns.e('item'), ns.m(type)]"
     role="alert"
+    :aria-live="type === 'error' ? 'assertive' : 'polite'"
+    aria-atomic="true"
     @mouseenter="clearTimer"
     @mouseleave="startTimer"
   >

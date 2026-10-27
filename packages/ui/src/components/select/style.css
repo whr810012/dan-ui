@@ -128,13 +128,18 @@
   line-height: 1.4;
 }
 
-.dan-select__option:hover:not(.is-disabled) {
+.dan-select__option:hover:not(.is-disabled),
+.dan-select__option.is-highlighted:not(.is-disabled) {
   background: var(--dan-color-fill);
 }
 
 .dan-select__option.is-selected {
   color: var(--dan-color-primary);
   font-weight: var(--dan-font-weight-medium);
+  background: var(--dan-color-primary-light);
+}
+
+.dan-select__option.is-highlighted.is-selected {
   background: var(--dan-color-primary-light);
 }
 

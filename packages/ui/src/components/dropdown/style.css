@@ -36,7 +36,8 @@
   user-select: none;
 }
 
-.dan-dropdown-item:hover:not(.is-disabled) {
+.dan-dropdown-item:hover:not(.is-disabled),
+.dan-dropdown-item.is-highlighted:not(.is-disabled) {
   background: var(--dan-color-fill, rgb(0 0 0 / 4%));
 }
 

@@ -67,11 +67,12 @@
   text-align: right;
 }
 
-.dan-table__header-cell {
+.dan-table th.dan-table__header-cell,
+.dan-table .dan-table__header-cell {
   position: relative;
   color: var(--dan-color-text-secondary);
   font-weight: var(--dan-font-weight-semibold);
-  background: var(--dan-color-bg-muted);
+  background-color: var(--dan-color-bg-muted);
   border-bottom-color: var(--dan-color-border);
   user-select: none;
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useFocusTrap } from '../../hooks/useFocusTrap'
 import { useNamespace } from '../../hooks/useNamespace'
 import { DanButton } from '../button'
 import { DanIcon } from '../icon'
@@ -35,6 +36,12 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('message-box')
+const panelRef = ref<HTMLElement | null>(null)
+const titleId = `dan-message-box-title-${Math.random().toString(36).slice(2, 9)}`
+const bodyId = `dan-message-box-body-${Math.random().toString(36).slice(2, 9)}`
+const trapActive = computed(() => props.visible !== false)
+
+useFocusTrap(panelRef, trapActive)
 
 function done(action: MessageBoxAction) {
   emit('action', action)
@@ -51,6 +58,12 @@ function onKeydown(event: KeyboardEvent) {
 onMounted(() => {
   document.addEventListener('keydown', onKeydown)
   document.body.style.overflow = 'hidden'
+  void nextTick(() => {
+    const confirm = panelRef.value?.querySelector<HTMLElement>(
+      '.dan-message-box__footer .dan-button--primary',
+    )
+    ;(confirm ?? panelRef.value)?.focus()
+  })
 })
 
 onBeforeUnmount(() => {
@@ -63,14 +76,18 @@ onBeforeUnmount(() => {
   <div :class="ns.b()">
     <div :class="ns.e('mask')" @click="onMaskClick" />
     <div
+      ref="panelRef"
       :class="ns.e('panel')"
       role="alertdialog"
       aria-modal="true"
+      :aria-labelledby="titleId"
+      :aria-describedby="bodyId"
+      tabindex="-1"
       @click.stop
     >
       <header :class="ns.e('header')">
         <span :class="[ns.e('icon'), ns.em('icon', type)]" aria-hidden="true" />
-        <span :class="ns.e('title')">{{ title }}</span>
+        <span :id="titleId" :class="ns.e('title')">{{ title }}</span>
         <button
           type="button"
           :class="ns.e('close')"
@@ -80,7 +97,7 @@ onBeforeUnmount(() => {
           <DanIcon name="close" />
         </button>
       </header>
-      <div :class="ns.e('body')">{{ message }}</div>
+      <div :id="bodyId" :class="ns.e('body')">{{ message }}</div>
       <footer :class="ns.e('footer')">
         <DanButton
           v-if="showCancel || boxType === 'confirm'"

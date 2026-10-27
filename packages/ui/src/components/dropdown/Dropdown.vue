@@ -40,10 +40,46 @@ const ns = useNamespace('dropdown')
 const triggerRef = ref<HTMLElement | null>(null)
 const popperRef = ref<HTMLElement | null>(null)
 const visible = ref(false)
+const highlightIndex = ref(-1)
 const popperStyle = ref<Record<string, string>>({})
 
 let showTimer: ReturnType<typeof setTimeout> | null = null
 let hideTimer: ReturnType<typeof setTimeout> | null = null
+
+function listItems() {
+  if (!popperRef.value) return [] as HTMLElement[]
+  return Array.from(
+    popperRef.value.querySelectorAll<HTMLElement>(
+      '.dan-dropdown-item:not(.is-disabled)',
+    ),
+  )
+}
+
+function syncItemHighlight() {
+  const items = listItems()
+  items.forEach((el, index) => {
+    el.classList.toggle('is-highlighted', index === highlightIndex.value)
+  })
+  items[highlightIndex.value]?.scrollIntoView?.({ block: 'nearest' })
+}
+
+function moveHighlight(step: 1 | -1) {
+  const items = listItems()
+  if (!items.length) return
+  const next =
+    highlightIndex.value < 0
+      ? step > 0
+        ? 0
+        : items.length - 1
+      : (highlightIndex.value + step + items.length) % items.length
+  highlightIndex.value = next
+  syncItemHighlight()
+}
+
+function activateHighlighted() {
+  const item = listItems()[highlightIndex.value]
+  item?.click()
+}
 
 function clearTimers() {
   if (showTimer != null) {
@@ -78,12 +114,15 @@ function updatePosition() {
 async function open() {
   if (props.disabled) return
   visible.value = true
+  highlightIndex.value = 0
   await nextTick()
   updatePosition()
+  syncItemHighlight()
 }
 
 function close() {
   visible.value = false
+  highlightIndex.value = -1
 }
 
 function scheduleOpen() {
@@ -145,7 +184,23 @@ function onDocumentClick(event: MouseEvent) {
 }
 
 function onKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape' && visible.value) close()
+  if (props.disabled) return
+  const key = event.key
+  if (key === 'Escape' && visible.value) {
+    event.preventDefault()
+    close()
+    return
+  }
+  if (!visible.value) return
+  if (key === 'ArrowDown' || key === 'ArrowUp') {
+    event.preventDefault()
+    moveHighlight(key === 'ArrowDown' ? 1 : -1)
+    return
+  }
+  if (key === 'Enter' || key === ' ') {
+    event.preventDefault()
+    activateHighlighted()
+  }
 }
 
 function onScrollOrResize() {
