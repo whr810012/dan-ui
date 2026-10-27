@@ -208,6 +208,25 @@
   color: var(--dan-color-text-on-color);
 }
 
+.dan-date-picker__day.is-in-range {
+  background: var(--dan-color-primary-light);
+  color: var(--dan-color-primary);
+}
+
+.dan-date-picker__day.is-in-range.is-selected {
+  background: var(--dan-color-primary);
+  color: var(--dan-color-text-on-color);
+}
+
+.dan-date-picker.is-range {
+  width: 280px;
+}
+
+.dan-date-picker__hint {
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+}
+
 .dan-date-picker__footer {
   display: flex;
   justify-content: flex-end;

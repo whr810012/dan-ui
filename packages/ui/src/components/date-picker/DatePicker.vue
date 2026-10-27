@@ -8,6 +8,7 @@ import {
   WEEK_LABELS,
   buildCalendarDays,
   formatDate,
+  isInRange,
   isSameDay,
   parseDate,
 } from './dateUtils'
@@ -15,27 +16,34 @@ import './style.css'
 
 defineOptions({ name: 'DanDatePicker' })
 
+type DateModel = string | null
+type RangeModel = [string, string] | null
+
 const props = withDefaults(
   defineProps<{
-    modelValue?: string | null
+    modelValue?: DateModel | RangeModel
+    type?: 'date' | 'daterange'
     size?: DanSize
     disabled?: boolean
     clearable?: boolean
     placeholder?: string
-    format?: string
+    startPlaceholder?: string
+    endPlaceholder?: string
   }>(),
   {
     modelValue: null,
+    type: 'date',
     disabled: false,
     clearable: false,
     placeholder: '选择日期',
-    format: 'YYYY-MM-DD',
+    startPlaceholder: '开始日期',
+    endPlaceholder: '结束日期',
   },
 )
 
 const emit = defineEmits<{
-  'update:modelValue': [value: string | null]
-  change: [value: string | null]
+  'update:modelValue': [value: DateModel | RangeModel]
+  change: [value: DateModel | RangeModel]
   clear: []
   focus: [event: FocusEvent]
   blur: [event: FocusEvent]
@@ -51,16 +59,47 @@ const focused = ref(false)
 const rootRef = ref<HTMLElement | null>(null)
 const panelRef = ref<HTMLElement | null>(null)
 const panelStyle = ref<Record<string, string>>({})
-const viewDate = ref(parseDate(props.modelValue) ?? new Date())
+const rangePicking = ref<Date | null>(null)
+
+const initialView =
+  props.type === 'daterange'
+    ? parseDate(Array.isArray(props.modelValue) ? props.modelValue[0] : null)
+    : parseDate(typeof props.modelValue === 'string' ? props.modelValue : null)
+
+const viewDate = ref(initialView ?? new Date())
 
 const resolvedSize = computed(() => props.size ?? config.size.value)
 const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )
-const selectedDate = computed(() => parseDate(props.modelValue))
-const displayValue = computed(() => props.modelValue || '')
+const isRange = computed(() => props.type === 'daterange')
+
+const selectedDate = computed(() =>
+  !isRange.value && typeof props.modelValue === 'string'
+    ? parseDate(props.modelValue)
+    : null,
+)
+
+const rangeValue = computed(() => {
+  if (!isRange.value || !Array.isArray(props.modelValue)) {
+    return { start: null as Date | null, end: null as Date | null }
+  }
+  return {
+    start: parseDate(props.modelValue[0]),
+    end: parseDate(props.modelValue[1]),
+  }
+})
+
+const displayValue = computed(() => {
+  if (isRange.value) {
+    if (!Array.isArray(props.modelValue)) return ''
+    return `${props.modelValue[0]} ~ ${props.modelValue[1]}`
+  }
+  return typeof props.modelValue === 'string' ? props.modelValue : ''
+})
+
 const showClear = computed(
-  () => props.clearable && !!props.modelValue && !isDisabled.value,
+  () => props.clearable && !!displayValue.value && !isDisabled.value,
 )
 const monthLabel = computed(
   () =>
@@ -71,8 +110,13 @@ const cells = computed(() => buildCalendarDays(viewDate.value))
 watch(
   () => props.modelValue,
   (value) => {
-    const parsed = parseDate(value)
-    if (parsed) viewDate.value = parsed
+    if (isRange.value && Array.isArray(value)) {
+      const parsed = parseDate(value[0])
+      if (parsed) viewDate.value = parsed
+    } else if (typeof value === 'string') {
+      const parsed = parseDate(value)
+      if (parsed) viewDate.value = parsed
+    }
   },
 )
 
@@ -92,6 +136,7 @@ async function openPanel() {
   if (isDisabled.value) return
   opened.value = true
   focused.value = true
+  rangePicking.value = null
   emit('visibleChange', true)
   await nextTick()
   updatePanelPosition()
@@ -101,6 +146,7 @@ function closePanel() {
   if (!opened.value) return
   opened.value = false
   focused.value = false
+  rangePicking.value = null
   emit('visibleChange', false)
 }
 
@@ -109,16 +155,67 @@ function togglePanel() {
   else void openPanel()
 }
 
-function setValue(value: string | null) {
+function setValue(value: DateModel | RangeModel) {
   emit('update:modelValue', value)
   emit('change', value)
   emitChange('change')
 }
 
+function dayClass(cell: {
+  date: Date
+  inCurrentMonth: boolean
+  isToday: boolean
+}) {
+  const classes = [
+    ns.e('day'),
+    ns.is('other', !cell.inCurrentMonth),
+    ns.is('today', cell.isToday),
+  ]
+  if (
+    !isRange.value &&
+    selectedDate.value &&
+    isSameDay(cell.date, selectedDate.value)
+  ) {
+    classes.push(ns.is('selected', true))
+  }
+  if (isRange.value) {
+    const start = rangePicking.value ?? rangeValue.value.start
+    const end = rangePicking.value ? null : rangeValue.value.end
+    if (start && isSameDay(cell.date, start))
+      classes.push(ns.is('selected', true))
+    if (end && isSameDay(cell.date, end)) classes.push(ns.is('selected', true))
+    if (start && end && isInRange(cell.date, start, end)) {
+      classes.push(ns.is('in-range', true))
+    }
+    if (start && rangePicking.value && isInRange(cell.date, start, cell.date)) {
+      classes.push(ns.is('in-range', true))
+    }
+  }
+  return classes
+}
+
 function selectDay(date: Date) {
   if (isDisabled.value) return
-  setValue(formatDate(date))
-  viewDate.value = new Date(date)
+  if (!isRange.value) {
+    setValue(formatDate(date))
+    viewDate.value = new Date(date)
+    closePanel()
+    return
+  }
+
+  if (!rangePicking.value) {
+    rangePicking.value = date
+    return
+  }
+
+  const start = rangePicking.value
+  const end = date
+  const ordered =
+    start.getTime() <= end.getTime()
+      ? ([formatDate(start), formatDate(end)] as [string, string])
+      : ([formatDate(end), formatDate(start)] as [string, string])
+  setValue(ordered)
+  rangePicking.value = null
   closePanel()
 }
 
@@ -150,9 +247,8 @@ function selectToday() {
 
 function onDocumentPointer(event: MouseEvent) {
   const target = event.target as Node
-  if (rootRef.value?.contains(target) || panelRef.value?.contains(target)) {
+  if (rootRef.value?.contains(target) || panelRef.value?.contains(target))
     return
-  }
   closePanel()
 }
 
@@ -195,6 +291,7 @@ onBeforeUnmount(() => {
       ns.is('disabled', isDisabled),
       ns.is('focus', focused || opened),
       ns.is('opened', opened),
+      ns.is('range', isRange),
     ]"
   >
     <button
@@ -206,7 +303,9 @@ onBeforeUnmount(() => {
       @blur="onBlur"
     >
       <span v-if="displayValue" :class="ns.e('value')">{{ displayValue }}</span>
-      <span v-else :class="ns.e('placeholder')">{{ placeholder }}</span>
+      <span v-else :class="ns.e('placeholder')">
+        {{ isRange ? `${startPlaceholder} - ${endPlaceholder}` : placeholder }}
+      </span>
       <span :class="ns.e('suffix')" aria-hidden="true" />
     </button>
     <button
@@ -255,24 +354,21 @@ onBeforeUnmount(() => {
             v-for="cell in cells"
             :key="formatDate(cell.date)"
             type="button"
-            :class="[
-              ns.e('day'),
-              ns.is('other', !cell.inCurrentMonth),
-              ns.is('today', cell.isToday),
-              ns.is(
-                'selected',
-                !!selectedDate && isSameDay(cell.date, selectedDate),
-              ),
-            ]"
+            :class="dayClass(cell)"
             @click="selectDay(cell.date)"
           >
             {{ cell.label }}
           </button>
         </div>
-        <div :class="ns.e('footer')">
+        <div v-if="!isRange" :class="ns.e('footer')">
           <button type="button" :class="ns.e('today')" @click="selectToday">
             今天
           </button>
+        </div>
+        <div v-else :class="ns.e('footer')">
+          <span :class="ns.e('hint')">
+            {{ rangePicking ? '请选择结束日期' : '请选择开始日期' }}
+          </span>
         </div>
       </div>
     </Teleport>

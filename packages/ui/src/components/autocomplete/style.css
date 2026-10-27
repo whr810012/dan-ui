@@ -1,0 +1,75 @@
+.dan-autocomplete {
+  --dan-ac-height: var(--dan-control-height-md);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  height: var(--dan-ac-height);
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+  color: var(--dan-color-text);
+  font-family: var(--dan-font-family);
+}
+
+.dan-autocomplete--small {
+  --dan-ac-height: var(--dan-control-height-sm);
+}
+.dan-autocomplete--large {
+  --dan-ac-height: var(--dan-control-height-lg);
+}
+
+.dan-autocomplete.is-opened {
+  border-color: var(--dan-color-primary);
+  box-shadow: 0 0 0 3px var(--dan-color-primary-light);
+}
+
+.dan-autocomplete.is-disabled {
+  background: var(--dan-color-fill);
+  color: var(--dan-color-text-disabled);
+}
+
+.dan-autocomplete__inner {
+  flex: 1;
+  width: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0 28px 0 12px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.dan-autocomplete__clear {
+  position: absolute;
+  right: 8px;
+  border: 0;
+  background: transparent;
+  color: var(--dan-color-text-secondary);
+  cursor: pointer;
+}
+
+.dan-autocomplete__panel {
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg-elevated);
+  box-shadow: var(--dan-shadow-md);
+  max-height: 220px;
+  overflow: auto;
+}
+
+.dan-autocomplete__item {
+  padding: 8px 12px;
+  border-radius: var(--dan-radius-sm);
+  cursor: pointer;
+}
+
+.dan-autocomplete__item:hover {
+  background: var(--dan-color-fill);
+  color: var(--dan-color-primary);
+}

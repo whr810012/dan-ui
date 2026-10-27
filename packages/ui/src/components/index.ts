@@ -41,9 +41,27 @@ export {
   WEEK_LABELS,
   buildCalendarDays,
   formatDate,
+  formatTime,
+  isInRange,
   isSameDay,
   parseDate,
+  parseTime,
 } from './date-picker'
+
+export { DanTimePicker } from './time-picker'
+export type { DanTimePickerInstance } from './time-picker'
+
+export { DanAutocomplete } from './autocomplete'
+export type {
+  DanAutocompleteInstance,
+  AutocompleteSuggestion,
+} from './autocomplete'
+
+export { DanCascader } from './cascader'
+export type { DanCascaderInstance, CascaderOption } from './cascader'
+
+export { DanColorPicker } from './color-picker'
+export type { DanColorPickerInstance } from './color-picker'
 
 export { DanTextarea } from './textarea'
 export type { DanTextareaInstance } from './textarea'

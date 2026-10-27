@@ -8,7 +8,10 @@ export {
   WEEK_LABELS,
   buildCalendarDays,
   formatDate,
+  formatTime,
+  isInRange,
   isSameDay,
   parseDate,
+  parseTime,
 } from './dateUtils'
 export type { CalendarCell } from './dateUtils'

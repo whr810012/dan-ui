@@ -32,6 +32,33 @@ export function isSameDay(a: Date, b: Date) {
   )
 }
 
+export function startOfDay(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate())
+}
+
+export function isInRange(date: Date, start: Date, end: Date) {
+  const t = startOfDay(date).getTime()
+  const a = startOfDay(start).getTime()
+  const b = startOfDay(end).getTime()
+  return t >= Math.min(a, b) && t <= Math.max(a, b)
+}
+
+export function formatTime(hours: number, minutes: number) {
+  return `${pad(hours)}:${pad(minutes)}`
+}
+
+export function parseTime(
+  value?: string | null,
+): { h: number; m: number } | null {
+  if (!value) return null
+  const matched = /^(\d{1,2}):(\d{2})$/.exec(value.trim())
+  if (!matched) return null
+  const h = Number(matched[1])
+  const m = Number(matched[2])
+  if (h < 0 || h > 23 || m < 0 || m > 59) return null
+  return { h, m }
+}
+
 export interface CalendarCell {
   date: Date
   label: number
