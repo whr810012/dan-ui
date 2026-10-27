@@ -86,4 +86,27 @@ describe('DanTable', () => {
     expect(wrapper.findAll('tbody td')).toHaveLength(3)
     expect(wrapper.text()).toContain('张三')
   })
+
+  it('expands tree rows', async () => {
+    const treeData = [
+      {
+        id: 1,
+        name: '总部',
+        children: [{ id: 11, name: '研发' }],
+      },
+    ]
+    const wrapper = mount(DanTable, {
+      props: {
+        columns: [{ prop: 'name', label: '名称' }],
+        data: treeData,
+        tree: true,
+      },
+    })
+    await nextTick()
+    expect(wrapper.findAll('tbody tr')).toHaveLength(1)
+    await wrapper.find('.dan-table__expand').trigger('click')
+    await nextTick()
+    expect(wrapper.findAll('tbody tr')).toHaveLength(2)
+    expect(wrapper.text()).toContain('研发')
+  })
 })

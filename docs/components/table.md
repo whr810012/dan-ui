@@ -2,13 +2,15 @@
 import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/table/basic.vue'
 import MultiHeader from './demos/table/multi-header.vue'
+import TreeDemo from './demos/table/tree.vue'
 import basicSrc from './demos/table/basic.vue?raw'
 import multiHeaderSrc from './demos/table/multi-header.vue?raw'
+import treeSrc from './demos/table/tree.vue?raw'
 </script>
 
 # Table 表格
 
-基础数据表格，支持**列筛选**、**列显示/隐藏**与**多级表头**。
+基础数据表格，支持**列筛选**、**列显示/隐藏**、**多级表头**与**树形数据**。
 
 ## 基础用法
 
@@ -26,6 +28,14 @@ import multiHeaderSrc from './demos/table/multi-header.vue?raw'
   <MultiHeader />
 </DemoBlock>
 
+## 树形数据
+
+设置 `tree`，行数据通过 `children`（可用 `treeChildren` 自定义）嵌套；展开图标显示在第一列。
+
+<DemoBlock :source="treeSrc">
+  <TreeDemo />
+</DemoBlock>
+
 ## Props
 
 | 属性 | 说明 | 类型 | 默认值 |
@@ -40,6 +50,11 @@ import multiHeaderSrc from './demos/table/multi-header.vue?raw'
 | filters | 受控筛选条件 | `TableFilters` | — |
 | visibleColumns | 受控可见列 `prop` 列表 | `string[]` | — |
 | filterMode | `local` 本地过滤 / `remote` 只抛事件 | `'local' \| 'remote'` | `'local'` |
+| tree | 启用树形表格 | `boolean` | `false` |
+| treeChildren | 子节点字段名 | `string` | `'children'` |
+| defaultExpandAll | 默认展开全部 | `boolean` | `false` |
+| expandRowKeys | 受控展开行 key | `(string \| number)[]` | — |
+| indent | 树节点每级缩进（px） | `number` | `16` |
 
 ## TableColumn
 
@@ -60,6 +75,7 @@ import multiHeaderSrc from './demos/table/multi-header.vue?raw'
 | update:filters / filter-change | 筛选变化 |
 | update:visibleColumns / column-visibility-change | 列显隐变化 |
 | sort-change | `{ prop, order }` |
+| update:expandRowKeys / expand-change | 树节点展开变化 |
 
 ## Slots
 

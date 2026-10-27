@@ -13,6 +13,12 @@ import {
   filterColumnsByVisible,
   getLeafColumns,
 } from './columnUtils'
+import {
+  collectAllKeys,
+  filterTreeRows,
+  flattenTreeRows,
+  sortTreeRows,
+} from './treeUtils'
 import type {
   TableColumn,
   TableColumnFilter,
@@ -41,6 +47,16 @@ const props = withDefaults(
     visibleColumns?: string[]
     /** local：组件内过滤；remote：只抛事件，不过滤 */
     filterMode?: 'local' | 'remote'
+    /** 启用树形数据（行内 children） */
+    tree?: boolean
+    /** 树子节点字段名 */
+    treeChildren?: string
+    /** 默认展开全部 */
+    defaultExpandAll?: boolean
+    /** 受控展开行 key */
+    expandRowKeys?: Array<string | number>
+    /** 每级缩进（px） */
+    indent?: number
   }>(),
   {
     data: () => [],
@@ -53,6 +69,11 @@ const props = withDefaults(
     filters: undefined,
     visibleColumns: undefined,
     filterMode: 'local',
+    tree: false,
+    treeChildren: 'children',
+    defaultExpandAll: false,
+    expandRowKeys: undefined,
+    indent: 16,
   },
 )
 
@@ -62,16 +83,20 @@ const emit = defineEmits<{
   'update:visibleColumns': [value: string[]]
   'column-visibility-change': [value: string[]]
   'sort-change': [value: TableSortState]
+  'update:expandRowKeys': [value: Array<string | number>]
+  'expand-change': [row: TableRow, expanded: boolean]
 }>()
 
 const ns = useNamespace('table')
 
 const innerFilters = ref<TableFilters>({})
 const innerVisible = ref<string[]>([])
+const innerExpandKeys = ref<Array<string | number>>([])
 const sortState = ref<TableSortState>({ prop: null, order: null })
 
 const isFiltersControlled = computed(() => props.filters !== undefined)
 const isVisibleControlled = computed(() => props.visibleColumns !== undefined)
+const isExpandControlled = computed(() => props.expandRowKeys !== undefined)
 
 const resolvedFilters = computed(() =>
   isFiltersControlled.value ? (props.filters ?? {}) : innerFilters.value,
@@ -145,6 +170,90 @@ function getRowKey(row: TableRow, index: number) {
   return key == null ? index : (key as string | number)
 }
 
+function resolveTreeKey(row: TableRow, index: number, _parents: TableRow[]) {
+  return getRowKey(row, index)
+}
+
+watch(
+  () =>
+    [
+      props.data,
+      props.tree,
+      props.defaultExpandAll,
+      props.treeChildren,
+    ] as const,
+  () => {
+    if (!props.tree || isExpandControlled.value) return
+    if (props.defaultExpandAll) {
+      innerExpandKeys.value = collectAllKeys(
+        props.data,
+        props.treeChildren,
+        resolveTreeKey,
+      )
+    }
+  },
+  { immediate: true, deep: true },
+)
+
+const resolvedExpandKeys = computed(() =>
+  isExpandControlled.value
+    ? (props.expandRowKeys ?? [])
+    : innerExpandKeys.value,
+)
+
+const expandedKeySet = computed(() => new Set(resolvedExpandKeys.value))
+
+function setExpandKeys(next: Array<string | number>) {
+  if (isExpandControlled.value) {
+    emit('update:expandRowKeys', next)
+  } else {
+    innerExpandKeys.value = next
+  }
+}
+
+function toggleExpand(row: TableRow, key: string | number) {
+  const set = new Set(resolvedExpandKeys.value)
+  const expanded = !set.has(key)
+  if (expanded) set.add(key)
+  else set.delete(key)
+  setExpandKeys([...set])
+  emit('expand-change', row, expanded)
+}
+
+function matchRowFilters(row: TableRow) {
+  const filters = resolvedFilters.value
+  for (const col of allLeafColumns.value) {
+    if (!col.prop) continue
+    const config = resolveFilterConfig(col)
+    if (!config) continue
+    const raw = filters[col.prop]
+    if (raw == null || raw === '') continue
+    const text = cellText(row, col.prop)
+    if (config.type === 'select') {
+      if (text !== String(raw)) return false
+    } else if (!text.toLowerCase().includes(String(raw).toLowerCase())) {
+      return false
+    }
+  }
+  return true
+}
+
+function compareRows(a: TableRow, b: TableRow) {
+  const { prop, order } = sortState.value
+  if (!prop || !order) return 0
+  const av = a[prop]
+  const bv = b[prop]
+  if (av == null && bv == null) return 0
+  if (av == null) return 1
+  if (bv == null) return -1
+  if (typeof av === 'number' && typeof bv === 'number') {
+    return order === 'asc' ? av - bv : bv - av
+  }
+  const as = String(av)
+  const bs = String(bv)
+  return order === 'asc' ? as.localeCompare(bs) : bs.localeCompare(as)
+}
+
 function cellText(row: TableRow, prop: string) {
   const value = row[prop]
   return value == null ? '' : String(value)
@@ -206,47 +315,51 @@ function toggleSort(col: TableColumn) {
   emit('sort-change', { ...sortState.value })
 }
 
-const filteredData = computed(() => {
+const processedTree = computed(() => {
   let rows = props.data
   if (props.filterMode === 'local') {
-    const filters = resolvedFilters.value
-    const leaves = allLeafColumns.value
-    rows = rows.filter((row) => {
-      for (const col of leaves) {
-        if (!col.prop) continue
-        const config = resolveFilterConfig(col)
-        if (!config) continue
-        const raw = filters[col.prop]
-        if (raw == null || raw === '') continue
-        const text = cellText(row, col.prop)
-        if (config.type === 'select') {
-          if (text !== String(raw)) return false
-        } else if (!text.toLowerCase().includes(String(raw).toLowerCase())) {
-          return false
-        }
-      }
-      return true
-    })
+    rows = props.tree
+      ? filterTreeRows(rows, props.treeChildren, matchRowFilters)
+      : rows.filter((row) => matchRowFilters(row))
   }
-
   const { prop, order } = sortState.value
   if (!prop || !order) return rows
-  const sorted = [...rows]
-  sorted.sort((a, b) => {
-    const av = a[prop]
-    const bv = b[prop]
-    if (av == null && bv == null) return 0
-    if (av == null) return 1
-    if (bv == null) return -1
-    if (typeof av === 'number' && typeof bv === 'number') {
-      return order === 'asc' ? av - bv : bv - av
-    }
-    const as = String(av)
-    const bs = String(bv)
-    return order === 'asc' ? as.localeCompare(bs) : bs.localeCompare(as)
-  })
-  return sorted
+  return props.tree
+    ? sortTreeRows(rows, props.treeChildren, compareRows)
+    : [...rows].sort(compareRows)
 })
+
+const filteredData = computed(() => {
+  if (!props.tree) return processedTree.value
+  return flattenTreeRows(
+    processedTree.value,
+    props.treeChildren,
+    expandedKeySet.value,
+    resolveTreeKey,
+  ).map((item) => item.row)
+})
+
+const displayRows = computed(() => {
+  if (!props.tree) {
+    return processedTree.value.map((row, index) => ({
+      row,
+      depth: 0,
+      key: getRowKey(row, index),
+      hasChildren: false,
+      index,
+    }))
+  }
+  return flattenTreeRows(
+    processedTree.value,
+    props.treeChildren,
+    expandedKeySet.value,
+    resolveTreeKey,
+  ).map((item, index) => ({ ...item, index }))
+})
+
+const treeColumnProp = computed(() => displayColumns.value[0]?.prop)
+
+const isEmpty = computed(() => displayRows.value.length === 0)
 
 function colWidth(col: TableColumn) {
   if (col.width == null) return undefined
@@ -265,7 +378,8 @@ function colMinWidth(col: TableColumn) {
       ns.b(),
       ns.is('border', border),
       ns.is('stripe', stripe),
-      ns.is('empty', filteredData.length === 0),
+      ns.is('empty', isEmpty),
+      ns.is('tree', tree),
     ]"
   >
     <div v-if="showSettings" :class="ns.e('toolbar')">
@@ -421,26 +535,55 @@ function colMinWidth(col: TableColumn) {
             </th>
           </tr>
         </thead>
-        <tbody v-if="filteredData.length">
-          <tr
-            v-for="(row, index) in filteredData"
-            :key="getRowKey(row, index)"
-            :class="ns.e('row')"
-          >
+        <tbody v-if="!isEmpty">
+          <tr v-for="item in displayRows" :key="item.key" :class="ns.e('row')">
             <td
               v-for="col in displayColumns"
               :key="col.prop"
               :class="[ns.e('cell'), col.align ? ns.em('cell', col.align) : '']"
             >
-              <slot :name="col.prop" :row="row" :column="col" :index="index">
-                {{ cellText(row, col.prop as string) }}
+              <div
+                v-if="tree && col.prop === treeColumnProp"
+                :class="ns.e('tree-cell')"
+                :style="{ paddingLeft: `${item.depth * indent}px` }"
+              >
+                <button
+                  v-if="item.hasChildren"
+                  type="button"
+                  :class="[
+                    ns.e('expand'),
+                    expandedKeySet.has(item.key) ? ns.is('expanded') : '',
+                  ]"
+                  aria-label="展开/收起"
+                  @click.stop="toggleExpand(item.row, item.key)"
+                >
+                  ▸
+                </button>
+                <span v-else :class="ns.e('expand-placeholder')" />
+                <slot
+                  :name="col.prop"
+                  :row="item.row"
+                  :column="col"
+                  :index="item.index"
+                >
+                  {{ cellText(item.row, col.prop as string) }}
+                </slot>
+              </div>
+              <slot
+                v-else
+                :name="col.prop"
+                :row="item.row"
+                :column="col"
+                :index="item.index"
+              >
+                {{ cellText(item.row, col.prop as string) }}
               </slot>
             </td>
           </tr>
         </tbody>
       </table>
 
-      <div v-if="!filteredData.length" :class="ns.e('empty')">
+      <div v-if="isEmpty" :class="ns.e('empty')">
         <DanEmpty :description="emptyText" :image-size="72" />
       </div>
     </div>
