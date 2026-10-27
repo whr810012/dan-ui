@@ -1,0 +1,74 @@
+.dan-rate {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-sizing: border-box;
+  color: var(--dan-color-warning);
+  font-size: 20px;
+  line-height: 1;
+  outline: none;
+}
+
+.dan-rate:focus-visible {
+  box-shadow: 0 0 0 3px var(--dan-color-primary-light);
+  border-radius: var(--dan-radius-sm);
+}
+
+.dan-rate__item {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.dan-rate__icon,
+.dan-rate__icon-half {
+  color: inherit;
+  transition:
+    color var(--dan-duration-fast) var(--dan-ease),
+    transform var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-rate__item.is-void .dan-rate__icon {
+  color: var(--dan-color-border);
+}
+
+.dan-rate__item.is-full .dan-rate__icon,
+.dan-rate__item.is-half .dan-rate__icon-half {
+  color: var(--dan-color-warning);
+}
+
+.dan-rate__icon-half {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dan-rate__item.is-half .dan-rate__icon {
+  color: var(--dan-color-border);
+}
+
+.dan-rate__item.is-half .dan-rate__icon-half {
+  opacity: 1;
+}
+
+.dan-rate__item:hover .dan-rate__icon,
+.dan-rate__item:hover .dan-rate__icon-half {
+  transform: scale(1.08);
+}
+
+.dan-rate.is-disabled {
+  cursor: default;
+}
+
+.dan-rate.is-disabled .dan-rate__item {
+  cursor: default;
+}
+
+.dan-rate.is-disabled .dan-rate__item:hover .dan-rate__icon,
+.dan-rate.is-disabled .dan-rate__item:hover .dan-rate__icon-half {
+  transform: none;
+}
