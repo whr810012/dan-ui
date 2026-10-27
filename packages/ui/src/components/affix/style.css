@@ -1,0 +1,7 @@
+.dan-affix {
+  box-sizing: border-box;
+}
+
+.dan-affix__content.is-fixed {
+  z-index: var(--dan-z-index-affix);
+}

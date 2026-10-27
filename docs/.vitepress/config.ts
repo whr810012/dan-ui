@@ -72,6 +72,10 @@ const componentsSidebar = collapsible([
       { text: 'Menu（菜单）', link: '/components/menu' },
       { text: 'Breadcrumb（面包屑）', link: '/components/breadcrumb' },
       { text: 'Pagination（分页）', link: '/components/pagination' },
+      { text: 'Steps（步骤条）', link: '/components/steps' },
+      { text: 'Affix（固钉）', link: '/components/affix' },
+      { text: 'BackTop（回到顶部）', link: '/components/back-top' },
+      { text: 'Anchor（锚点）', link: '/components/anchor' },
     ],
   },
   {

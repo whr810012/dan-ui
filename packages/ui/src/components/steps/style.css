@@ -1,0 +1,193 @@
+.dan-steps {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  color: var(--dan-color-text);
+  font-family: var(--dan-font-family);
+  font-size: var(--dan-font-size-md);
+  line-height: var(--dan-line-height);
+}
+
+.dan-steps *,
+.dan-steps *::before,
+.dan-steps *::after {
+  box-sizing: border-box;
+}
+
+.dan-steps--vertical {
+  flex-direction: column;
+}
+
+.dan-steps.is-simple {
+  gap: var(--dan-spacing-sm);
+}
+
+.dan-step {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.dan-step.is-vertical {
+  flex: none;
+  width: 100%;
+  padding-bottom: var(--dan-spacing-xl);
+}
+
+.dan-step.is-vertical.is-last {
+  padding-bottom: 0;
+}
+
+.dan-step.is-simple {
+  flex: none;
+  align-items: center;
+  padding: var(--dan-spacing-sm) var(--dan-spacing-md);
+  border-radius: var(--dan-radius-sm);
+  background: var(--dan-color-fill);
+}
+
+.dan-step.is-simple.dan-step--process {
+  background: var(--dan-color-primary-light);
+  color: var(--dan-color-primary);
+}
+
+.dan-step__head {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: var(--dan-spacing-md);
+}
+
+.dan-step.is-horizontal .dan-step__head {
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 0;
+  margin-bottom: var(--dan-spacing-sm);
+}
+
+.dan-step__icon {
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-full);
+  background: var(--dan-color-bg);
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+  font-weight: var(--dan-font-weight-medium);
+  line-height: 1;
+}
+
+.dan-step--process .dan-step__icon {
+  border-color: var(--dan-color-primary);
+  background: var(--dan-color-primary);
+  color: var(--dan-color-text-on-color);
+}
+
+.dan-step--finish .dan-step__icon,
+.dan-step--success .dan-step__icon {
+  border-color: var(--dan-color-primary);
+  background: var(--dan-color-bg);
+  color: var(--dan-color-primary);
+}
+
+.dan-step--success .dan-step__icon {
+  border-color: var(--dan-color-success);
+  color: var(--dan-color-success);
+}
+
+.dan-step--error .dan-step__icon {
+  border-color: var(--dan-color-danger);
+  background: var(--dan-color-bg);
+  color: var(--dan-color-danger);
+}
+
+.dan-step--wait .dan-step__icon {
+  border-color: var(--dan-color-border);
+  color: var(--dan-color-text-placeholder);
+}
+
+.dan-step__line {
+  background: var(--dan-color-border);
+}
+
+.dan-step.is-horizontal .dan-step__line {
+  flex: 1;
+  height: 2px;
+  margin: 0 var(--dan-spacing-sm);
+}
+
+.dan-step.is-vertical .dan-step__line {
+  position: absolute;
+  top: 28px;
+  bottom: calc(-1 * var(--dan-spacing-xl));
+  left: 13px;
+  width: 2px;
+}
+
+.dan-step--finish .dan-step__line,
+.dan-step--success .dan-step__line {
+  background: var(--dan-color-primary);
+}
+
+.dan-step--success .dan-step__line {
+  background: var(--dan-color-success);
+}
+
+.dan-step.is-horizontal {
+  flex-direction: column;
+}
+
+.dan-step.is-horizontal .dan-step__main {
+  padding-right: var(--dan-spacing-lg);
+}
+
+.dan-step.is-simple .dan-step__head {
+  width: auto;
+  margin: 0 var(--dan-spacing-sm) 0 0;
+}
+
+.dan-step.is-simple .dan-step__icon {
+  width: 22px;
+  height: 22px;
+  font-size: var(--dan-font-size-xs);
+}
+
+.dan-step__title {
+  color: var(--dan-color-text);
+  font-size: var(--dan-font-size-md);
+  font-weight: var(--dan-font-weight-medium);
+  line-height: 28px;
+}
+
+.dan-step--wait .dan-step__title {
+  color: var(--dan-color-text-secondary);
+  font-weight: var(--dan-font-weight-regular);
+}
+
+.dan-step--process .dan-step__title {
+  color: var(--dan-color-primary);
+}
+
+.dan-step--error .dan-step__title {
+  color: var(--dan-color-danger);
+}
+
+.dan-step__description {
+  margin-top: var(--dan-spacing-xs);
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+  line-height: 1.5;
+}
+
+.dan-step.is-simple .dan-step__title {
+  line-height: 22px;
+}

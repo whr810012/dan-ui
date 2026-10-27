@@ -1,0 +1,42 @@
+.dan-back-top {
+  position: fixed;
+  z-index: var(--dan-z-index-affix);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--dan-radius-full);
+  background: var(--dan-color-primary);
+  color: var(--dan-color-text-on-color);
+  font-size: var(--dan-font-size-lg);
+  line-height: 1;
+  box-shadow: var(--dan-shadow-md);
+  cursor: pointer;
+  transition:
+    background-color var(--dan-duration-fast) var(--dan-ease),
+    transform var(--dan-duration-fast) var(--dan-ease),
+    opacity var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-back-top:hover {
+  background: var(--dan-color-primary-hover);
+}
+
+.dan-back-top:focus-visible {
+  outline: 2px solid var(--dan-color-primary-light);
+  outline-offset: 2px;
+}
+
+.dan-fade-enter-active,
+.dan-fade-leave-active {
+  transition: opacity var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-fade-enter-from,
+.dan-fade-leave-to {
+  opacity: 0;
+}

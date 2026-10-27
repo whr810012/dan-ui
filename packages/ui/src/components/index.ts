@@ -134,6 +134,18 @@ export type {
 export { DanPagination } from './pagination'
 export type { DanPaginationInstance } from './pagination'
 
+export { DanSteps, DanStep } from './steps'
+export type { DanStepsInstance, DanStepInstance, StepStatus } from './steps'
+
+export { DanAffix } from './affix'
+export type { DanAffixInstance } from './affix'
+
+export { DanBackTop } from './back-top'
+export type { DanBackTopInstance } from './back-top'
+
+export { DanAnchor, DanAnchorLink } from './anchor'
+export type { DanAnchorInstance, DanAnchorLinkInstance } from './anchor'
+
 export { DanLoading } from './loading'
 export type { DanLoadingInstance } from './loading'
 
