@@ -1,4 +1,4 @@
-﻿<script setup>
+<script setup>
 import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/image/basic.vue'
 import basicSrc from './demos/image/basic.vue?raw'
