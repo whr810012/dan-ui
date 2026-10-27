@@ -2,7 +2,7 @@
 
 Vue 3 通用基础 UI 组件库（dan-ui）。
 
-**官网：** [https://dandanhub.vip/dan-ui](https://dandanhub.vip/dan-ui)
+**文档站：** [https://dandanhub.vip/dan-ui/](https://dandanhub.vip/dan-ui/)
 
 ## 安装
 

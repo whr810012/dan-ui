@@ -136,6 +136,8 @@ const componentsSidebar = collapsible([
 ])
 
 export default defineConfig({
+  // 生产挂载在 https://dandanhub.vip/dan-ui/
+  base: '/dan-ui/',
   title: 'dan-ui',
   description: 'Vue 3 通用基础 UI 组件库',
   lang: 'zh-CN',
@@ -201,7 +203,9 @@ export default defineConfig({
     returnToTopLabel: '回到顶部',
     sidebarMenuLabel: '菜单',
     darkModeSwitchLabel: '外观',
-    socialLinks: [],
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/whr810012/dan-ui' },
+    ],
   },
   vite: {
     resolve: {

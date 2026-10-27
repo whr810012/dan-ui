@@ -2,7 +2,7 @@
 
 Vue 3 通用基础 UI 组件库，覆盖表单基础、AI 对话界面与富文本编辑能力。
 
-**官网：** [https://dandanhub.vip/dan-ui](https://dandanhub.vip/dan-ui)
+**文档站：** [https://dandanhub.vip/dan-ui/](https://dandanhub.vip/dan-ui/)
 
 ## 特性
 
@@ -93,6 +93,14 @@ pnpm dev:docs
 | `pnpm lint` | ESLint + Prettier 检查 |
 | `pnpm gen <name>` | 生成组件脚手架 |
 | `pnpm docs:build` | 构建文档站 |
+
+## 文档站部署（dandanhub.vip/dan-ui）
+
+VitePress `base` 为 `/dan-ui/`。Cloudflare Pages：
+
+- Build：`pnpm install && pnpm build && pnpm docs:build`
+- Output：`docs/.vitepress/dist`
+- 由 dandanhub Worker 将 `/dan-ui/*` 反代到本 Pages 项目
 
 ## 仓库结构
 
