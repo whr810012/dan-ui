@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { useFocusTrap } from '../../hooks/useFocusTrap'
 import { useNamespace } from '../../hooks/useNamespace'
 import { DanIcon } from '../icon'
 import './style.css'
@@ -38,7 +39,9 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('drawer')
+const panelRef = ref<HTMLElement | null>(null)
 const rendered = computed(() => props.modelValue || !props.destroyOnClose)
+useFocusTrap(panelRef, () => props.modelValue)
 
 const panelStyle = computed(() => {
   const isVertical = props.direction === 'ttb' || props.direction === 'btt'
@@ -87,9 +90,11 @@ onBeforeUnmount(() => {
     <div v-if="rendered" v-show="modelValue" :class="[ns.b(), ns.m(direction)]">
       <div :class="ns.e('mask')" @click="onMaskClick" />
       <aside
+        ref="panelRef"
         :class="ns.e('panel')"
         role="dialog"
         aria-modal="true"
+        tabindex="-1"
         :style="panelStyle"
         @click.stop
       >

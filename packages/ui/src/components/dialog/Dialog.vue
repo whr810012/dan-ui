@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { useFocusTrap } from '../../hooks/useFocusTrap'
 import { useNamespace } from '../../hooks/useNamespace'
 import { DanButton } from '../button'
 import { DanIcon } from '../icon'
@@ -49,7 +50,9 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('dialog')
+const panelRef = ref<HTMLElement | null>(null)
 const rendered = computed(() => props.modelValue || !props.destroyOnClose)
+useFocusTrap(panelRef, () => props.modelValue)
 
 function close() {
   emit('update:modelValue', false)
@@ -102,9 +105,11 @@ onBeforeUnmount(() => {
     <div v-if="rendered" v-show="modelValue" :class="ns.b()">
       <div :class="ns.e('mask')" @click="onMaskClick" />
       <div
+        ref="panelRef"
         :class="ns.e('panel')"
         role="dialog"
         aria-modal="true"
+        tabindex="-1"
         :style="{ width, marginTop: top }"
         @click.stop
       >

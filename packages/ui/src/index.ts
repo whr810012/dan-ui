@@ -10,6 +10,7 @@ export type { CreateContextReturn } from './utils/createContext'
 
 export { useNamespace, defaultNamespace } from './hooks/useNamespace'
 export type { UseNamespaceReturn } from './hooks/useNamespace'
+export { useFocusTrap } from './hooks/useFocusTrap'
 
 export {
   provideConfig,
