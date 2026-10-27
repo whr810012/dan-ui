@@ -1,6 +1,6 @@
 {
   "name": "@dandan-ui/ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Vue 3 UI component library — dan-ui",
   "type": "module",
   "license": "MIT",
@@ -23,7 +23,8 @@
   ],
   "files": [
     "dist",
-    "LICENSE"
+    "LICENSE",
+    "README.md"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
