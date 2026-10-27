@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DanIcon, DanInput } from '@dan-ui/ui'
+import { DanIcon, DanInput } from '@dandan-ui/ui'
 
 const password = ref('123456')
 const visible = ref(false)

@@ -6,15 +6,15 @@
   "scripts": {
     "dev:play": "pnpm --filter @dan-ui/playground dev",
     "dev:docs": "pnpm --filter @dan-ui/docs dev",
-    "build": "pnpm --filter @dan-ui/theme build && pnpm --filter @dan-ui/ui build",
-    "build:theme": "pnpm --filter @dan-ui/theme build",
-    "build:ui": "pnpm --filter @dan-ui/ui build",
+    "build": "pnpm --filter @dandan-ui/theme build && pnpm --filter @dandan-ui/ui build",
+    "build:theme": "pnpm --filter @dandan-ui/theme build",
+    "build:ui": "pnpm --filter @dandan-ui/ui build",
     "docs:build": "pnpm --filter @dan-ui/docs build",
-    "test": "pnpm --filter @dan-ui/ui test",
+    "test": "pnpm --filter @dandan-ui/ui test",
     "lint": "eslint . && prettier --check \"**/*.{ts,tsx,vue,js,mjs,cjs,css,json}\"",
     "lint:fix": "eslint . --fix && prettier --write \"**/*.{ts,tsx,vue,js,mjs,cjs,css,json}\"",
     "gen": "node ./scripts/gen-component.mjs",
-    "publish:packages": "pnpm build && pnpm --filter @dan-ui/theme publish --access public && pnpm --filter @dan-ui/ui publish --access public"
+    "publish:packages": "pnpm build && pnpm --filter @dandan-ui/theme publish --access public && pnpm --filter @dandan-ui/ui publish --access public"
   },
 
   "engines": {

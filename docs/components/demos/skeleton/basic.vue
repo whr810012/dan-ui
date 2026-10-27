@@ -1,5 +1,5 @@
-﻿<script setup>
-import { DanSkeleton } from '@dan-ui/ui'
+<script setup>
+import { DanSkeleton } from '@dandan-ui/ui'
 </script>
 <template>
   <DanSkeleton :rows="4" avatar animated />

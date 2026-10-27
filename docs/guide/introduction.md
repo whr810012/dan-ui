@@ -19,16 +19,16 @@
 ## 安装
 
 ```bash
-pnpm add @dan-ui/ui @dan-ui/theme
+pnpm add @dandan-ui/ui @dandan-ui/theme
 ```
 
 ## 快速使用
 
 ```ts
 import { createApp } from 'vue'
-import DanUI from '@dan-ui/ui'
-import '@dan-ui/theme'
-import '@dan-ui/ui/style.css'
+import DanUI from '@dandan-ui/ui'
+import '@dandan-ui/theme'
+import '@dandan-ui/ui/style.css'
 import App from './App.vue'
 
 createApp(App).use(DanUI).mount('#app')

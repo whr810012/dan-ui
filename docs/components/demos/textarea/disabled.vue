@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DanTextarea } from '@dan-ui/ui'
+import { DanTextarea } from '@dandan-ui/ui'
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanMenu, DanMenuItem, DanSubMenu } from '@dan-ui/ui'
+import { DanMenu, DanMenuItem, DanSubMenu } from '@dandan-ui/ui'
 
 const active = ref('1-1')
 </script>

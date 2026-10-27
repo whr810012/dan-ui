@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanButton, DanSteps, DanStep } from '@dan-ui/ui'
+import { DanButton, DanSteps, DanStep } from '@dandan-ui/ui'
 
 const active = ref(1)
 

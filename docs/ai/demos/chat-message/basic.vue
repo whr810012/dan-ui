@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DanChatMessage } from '@dan-ui/ui'
+import { DanChatMessage } from '@dandan-ui/ui'
 
 const message = {
   id: '1',

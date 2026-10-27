@@ -5,7 +5,7 @@ import {
   DanDropdownItem,
   DanDropdownMenu,
   DanMessage,
-} from '@dan-ui/ui'
+} from '@dandan-ui/ui'
 
 function onCommand(command: string | number | object) {
   DanMessage.success(`选择了：${String(command)}`)

@@ -1,5 +1,5 @@
 <script setup>
-import { DanSteps, DanStep } from '@dan-ui/ui'
+import { DanSteps, DanStep } from '@dandan-ui/ui'
 </script>
 
 <template>

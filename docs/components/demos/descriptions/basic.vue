@@ -1,5 +1,5 @@
-﻿<script setup>
-import { DanDescriptions, DanDescriptionsItem } from '@dan-ui/ui'
+<script setup>
+import { DanDescriptions, DanDescriptionsItem } from '@dandan-ui/ui'
 </script>
 <template>
   <DanDescriptions title="用户信息" :column="2" border>

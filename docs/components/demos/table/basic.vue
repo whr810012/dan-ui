@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { DanTable } from '@dan-ui/ui'
-import type { TableColumn } from '@dan-ui/ui'
+import { DanTable } from '@dandan-ui/ui'
+import type { TableColumn } from '@dandan-ui/ui'
 
 const columns: TableColumn[] = [
   { prop: 'name', label: '姓名', minWidth: 100, filterable: true },

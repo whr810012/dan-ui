@@ -17,7 +17,7 @@ import basicSrc from './demos/notification/basic.vue?raw'
 ## API
 
 ```ts
-import { DanNotification } from '@dan-ui/ui'
+import { DanNotification } from '@dandan-ui/ui'
 
 DanNotification({ title, message, type, duration, position })
 DanNotification.success / warning / info / error

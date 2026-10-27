@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanTabs, DanTabPane } from '@dan-ui/ui'
+import { DanTabs, DanTabPane } from '@dandan-ui/ui'
 
 const active = ref('profile')
 </script>

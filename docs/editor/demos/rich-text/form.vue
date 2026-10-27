@@ -7,7 +7,7 @@ import {
   DanInput,
   DanRichText,
   type DanFormInstance,
-} from '@dan-ui/ui'
+} from '@dandan-ui/ui'
 
 const formRef = ref<DanFormInstance>()
 const model = reactive({

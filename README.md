@@ -14,13 +14,13 @@ Vue 3 通用基础 UI 组件库，覆盖表单基础、AI 对话界面与富文�
 
 | 包名 | 说明 |
 |------|------|
-| `@dan-ui/ui` | 组件库主包 |
-| `@dan-ui/theme` | 设计 Token 与基础样式 |
+| `@dandan-ui/ui` | 组件库主包 |
+| `@dandan-ui/theme` | 设计 Token 与基础样式 |
 
 ## 安装
 
 ```bash
-pnpm add @dan-ui/ui @dan-ui/theme
+pnpm add @dandan-ui/ui @dandan-ui/theme
 ```
 
 使用富文本时，额外安装 TipTap peer 依赖：
@@ -33,9 +33,9 @@ pnpm add @tiptap/vue-3 @tiptap/starter-kit @tiptap/extension-placeholder @tiptap
 
 ```ts
 import { createApp } from 'vue'
-import DanUI from '@dan-ui/ui'
-import '@dan-ui/theme'
-import '@dan-ui/ui/style.css'
+import DanUI from '@dandan-ui/ui'
+import '@dandan-ui/theme'
+import '@dandan-ui/ui/style.css'
 import App from './App.vue'
 
 createApp(App).use(DanUI).mount('#app')
@@ -44,16 +44,16 @@ createApp(App).use(DanUI).mount('#app')
 ## 按需引入
 
 ```ts
-import { DanButton, DanInput, DanForm } from '@dan-ui/ui'
-import '@dan-ui/theme'
-import '@dan-ui/ui/style.css'
+import { DanButton, DanInput, DanForm } from '@dandan-ui/ui'
+import '@dandan-ui/theme'
+import '@dandan-ui/ui/style.css'
 ```
 
 配合 `unplugin-vue-components`：
 
 ```ts
 import Components from 'unplugin-vue-components/vite'
-import { DanUIResolver } from '@dan-ui/ui/resolver'
+import { DanUIResolver } from '@dandan-ui/ui/resolver'
 
 export default {
   plugins: [
@@ -68,8 +68,8 @@ export default {
 
 | 引入 | 作用 |
 |------|------|
-| `@dan-ui/theme` | CSS 变量 Token、基础 reset |
-| `@dan-ui/ui/style.css` | 组件样式 |
+| `@dandan-ui/theme` | CSS 变量 Token、基础 reset |
+| `@dandan-ui/ui/style.css` | 组件样式 |
 
 业务侧可用 CSS 变量覆盖主题，例如 `--dan-color-primary`。
 

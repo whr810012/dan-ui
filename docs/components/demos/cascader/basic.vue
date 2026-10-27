@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanCascader } from '@dan-ui/ui'
+import { DanCascader } from '@dandan-ui/ui'
 
 const value = ref(null)
 const options = [

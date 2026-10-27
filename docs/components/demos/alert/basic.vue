@@ -1,5 +1,5 @@
 <script setup>
-import { DanAlert, DanSpace } from '@dan-ui/ui'
+import { DanAlert, DanSpace } from '@dandan-ui/ui'
 </script>
 
 <template>

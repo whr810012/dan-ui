@@ -7,11 +7,11 @@ dan-ui 样式基于 CSS 变量，前缀为 `--dan-`。
 安装后引入：
 
 ```ts
-import '@dan-ui/theme'
-import '@dan-ui/ui/style.css'
+import '@dandan-ui/theme'
+import '@dandan-ui/ui/style.css'
 ```
 
-`@dan-ui/theme` 会在 `:root` 注入色板、字号、间距、圆角、阴影等 Token。
+`@dandan-ui/theme` 会在 `:root` 注入色板、字号、间距、圆角、阴影等 Token。
 
 ## 覆盖变量
 
@@ -53,7 +53,7 @@ import '@dan-ui/ui/style.css'
 | `--dan-border-radius-md` | 中等圆角 |
 | `--dan-z-index-popup` | 浮层基准 z-index |
 
-完整列表见 `@dan-ui/theme` 源码 `packages/theme/src/index.css`。
+完整列表见 `@dandan-ui/theme` 源码 `packages/theme/src/index.css`。
 
 ## 暗色
 

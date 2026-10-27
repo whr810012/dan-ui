@@ -8,7 +8,7 @@ import {
   DanSuggestion,
   DanTokenUsage,
   type ChatMessageModel,
-} from '@dan-ui/ui'
+} from '@dandan-ui/ui'
 
 const messages = ref<ChatMessageModel[]>([
   {

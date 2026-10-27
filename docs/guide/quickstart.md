@@ -10,18 +10,18 @@
 ## 安装依赖
 
 ```bash
-pnpm add vue @dan-ui/ui @dan-ui/theme
+pnpm add vue @dandan-ui/ui @dandan-ui/theme
 ```
 
 ## 最小示例
 
 ```ts
 import { createApp } from 'vue'
-import DanUI from '@dan-ui/ui'
-import '@dan-ui/theme'
-import '@dan-ui/ui/style.css'
+import DanUI from '@dandan-ui/ui'
+import '@dandan-ui/theme'
+import '@dandan-ui/ui/style.css'
 import { h } from 'vue'
-import { DanButton } from '@dan-ui/ui'
+import { DanButton } from '@dandan-ui/ui'
 
 createApp({
   render: () => h(DanButton, { type: 'primary' }, () => 'Hello dan-ui'),

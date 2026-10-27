@@ -6,9 +6,9 @@
 
 ```ts
 import { createApp } from 'vue'
-import DanUI from '@dan-ui/ui'
-import '@dan-ui/theme'
-import '@dan-ui/ui/style.css'
+import DanUI from '@dandan-ui/ui'
+import '@dandan-ui/theme'
+import '@dandan-ui/ui/style.css'
 import App from './App.vue'
 
 createApp(App).use(DanUI).mount('#app')
@@ -19,19 +19,19 @@ createApp(App).use(DanUI).mount('#app')
 ## 按需引入
 
 ```ts
-import { DanButton, DanForm, DanFormItem, DanInput } from '@dan-ui/ui'
-import '@dan-ui/theme'
-import '@dan-ui/ui/style.css'
+import { DanButton, DanForm, DanFormItem, DanInput } from '@dandan-ui/ui'
+import '@dandan-ui/theme'
+import '@dandan-ui/ui/style.css'
 ```
 
-一期推荐引入全量组件样式 `@dan-ui/ui/style.css`；按组件拆分 CSS 可在后续版本再细化。
+一期推荐引入全量组件样式 `@dandan-ui/ui/style.css`；按组件拆分 CSS 可在后续版本再细化。
 
 ## unplugin-vue-components
 
 ```ts
 // vite.config.ts
 import Components from 'unplugin-vue-components/vite'
-import { DanUIResolver } from '@dan-ui/ui/resolver'
+import { DanUIResolver } from '@dandan-ui/ui/resolver'
 
 export default {
   plugins: [
@@ -42,7 +42,7 @@ export default {
 }
 ```
 
-`DanUIResolver` 会解析以 `Dan` 开头的组件；默认附带 `sideEffects: '@dan-ui/ui/style.css'`。
+`DanUIResolver` 会解析以 `Dan` 开头的组件；默认附带 `sideEffects: '@dandan-ui/ui/style.css'`。
 
 若只想解析组件、自行管理样式：
 
@@ -54,8 +54,8 @@ DanUIResolver({ importStyle: false })
 
 | 包路径 | 作用 |
 |--------|------|
-| `@dan-ui/theme` | Token（`--dan-*`）与基础 reset |
-| `@dan-ui/ui/style.css` | 组件样式 |
+| `@dandan-ui/theme` | Token（`--dan-*`）与基础 reset |
+| `@dandan-ui/ui/style.css` | 组件样式 |
 
 缺少任一都会导致样式不完整。
 

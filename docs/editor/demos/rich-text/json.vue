@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DanRichText } from '@dan-ui/ui'
+import { DanRichText } from '@dandan-ui/ui'
 
 const value = ref({
   type: 'doc',

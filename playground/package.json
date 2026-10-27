@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@dan-ui/theme": "workspace:*",
-    "@dan-ui/ui": "workspace:*",
+    "@dandan-ui/theme": "workspace:*",
+    "@dandan-ui/ui": "workspace:*",
     "@tiptap/extension-image": "^3.32.0",
     "@tiptap/extension-link": "^3.32.0",
     "@tiptap/extension-placeholder": "^3.32.0",

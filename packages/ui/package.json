@@ -1,5 +1,5 @@
 {
-  "name": "@dan-ui/ui",
+  "name": "@dandan-ui/ui",
   "version": "1.0.0",
   "description": "Vue 3 UI component library — dan-ui",
   "type": "module",
@@ -81,7 +81,7 @@
     }
   },
   "dependencies": {
-    "@dan-ui/theme": "workspace:*",
+    "@dandan-ui/theme": "workspace:*",
     "markdown-it": "^15.0.3"
   },
   "devDependencies": {

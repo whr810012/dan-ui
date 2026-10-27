@@ -1,5 +1,5 @@
-﻿<script setup>
-import { DanProgress, DanSpace } from '@dan-ui/ui'
+<script setup>
+import { DanProgress, DanSpace } from '@dandan-ui/ui'
 </script>
 <template>
   <DanSpace direction="vertical" style="width: 100%">

@@ -7,7 +7,7 @@ import {
   DanHeader,
   DanLayout,
   DanMain,
-} from '@dan-ui/ui'
+} from '@dandan-ui/ui'
 
 const collapsed = ref(false)
 </script>

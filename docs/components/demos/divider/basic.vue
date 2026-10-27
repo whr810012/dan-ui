@@ -1,5 +1,5 @@
 <script setup>
-import { DanDivider } from '@dan-ui/ui'
+import { DanDivider } from '@dandan-ui/ui'
 </script>
 
 <template>

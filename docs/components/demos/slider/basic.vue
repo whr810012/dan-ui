@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanSlider } from '@dan-ui/ui'
+import { DanSlider } from '@dandan-ui/ui'
 
 const value = ref(36)
 </script>

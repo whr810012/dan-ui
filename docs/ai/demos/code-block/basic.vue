@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DanCodeBlock } from '@dan-ui/ui'
+import { DanCodeBlock } from '@dandan-ui/ui'
 
 const code = `export function hello(name: string) {
   return \`Hello, \${name}\`

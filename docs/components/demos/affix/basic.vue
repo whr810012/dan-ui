@@ -1,5 +1,5 @@
 <script setup>
-import { DanAffix, DanButton } from '@dan-ui/ui'
+import { DanAffix, DanButton } from '@dandan-ui/ui'
 </script>
 
 <template>

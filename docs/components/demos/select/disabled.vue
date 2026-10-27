@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DanSelect } from '@dan-ui/ui'
+import { DanSelect } from '@dandan-ui/ui'
 
 const options = [
   { label: '选项 A', value: 'a' },

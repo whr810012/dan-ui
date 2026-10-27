@@ -16,7 +16,7 @@ import {
   useNamespace,
   type ChatMessageModel,
   type DanFormInstance,
-} from '@dan-ui/ui'
+} from '@dandan-ui/ui'
 
 const ns = useNamespace('playground')
 const tab = ref<'form' | 'chat' | 'editor'>('chat')

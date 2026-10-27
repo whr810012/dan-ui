@@ -17,7 +17,7 @@ import basicSrc from './demos/message-box/basic.vue?raw'
 ## API
 
 ```ts
-import { DanMessageBox } from '@dan-ui/ui'
+import { DanMessageBox } from '@dandan-ui/ui'
 
 await DanMessageBox.alert(message, title?, options?)
 await DanMessageBox.confirm(message, title?, options?)

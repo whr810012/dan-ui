@@ -1,5 +1,5 @@
 {
-  "name": "@dan-ui/theme",
+  "name": "@dandan-ui/theme",
   "version": "1.0.0",
   "description": "CSS design tokens for dan-ui",
   "type": "module",

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DanButton, DanConfigProvider, DanInput } from '@dan-ui/ui'
+import { DanButton, DanConfigProvider, DanInput } from '@dandan-ui/ui'
 
 const size = ref<'small' | 'default' | 'large'>('large')
 </script>

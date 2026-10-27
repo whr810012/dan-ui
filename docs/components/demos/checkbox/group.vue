@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DanCheckbox, DanCheckboxGroup } from '@dan-ui/ui'
+import { DanCheckbox, DanCheckboxGroup } from '@dandan-ui/ui'
 
 const list = ref(['vue', 'ts'])
 </script>

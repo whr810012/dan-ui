@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DanTextarea } from '@dan-ui/ui'
+import { DanTextarea } from '@dandan-ui/ui'
 
 const value = ref('dan-ui 文本域示例')
 </script>

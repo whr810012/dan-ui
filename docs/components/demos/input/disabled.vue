@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DanInput } from '@dan-ui/ui'
+import { DanInput } from '@dandan-ui/ui'
 </script>
 
 <template>

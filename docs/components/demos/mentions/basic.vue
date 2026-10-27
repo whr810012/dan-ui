@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanMentions } from '@dan-ui/ui'
+import { DanMentions } from '@dandan-ui/ui'
 
 const value = ref('')
 const options = [

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DanCheckbox } from '@dan-ui/ui'
+import { DanCheckbox } from '@dandan-ui/ui'
 
 const checked = ref(true)
 </script>

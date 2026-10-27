@@ -2,14 +2,14 @@
 
 ## 1.0.0
 
-- 首次正式发布到 npm：`@dan-ui/ui`、`@dan-ui/theme`
+- 首次正式发布到 npm：`@dandan-ui/ui`、`@dandan-ui/theme`
 - Table：支持多级表头（`columns[].children`）、树形数据（`tree` / `expandRowKeys`）、虚拟滚动（`virtual`）
 - 无障碍：Select / Dropdown 支持方向键与 Enter；MessageBox 焦点陷阱与 `aria-labelledby`；Notification `aria-live`
 - 主题：暗色 placeholder / disabled 文本加深；Table 表头强制使用 muted Token，避免被文档站全局 `th` 样式覆盖
 
 ## 0.0.1
 
-- 基础：ConfigProvider、Button、Icon、Space、Divider、Layout、Row/Col、`@dan-ui/theme`
+- 基础：ConfigProvider、Button、Icon、Space、Divider、Layout、Row/Col、`@dandan-ui/theme`
 - 表单：Input、InputNumber、Upload、Slider、Rate、DatePicker（含范围）、TimePicker、Autocomplete、Cascader、ColorPicker、Transfer、TreeSelect、Mentions、Textarea、Checkbox、Radio、Switch、Select、Form
 - 展示：Tag、Badge、Avatar、Alert、Empty、Progress、Skeleton、Statistic、Result、Descriptions、Timeline、Collapse、Image、ImagePreview、Card、Carousel、Table（筛选 / 列显隐）、Tree、Calendar
 - 导航：Tabs、Menu / SubMenu、Breadcrumb、Pagination、Steps、Affix、BackTop、Anchor

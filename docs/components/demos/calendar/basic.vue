@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanCalendar } from '@dan-ui/ui'
+import { DanCalendar } from '@dandan-ui/ui'
 
 const value = ref('2026-10-27')
 </script>

@@ -17,7 +17,7 @@ pnpm build && pnpm test && pnpm docs:build && pnpm lint
 
 ## API 稳定化
 
-1. 公开导出仅通过 `@dan-ui/ui` / `DanUIResolver`；避免业务依赖深层相对路径。
+1. 公开导出仅通过 `@dandan-ui/ui` / `DanUIResolver`；避免业务依赖深层相对路径。
 2. Props / Events 命名保持 `modelValue`、`update:modelValue`、kebab 事件文档与实现一致。
 3. 破坏性变更记入 [Changelog](/guide/changelog)，并考虑次版本号。
 

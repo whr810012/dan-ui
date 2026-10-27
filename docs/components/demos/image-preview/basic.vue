@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanButton, DanImagePreview } from '@dan-ui/ui'
+import { DanButton, DanImagePreview } from '@dandan-ui/ui'
 
 const visible = ref(false)
 </script>

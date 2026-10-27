@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DanButton, DanNotification } from '@dan-ui/ui'
+import { DanButton, DanNotification } from '@dandan-ui/ui'
 
 function open(type: 'success' | 'warning' | 'info' | 'error') {
   DanNotification[type]({

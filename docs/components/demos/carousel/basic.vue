@@ -1,5 +1,5 @@
 <script setup>
-import { DanCarousel, DanCarouselItem } from '@dan-ui/ui'
+import { DanCarousel, DanCarouselItem } from '@dandan-ui/ui'
 </script>
 
 <template>

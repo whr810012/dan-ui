@@ -1,5 +1,5 @@
 <script setup>
-import { DanBackTop } from '@dan-ui/ui'
+import { DanBackTop } from '@dandan-ui/ui'
 </script>
 
 <template>

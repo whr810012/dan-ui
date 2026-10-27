@@ -1,5 +1,5 @@
-﻿<script setup>
-import { DanSpace, DanStatistic } from '@dan-ui/ui'
+<script setup>
+import { DanSpace, DanStatistic } from '@dandan-ui/ui'
 </script>
 <template>
   <DanSpace :size="32">

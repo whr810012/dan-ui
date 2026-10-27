@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanDatePicker } from '@dan-ui/ui'
+import { DanDatePicker } from '@dandan-ui/ui'
 
 const value = ref(null)
 </script>

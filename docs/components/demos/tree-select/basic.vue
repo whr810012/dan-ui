@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanTreeSelect } from '@dan-ui/ui'
+import { DanTreeSelect } from '@dandan-ui/ui'
 
 const value = ref(null)
 const data = [

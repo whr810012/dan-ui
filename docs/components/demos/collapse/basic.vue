@@ -1,6 +1,6 @@
-﻿<script setup>
+<script setup>
 import { ref } from 'vue'
-import { DanCollapse, DanCollapseItem } from '@dan-ui/ui'
+import { DanCollapse, DanCollapseItem } from '@dandan-ui/ui'
 const active = ref(['1'])
 </script>
 <template>

@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanAutocomplete } from '@dan-ui/ui'
+import { DanAutocomplete } from '@dandan-ui/ui'
 
 const value = ref('')
 const restaurants = ['北京', '上海', '广州', '深圳', '杭州', '成都']

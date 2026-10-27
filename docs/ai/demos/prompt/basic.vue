@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DanPrompt } from '@dan-ui/ui'
+import { DanPrompt } from '@dandan-ui/ui'
 
 const tip = ref('')
 </script>

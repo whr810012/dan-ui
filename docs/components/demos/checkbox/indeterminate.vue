@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { DanCheckbox, DanCheckboxGroup } from '@dan-ui/ui'
+import { DanCheckbox, DanCheckboxGroup } from '@dandan-ui/ui'
 
 const cities = ['上海', '北京', '广州', '深圳']
 const checked = ref(['上海', '北京'])

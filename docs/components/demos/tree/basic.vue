@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanTree } from '@dan-ui/ui'
+import { DanTree } from '@dandan-ui/ui'
 
 const checkedKeys = ref([])
 const data = [

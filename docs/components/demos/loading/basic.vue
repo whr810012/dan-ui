@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanButton, DanLoading, DanSpace } from '@dan-ui/ui'
+import { DanButton, DanLoading, DanSpace } from '@dandan-ui/ui'
 
 const loading = ref(true)
 </script>

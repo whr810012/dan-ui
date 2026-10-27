@@ -1,5 +1,5 @@
 <script setup>
-import { DanTable } from '@dan-ui/ui'
+import { DanTable } from '@dandan-ui/ui'
 
 const columns = [
   { prop: 'name', label: '部门', minWidth: 180 },

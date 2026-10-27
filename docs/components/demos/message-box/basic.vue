@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DanButton, DanMessage, DanMessageBox } from '@dan-ui/ui'
+import { DanButton, DanMessage, DanMessageBox } from '@dandan-ui/ui'
 
 async function onAlert() {
   await DanMessageBox.alert('这是一条提示', '提示')

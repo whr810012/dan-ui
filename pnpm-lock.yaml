@@ -136,10 +136,10 @@ importers:
 
   docs:
     dependencies:
-      '@dan-ui/theme':
+      '@dandan-ui/theme':
         specifier: workspace:*
         version: link:../packages/theme
-      '@dan-ui/ui':
+      '@dandan-ui/ui':
         specifier: workspace:*
         version: link:../packages/ui
       vue:
@@ -185,7 +185,7 @@ importers:
 
   packages/ui:
     dependencies:
-      '@dan-ui/theme':
+      '@dandan-ui/theme':
         specifier: workspace:*
         version: link:../theme
       markdown-it:
@@ -246,10 +246,10 @@ importers:
 
   playground:
     dependencies:
-      '@dan-ui/theme':
+      '@dandan-ui/theme':
         specifier: workspace:*
         version: link:../packages/theme
-      '@dan-ui/ui':
+      '@dandan-ui/ui':
         specifier: workspace:*
         version: link:../packages/ui
       '@tiptap/extension-image':

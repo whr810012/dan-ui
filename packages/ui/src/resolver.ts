@@ -10,7 +10,7 @@ export interface ComponentResolverObject {
 }
 
 export interface DanResolverOptions {
-  /** Auto import `@dan-ui/ui/style.css`. Default true. */
+  /** Auto import `@dandan-ui/ui/style.css`. Default true. */
   importStyle?: boolean
 }
 
@@ -29,8 +29,8 @@ export function DanUIResolver(
       if (!name.startsWith('Dan')) return undefined
       return {
         name,
-        from: '@dan-ui/ui',
-        sideEffects: importStyle ? '@dan-ui/ui/style.css' : undefined,
+        from: '@dandan-ui/ui',
+        sideEffects: importStyle ? '@dandan-ui/ui/style.css' : undefined,
       }
     },
   }

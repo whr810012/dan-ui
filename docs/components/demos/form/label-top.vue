@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import { DanForm, DanFormItem, DanInput } from '@dan-ui/ui'
+import { DanForm, DanFormItem, DanInput } from '@dandan-ui/ui'
 
 const model = reactive({
   title: '',

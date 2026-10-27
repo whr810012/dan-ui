@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanPagination } from '@dan-ui/ui'
+import { DanPagination } from '@dandan-ui/ui'
 
 const page = ref(1)
 </script>

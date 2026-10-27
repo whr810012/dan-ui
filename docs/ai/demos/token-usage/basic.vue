@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DanTokenUsage } from '@dan-ui/ui'
+import { DanTokenUsage } from '@dandan-ui/ui'
 </script>
 
 <template>

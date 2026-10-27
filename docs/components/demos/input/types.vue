@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import { DanInput } from '@dan-ui/ui'
+import { DanInput } from '@dandan-ui/ui'
 
 const form = reactive({
   text: '',

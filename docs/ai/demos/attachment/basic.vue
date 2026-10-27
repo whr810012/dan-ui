@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DanAttachment, type ChatAttachment } from '@dan-ui/ui'
+import { DanAttachment, type ChatAttachment } from '@dandan-ui/ui'
 
 const file = ref<ChatAttachment | null>({
   name: 'design-spec.pdf',

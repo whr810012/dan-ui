@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanInputNumber } from '@dan-ui/ui'
+import { DanInputNumber } from '@dandan-ui/ui'
 
 const value = ref(3)
 </script>

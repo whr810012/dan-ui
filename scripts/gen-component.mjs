@@ -91,7 +91,7 @@ export type ${exportName}Instance = InstanceType<typeof ${pascal}>
 writeFileSync(
   demoFile,
   `<script setup lang="ts">
-import { ${exportName} } from '@dan-ui/ui'
+import { ${exportName} } from '@dandan-ui/ui'
 </script>
 
 <template>
@@ -134,7 +134,7 @@ writeFileSync(
 
 ### Token
 
-继承全局 \`@dan-ui/theme\` CSS 变量。
+继承全局 \`@dandan-ui/theme\` CSS 变量。
 `,
 )
 

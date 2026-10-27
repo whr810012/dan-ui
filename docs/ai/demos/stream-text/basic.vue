@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DanStreamText } from '@dan-ui/ui'
+import { DanStreamText } from '@dandan-ui/ui'
 </script>
 
 <template>

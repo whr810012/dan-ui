@@ -1,5 +1,5 @@
 <script setup>
-import { DanBreadcrumb, DanBreadcrumbItem } from '@dan-ui/ui'
+import { DanBreadcrumb, DanBreadcrumbItem } from '@dandan-ui/ui'
 </script>
 
 <template>

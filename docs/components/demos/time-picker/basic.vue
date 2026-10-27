@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanTimePicker } from '@dan-ui/ui'
+import { DanTimePicker } from '@dandan-ui/ui'
 
 const value = ref('09:30')
 </script>

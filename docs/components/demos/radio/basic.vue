@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DanRadio, DanRadioGroup } from '@dan-ui/ui'
+import { DanRadio, DanRadioGroup } from '@dandan-ui/ui'
 
 const value = ref('a')
 </script>

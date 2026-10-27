@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanMessage, DanUpload } from '@dan-ui/ui'
+import { DanMessage, DanUpload } from '@dandan-ui/ui'
 
 const fileList = ref([])
 

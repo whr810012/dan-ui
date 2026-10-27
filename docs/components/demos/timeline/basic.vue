@@ -1,5 +1,5 @@
-﻿<script setup>
-import { DanTimeline, DanTimelineItem } from '@dan-ui/ui'
+<script setup>
+import { DanTimeline, DanTimelineItem } from '@dandan-ui/ui'
 </script>
 <template>
   <DanTimeline>

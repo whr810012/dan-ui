@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DanChatInput } from '@dan-ui/ui'
+import { DanChatInput } from '@dandan-ui/ui'
 
 const last = ref('')
 </script>

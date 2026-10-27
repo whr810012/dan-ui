@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DanSuggestion } from '@dan-ui/ui'
+import { DanSuggestion } from '@dandan-ui/ui'
 
 const selected = ref('')
 </script>

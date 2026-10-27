@@ -1,7 +1,7 @@
 import DefaultTheme from 'vitepress/theme'
 import type { Theme } from 'vitepress'
-import DanUI from '@dan-ui/ui'
-import '@dan-ui/theme'
+import DanUI from '@dandan-ui/ui'
+import '@dandan-ui/theme'
 import DemoBlock from '../components/DemoBlock.vue'
 import './custom.css'
 

@@ -206,8 +206,8 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        '@dan-ui/ui': resolve(__dirname, '../../packages/ui/src/index.ts'),
-        '@dan-ui/theme': resolve(
+        '@dandan-ui/ui': resolve(__dirname, '../../packages/ui/src/index.ts'),
+        '@dandan-ui/theme': resolve(
           __dirname,
           '../../packages/theme/src/index.css',
         ),

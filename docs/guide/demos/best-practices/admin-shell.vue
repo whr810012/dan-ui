@@ -13,7 +13,7 @@ import {
   DanMenuItem,
   DanSelect,
   DanTable,
-} from '@dan-ui/ui'
+} from '@dandan-ui/ui'
 
 const active = ref('users')
 const query = reactive({ keyword: '', role: '' })

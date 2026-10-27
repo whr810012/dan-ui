@@ -2,8 +2,8 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "paths": {
-      "@dan-ui/ui": ["../packages/ui/src/index.ts"],
-      "@dan-ui/theme": ["../packages/theme/src/index.css"]
+      "@dandan-ui/ui": ["../packages/ui/src/index.ts"],
+      "@dandan-ui/theme": ["../packages/theme/src/index.css"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.vue", "src/**/*.d.ts", "vite.config.ts"]

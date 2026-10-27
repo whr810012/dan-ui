@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DanGenerationControl } from '@dan-ui/ui'
+import { DanGenerationControl } from '@dandan-ui/ui'
 
 const generating = ref(false)
 </script>

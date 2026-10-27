@@ -11,7 +11,7 @@
 | 图标装饰 | 常见箭头等使用 `aria-hidden` |
 | 关闭按钮 | 提供 `aria-label="关闭"` |
 
-底层工具：`useFocusTrap`（已从 `@dan-ui/ui` 导出），业务自定义模态也可复用。
+底层工具：`useFocusTrap`（已从 `@dandan-ui/ui` 导出），业务自定义模态也可复用。
 
 ## 自检清单
 

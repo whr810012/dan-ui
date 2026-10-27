@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DanButton } from '@dan-ui/ui'
+import { DanButton } from '@dandan-ui/ui'
 </script>
 
 <template>

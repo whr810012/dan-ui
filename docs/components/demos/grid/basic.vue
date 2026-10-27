@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DanCol, DanRow } from '@dan-ui/ui'
+import { DanCol, DanRow } from '@dandan-ui/ui'
 </script>
 
 <template>

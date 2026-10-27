@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DanMarkdown } from '@dan-ui/ui'
+import { DanMarkdown } from '@dandan-ui/ui'
 
 const content = `## Hello
 

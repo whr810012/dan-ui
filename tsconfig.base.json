@@ -16,9 +16,9 @@
     "sourceMap": true,
     "jsx": "preserve",
     "paths": {
-      "@dan-ui/ui": ["./packages/ui/src/index.ts"],
-      "@dan-ui/ui/*": ["./packages/ui/src/*"],
-      "@dan-ui/theme": ["./packages/theme/src/index.css"]
+      "@dandan-ui/ui": ["./packages/ui/src/index.ts"],
+      "@dandan-ui/ui/*": ["./packages/ui/src/*"],
+      "@dandan-ui/theme": ["./packages/theme/src/index.css"]
     }
   }
 }

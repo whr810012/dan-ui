@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DanButton, DanDrawer } from '@dan-ui/ui'
+import { DanButton, DanDrawer } from '@dandan-ui/ui'
 
 const open = ref(false)
 </script>

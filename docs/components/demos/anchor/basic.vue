@@ -1,5 +1,5 @@
 <script setup>
-import { DanAnchor, DanAnchorLink } from '@dan-ui/ui'
+import { DanAnchor, DanAnchorLink } from '@dandan-ui/ui'
 </script>
 
 <template>

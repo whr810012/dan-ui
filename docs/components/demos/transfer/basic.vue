@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { DanTransfer } from '@dan-ui/ui'
+import { DanTransfer } from '@dandan-ui/ui'
 
 const value = ref([2])
 const data = [

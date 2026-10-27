@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DanIcon, DanInput } from '@dan-ui/ui'
+import { DanIcon, DanInput } from '@dandan-ui/ui'
 
 const user = ref('')
 const amount = ref('')
