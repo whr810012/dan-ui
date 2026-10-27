@@ -13,8 +13,10 @@
     "test": "pnpm --filter @dan-ui/ui test",
     "lint": "eslint . && prettier --check \"**/*.{ts,tsx,vue,js,mjs,cjs,css,json}\"",
     "lint:fix": "eslint . --fix && prettier --write \"**/*.{ts,tsx,vue,js,mjs,cjs,css,json}\"",
-    "gen": "node ./scripts/gen-component.mjs"
+    "gen": "node ./scripts/gen-component.mjs",
+    "publish:packages": "pnpm build && pnpm --filter @dan-ui/theme publish --access public && pnpm --filter @dan-ui/ui publish --access public"
   },
+
   "engines": {
     "node": ">=18.0.0",
     "pnpm": ">=9.0.0"

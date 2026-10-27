@@ -1,10 +1,29 @@
 {
   "name": "@dan-ui/theme",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "CSS design tokens for dan-ui",
   "type": "module",
+  "license": "MIT",
+  "author": "wangdandan810012",
+  "homepage": "https://github.com/whr810012/dan-ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whr810012/dan-ui.git",
+    "directory": "packages/theme"
+  },
+  "bugs": {
+    "url": "https://github.com/whr810012/dan-ui/issues"
+  },
+  "keywords": [
+    "dan-ui",
+    "vue3",
+    "theme",
+    "css-variables",
+    "design-tokens"
+  ],
   "files": [
-    "dist"
+    "dist",
+    "LICENSE"
   ],
   "main": "./dist/index.css",
   "exports": {
@@ -12,9 +31,14 @@
     "./index.css": "./dist/index.css",
     "./package.json": "./package.json"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "build": "vite build",
-    "dev": "vite build --watch"
+    "dev": "vite build --watch",
+    "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
     "vite": "^6.3.5"
