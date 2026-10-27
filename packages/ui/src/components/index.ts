@@ -63,6 +63,15 @@ export type { DanCascaderInstance, CascaderOption } from './cascader'
 export { DanColorPicker } from './color-picker'
 export type { DanColorPickerInstance } from './color-picker'
 
+export { DanTransfer } from './transfer'
+export type { DanTransferInstance, TransferItem } from './transfer'
+
+export { DanTreeSelect } from './tree-select'
+export type { DanTreeSelectInstance } from './tree-select'
+
+export { DanMentions } from './mentions'
+export type { DanMentionsInstance, MentionOption } from './mentions'
+
 export { DanTextarea } from './textarea'
 export type { DanTextareaInstance } from './textarea'
 

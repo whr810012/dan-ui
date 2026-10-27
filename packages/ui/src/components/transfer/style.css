@@ -1,0 +1,90 @@
+.dan-transfer {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 12px;
+  color: var(--dan-color-text);
+  font-family: var(--dan-font-family);
+  font-size: var(--dan-font-size-md);
+}
+
+.dan-transfer.is-disabled {
+  opacity: 0.65;
+}
+
+.dan-transfer__panel {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+  overflow: hidden;
+}
+
+.dan-transfer__header {
+  padding: 8px 12px;
+  background: var(--dan-color-bg-muted);
+  border-bottom: 1px solid var(--dan-color-border-light);
+  font-weight: 500;
+}
+
+.dan-transfer__filter {
+  margin: 8px;
+  padding: 6px 8px;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-sm);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.dan-transfer__list {
+  flex: 1;
+  max-height: 220px;
+  margin: 0;
+  padding: 4px 0;
+  overflow: auto;
+  list-style: none;
+}
+
+.dan-transfer__item label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.dan-transfer__item label:hover {
+  background: var(--dan-color-fill);
+}
+
+.dan-transfer__buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dan-transfer__button {
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-sm);
+  background: var(--dan-color-fill);
+  color: inherit;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.dan-transfer__button:hover:not(:disabled) {
+  color: var(--dan-color-primary);
+  border-color: var(--dan-color-primary);
+}
+
+.dan-transfer__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

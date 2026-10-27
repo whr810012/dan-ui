@@ -3,7 +3,7 @@
 ## 0.0.1
 
 - 基础：ConfigProvider、Button、Icon、Space、Divider、Layout、Row/Col、`@dan-ui/theme`
-- 表单：Input、InputNumber、Upload、Slider、Rate、DatePicker（含范围）、TimePicker、Autocomplete、Cascader、ColorPicker、Textarea、Checkbox、Radio、Switch、Select、Form
+- 表单：Input、InputNumber、Upload、Slider、Rate、DatePicker（含范围）、TimePicker、Autocomplete、Cascader、ColorPicker、Transfer、TreeSelect、Mentions、Textarea、Checkbox、Radio、Switch、Select、Form
 - 展示：Tag、Badge、Avatar、Alert、Empty、Progress、Skeleton、Statistic、Result、Descriptions、Timeline、Collapse、Image、ImagePreview、Card、Carousel、Table（筛选 / 列显隐）、Tree、Calendar
 - 导航：Tabs、Menu / SubMenu、Breadcrumb、Pagination、Steps、Affix、BackTop、Anchor
 - 反馈：Loading、Message、MessageBox、Notification、Dialog、Drawer、Tooltip、Popover、Dropdown
