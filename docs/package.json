@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vitepress dev",
-    "build": "vitepress build",
+    "build": "vitepress build && node ../scripts/nest-docs-base.mjs",
     "preview": "vitepress preview"
   },
   "dependencies": {
