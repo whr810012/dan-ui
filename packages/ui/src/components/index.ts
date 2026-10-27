@@ -15,6 +15,9 @@ export type { DanIconInstance, IconName } from './icon'
 export { DanInput } from './input'
 export type { DanInputInstance } from './input'
 
+export { DanInputNumber } from './input-number'
+export type { DanInputNumberInstance } from './input-number'
+
 export { DanTextarea } from './textarea'
 export type { DanTextareaInstance } from './textarea'
 

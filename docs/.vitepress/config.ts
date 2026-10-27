@@ -36,6 +36,7 @@ const componentsSidebar = collapsible([
     text: '表单',
     items: [
       { text: 'Input（输入框）', link: '/components/input' },
+      { text: 'InputNumber（数字输入）', link: '/components/input-number' },
       { text: 'Textarea（文本域）', link: '/components/textarea' },
       { text: 'Checkbox（多选框）', link: '/components/checkbox' },
       { text: 'Radio（单选框）', link: '/components/radio' },
