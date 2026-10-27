@@ -1,12 +1,14 @@
 <script setup>
 import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/table/basic.vue'
+import MultiHeader from './demos/table/multi-header.vue'
 import basicSrc from './demos/table/basic.vue?raw'
+import multiHeaderSrc from './demos/table/multi-header.vue?raw'
 </script>
 
 # Table 表格
 
-基础数据表格，支持**列筛选**与**列显示/隐藏**（列设置）。
+基础数据表格，支持**列筛选**、**列显示/隐藏**与**多级表头**。
 
 ## 基础用法
 
@@ -14,6 +16,14 @@ import basicSrc from './demos/table/basic.vue?raw'
 
 <DemoBlock :source="basicSrc">
   <Basic />
+</DemoBlock>
+
+## 多级表头
+
+通过 `columns[].children` 嵌套分组；排序 / 筛选 / 列设置仅作用于叶子列。
+
+<DemoBlock :source="multiHeaderSrc">
+  <MultiHeader />
 </DemoBlock>
 
 ## Props
@@ -35,12 +45,13 @@ import basicSrc from './demos/table/basic.vue?raw'
 
 | 字段 | 说明 |
 |------|------|
-| prop / label | 字段名 / 表头 |
+| prop / label | 字段名（叶子列必填）/ 表头 |
+| children | 多级表头子列；有 children 时为分组列 |
 | width / minWidth / align | 尺寸与对齐 |
-| sortable | 是否可排序 |
-| filterable | `true` 文本筛选，或 `{ type: 'text' \| 'select', options? }` |
-| hideable | 是否可在列设置中隐藏，默认 `true` |
-| visible | 初始是否显示，默认 `true` |
+| sortable | 是否可排序（叶子列） |
+| filterable | `true` 文本筛选，或 `{ type: 'text' \| 'select', options? }`（叶子列） |
+| hideable | 是否可在列设置中隐藏，默认 `true`（叶子列） |
+| visible | 初始是否显示，默认 `true`（叶子列） |
 
 ## Events
 

@@ -8,6 +8,11 @@ import { DanIcon } from '../icon'
 import { DanInput } from '../input'
 import { DanPopover } from '../popover'
 import { DanSelect } from '../select'
+import {
+  buildHeaderRows,
+  filterColumnsByVisible,
+  getLeafColumns,
+} from './columnUtils'
 import type {
   TableColumn,
   TableColumnFilter,
@@ -72,10 +77,12 @@ const resolvedFilters = computed(() =>
   isFiltersControlled.value ? (props.filters ?? {}) : innerFilters.value,
 )
 
+const allLeafColumns = computed(() => getLeafColumns(props.columns))
+
 function defaultVisibleProps() {
-  return props.columns
-    .filter((col) => col.visible !== false)
-    .map((col) => col.prop)
+  return allLeafColumns.value
+    .filter((col) => col.visible !== false && col.prop)
+    .map((col) => col.prop as string)
 }
 
 watch(
@@ -86,7 +93,11 @@ watch(
       if (!innerVisible.value.length) {
         innerVisible.value = next
       } else {
-        const allowed = new Set(props.columns.map((c) => c.prop))
+        const allowed = new Set(
+          allLeafColumns.value
+            .map((c) => c.prop)
+            .filter((p): p is string => Boolean(p)),
+        )
         const kept = innerVisible.value.filter((p) => allowed.has(p))
         const added = next.filter((p) => !innerVisible.value.includes(p))
         innerVisible.value = [...kept, ...added]
@@ -102,17 +113,21 @@ const resolvedVisibleProps = computed(() =>
     : innerVisible.value,
 )
 
-const displayColumns = computed(() =>
-  props.columns.filter((col) => resolvedVisibleProps.value.includes(col.prop)),
+const displayColumnTree = computed(() =>
+  filterColumnsByVisible(props.columns, new Set(resolvedVisibleProps.value)),
 )
+
+const displayColumns = computed(() => getLeafColumns(displayColumnTree.value))
+
+const headerRows = computed(() => buildHeaderRows(displayColumnTree.value))
 
 const showSettings = computed(() => {
   if (props.showColumnSettings != null) return props.showColumnSettings
-  return props.columns.some((col) => col.hideable !== false)
+  return allLeafColumns.value.some((col) => col.hideable !== false)
 })
 
 const hideableColumns = computed(() =>
-  props.columns.filter((col) => col.hideable !== false),
+  allLeafColumns.value.filter((col) => col.hideable !== false && col.prop),
 )
 
 function resolveFilterConfig(col: TableColumn): TableColumnFilter | null {
@@ -158,7 +173,9 @@ function setColumnVisible(prop: string, visible: boolean) {
   const current = [...resolvedVisibleProps.value]
   const index = current.indexOf(prop)
   if (visible && index < 0) {
-    const order = props.columns.map((c) => c.prop)
+    const order = allLeafColumns.value
+      .map((c) => c.prop)
+      .filter((p): p is string => Boolean(p))
     current.push(prop)
     current.sort((a, b) => order.indexOf(a) - order.indexOf(b))
   }
@@ -175,7 +192,7 @@ function setColumnVisible(prop: string, visible: boolean) {
 }
 
 function toggleSort(col: TableColumn) {
-  if (!col.sortable) return
+  if (!col.sortable || !col.prop) return
   let order: TableSortOrder = 'asc'
   if (sortState.value.prop === col.prop) {
     if (sortState.value.order === 'asc') order = 'desc'
@@ -193,8 +210,10 @@ const filteredData = computed(() => {
   let rows = props.data
   if (props.filterMode === 'local') {
     const filters = resolvedFilters.value
+    const leaves = allLeafColumns.value
     rows = rows.filter((row) => {
-      for (const col of props.columns) {
+      for (const col of leaves) {
+        if (!col.prop) continue
         const config = resolveFilterConfig(col)
         if (!config) continue
         const raw = filters[col.prop]
@@ -264,9 +283,9 @@ function colMinWidth(col: TableColumn) {
               @click.stop
             >
               <DanCheckbox
-                :model-value="isColumnVisible(col.prop)"
+                :model-value="isColumnVisible(col.prop!)"
                 @update:model-value="
-                  (val) => setColumnVisible(col.prop, Boolean(val))
+                  (val) => setColumnVisible(col.prop!, Boolean(val))
                 "
               >
                 {{ col.label }}
@@ -290,25 +309,33 @@ function colMinWidth(col: TableColumn) {
           />
         </colgroup>
         <thead>
-          <tr>
+          <tr v-for="(row, rowIndex) in headerRows" :key="rowIndex">
             <th
-              v-for="col in displayColumns"
-              :key="col.prop"
+              v-for="(cell, cellIndex) in row"
+              :key="`${rowIndex}-${cell.column.prop ?? cell.column.label}-${cellIndex}`"
               :class="[
                 ns.e('cell'),
                 ns.e('header-cell'),
-                col.align ? ns.em('cell', col.align) : '',
-                col.sortable ? ns.is('sortable') : '',
+                cell.column.children?.length ? ns.is('group') : '',
+                cell.column.align ? ns.em('cell', cell.column.align) : '',
+                cell.column.sortable && !cell.column.children?.length
+                  ? ns.is('sortable')
+                  : '',
               ]"
+              :colspan="cell.colspan > 1 ? cell.colspan : undefined"
+              :rowspan="cell.rowspan > 1 ? cell.rowspan : undefined"
             >
               <div :class="ns.e('header-inner')">
-                <span :class="ns.e('header-label')" @click="toggleSort(col)">
-                  {{ col.label }}
+                <span
+                  :class="ns.e('header-label')"
+                  @click="toggleSort(cell.column)"
+                >
+                  {{ cell.column.label }}
                   <span
-                    v-if="col.sortable"
+                    v-if="cell.column.sortable && cell.column.prop"
                     :class="[
                       ns.e('sort'),
-                      sortState.prop === col.prop && sortState.order
+                      sortState.prop === cell.column.prop && sortState.order
                         ? ns.is(sortState.order)
                         : '',
                     ]"
@@ -319,7 +346,7 @@ function colMinWidth(col: TableColumn) {
                 </span>
 
                 <DanPopover
-                  v-if="resolveFilterConfig(col)"
+                  v-if="cell.column.prop && resolveFilterConfig(cell.column)"
                   trigger="click"
                   placement="bottom"
                   :width="200"
@@ -328,8 +355,8 @@ function colMinWidth(col: TableColumn) {
                     type="button"
                     :class="[
                       ns.e('filter-btn'),
-                      resolvedFilters[col.prop] != null &&
-                      resolvedFilters[col.prop] !== ''
+                      resolvedFilters[cell.column.prop] != null &&
+                      resolvedFilters[cell.column.prop] !== ''
                         ? ns.is('active')
                         : '',
                     ]"
@@ -340,40 +367,50 @@ function colMinWidth(col: TableColumn) {
                   <template #content>
                     <div :class="ns.e('filter-panel')" @click.stop>
                       <template
-                        v-if="resolveFilterConfig(col)?.type === 'select'"
+                        v-if="
+                          resolveFilterConfig(cell.column)?.type === 'select'
+                        "
                       >
                         <DanSelect
                           :model-value="
-                            (resolvedFilters[col.prop] as
+                            (resolvedFilters[cell.column.prop as string] as
                               string | number | null) ?? null
                           "
-                          :options="resolveFilterConfig(col)?.options ?? []"
+                          :options="
+                            resolveFilterConfig(cell.column)?.options ?? []
+                          "
                           clearable
                           placeholder="请选择"
                           @update:model-value="
                             (val) =>
-                              setFilter(col.prop, val as string | number | null)
+                              setFilter(
+                                cell.column.prop as string,
+                                val as string | number | null,
+                              )
                           "
                         />
                       </template>
                       <template v-else>
                         <DanInput
                           :model-value="
-                            resolvedFilters[col.prop] == null
+                            resolvedFilters[cell.column.prop as string] == null
                               ? ''
-                              : String(resolvedFilters[col.prop])
+                              : String(
+                                  resolvedFilters[cell.column.prop as string],
+                                )
                           "
                           clearable
                           placeholder="输入关键词"
                           @update:model-value="
-                            (val) => setFilter(col.prop, val || null)
+                            (val) =>
+                              setFilter(cell.column.prop as string, val || null)
                           "
                         />
                       </template>
                       <button
                         type="button"
                         :class="ns.e('filter-clear')"
-                        @click="clearFilter(col.prop)"
+                        @click="clearFilter(cell.column.prop as string)"
                       >
                         清除
                       </button>
@@ -396,7 +433,7 @@ function colMinWidth(col: TableColumn) {
               :class="[ns.e('cell'), col.align ? ns.em('cell', col.align) : '']"
             >
               <slot :name="col.prop" :row="row" :column="col" :index="index">
-                {{ cellText(row, col.prop) }}
+                {{ cellText(row, col.prop as string) }}
               </slot>
             </td>
           </tr>

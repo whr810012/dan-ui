@@ -60,4 +60,30 @@ describe('DanTable', () => {
     expect(wrapper.text()).not.toContain('角色')
     expect(wrapper.text()).toContain('姓名')
   })
+
+  it('renders multi-level headers', async () => {
+    const nested: TableColumn[] = [
+      { prop: 'id', label: 'ID', width: 60 },
+      {
+        label: '基本信息',
+        children: [
+          { prop: 'name', label: '姓名' },
+          { prop: 'age', label: '年龄' },
+        ],
+      },
+    ]
+    const wrapper = mount(DanTable, {
+      props: {
+        columns: nested,
+        data: [{ id: 1, name: '张三', age: 28 }],
+        border: true,
+      },
+    })
+    await nextTick()
+    const headerRows = wrapper.findAll('thead tr')
+    expect(headerRows).toHaveLength(2)
+    expect(headerRows[0].text()).toContain('基本信息')
+    expect(wrapper.findAll('tbody td')).toHaveLength(3)
+    expect(wrapper.text()).toContain('张三')
+  })
 })

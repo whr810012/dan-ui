@@ -77,6 +77,14 @@
   user-select: none;
 }
 
+.dan-table .dan-table__header-cell.is-group {
+  text-align: center;
+}
+
+.dan-table .dan-table__header-cell.is-group .dan-table__header-inner {
+  justify-content: center;
+}
+
 .dan-table.is-border .dan-table__cell {
   border-right: 1px solid var(--dan-color-border-light);
 }
