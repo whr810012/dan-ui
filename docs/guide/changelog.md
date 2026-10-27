@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0
+
+- 无障碍：Tabs 方向键 / Home / End 与 `aria-controls`；Menu / Tree 键盘导航；Dialog / Drawer 补齐 `aria-labelledby`
+- 暗色：固定列阴影、轮播指示器改为主题 Token（`--dan-shadow-fixed-*`、`--dan-color-on-media*`）
+- 文档：更新无障碍约定、最佳实践（含 1.1 表格 / 上传建议）、发布与视觉清单、主题 Token 说明
+
 ## 1.1.0
 
 - Table：固定列（`fixed: 'left' | 'right'`）、行多选（`selection` / `selectedRowKeys`）、内容展开行（`expandable` / `#expand`）、合计行（`showSummary` / `summaryMethod`）

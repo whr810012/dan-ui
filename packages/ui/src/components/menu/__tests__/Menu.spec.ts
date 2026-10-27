@@ -45,4 +45,22 @@ describe('DanMenu', () => {
     expect(wrapper.find('.dan-sub-menu').classes()).toContain('is-opened')
     expect(wrapper.find('.dan-sub-menu__list').isVisible()).toBe(true)
   })
+
+  it('moves focus with arrow keys', async () => {
+    const Comp = defineComponent({
+      components: { DanMenu, DanMenuItem },
+      template: `
+        <DanMenu>
+          <DanMenuItem index="1">One</DanMenuItem>
+          <DanMenuItem index="2">Two</DanMenuItem>
+        </DanMenu>
+      `,
+    })
+    const wrapper = mount(Comp, { attachTo: document.body })
+    const items = wrapper.findAll('.dan-menu-item')
+    ;(items[0]!.element as HTMLElement).focus()
+    await wrapper.get('.dan-menu').trigger('keydown', { key: 'ArrowDown' })
+    expect(document.activeElement).toBe(items[1]!.element)
+    wrapper.unmount()
+  })
 })

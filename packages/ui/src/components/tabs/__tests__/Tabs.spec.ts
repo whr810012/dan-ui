@@ -50,4 +50,30 @@ describe('DanTabs', () => {
     await wrapper.findAll('.dan-tabs__item')[1]!.trigger('click')
     expect(active.value).toBe('a')
   })
+
+  it('moves with arrow keys and skips disabled', async () => {
+    const active = ref('a')
+    const Comp = defineComponent({
+      components: { DanTabs, DanTabPane },
+      setup() {
+        return { active }
+      },
+      template: `
+        <DanTabs v-model="active">
+          <DanTabPane label="A" name="a">pane-a</DanTabPane>
+          <DanTabPane label="B" name="b" disabled>pane-b</DanTabPane>
+          <DanTabPane label="C" name="c">pane-c</DanTabPane>
+        </DanTabs>
+      `,
+    })
+
+    const wrapper = mount(Comp)
+    await nextTick()
+    await wrapper.find('.dan-tabs__nav').trigger('keydown', { key: 'ArrowRight' })
+    await nextTick()
+    expect(active.value).toBe('c')
+    await wrapper.find('.dan-tabs__nav').trigger('keydown', { key: 'Home' })
+    await nextTick()
+    expect(active.value).toBe('a')
+  })
 })

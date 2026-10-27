@@ -95,12 +95,12 @@
   padding: 0;
   border: 0;
   border-radius: var(--dan-radius-full);
-  background: rgb(255 255 255 / 40%);
-  box-shadow: 0 0 0 1px rgb(15 23 42 / 25%);
+  background: var(--dan-color-on-media);
+  box-shadow: 0 0 0 1px var(--dan-color-on-media-ring);
   cursor: pointer;
 }
 
 .dan-carousel__indicator.is-active button {
   width: 18px;
-  background: var(--dan-color-constant-white);
+  background: var(--dan-color-on-media-strong);
 }

@@ -63,6 +63,41 @@ provideMenu({
   toggleOpen,
   collapse: toRef(props, 'collapse'),
 })
+
+function focusableItems(root: HTMLElement) {
+  return Array.from(
+    root.querySelectorAll<HTMLElement>(
+      '[role="menuitem"]:not([aria-disabled="true"])',
+    ),
+  )
+}
+
+function onKeydown(event: KeyboardEvent) {
+  const root = event.currentTarget as HTMLElement
+  const items = focusableItems(root)
+  if (!items.length) return
+
+  const vertical = props.mode === 'vertical'
+  const nextKey = vertical ? 'ArrowDown' : 'ArrowRight'
+  const prevKey = vertical ? 'ArrowUp' : 'ArrowLeft'
+  const index = items.indexOf(document.activeElement as HTMLElement)
+
+  if (event.key === nextKey) {
+    event.preventDefault()
+    const next = items[(index + 1 + items.length) % items.length]
+    next?.focus()
+  } else if (event.key === prevKey) {
+    event.preventDefault()
+    const prev = items[(index - 1 + items.length) % items.length]
+    prev?.focus()
+  } else if (event.key === 'Home') {
+    event.preventDefault()
+    items[0]?.focus()
+  } else if (event.key === 'End') {
+    event.preventDefault()
+    items[items.length - 1]?.focus()
+  }
+}
 </script>
 
 <template>
@@ -74,6 +109,7 @@ provideMenu({
     ]"
     role="menu"
     :aria-orientation="mode"
+    @keydown="onKeydown"
   >
     <slot />
   </ul>

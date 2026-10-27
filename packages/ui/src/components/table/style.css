@@ -168,7 +168,7 @@
   width: 10px;
   transform: translateX(100%);
   pointer-events: none;
-  box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--dan-shadow-fixed-left);
 }
 
 .dan-table .dan-table__cell.is-fixed-right-first::before,
@@ -181,7 +181,7 @@
   width: 10px;
   transform: translateX(-100%);
   pointer-events: none;
-  box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--dan-shadow-fixed-right);
 }
 
 .dan-table__selection-cell,

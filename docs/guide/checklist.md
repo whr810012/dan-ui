@@ -1,6 +1,6 @@
 # 发布与视觉清单
 
-面向 `1.0.0-rc` 前的人工抽检，不替代单测与 `pnpm` 门禁。
+面向次版本发布前的人工抽检，不替代单测与 `pnpm` 门禁。
 
 ## 工程门禁
 
@@ -14,6 +14,14 @@ pnpm build && pnpm test && pnpm docs:build && pnpm lint
 2. 重点看浮层（Dialog / Drawer / Dropdown / Select / DatePicker）背景是否用 elevated Token。
 3. 检查 Loading 遮罩、代码块、Empty / Skeleton 在暗色下是否发灰发糊。
 4. 主色按钮、危险色 Tag / Alert 对比度是否足够。
+5. Table 固定列阴影、Carousel 指示器是否随暗色 Token 变化（避免死写 `rgba(0,0,0,…)` / 纯白）。
+
+## 键盘与朗读抽检
+
+1. Dialog / Drawer / MessageBox：Esc、焦点陷阱、标题可朗读。
+2. Select / Dropdown：方向键 + Enter。
+3. Tabs：方向键切换；Menu / Tree：方向键移动焦点。
+4. 详见 [无障碍与键盘](/guide/accessibility)。
 
 ## API 稳定化
 

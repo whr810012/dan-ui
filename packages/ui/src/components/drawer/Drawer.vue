@@ -40,6 +40,7 @@ const emit = defineEmits<{
 
 const ns = useNamespace('drawer')
 const panelRef = ref<HTMLElement | null>(null)
+const titleId = `dan-drawer-title-${Math.random().toString(36).slice(2, 9)}`
 const rendered = computed(() => props.modelValue || !props.destroyOnClose)
 useFocusTrap(panelRef, () => props.modelValue)
 
@@ -94,12 +95,13 @@ onBeforeUnmount(() => {
         :class="ns.e('panel')"
         role="dialog"
         aria-modal="true"
+        :aria-labelledby="withHeader ? titleId : undefined"
         tabindex="-1"
         :style="panelStyle"
         @click.stop
       >
         <header v-if="withHeader" :class="ns.e('header')">
-          <span :class="ns.e('title')">
+          <span :id="titleId" :class="ns.e('title')">
             <slot name="title">{{ title }}</slot>
           </span>
           <button

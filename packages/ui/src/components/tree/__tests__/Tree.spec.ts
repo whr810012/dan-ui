@@ -27,4 +27,40 @@ describe('DanTree', () => {
     await boxes[0]!.setValue(true)
     expect(checkedKeys.value).toContain(1)
   })
+
+  it('navigates visible nodes with arrow keys', async () => {
+    const clicks: Array<string | number> = []
+    const Comp = defineComponent({
+      components: { DanTree },
+      setup: () => ({
+        data: [
+          {
+            id: 1,
+            label: 'A',
+            children: [{ id: 11, label: 'A1' }],
+          },
+          { id: 2, label: 'B' },
+        ],
+        onClick: (node: { id: string | number }) => clicks.push(node.id),
+      }),
+      template: `
+        <DanTree
+          :data="data"
+          default-expand-all
+          @node-click="onClick"
+        />
+      `,
+    })
+    const wrapper = mount(Comp, { attachTo: document.body })
+    await nextTick()
+    await wrapper.get('.dan-tree').trigger('keydown', { key: 'ArrowDown' })
+    await nextTick()
+    await wrapper.get('.dan-tree').trigger('keydown', { key: 'ArrowDown' })
+    await nextTick()
+    await wrapper.get('.dan-tree').trigger('keydown', { key: 'Enter' })
+    await nextTick()
+    // visible order: A → A1 → B；两次 ArrowDown 落在 A1
+    expect(clicks).toContain(11)
+    wrapper.unmount()
+  })
 })

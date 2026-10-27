@@ -24,6 +24,7 @@ const emit = defineEmits<{
 
 const ns = useNamespace('tabs')
 const panes = ref<TabsPane[]>([])
+const uid = `dan-tabs-${Math.random().toString(36).slice(2, 9)}`
 
 const current = computed(() => {
   if (props.modelValue != null && props.modelValue !== '') {
@@ -56,6 +57,57 @@ function select(name: string | number) {
   emit('change', name)
 }
 
+function enabledPanes() {
+  return panes.value.filter((pane) => !pane.disabled)
+}
+
+function moveTab(delta: number) {
+  const list = enabledPanes()
+  if (!list.length) return
+  const index = list.findIndex((pane) => pane.name === current.value)
+  const next =
+    list[(index < 0 ? 0 : index + delta + list.length) % list.length]!
+  select(next.name)
+  void Promise.resolve().then(() => {
+    const el = document.getElementById(tabId(next.name))
+    el?.focus()
+  })
+}
+
+function onNavKeydown(event: KeyboardEvent) {
+  const key = event.key
+  if (key === 'ArrowRight' || key === 'ArrowDown') {
+    event.preventDefault()
+    moveTab(1)
+  } else if (key === 'ArrowLeft' || key === 'ArrowUp') {
+    event.preventDefault()
+    moveTab(-1)
+  } else if (key === 'Home') {
+    event.preventDefault()
+    const first = enabledPanes()[0]
+    if (first) {
+      select(first.name)
+      document.getElementById(tabId(first.name))?.focus()
+    }
+  } else if (key === 'End') {
+    event.preventDefault()
+    const list = enabledPanes()
+    const last = list[list.length - 1]
+    if (last) {
+      select(last.name)
+      document.getElementById(tabId(last.name))?.focus()
+    }
+  }
+}
+
+function tabId(name: string | number) {
+  return `${uid}-tab-${String(name)}`
+}
+
+function panelId(name: string | number) {
+  return `${uid}-panel-${String(name)}`
+}
+
 provideTabs({
   current,
   register,
@@ -63,6 +115,8 @@ provideTabs({
   updatePane,
   select,
   panes,
+  tabId,
+  panelId,
 })
 
 watch(
@@ -78,9 +132,10 @@ watch(
 
 <template>
   <div :class="[ns.b(), ns.m(type)]">
-    <div :class="ns.e('nav')" role="tablist">
+    <div :class="ns.e('nav')" role="tablist" @keydown="onNavKeydown">
       <button
         v-for="pane in panes"
+        :id="tabId(pane.name)"
         :key="String(pane.name)"
         type="button"
         :class="[
@@ -90,6 +145,8 @@ watch(
         ]"
         role="tab"
         :aria-selected="pane.name === current"
+        :aria-controls="panelId(pane.name)"
+        :tabindex="pane.name === current ? 0 : -1"
         :disabled="pane.disabled"
         @click="select(pane.name)"
       >

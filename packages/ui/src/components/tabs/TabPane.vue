@@ -47,8 +47,11 @@ onBeforeUnmount(() => {
 <template>
   <div
     v-show="active"
+    :id="tabs.panelId(name)"
     :class="[ns.b(), ns.is('active', active)]"
     role="tabpanel"
+    :aria-labelledby="tabs.tabId(name)"
+    :tabindex="active ? 0 : -1"
   >
     <slot />
   </div>

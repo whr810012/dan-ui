@@ -14,6 +14,8 @@ export interface TabsContext {
   updatePane: (pane: TabsPane) => void
   select: (name: string | number) => void
   panes: Ref<TabsPane[]>
+  tabId: (name: string | number) => string
+  panelId: (name: string | number) => string
 }
 
 export const tabsContextKey: InjectionKey<TabsContext> = Symbol('DanTabs')

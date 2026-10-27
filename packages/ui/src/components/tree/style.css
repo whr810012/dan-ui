@@ -19,6 +19,13 @@
   background: var(--dan-color-fill);
 }
 
+.dan-tree-node__content.is-focused,
+.dan-tree-node__content:focus-visible {
+  outline: 2px solid var(--dan-color-primary);
+  outline-offset: 1px;
+  background: var(--dan-color-fill);
+}
+
 .dan-tree-node__content.is-disabled {
   color: var(--dan-color-text-disabled);
   cursor: not-allowed;

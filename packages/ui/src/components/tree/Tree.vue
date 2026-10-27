@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
 import TreeNodeView from './TreeNode.vue'
 import type { TreeNode } from './types'
@@ -29,8 +29,10 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('tree')
+const rootRef = ref<HTMLElement | null>(null)
 const expanded = ref<Set<string | number>>(new Set())
 const checked = ref<Set<string | number>>(new Set(props.checkedKeys))
+const focusedId = ref<string | number | null>(null)
 
 watch(
   () => props.checkedKeys,
@@ -78,13 +80,90 @@ function toggleCheck(node: TreeNode) {
 }
 
 function onClick(node: TreeNode) {
+  if (node.disabled) return
+  focusedId.value = node.id
   emit('node-click', node)
   toggleExpand(node)
+}
+
+function flattenVisible(nodes: TreeNode[]): TreeNode[] {
+  const result: TreeNode[] = []
+  const walk = (list: TreeNode[]) => {
+    for (const node of list) {
+      result.push(node)
+      if (node.children?.length && expanded.value.has(node.id)) {
+        walk(node.children)
+      }
+    }
+  }
+  walk(nodes)
+  return result
+}
+
+function focusNode(id: string | number) {
+  focusedId.value = id
+  void nextTick(() => {
+    const target = Array.from(
+      rootRef.value?.querySelectorAll<HTMLElement>('[data-tree-id]') ?? [],
+    ).find((el) => el.dataset.treeId === String(id))
+    target?.focus()
+  })
+}
+
+function onKeydown(event: KeyboardEvent) {
+  const visible = flattenVisible(props.data).filter((node) => !node.disabled)
+  if (!visible.length) return
+  const currentIndex = visible.findIndex((node) => node.id === focusedId.value)
+  const current = currentIndex >= 0 ? visible[currentIndex] : visible[0]
+
+  if (event.key === 'ArrowDown') {
+    event.preventDefault()
+    const next =
+      visible[((currentIndex < 0 ? -1 : currentIndex) + 1) % visible.length]!
+    focusNode(next.id)
+  } else if (event.key === 'ArrowUp') {
+    event.preventDefault()
+    const prev =
+      visible[
+        ((currentIndex < 0 ? 0 : currentIndex) - 1 + visible.length) %
+          visible.length
+      ]!
+    focusNode(prev.id)
+  } else if (event.key === 'ArrowRight' && current) {
+    event.preventDefault()
+    if (current.children?.length && !expanded.value.has(current.id)) {
+      toggleExpand(current)
+    } else if (current.children?.length) {
+      const child = current.children.find((item) => !item.disabled)
+      if (child) focusNode(child.id)
+    }
+  } else if (event.key === 'ArrowLeft' && current) {
+    event.preventDefault()
+    if (current.children?.length && expanded.value.has(current.id)) {
+      toggleExpand(current)
+    }
+  } else if ((event.key === 'Enter' || event.key === ' ') && current) {
+    event.preventDefault()
+    if (props.showCheckbox) toggleCheck(current)
+    else onClick(current)
+  } else if (event.key === 'Home') {
+    event.preventDefault()
+    focusNode(visible[0]!.id)
+  } else if (event.key === 'End') {
+    event.preventDefault()
+    focusNode(visible[visible.length - 1]!.id)
+  }
 }
 </script>
 
 <template>
-  <div :class="ns.b()" role="tree">
+  <div
+    ref="rootRef"
+    :class="ns.b()"
+    role="tree"
+    tabindex="0"
+    @keydown="onKeydown"
+  >
     <TreeNodeView
       v-for="node in data"
       :key="node.id"
@@ -93,9 +172,11 @@ function onClick(node: TreeNode) {
       :expanded="expanded"
       :checked="checked"
       :show-checkbox="showCheckbox"
+      :focused-id="focusedId"
       @toggle-expand="toggleExpand"
       @toggle-check="toggleCheck"
       @node-click="onClick"
+      @focus-node="focusNode"
     />
   </div>
 </template>

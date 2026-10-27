@@ -50,8 +50,10 @@ import '@dandan-ui/ui/style.css'
 | `--dan-color-bg` | 背景色 |
 | `--dan-font-size-md` | 默认字号 |
 | `--dan-spacing-md` | 中等间距 |
-| `--dan-border-radius-md` | 中等圆角 |
-| `--dan-z-index-popup` | 浮层基准 z-index |
+| `--dan-radius-md` | 中等圆角 |
+| `--dan-z-index-modal` | 模态层 z-index |
+| `--dan-shadow-fixed-left` / `right` | 表格固定列阴影 |
+| `--dan-color-on-media` | 叠在媒体上的浅色指示（如轮播点） |
 
 完整列表见 `@dandan-ui/theme` 源码 `packages/theme/src/index.css`。
 
@@ -65,7 +67,7 @@ import '@dandan-ui/ui/style.css'
 <html data-theme="dark">
 ```
 
-暗色预设会覆盖主色、文本、边框、背景、浮层、阴影与代码块色板；浮层组件使用 `--dan-color-bg-elevated`，加载遮罩使用 `--dan-color-loading-mask`。
+暗色预设会覆盖主色、文本、边框、背景、浮层、阴影与代码块色板；浮层组件使用 `--dan-color-bg-elevated`，加载遮罩使用 `--dan-color-loading-mask`。固定列阴影与媒体叠色指示也会切换到暗色专用 Token。
 
 也可在暗色下继续局部覆盖：
 
@@ -74,3 +76,5 @@ html.dark {
   --dan-color-primary: #38bdf8;
 }
 ```
+
+发版前暗色抽检步骤见 [发布与视觉清单](/guide/checklist)。

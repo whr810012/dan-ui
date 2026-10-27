@@ -89,6 +89,11 @@
   --dan-shadow-sm: 0 1px 2px rgb(15 23 42 / 6%);
   --dan-shadow-md: 0 4px 12px rgb(15 23 42 / 8%);
   --dan-shadow-lg: 0 12px 32px rgb(15 23 42 / 12%);
+  --dan-shadow-fixed-left: inset 10px 0 8px -8px rgb(15 23 42 / 12%);
+  --dan-shadow-fixed-right: inset -10px 0 8px -8px rgb(15 23 42 / 12%);
+  --dan-color-on-media: rgb(255 255 255 / 55%);
+  --dan-color-on-media-strong: #ffffff;
+  --dan-color-on-media-ring: rgb(15 23 42 / 25%);
 
   /* Motion */
   --dan-duration-fast: 120ms;
@@ -163,6 +168,11 @@ html.dark body,
   --dan-shadow-sm: 0 1px 2px rgb(0 0 0 / 45%);
   --dan-shadow-md: 0 8px 24px rgb(0 0 0 / 45%);
   --dan-shadow-lg: 0 16px 40px rgb(0 0 0 / 55%);
+  --dan-shadow-fixed-left: inset 10px 0 8px -8px rgb(0 0 0 / 45%);
+  --dan-shadow-fixed-right: inset -10px 0 8px -8px rgb(0 0 0 / 45%);
+  --dan-color-on-media: rgb(255 255 255 / 45%);
+  --dan-color-on-media-strong: #ffffff;
+  --dan-color-on-media-ring: rgb(255 255 255 / 28%);
 }
 
 /* Minimal reset scoped to dan-ui consumers who import theme */
