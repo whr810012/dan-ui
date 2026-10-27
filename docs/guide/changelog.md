@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0
+
+- Table：固定列（`fixed: 'left' | 'right'`）、行多选（`selection` / `selectedRowKeys`）、内容展开行（`expandable` / `#expand`）、合计行（`showSummary` / `summaryMethod`）
+- DatePicker：`disabledDate`、快捷选项 `shortcuts`、`datetime` / `datetimerange`
+- Upload：可中断的 `httpRequest`（返回 `{ abort }`，实例方法 `abort` / `abortAll`）、分片钩子（`chunkSize` / `beforeChunkUpload` / `retry`），不绑定云厂商 SDK
+
 ## 1.0.0
 
 - 首次正式发布到 npm：`@dandan-ui/ui`、`@dandan-ui/theme`

@@ -19,6 +19,7 @@ import {
   flattenTreeRows,
   sortTreeRows,
 } from './treeUtils'
+import { buildFixedLeafMeta, fixedStyleFromMeta } from './fixedUtils'
 import type {
   TableColumn,
   TableColumnFilter,
@@ -65,6 +66,23 @@ const props = withDefaults(
     rowHeight?: number
     /** 视口外缓冲行数 */
     virtualBuffer?: number
+    /** 行多选 */
+    selection?: boolean
+    /** 受控选中行 key */
+    selectedRowKeys?: Array<string | number>
+    /** 数据刷新后保留选中（仅非受控） */
+    reserveSelection?: boolean
+    /** 内容展开行（与 tree 展开列分开） */
+    expandable?: boolean
+    /** 受控内容展开行 key */
+    expandedRowKeys?: Array<string | number>
+    /** 显示合计行 */
+    showSummary?: boolean
+    /** 自定义合计；默认对 number 列求和 */
+    summaryMethod?: (param: {
+      columns: TableColumn[]
+      data: TableRow[]
+    }) => Record<string, string>
   }>(),
   {
     data: () => [],
@@ -86,6 +104,13 @@ const props = withDefaults(
     height: 400,
     rowHeight: 48,
     virtualBuffer: 5,
+    selection: false,
+    selectedRowKeys: undefined,
+    reserveSelection: false,
+    expandable: false,
+    expandedRowKeys: undefined,
+    showSummary: false,
+    summaryMethod: undefined,
   },
 )
 
@@ -97,19 +122,34 @@ const emit = defineEmits<{
   'sort-change': [value: TableSortState]
   'update:expandRowKeys': [value: Array<string | number>]
   'expand-change': [row: TableRow, expanded: boolean]
+  'update:selectedRowKeys': [value: Array<string | number>]
+  'selection-change': [keys: Array<string | number>, rows: TableRow[]]
+  'update:expandedRowKeys': [value: Array<string | number>]
+  'expandable-change': [row: TableRow, expanded: boolean]
 }>()
+
+const SELECTION_COL_WIDTH = 48
+const EXPANDABLE_COL_WIDTH = 48
 
 const ns = useNamespace('table')
 
 const innerFilters = ref<TableFilters>({})
 const innerVisible = ref<string[]>([])
 const innerExpandKeys = ref<Array<string | number>>([])
+const innerSelectedKeys = ref<Array<string | number>>([])
+const innerContentExpandKeys = ref<Array<string | number>>([])
 const sortState = ref<TableSortState>({ prop: null, order: null })
 const scrollTop = ref(0)
 
 const isFiltersControlled = computed(() => props.filters !== undefined)
 const isVisibleControlled = computed(() => props.visibleColumns !== undefined)
 const isExpandControlled = computed(() => props.expandRowKeys !== undefined)
+const isSelectionControlled = computed(
+  () => props.selectedRowKeys !== undefined,
+)
+const isContentExpandControlled = computed(
+  () => props.expandedRowKeys !== undefined,
+)
 
 const resolvedFilters = computed(() =>
   isFiltersControlled.value ? (props.filters ?? {}) : innerFilters.value,
@@ -156,6 +196,71 @@ const displayColumnTree = computed(() =>
 )
 
 const displayColumns = computed(() => getLeafColumns(displayColumnTree.value))
+
+const fixedMetaList = computed(() => buildFixedLeafMeta(displayColumns.value))
+
+const fixedMetaMap = computed(() => {
+  const map = new Map<string, (typeof fixedMetaList.value)[number]>()
+  for (const meta of fixedMetaList.value) map.set(meta.prop, meta)
+  return map
+})
+
+const hasFixedColumns = computed(() =>
+  fixedMetaList.value.some((m) => m.fixed === 'left' || m.fixed === 'right'),
+)
+
+function leafFixedClass(prop?: string) {
+  if (!prop) return []
+  const meta = fixedMetaMap.value.get(prop)
+  if (!meta?.fixed) return []
+  return [
+    ns.is(`fixed-${meta.fixed}`, true),
+    meta.isLastLeft ? ns.is('fixed-left-last', true) : '',
+    meta.isFirstRight ? ns.is('fixed-right-first', true) : '',
+  ]
+}
+
+const leadingOffset = computed(() => {
+  let offset = 0
+  if (props.selection) offset += SELECTION_COL_WIDTH
+  if (props.expandable) offset += EXPANDABLE_COL_WIDTH
+  return offset
+})
+
+function leafFixedStyle(prop?: string) {
+  if (!prop) return undefined
+  const style = fixedStyleFromMeta(fixedMetaMap.value.get(prop))
+  if (!style?.left) return style
+  const left = Number.parseInt(style.left, 10) + leadingOffset.value
+  return { ...style, left: `${left}px` }
+}
+
+function selectionCellStyle(): Record<string, string> | undefined {
+  if (!props.selection) return undefined
+  if (!hasFixedColumns.value && !props.expandable) return undefined
+  return {
+    position: 'sticky',
+    left: '0px',
+    zIndex: '5',
+  }
+}
+
+function expandableCellStyle(): Record<string, string> | undefined {
+  if (!props.expandable) return undefined
+  if (!hasFixedColumns.value && !props.selection) return undefined
+  return {
+    position: 'sticky',
+    left: props.selection ? `${SELECTION_COL_WIDTH}px` : '0px',
+    zIndex: '5',
+  }
+}
+
+const tableColSpan = computed(() => {
+  let n = displayColumns.value.length
+  if (props.selection) n += 1
+  if (props.expandable) n += 1
+  return n || 1
+})
 
 const headerRows = computed(() => buildHeaderRows(displayColumnTree.value))
 
@@ -360,6 +465,121 @@ const displayRows = computed(() => {
   ).map((item, index) => ({ ...item, index }))
 })
 
+const resolvedSelectedKeys = computed(() =>
+  isSelectionControlled.value
+    ? (props.selectedRowKeys ?? [])
+    : innerSelectedKeys.value,
+)
+
+const selectedKeySet = computed(() => new Set(resolvedSelectedKeys.value))
+
+function setSelectedKeys(next: Array<string | number>) {
+  if (isSelectionControlled.value) {
+    emit('update:selectedRowKeys', next)
+  } else {
+    innerSelectedKeys.value = next
+  }
+  const keySet = new Set(next)
+  const rows = displayRows.value
+    .filter((item) => keySet.has(item.key))
+    .map((item) => item.row)
+  emit('selection-change', next, rows)
+}
+
+function isRowSelected(key: string | number) {
+  return selectedKeySet.value.has(key)
+}
+
+function toggleRowSelection(key: string | number, checked: boolean) {
+  const set = new Set(resolvedSelectedKeys.value)
+  if (checked) set.add(key)
+  else set.delete(key)
+  setSelectedKeys([...set])
+}
+
+const visibleRowKeys = computed(() => displayRows.value.map((item) => item.key))
+
+const allVisibleSelected = computed(() => {
+  const keys = visibleRowKeys.value
+  return keys.length > 0 && keys.every((k) => selectedKeySet.value.has(k))
+})
+
+const someVisibleSelected = computed(() => {
+  const keys = visibleRowKeys.value
+  const count = keys.filter((k) => selectedKeySet.value.has(k)).length
+  return count > 0 && count < keys.length
+})
+
+function toggleSelectAll(checked: boolean) {
+  if (checked) {
+    const merged = new Set(resolvedSelectedKeys.value)
+    for (const key of visibleRowKeys.value) merged.add(key)
+    setSelectedKeys([...merged])
+  } else {
+    const visible = new Set(visibleRowKeys.value)
+    setSelectedKeys(resolvedSelectedKeys.value.filter((k) => !visible.has(k)))
+  }
+}
+
+watch(
+  () => props.data,
+  () => {
+    if (isSelectionControlled.value || props.reserveSelection) return
+    innerSelectedKeys.value = []
+  },
+)
+
+const resolvedContentExpandKeys = computed(() =>
+  isContentExpandControlled.value
+    ? (props.expandedRowKeys ?? [])
+    : innerContentExpandKeys.value,
+)
+
+const contentExpandKeySet = computed(
+  () => new Set(resolvedContentExpandKeys.value),
+)
+
+function setContentExpandKeys(next: Array<string | number>) {
+  if (isContentExpandControlled.value) {
+    emit('update:expandedRowKeys', next)
+  } else {
+    innerContentExpandKeys.value = next
+  }
+}
+
+function toggleContentExpand(row: TableRow, key: string | number) {
+  const set = new Set(resolvedContentExpandKeys.value)
+  const expanded = !set.has(key)
+  if (expanded) set.add(key)
+  else set.delete(key)
+  setContentExpandKeys([...set])
+  emit('expandable-change', row, expanded)
+}
+
+const summaryCells = computed(() => {
+  if (!props.showSummary) return {} as Record<string, string>
+  const cols = displayColumns.value
+  const data = processedTree.value
+  if (props.summaryMethod) {
+    return props.summaryMethod({ columns: cols, data })
+  }
+  const result: Record<string, string> = {}
+  for (const col of cols) {
+    if (!col.prop) continue
+    let sum = 0
+    let count = 0
+    for (const row of data) {
+      const v = row[col.prop]
+      if (typeof v === 'number' && Number.isFinite(v)) {
+        sum += v
+        count += 1
+      }
+    }
+    if (count) result[col.prop] = String(sum)
+  }
+  return result
+})
+
 const treeColumnProp = computed(() => displayColumns.value[0]?.prop)
 
 const isEmpty = computed(() => displayRows.value.length === 0)
@@ -386,7 +606,7 @@ const virtualState = computed(() => {
       rows: displayRows.value,
       topPad: 0,
       bottomPad: 0,
-      colSpan: displayColumns.value.length || 1,
+      colSpan: tableColSpan.value,
     }
   }
   const total = displayRows.value.length
@@ -400,7 +620,7 @@ const virtualState = computed(() => {
     rows: displayRows.value.slice(start, end),
     topPad: start * rh,
     bottomPad: Math.max(0, (total - end) * rh),
-    colSpan: displayColumns.value.length || 1,
+    colSpan: tableColSpan.value,
   }
 })
 
@@ -429,6 +649,7 @@ function colMinWidth(col: TableColumn) {
       ns.is('empty', isEmpty),
       ns.is('tree', tree),
       ns.is('virtual', virtual),
+      ns.is('fixed', hasFixedColumns),
     ]"
   >
     <div v-if="showSettings" :class="ns.e('toolbar')">
@@ -467,6 +688,14 @@ function colMinWidth(col: TableColumn) {
       <table :class="ns.e('table')">
         <colgroup>
           <col
+            v-if="selection"
+            :style="{ width: `${SELECTION_COL_WIDTH}px` }"
+          />
+          <col
+            v-if="expandable"
+            :style="{ width: `${EXPANDABLE_COL_WIDTH}px` }"
+          />
+          <col
             v-for="col in displayColumns"
             :key="col.prop"
             :style="{
@@ -478,6 +707,34 @@ function colMinWidth(col: TableColumn) {
         <thead>
           <tr v-for="(row, rowIndex) in headerRows" :key="rowIndex">
             <th
+              v-if="selection && rowIndex === 0"
+              :class="[
+                ns.e('cell'),
+                ns.e('header-cell'),
+                ns.e('selection-cell'),
+                hasFixedColumns || expandable ? ns.is('fixed-left', true) : '',
+              ]"
+              :style="selectionCellStyle()"
+              :rowspan="headerRows.length"
+            >
+              <DanCheckbox
+                :model-value="allVisibleSelected"
+                :indeterminate="someVisibleSelected"
+                @update:model-value="(val) => toggleSelectAll(Boolean(val))"
+              />
+            </th>
+            <th
+              v-if="expandable && rowIndex === 0"
+              :class="[
+                ns.e('cell'),
+                ns.e('header-cell'),
+                ns.e('expandable-cell'),
+                hasFixedColumns || selection ? ns.is('fixed-left', true) : '',
+              ]"
+              :style="expandableCellStyle()"
+              :rowspan="headerRows.length"
+            />
+            <th
               v-for="(cell, cellIndex) in row"
               :key="`${rowIndex}-${cell.column.prop ?? cell.column.label}-${cellIndex}`"
               :class="[
@@ -488,7 +745,15 @@ function colMinWidth(col: TableColumn) {
                 cell.column.sortable && !cell.column.children?.length
                   ? ns.is('sortable')
                   : '',
+                ...leafFixedClass(
+                  cell.column.children?.length ? undefined : cell.column.prop,
+                ),
               ]"
+              :style="
+                leafFixedStyle(
+                  cell.column.children?.length ? undefined : cell.column.prop,
+                )
+              "
               :colspan="cell.colspan > 1 ? cell.colspan : undefined"
               :rowspan="cell.rowspan > 1 ? cell.rowspan : undefined"
             >
@@ -603,36 +868,95 @@ function colMinWidth(col: TableColumn) {
               }"
             />
           </tr>
-          <tr
-            v-for="item in virtualState.rows"
-            :key="item.key"
-            :class="ns.e('row')"
-            :style="virtual ? { height: `${rowHeight}px` } : undefined"
-          >
-            <td
-              v-for="col in displayColumns"
-              :key="col.prop"
-              :class="[ns.e('cell'), col.align ? ns.em('cell', col.align) : '']"
+          <template v-for="item in virtualState.rows" :key="item.key">
+            <tr
+              :class="ns.e('row')"
+              :style="virtual ? { height: `${rowHeight}px` } : undefined"
             >
-              <div
-                v-if="tree && col.prop === treeColumnProp"
-                :class="ns.e('tree-cell')"
-                :style="{ paddingLeft: `${item.depth * indent}px` }"
+              <td
+                v-if="selection"
+                :class="[
+                  ns.e('cell'),
+                  ns.e('selection-cell'),
+                  hasFixedColumns || expandable
+                    ? ns.is('fixed-left', true)
+                    : '',
+                ]"
+                :style="selectionCellStyle()"
+              >
+                <DanCheckbox
+                  :model-value="isRowSelected(item.key)"
+                  @update:model-value="
+                    (val) => toggleRowSelection(item.key, Boolean(val))
+                  "
+                />
+              </td>
+              <td
+                v-if="expandable"
+                :class="[
+                  ns.e('cell'),
+                  ns.e('expandable-cell'),
+                  hasFixedColumns || selection
+                    ? ns.is('fixed-left', true)
+                    : '',
+                ]"
+                :style="expandableCellStyle()"
               >
                 <button
-                  v-if="item.hasChildren"
                   type="button"
                   :class="[
                     ns.e('expand'),
-                    expandedKeySet.has(item.key) ? ns.is('expanded') : '',
+                    contentExpandKeySet.has(item.key)
+                      ? ns.is('expanded', true)
+                      : '',
                   ]"
-                  aria-label="展开/收起"
-                  @click.stop="toggleExpand(item.row, item.key)"
+                  aria-label="展开详情"
+                  @click.stop="toggleContentExpand(item.row, item.key)"
                 >
                   ▸
                 </button>
-                <span v-else :class="ns.e('expand-placeholder')" />
+              </td>
+              <td
+                v-for="col in displayColumns"
+                :key="col.prop"
+                :class="[
+                  ns.e('cell'),
+                  col.align ? ns.em('cell', col.align) : '',
+                  ...leafFixedClass(col.prop),
+                ]"
+                :style="leafFixedStyle(col.prop)"
+              >
+                <div
+                  v-if="tree && col.prop === treeColumnProp"
+                  :class="ns.e('tree-cell')"
+                  :style="{ paddingLeft: `${item.depth * indent}px` }"
+                >
+                  <button
+                    v-if="item.hasChildren"
+                    type="button"
+                    :class="[
+                      ns.e('expand'),
+                      expandedKeySet.has(item.key)
+                        ? ns.is('expanded', true)
+                        : '',
+                    ]"
+                    aria-label="展开/收起"
+                    @click.stop="toggleExpand(item.row, item.key)"
+                  >
+                    ▸
+                  </button>
+                  <span v-else :class="ns.e('expand-placeholder')" />
+                  <slot
+                    :name="col.prop"
+                    :row="item.row"
+                    :column="col"
+                    :index="item.index"
+                  >
+                    {{ cellText(item.row, col.prop as string) }}
+                  </slot>
+                </div>
                 <slot
+                  v-else
                   :name="col.prop"
                   :row="item.row"
                   :column="col"
@@ -640,18 +964,21 @@ function colMinWidth(col: TableColumn) {
                 >
                   {{ cellText(item.row, col.prop as string) }}
                 </slot>
-              </div>
-              <slot
-                v-else
-                :name="col.prop"
-                :row="item.row"
-                :column="col"
-                :index="item.index"
-              >
-                {{ cellText(item.row, col.prop as string) }}
-              </slot>
-            </td>
-          </tr>
+              </td>
+            </tr>
+            <tr
+              v-if="expandable && contentExpandKeySet.has(item.key)"
+              :class="ns.e('expanded-row')"
+            >
+              <td :colspan="tableColSpan" :class="ns.e('expanded-cell')">
+                <slot
+                  name="expand"
+                  :row="item.row"
+                  :index="item.index"
+                />
+              </td>
+            </tr>
+          </template>
           <tr
             v-if="virtualState.enabled && virtualState.bottomPad > 0"
             :class="ns.e('virtual-pad')"
@@ -667,6 +994,48 @@ function colMinWidth(col: TableColumn) {
             />
           </tr>
         </tbody>
+        <tfoot v-if="showSummary && !isEmpty">
+          <tr :class="ns.e('summary-row')">
+            <td
+              v-if="selection"
+              :class="[
+                ns.e('cell'),
+                ns.e('summary-cell'),
+                hasFixedColumns || expandable
+                  ? ns.is('fixed-left', true)
+                  : '',
+              ]"
+              :style="selectionCellStyle()"
+            />
+            <td
+              v-if="expandable"
+              :class="[
+                ns.e('cell'),
+                ns.e('summary-cell'),
+                hasFixedColumns || selection ? ns.is('fixed-left', true) : '',
+              ]"
+              :style="expandableCellStyle()"
+            />
+            <td
+              v-for="(col, colIndex) in displayColumns"
+              :key="col.prop"
+              :class="[
+                ns.e('cell'),
+                ns.e('summary-cell'),
+                col.align ? ns.em('cell', col.align) : '',
+                ...leafFixedClass(col.prop),
+              ]"
+              :style="leafFixedStyle(col.prop)"
+            >
+              <template v-if="colIndex === 0 && summaryCells[col.prop!] == null">
+                合计
+              </template>
+              <template v-else>
+                {{ summaryCells[col.prop as string] ?? '' }}
+              </template>
+            </td>
+          </tr>
+        </tfoot>
       </table>
 
       <div v-if="isEmpty" :class="ns.e('empty')">

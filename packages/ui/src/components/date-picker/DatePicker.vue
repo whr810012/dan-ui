@@ -8,9 +8,11 @@ import {
   WEEK_LABELS,
   buildCalendarDays,
   formatDate,
+  formatDateTime,
+  formatTime,
   isInRange,
   isSameDay,
-  parseDate,
+  parseDateLike,
 } from './dateUtils'
 import './style.css'
 
@@ -18,17 +20,25 @@ defineOptions({ name: 'DanDatePicker' })
 
 type DateModel = string | null
 type RangeModel = [string, string] | null
+type PickerType = 'date' | 'daterange' | 'datetime' | 'datetimerange'
+
+export interface DatePickerShortcut {
+  text: string
+  value: Date | [Date, Date] | (() => Date | [Date, Date])
+}
 
 const props = withDefaults(
   defineProps<{
     modelValue?: DateModel | RangeModel
-    type?: 'date' | 'daterange'
+    type?: PickerType
     size?: DanSize
     disabled?: boolean
     clearable?: boolean
     placeholder?: string
     startPlaceholder?: string
     endPlaceholder?: string
+    disabledDate?: (date: Date) => boolean
+    shortcuts?: DatePickerShortcut[]
   }>(),
   {
     modelValue: null,
@@ -38,6 +48,7 @@ const props = withDefaults(
     placeholder: '选择日期',
     startPlaceholder: '开始日期',
     endPlaceholder: '结束日期',
+    shortcuts: () => [],
   },
 )
 
@@ -61,10 +72,29 @@ const panelRef = ref<HTMLElement | null>(null)
 const panelStyle = ref<Record<string, string>>({})
 const rangePicking = ref<Date | null>(null)
 
-const initialView =
-  props.type === 'daterange'
-    ? parseDate(Array.isArray(props.modelValue) ? props.modelValue[0] : null)
-    : parseDate(typeof props.modelValue === 'string' ? props.modelValue : null)
+const isRange = computed(
+  () => props.type === 'daterange' || props.type === 'datetimerange',
+)
+const isDateTime = computed(
+  () => props.type === 'datetime' || props.type === 'datetimerange',
+)
+
+const draftDate = ref<Date | null>(null)
+const draftEndDate = ref<Date | null>(null)
+const draftHour = ref(0)
+const draftMinute = ref(0)
+const draftEndHour = ref(0)
+const draftEndMinute = ref(0)
+
+const initialView = (() => {
+  if (isRange.value && Array.isArray(props.modelValue)) {
+    return parseDateLike(props.modelValue[0])
+  }
+  if (typeof props.modelValue === 'string') {
+    return parseDateLike(props.modelValue)
+  }
+  return null
+})()
 
 const viewDate = ref(initialView ?? new Date())
 
@@ -72,21 +102,20 @@ const resolvedSize = computed(() => props.size ?? config.size.value)
 const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )
-const isRange = computed(() => props.type === 'daterange')
 
-const selectedDate = computed(() =>
-  !isRange.value && typeof props.modelValue === 'string'
-    ? parseDate(props.modelValue)
-    : null,
-)
+const selectedDate = computed(() => {
+  if (isRange.value) return null
+  if (typeof props.modelValue !== 'string') return null
+  return parseDateLike(props.modelValue)
+})
 
 const rangeValue = computed(() => {
   if (!isRange.value || !Array.isArray(props.modelValue)) {
     return { start: null as Date | null, end: null as Date | null }
   }
   return {
-    start: parseDate(props.modelValue[0]),
-    end: parseDate(props.modelValue[1]),
+    start: parseDateLike(props.modelValue[0]),
+    end: parseDateLike(props.modelValue[1]),
   }
 })
 
@@ -107,18 +136,52 @@ const monthLabel = computed(
 )
 const cells = computed(() => buildCalendarDays(viewDate.value))
 
+const hours = computed(() => Array.from({ length: 24 }, (_, i) => i))
+const minutes = computed(() =>
+  Array.from({ length: 12 }, (_, i) => i * 5),
+)
+
 watch(
   () => props.modelValue,
   (value) => {
     if (isRange.value && Array.isArray(value)) {
-      const parsed = parseDate(value[0])
+      const parsed = parseDateLike(value[0])
       if (parsed) viewDate.value = parsed
     } else if (typeof value === 'string') {
-      const parsed = parseDate(value)
+      const parsed = parseDateLike(value)
       if (parsed) viewDate.value = parsed
     }
   },
 )
+
+function isDateDisabled(date: Date) {
+  return props.disabledDate?.(date) === true
+}
+
+function syncDraftFromModel() {
+  if (isRange.value && Array.isArray(props.modelValue)) {
+    const start = parseDateLike(props.modelValue[0])
+    const end = parseDateLike(props.modelValue[1])
+    draftDate.value = start
+    draftEndDate.value = end
+    draftHour.value = start?.getHours() ?? 0
+    draftMinute.value = start?.getMinutes() ?? 0
+    draftEndHour.value = end?.getHours() ?? 0
+    draftEndMinute.value = end?.getMinutes() ?? 0
+  } else if (typeof props.modelValue === 'string') {
+    const parsed = parseDateLike(props.modelValue)
+    draftDate.value = parsed
+    draftHour.value = parsed?.getHours() ?? 0
+    draftMinute.value = parsed?.getMinutes() ?? 0
+  } else {
+    draftDate.value = null
+    draftEndDate.value = null
+    draftHour.value = 0
+    draftMinute.value = 0
+    draftEndHour.value = 0
+    draftEndMinute.value = 0
+  }
+}
 
 function updatePanelPosition() {
   const root = rootRef.value
@@ -137,6 +200,7 @@ async function openPanel() {
   opened.value = true
   focused.value = true
   rangePicking.value = null
+  syncDraftFromModel()
   emit('visibleChange', true)
   await nextTick()
   updatePanelPosition()
@@ -161,15 +225,29 @@ function setValue(value: DateModel | RangeModel) {
   emitChange('change')
 }
 
+function combineDateTime(date: Date, hour: number, minute: number) {
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    hour,
+    minute,
+    0,
+    0,
+  )
+}
+
 function dayClass(cell: {
   date: Date
   inCurrentMonth: boolean
   isToday: boolean
 }) {
+  const disabled = isDateDisabled(cell.date)
   const classes = [
     ns.e('day'),
     ns.is('other', !cell.inCurrentMonth),
     ns.is('today', cell.isToday),
+    ns.is('disabled', disabled),
   ]
   if (
     !isRange.value &&
@@ -191,11 +269,45 @@ function dayClass(cell: {
       classes.push(ns.is('in-range', true))
     }
   }
+  if (
+    isDateTime.value &&
+    draftDate.value &&
+    isSameDay(cell.date, draftDate.value)
+  ) {
+    classes.push(ns.is('selected', true))
+  }
   return classes
 }
 
 function selectDay(date: Date) {
-  if (isDisabled.value) return
+  if (isDisabled.value || isDateDisabled(date)) return
+
+  if (isDateTime.value && !isRange.value) {
+    draftDate.value = date
+    viewDate.value = new Date(date)
+    return
+  }
+
+  if (isDateTime.value && isRange.value) {
+    if (!rangePicking.value) {
+      rangePicking.value = date
+      draftDate.value = date
+      draftEndDate.value = null
+      return
+    }
+    const start = rangePicking.value
+    const end = date
+    if (start.getTime() <= end.getTime()) {
+      draftDate.value = start
+      draftEndDate.value = end
+    } else {
+      draftDate.value = end
+      draftEndDate.value = start
+    }
+    rangePicking.value = null
+    return
+  }
+
   if (!isRange.value) {
     setValue(formatDate(date))
     viewDate.value = new Date(date)
@@ -216,6 +328,47 @@ function selectDay(date: Date) {
       : ([formatDate(end), formatDate(start)] as [string, string])
   setValue(ordered)
   rangePicking.value = null
+  closePanel()
+}
+
+function confirmDateTime() {
+  if (!draftDate.value) return
+  if (!isRange.value) {
+    const value = formatDateTime(
+      combineDateTime(draftDate.value, draftHour.value, draftMinute.value),
+    )
+    setValue(value)
+    closePanel()
+    return
+  }
+  if (!draftEndDate.value) return
+  const start = formatDateTime(
+    combineDateTime(draftDate.value, draftHour.value, draftMinute.value),
+  )
+  const end = formatDateTime(
+    combineDateTime(draftEndDate.value, draftEndHour.value, draftEndMinute.value),
+  )
+  setValue(
+    start <= end ? [start, end] : [end, start],
+  )
+  closePanel()
+}
+
+function applyShortcut(item: DatePickerShortcut) {
+  const raw = typeof item.value === 'function' ? item.value() : item.value
+  if (Array.isArray(raw)) {
+    const [a, b] = raw
+    if (isDateDisabled(a) || isDateDisabled(b)) return
+    if (isDateTime.value) {
+      setValue([formatDateTime(a), formatDateTime(b)])
+    } else {
+      setValue([formatDate(a), formatDate(b)])
+    }
+  } else {
+    if (isDateDisabled(raw)) return
+    if (isDateTime.value) setValue(formatDateTime(raw))
+    else setValue(formatDate(raw))
+  }
   closePanel()
 }
 
@@ -242,7 +395,15 @@ function nextMonth() {
 }
 
 function selectToday() {
-  selectDay(new Date())
+  const today = new Date()
+  if (isDateDisabled(today)) return
+  if (isDateTime.value) {
+    draftDate.value = today
+    draftHour.value = today.getHours()
+    draftMinute.value = Math.floor(today.getMinutes() / 5) * 5
+    return
+  }
+  selectDay(today)
 }
 
 function onDocumentPointer(event: MouseEvent) {
@@ -322,53 +483,150 @@ onBeforeUnmount(() => {
       <div
         v-if="opened"
         ref="panelRef"
-        :class="ns.e('panel')"
+        :class="[ns.e('panel'), shortcuts.length ? ns.is('with-shortcuts', true) : '']"
         :style="panelStyle"
         role="dialog"
         aria-label="日期面板"
       >
-        <div :class="ns.e('header')">
+        <div v-if="shortcuts.length" :class="ns.e('shortcuts')">
           <button
+            v-for="item in shortcuts"
+            :key="item.text"
             type="button"
-            :class="ns.e('nav')"
-            aria-label="上个月"
-            @click="prevMonth"
+            :class="ns.e('shortcut')"
+            @click="applyShortcut(item)"
           >
-            ‹
-          </button>
-          <span :class="ns.e('month')">{{ monthLabel }}</span>
-          <button
-            type="button"
-            :class="ns.e('nav')"
-            aria-label="下个月"
-            @click="nextMonth"
-          >
-            ›
+            {{ item.text }}
           </button>
         </div>
-        <div :class="ns.e('weekdays')">
-          <span v-for="label in WEEK_LABELS" :key="label">{{ label }}</span>
-        </div>
-        <div :class="ns.e('days')">
-          <button
-            v-for="cell in cells"
-            :key="formatDate(cell.date)"
-            type="button"
-            :class="dayClass(cell)"
-            @click="selectDay(cell.date)"
-          >
-            {{ cell.label }}
-          </button>
-        </div>
-        <div v-if="!isRange" :class="ns.e('footer')">
-          <button type="button" :class="ns.e('today')" @click="selectToday">
-            今天
-          </button>
-        </div>
-        <div v-else :class="ns.e('footer')">
-          <span :class="ns.e('hint')">
-            {{ rangePicking ? '请选择结束日期' : '请选择开始日期' }}
-          </span>
+        <div :class="ns.e('main')">
+          <div :class="ns.e('header')">
+            <button
+              type="button"
+              :class="ns.e('nav')"
+              aria-label="上个月"
+              @click="prevMonth"
+            >
+              ‹
+            </button>
+            <span :class="ns.e('month')">{{ monthLabel }}</span>
+            <button
+              type="button"
+              :class="ns.e('nav')"
+              aria-label="下个月"
+              @click="nextMonth"
+            >
+              ›
+            </button>
+          </div>
+          <div :class="ns.e('weekdays')">
+            <span v-for="label in WEEK_LABELS" :key="label">{{ label }}</span>
+          </div>
+          <div :class="ns.e('days')">
+            <button
+              v-for="cell in cells"
+              :key="formatDate(cell.date)"
+              type="button"
+              :class="dayClass(cell)"
+              :disabled="isDateDisabled(cell.date)"
+              @click="selectDay(cell.date)"
+            >
+              {{ cell.label }}
+            </button>
+          </div>
+
+          <div v-if="isDateTime" :class="ns.e('time')">
+            <div :class="ns.e('time-block')">
+              <span>{{ isRange ? '开始' : '时间' }}</span>
+              <select
+                :class="ns.e('time-select')"
+                :value="draftHour"
+                @change="
+                  draftHour = Number(($event.target as HTMLSelectElement).value)
+                "
+              >
+                <option v-for="h in hours" :key="h" :value="h">
+                  {{ formatTime(h, 0).slice(0, 2) }}
+                </option>
+              </select>
+              <span>:</span>
+              <select
+                :class="ns.e('time-select')"
+                :value="draftMinute"
+                @change="
+                  draftMinute = Number(
+                    ($event.target as HTMLSelectElement).value,
+                  )
+                "
+              >
+                <option v-for="m in minutes" :key="m" :value="m">
+                  {{ String(m).padStart(2, '0') }}
+                </option>
+              </select>
+            </div>
+            <div v-if="isRange" :class="ns.e('time-block')">
+              <span>结束</span>
+              <select
+                :class="ns.e('time-select')"
+                :value="draftEndHour"
+                @change="
+                  draftEndHour = Number(
+                    ($event.target as HTMLSelectElement).value,
+                  )
+                "
+              >
+                <option v-for="h in hours" :key="`e-${h}`" :value="h">
+                  {{ formatTime(h, 0).slice(0, 2) }}
+                </option>
+              </select>
+              <span>:</span>
+              <select
+                :class="ns.e('time-select')"
+                :value="draftEndMinute"
+                @change="
+                  draftEndMinute = Number(
+                    ($event.target as HTMLSelectElement).value,
+                  )
+                "
+              >
+                <option v-for="m in minutes" :key="`em-${m}`" :value="m">
+                  {{ String(m).padStart(2, '0') }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div :class="ns.e('footer')">
+            <button
+              v-if="!isRange || isDateTime"
+              type="button"
+              :class="ns.e('today')"
+              @click="selectToday"
+            >
+              今天
+            </button>
+            <span v-if="isRange && !isDateTime" :class="ns.e('hint')">
+              {{ rangePicking ? '请选择结束日期' : '请选择开始日期' }}
+            </span>
+            <span v-else-if="isRange && isDateTime" :class="ns.e('hint')">
+              {{
+                rangePicking
+                  ? '请选择结束日期'
+                  : draftEndDate
+                    ? '可调整时间后确认'
+                    : '请选择开始日期'
+              }}
+            </span>
+            <button
+              v-if="isDateTime"
+              type="button"
+              :class="ns.e('confirm')"
+              :disabled="!draftDate || (isRange && !draftEndDate)"
+              @click="confirmDateTime"
+            >
+              确定
+            </button>
+          </div>
         </div>
       </div>
     </Teleport>

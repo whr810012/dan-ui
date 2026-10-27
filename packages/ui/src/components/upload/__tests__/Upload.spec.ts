@@ -62,4 +62,113 @@ describe('DanUpload', () => {
     await input.trigger('change')
     expect(onExceed).toHaveBeenCalled()
   })
+
+  it('supports abortable httpRequest', async () => {
+    const abortFn = vi.fn()
+    const httpRequest = vi.fn(({ onProgress }) => {
+      onProgress(10)
+      return { abort: abortFn }
+    })
+    const fileList = ref<UploadFile[]>([])
+    const Comp = defineComponent({
+      components: { DanUpload },
+      setup() {
+        return { fileList, httpRequest }
+      },
+      template: `<DanUpload ref="up" v-model:file-list="fileList" :http-request="httpRequest" />`,
+    })
+
+    const wrapper = mount(Comp)
+    const input = wrapper.get('input[type="file"]')
+    Object.defineProperty(input.element, 'files', {
+      value: [createFile('slow.bin', 64)],
+      configurable: true,
+    })
+    await input.trigger('change')
+    await nextTick()
+    expect(httpRequest).toHaveBeenCalled()
+    ;(wrapper.findComponent(DanUpload).vm as { abortAll: () => void }).abortAll()
+    await nextTick()
+    expect(abortFn).toHaveBeenCalled()
+    expect(fileList.value[0]?.status).toBe('fail')
+  })
+
+  it('uploads in chunks when chunkSize is set', async () => {
+    const chunks: number[] = []
+    const beforeChunkUpload = vi.fn((chunk) => {
+      chunks.push(chunk.index)
+      return true
+    })
+    const httpRequest = vi.fn(({ chunk, onSuccess }) => {
+      onSuccess({ index: chunk?.index })
+    })
+    const fileList = ref<UploadFile[]>([])
+    const Comp = defineComponent({
+      components: { DanUpload },
+      setup() {
+        return { fileList, httpRequest, beforeChunkUpload }
+      },
+      template: `
+        <DanUpload
+          v-model:file-list="fileList"
+          :chunk-size="4"
+          :before-chunk-upload="beforeChunkUpload"
+          :http-request="httpRequest"
+        />
+      `,
+    })
+
+    const wrapper = mount(Comp)
+    const input = wrapper.get('input[type="file"]')
+    Object.defineProperty(input.element, 'files', {
+      value: [createFile('chunk.bin', 10)],
+      configurable: true,
+    })
+    await input.trigger('change')
+    await vi.waitFor(() => {
+      expect(fileList.value[0]?.status).toBe('success')
+    })
+    expect(chunks).toEqual([0, 1, 2])
+    expect(httpRequest).toHaveBeenCalledTimes(3)
+    expect(beforeChunkUpload).toHaveBeenCalledTimes(3)
+  })
+
+  it('retries a failed file', async () => {
+    let failOnce = true
+    const httpRequest = vi.fn(({ onSuccess, onError }) => {
+      if (failOnce) {
+        failOnce = false
+        onError(new Error('network'))
+        return
+      }
+      onSuccess({ ok: true })
+    })
+    const fileList = ref<UploadFile[]>([])
+    const Comp = defineComponent({
+      components: { DanUpload },
+      setup() {
+        return { fileList, httpRequest }
+      },
+      template: `<DanUpload ref="up" v-model:file-list="fileList" :http-request="httpRequest" />`,
+    })
+
+    const wrapper = mount(Comp)
+    const input = wrapper.get('input[type="file"]')
+    Object.defineProperty(input.element, 'files', {
+      value: [createFile('retry.txt')],
+      configurable: true,
+    })
+    await input.trigger('change')
+    await vi.waitFor(() => {
+      expect(fileList.value[0]?.status).toBe('fail')
+    })
+    const upload = wrapper.findComponent(DanUpload).vm as {
+      retry: (file: UploadFile) => void
+    }
+    upload.retry(fileList.value[0]!)
+    await vi.waitFor(() => {
+      expect(fileList.value[0]?.status).toBe('success')
+    })
+    expect(httpRequest).toHaveBeenCalledTimes(2)
+  })
 })

@@ -18,13 +18,33 @@ export interface UploadFile {
 export type UploadUserFile = Partial<UploadFile> &
   Pick<UploadFile, 'name' | 'uid'>
 
+export interface UploadChunkInfo {
+  index: number
+  start: number
+  end: number
+  total: number
+  blob: Blob
+}
+
 export interface UploadRequestOptions {
   file: UploadRawFile
+  /** 当前分片信息；整文件上传时为空 */
+  chunk?: UploadChunkInfo
   onProgress: (percent: number) => void
   onSuccess: (response?: unknown) => void
   onError: (error?: unknown) => void
 }
 
+export type UploadRequestResult =
+  | void
+  | Promise<unknown>
+  | { abort?: () => void }
+
 export type UploadRequestHandler = (
   options: UploadRequestOptions,
-) => void | Promise<unknown>
+) => UploadRequestResult
+
+export type UploadBeforeChunkHook = (
+  chunk: UploadChunkInfo,
+  file: UploadFile,
+) => boolean | Promise<boolean>

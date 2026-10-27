@@ -21,10 +21,13 @@ export type { DanInputNumberInstance } from './input-number'
 export { DanUpload } from './upload'
 export type {
   DanUploadInstance,
+  UploadBeforeChunkHook,
+  UploadChunkInfo,
   UploadFile,
   UploadRawFile,
   UploadRequestHandler,
   UploadRequestOptions,
+  UploadRequestResult,
   UploadStatus,
   UploadUserFile,
 } from './upload'
@@ -36,7 +39,11 @@ export { DanRate } from './rate'
 export type { DanRateInstance } from './rate'
 
 export { DanDatePicker } from './date-picker'
-export type { DanDatePickerInstance, CalendarCell } from './date-picker'
+export type {
+  DanDatePickerInstance,
+  CalendarCell,
+  DatePickerShortcut,
+} from './date-picker'
 export {
   WEEK_LABELS,
   buildCalendarDays,

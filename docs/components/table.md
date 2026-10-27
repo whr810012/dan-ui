@@ -4,15 +4,23 @@ import Basic from './demos/table/basic.vue'
 import MultiHeader from './demos/table/multi-header.vue'
 import TreeDemo from './demos/table/tree.vue'
 import VirtualDemo from './demos/table/virtual.vue'
+import FixedDemo from './demos/table/fixed.vue'
+import SelectionDemo from './demos/table/selection.vue'
+import ExpandableDemo from './demos/table/expandable.vue'
+import SummaryDemo from './demos/table/summary.vue'
 import basicSrc from './demos/table/basic.vue?raw'
 import multiHeaderSrc from './demos/table/multi-header.vue?raw'
 import treeSrc from './demos/table/tree.vue?raw'
 import virtualSrc from './demos/table/virtual.vue?raw'
+import fixedSrc from './demos/table/fixed.vue?raw'
+import selectionSrc from './demos/table/selection.vue?raw'
+import expandableSrc from './demos/table/expandable.vue?raw'
+import summarySrc from './demos/table/summary.vue?raw'
 </script>
 
 # Table 表格
 
-基础数据表格，支持**列筛选**、**列显示/隐藏**、**多级表头**、**树形数据**与**虚拟滚动**。
+基础数据表格：筛选、列设置、多级表头、树形、虚拟滚动、固定列、多选、展开行、合计。
 
 ## 基础用法
 
@@ -46,6 +54,38 @@ import virtualSrc from './demos/table/virtual.vue?raw'
   <VirtualDemo />
 </DemoBlock>
 
+## 固定列
+
+叶子列设置 `fixed: 'left' | 'right'`。建议同时给出 `width`，以便正确计算粘滞偏移。
+
+<DemoBlock :source="fixedSrc">
+  <FixedDemo />
+</DemoBlock>
+
+## 行多选
+
+开启 `selection`，可用 `v-model:selected-row-keys` 受控。树表场景仅对当前可见扁平行勾选。
+
+<DemoBlock :source="selectionSrc">
+  <SelectionDemo />
+</DemoBlock>
+
+## 展开行
+
+`expandable` 提供内容展开列，与 `tree` 的节点展开分开；详情写在 `#expand` 插槽。
+
+<DemoBlock :source="expandableSrc">
+  <ExpandableDemo />
+</DemoBlock>
+
+## 合计行
+
+`show-summary` 默认对 number 列求和；可用 `summary-method` 自定义。
+
+<DemoBlock :source="summarySrc">
+  <SummaryDemo />
+</DemoBlock>
+
 ## Props
 
 | 属性 | 说明 | 类型 | 默认值 |
@@ -69,6 +109,13 @@ import virtualSrc from './demos/table/virtual.vue?raw'
 | height | 虚拟滚动容器高度 | `number \| string` | `400` |
 | rowHeight | 虚拟行高（px） | `number` | `48` |
 | virtualBuffer | 视口外缓冲行数 | `number` | `5` |
+| selection | 行多选 | `boolean` | `false` |
+| selectedRowKeys | 受控选中行 key | `(string \| number)[]` | — |
+| reserveSelection | 数据变更后保留选中（非受控） | `boolean` | `false` |
+| expandable | 内容展开行 | `boolean` | `false` |
+| expandedRowKeys | 受控内容展开 key | `(string \| number)[]` | — |
+| showSummary | 合计行 | `boolean` | `false` |
+| summaryMethod | 自定义合计 | `( { columns, data } ) => Record<string, string>` | — |
 
 ## TableColumn
 
@@ -81,6 +128,7 @@ import virtualSrc from './demos/table/virtual.vue?raw'
 | filterable | `true` 文本筛选，或 `{ type: 'text' \| 'select', options? }`（叶子列） |
 | hideable | 是否可在列设置中隐藏，默认 `true`（叶子列） |
 | visible | 初始是否显示，默认 `true`（叶子列） |
+| fixed | 固定列 `'left' \| 'right'`（叶子列） |
 
 ## Events
 
@@ -90,9 +138,12 @@ import virtualSrc from './demos/table/virtual.vue?raw'
 | update:visibleColumns / column-visibility-change | 列显隐变化 |
 | sort-change | `{ prop, order }` |
 | update:expandRowKeys / expand-change | 树节点展开变化 |
+| update:selectedRowKeys / selection-change | 多选变化；`selection-change` 参数 `(keys, rows)` |
+| update:expandedRowKeys / expandable-change | 内容展开行变化 |
 
 ## Slots
 
 | 插槽 | 说明 |
 |------|------|
 | `[prop]` | 自定义单元格，参数 `{ row, column, index }` |
+| expand | 内容展开区，参数 `{ row, index }`（需 `expandable`） |

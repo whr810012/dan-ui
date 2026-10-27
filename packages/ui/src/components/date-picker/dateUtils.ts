@@ -59,6 +59,37 @@ export function parseTime(
   return { h, m }
 }
 
+export function formatDateTime(date: Date): string {
+  return `${formatDate(date)} ${formatTime(date.getHours(), date.getMinutes())}`
+}
+
+export function parseDateTime(value?: string | null): Date | null {
+  if (!value) return null
+  const matched =
+    /^(\d{4})-(\d{2})-(\d{2})(?:\s+(\d{1,2}):(\d{2}))?$/.exec(value.trim())
+  if (!matched) return null
+  const year = Number(matched[1])
+  const month = Number(matched[2])
+  const day = Number(matched[3])
+  const h = matched[4] != null ? Number(matched[4]) : 0
+  const m = matched[5] != null ? Number(matched[5]) : 0
+  if (h < 0 || h > 23 || m < 0 || m > 59) return null
+  const date = new Date(year, month - 1, day, h, m, 0, 0)
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() !== month - 1 ||
+    date.getDate() !== day
+  ) {
+    return null
+  }
+  return date
+}
+
+/** Accepts YYYY-MM-DD or YYYY-MM-DD HH:mm */
+export function parseDateLike(value?: string | null): Date | null {
+  return parseDateTime(value) ?? parseDate(value)
+}
+
 export interface CalendarCell {
   date: Date
   label: number

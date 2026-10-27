@@ -110,6 +110,68 @@ describe('DanTable', () => {
     expect(wrapper.text()).toContain('研发')
   })
 
+  it('supports row selection', async () => {
+    const wrapper = mount(DanTable, {
+      props: {
+        columns,
+        data,
+        selection: true,
+        selectedRowKeys: [],
+        'onUpdate:selectedRowKeys': (keys: Array<string | number>) => {
+          void wrapper.setProps({ selectedRowKeys: keys })
+        },
+      },
+    })
+    await nextTick()
+    const inputs = wrapper.findAll('.dan-checkbox__original')
+    expect(inputs.length).toBeGreaterThan(1)
+    const rowInput = inputs[1]!
+    ;(rowInput.element as HTMLInputElement).checked = true
+    await rowInput.trigger('change')
+    await nextTick()
+    expect(wrapper.emitted('selection-change')).toBeTruthy()
+    expect(wrapper.emitted('update:selectedRowKeys')?.[0]?.[0]).toEqual([
+      data[0]!.id,
+    ])
+  })
+
+  it('expands content row via expandable slot', async () => {
+    const wrapper = mount(DanTable, {
+      props: {
+        columns: [{ prop: 'name', label: '姓名' }],
+        data: [{ id: 1, name: '张三' }],
+        expandable: true,
+      },
+      slots: {
+        expand: `<div class="detail">详情</div>`,
+      },
+    })
+    await nextTick()
+    await wrapper.find('.dan-table__expandable-cell .dan-table__expand').trigger('click')
+    await nextTick()
+    expect(wrapper.find('.detail').exists()).toBe(true)
+    expect(wrapper.text()).toContain('详情')
+  })
+
+  it('renders summary row for number columns', async () => {
+    const wrapper = mount(DanTable, {
+      props: {
+        columns: [
+          { prop: 'name', label: '名称' },
+          { prop: 'amount', label: '金额' },
+        ],
+        data: [
+          { id: 1, name: 'A', amount: 10 },
+          { id: 2, name: 'B', amount: 5 },
+        ],
+        showSummary: true,
+      },
+    })
+    await nextTick()
+    expect(wrapper.find('tfoot').exists()).toBe(true)
+    expect(wrapper.find('tfoot').text()).toContain('15')
+  })
+
   it('virtually renders a window of rows', async () => {
     const many = Array.from({ length: 200 }, (_, i) => ({
       id: i + 1,

@@ -24,6 +24,8 @@ export interface TableColumn {
   hideable?: boolean
   /** 初始是否显示，默认 true（仅叶子列） */
   visible?: boolean
+  /** 固定列（仅叶子列） */
+  fixed?: 'left' | 'right'
   /** 多级表头子列 */
   children?: TableColumn[]
 }

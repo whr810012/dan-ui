@@ -3,6 +3,8 @@ import { computed, ref, watch } from 'vue'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import type {
+  UploadBeforeChunkHook,
+  UploadChunkInfo,
   UploadFile,
   UploadRawFile,
   UploadRequestHandler,
@@ -23,6 +25,9 @@ const props = withDefaults(
     autoUpload?: boolean
     httpRequest?: UploadRequestHandler
     listType?: 'text'
+    /** 分片大小（字节）；>0 时启用分片上传 */
+    chunkSize?: number
+    beforeChunkUpload?: UploadBeforeChunkHook
   }>(),
   {
     fileList: () => [],
@@ -32,6 +37,7 @@ const props = withDefaults(
     drag: false,
     autoUpload: true,
     listType: 'text',
+    chunkSize: 0,
   },
 )
 
@@ -50,16 +56,19 @@ const { form, emitChange } = useFormItem()
 const inputRef = ref<HTMLInputElement | null>(null)
 const dragOver = ref(false)
 let seed = Date.now()
+const abortMap = new Map<number, () => void>()
 
 const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )
 
 const files = ref<UploadFile[]>(normalizeList(props.fileList))
+let syncingFromInner = false
 
 watch(
   () => props.fileList,
   (list) => {
+    if (syncingFromInner) return
     files.value = normalizeList(list)
   },
   { deep: true },
@@ -86,8 +95,12 @@ function formatSize(size?: number) {
 }
 
 function syncList(next: UploadFile[]) {
+  syncingFromInner = true
   files.value = next
   emit('update:fileList', next)
+  queueMicrotask(() => {
+    syncingFromInner = false
+  })
 }
 
 function openFileDialog() {
@@ -139,12 +152,18 @@ function defaultRequest({
   onSuccess,
 }: {
   file: UploadRawFile
+  chunk?: UploadChunkInfo
   onProgress: (percent: number) => void
   onSuccess: (response?: unknown) => void
   onError: (error?: unknown) => void
 }) {
   let percent = 0
+  let aborted = false
   const timer = window.setInterval(() => {
+    if (aborted) {
+      window.clearInterval(timer)
+      return
+    }
     percent += 34
     onProgress(Math.min(percent, 100))
     if (percent >= 100) {
@@ -152,44 +171,181 @@ function defaultRequest({
       onSuccess({ name: 'mock' })
     }
   }, 80)
+  return {
+    abort: () => {
+      aborted = true
+      window.clearInterval(timer)
+    },
+  }
 }
 
-function upload(file: UploadFile) {
+function registerAbort(uid: number, abort?: () => void) {
+  if (abort) abortMap.set(uid, abort)
+}
+
+function clearAbort(uid: number) {
+  abortMap.delete(uid)
+}
+
+function buildChunks(file: File, size: number): UploadChunkInfo[] {
+  const chunks: UploadChunkInfo[] = []
+  const total = Math.ceil(file.size / size) || 1
+  for (let index = 0; index < total; index += 1) {
+    const start = index * size
+    const end = Math.min(file.size, start + size)
+    chunks.push({
+      index,
+      start,
+      end,
+      total,
+      blob: file.slice(start, end),
+    })
+  }
+  return chunks
+}
+
+async function runRequest(
+  file: UploadFile,
+  options: {
+    file: UploadRawFile
+    chunk?: UploadChunkInfo
+    onProgress: (percent: number) => void
+  },
+) {
+  const request = props.httpRequest ?? defaultRequest
+  return await new Promise<unknown>((resolve, reject) => {
+    let settled = false
+    const settle = (fn: () => void) => {
+      if (settled) return
+      settled = true
+      clearAbort(file.uid)
+      fn()
+    }
+
+    const result = request({
+      ...options,
+      onProgress: options.onProgress,
+      onSuccess: (response) => settle(() => resolve(response)),
+      onError: (error) =>
+        settle(() => reject(error ?? new Error('upload failed'))),
+    })
+
+    const abortFn =
+      result && typeof result === 'object' && 'abort' in result
+        ? (result as { abort?: () => void }).abort
+        : undefined
+
+    registerAbort(file.uid, () => {
+      abortFn?.()
+      settle(() => reject(new Error('aborted')))
+    })
+
+    if (result && typeof (result as Promise<unknown>).then === 'function') {
+      void (result as Promise<unknown>).then(
+        (response) => settle(() => resolve(response)),
+        (error) => settle(() => reject(error)),
+      )
+    }
+  })
+}
+
+async function upload(file: UploadFile) {
   if (!file.raw) return
   file.status = 'uploading'
   file.percentage = 0
   syncList([...files.value])
 
-  const request = props.httpRequest ?? defaultRequest
-  void request({
-    file: file.raw,
-    onProgress: (percent) => {
-      file.percentage = percent
-      file.status = 'uploading'
-      syncList([...files.value])
-      emit('progress', percent, file, files.value)
-    },
-    onSuccess: (response) => {
+  try {
+    const chunkSize = props.chunkSize ?? 0
+    if (chunkSize > 0 && file.raw.size > chunkSize) {
+      const chunks = buildChunks(file.raw, chunkSize)
+      const responses: unknown[] = []
+      for (const chunk of chunks) {
+        if (props.beforeChunkUpload) {
+          const ok = await props.beforeChunkUpload(chunk, file)
+          if (!ok) throw new Error('chunk upload cancelled')
+        }
+        const response = await runRequest(file, {
+          file: file.raw,
+          chunk,
+          onProgress: (percent) => {
+            const overall =
+              ((chunk.index + percent / 100) / chunk.total) * 100
+            file.percentage = Math.min(100, Math.round(overall))
+            file.status = 'uploading'
+            syncList([...files.value])
+            emit('progress', file.percentage, file, files.value)
+          },
+        })
+        responses.push(response)
+      }
+      file.status = 'success'
+      file.percentage = 100
+      file.response = responses
+    } else {
+      const response = await runRequest(file, {
+        file: file.raw,
+        onProgress: (percent) => {
+          file.percentage = percent
+          file.status = 'uploading'
+          syncList([...files.value])
+          emit('progress', percent, file, files.value)
+        },
+      })
       file.status = 'success'
       file.percentage = 100
       file.response = response
-      syncList([...files.value])
-      emit('success', response, file, files.value)
-      emit('change', file, files.value)
-      emitChange('change')
-    },
-    onError: (error) => {
+    }
+    syncList([...files.value])
+    emit('success', file.response, file, files.value)
+    emit('change', file, files.value)
+    emitChange('change')
+  } catch (error) {
+    file.status = 'fail'
+    syncList([...files.value])
+    emit('error', error, file, files.value)
+    emit('change', file, files.value)
+    emitChange('change')
+  } finally {
+    clearAbort(file.uid)
+  }
+}
+
+function abort(file?: UploadFile) {
+  if (file) {
+    abortMap.get(file.uid)?.()
+    clearAbort(file.uid)
+    if (file.status === 'uploading') {
       file.status = 'fail'
       syncList([...files.value])
-      emit('error', error, file, files.value)
-      emit('change', file, files.value)
-      emitChange('change')
-    },
-  })
+    }
+    return
+  }
+  abortAll()
+}
+
+function abortAll() {
+  for (const [uid, fn] of abortMap) {
+    fn()
+    clearAbort(uid)
+  }
+  files.value = files.value.map((item) =>
+    item.status === 'uploading' ? { ...item, status: 'fail' as const } : item,
+  )
+  syncList([...files.value])
+}
+
+function retry(file: UploadFile) {
+  if (!file.raw) return
+  file.status = 'ready'
+  file.percentage = 0
+  syncList([...files.value])
+  void upload(file)
 }
 
 function remove(file: UploadFile) {
   if (isDisabled.value) return
+  abort(file)
   const next = files.value.filter((item) => item.uid !== file.uid)
   syncList(next)
   emit('remove', file, next)
@@ -231,7 +387,14 @@ function clearFiles() {
   syncList([])
 }
 
-defineExpose({ submit, clearFiles, openFileDialog })
+defineExpose({
+  submit,
+  clearFiles,
+  openFileDialog,
+  abort,
+  abortAll,
+  retry,
+})
 </script>
 
 <template>

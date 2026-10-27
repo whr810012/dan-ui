@@ -45,4 +45,76 @@ describe('DanDatePicker', () => {
     await nextTick()
     expect(value.value).toBeNull()
   })
+
+  it('respects disabledDate', async () => {
+    const value = ref<string | null>(null)
+    const Comp = defineComponent({
+      components: { DanDatePicker },
+      setup() {
+        const disabledDate = (date: Date) => date.getDate() === 1
+        return { value, disabledDate }
+      },
+      template: `<DanDatePicker v-model="value" :disabled-date="disabledDate" />`,
+    })
+    const wrapper = mount(Comp, { attachTo: document.body })
+    await wrapper.get('.dan-date-picker__trigger').trigger('click')
+    await nextTick()
+    const disabled = document.querySelector(
+      '.dan-date-picker__day.is-disabled',
+    ) as HTMLButtonElement | null
+    expect(disabled).toBeTruthy()
+    disabled?.click()
+    await nextTick()
+    expect(value.value).toBeNull()
+    wrapper.unmount()
+  })
+
+  it('applies shortcuts', async () => {
+    const value = ref<string | null>(null)
+    const today = new Date()
+    const Comp = defineComponent({
+      components: { DanDatePicker },
+      setup() {
+        const shortcuts = [{ text: '今天', value: today }]
+        return { value, shortcuts }
+      },
+      template: `<DanDatePicker v-model="value" :shortcuts="shortcuts" />`,
+    })
+    const wrapper = mount(Comp, { attachTo: document.body })
+    await wrapper.get('.dan-date-picker__trigger').trigger('click')
+    await nextTick()
+    const btn = document.querySelector(
+      '.dan-date-picker__shortcut',
+    ) as HTMLButtonElement
+    btn.click()
+    await nextTick()
+    expect(value.value).toBe(formatDate(today))
+    wrapper.unmount()
+  })
+
+  it('confirms datetime value', async () => {
+    const value = ref<string | null>(null)
+    const Comp = defineComponent({
+      components: { DanDatePicker },
+      setup() {
+        return { value }
+      },
+      template: `<DanDatePicker v-model="value" type="datetime" />`,
+    })
+    const wrapper = mount(Comp, { attachTo: document.body })
+    await wrapper.get('.dan-date-picker__trigger').trigger('click')
+    await nextTick()
+    const day = document.querySelector(
+      '.dan-date-picker__day:not(.is-other):not(.is-disabled)',
+    ) as HTMLButtonElement
+    day.click()
+    await nextTick()
+    const confirm = document.querySelector(
+      '.dan-date-picker__confirm',
+    ) as HTMLButtonElement
+    confirm.click()
+    await nextTick()
+    expect(value.value).toMatch(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/)
+    wrapper.unmount()
+  })
 })
