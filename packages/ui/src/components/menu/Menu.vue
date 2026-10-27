@@ -73,6 +73,7 @@ provideMenu({
       ns.is('collapse', collapse && mode === 'vertical'),
     ]"
     role="menu"
+    :aria-orientation="mode"
   >
     <slot />
   </ul>

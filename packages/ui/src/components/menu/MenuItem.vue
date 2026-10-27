@@ -30,8 +30,11 @@ function onClick() {
   <li
     :class="[ns.b(), ns.is('active', active), ns.is('disabled', disabled)]"
     role="menuitem"
+    :tabindex="disabled ? -1 : 0"
     :aria-disabled="disabled || undefined"
     @click="onClick"
+    @keydown.enter.prevent="onClick"
+    @keydown.space.prevent="onClick"
   >
     <slot />
   </li>

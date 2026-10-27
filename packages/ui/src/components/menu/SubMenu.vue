@@ -37,9 +37,12 @@ function onTitleClick() {
     <div
       :class="ns.e('title')"
       role="menuitem"
+      :tabindex="disabled ? -1 : 0"
       :aria-expanded="opened"
       :aria-disabled="disabled || undefined"
       @click="onTitleClick"
+      @keydown.enter.prevent="onTitleClick"
+      @keydown.space.prevent="onTitleClick"
     >
       <slot name="title">{{ title }}</slot>
       <span :class="ns.e('arrow')" aria-hidden="true" />

@@ -87,20 +87,24 @@ function go(page: number) {
         上一页
       </button>
 
-      <ul v-else-if="part === 'pager'" :class="ns.e('pager')">
-        <li
+      <div v-else-if="part === 'pager'" :class="ns.e('pager')" role="list">
+        <button
           v-for="page in pagers"
           :key="page"
+          type="button"
+          role="listitem"
           :class="[
             ns.e('number'),
             ns.is('active', page === currentPage),
             ns.is('disabled', disabled),
           ]"
+          :disabled="disabled"
+          :aria-current="page === currentPage ? 'page' : undefined"
           @click="go(page)"
         >
           {{ page }}
-        </li>
-      </ul>
+        </button>
+      </div>
 
       <button
         v-else-if="part === 'next'"

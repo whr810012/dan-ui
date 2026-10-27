@@ -1,18 +1,28 @@
 .dan-menu {
-  margin: 0;
-  padding: 8px;
-  list-style: none;
   box-sizing: border-box;
+  margin: 0;
+  padding: var(--dan-spacing-sm);
+  list-style: none;
   background: var(--dan-color-bg);
   color: var(--dan-color-text);
-  border-right: 1px solid var(--dan-color-border-light);
+  font-family: var(--dan-font-family);
+  font-size: var(--dan-font-size-md);
+  line-height: var(--dan-line-height);
+  border-right: 1px solid var(--dan-color-border);
+}
+
+.dan-menu *,
+.dan-menu *::before,
+.dan-menu *::after {
+  box-sizing: border-box;
 }
 
 .dan-menu--horizontal {
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
-  padding: 0 8px;
+  gap: var(--dan-spacing-xs);
+  padding: 0 var(--dan-spacing-sm);
   border-right: 0;
   border-bottom: 1px solid var(--dan-color-border);
 }
@@ -21,20 +31,28 @@
 .dan-sub-menu__title {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
+  gap: var(--dan-spacing-sm);
+  padding: 10px var(--dan-spacing-md);
   border-radius: var(--dan-radius-sm);
-  cursor: pointer;
+  color: inherit;
   line-height: 1.4;
+  cursor: pointer;
+  user-select: none;
   transition:
     background-color var(--dan-duration-fast) var(--dan-ease),
     color var(--dan-duration-fast) var(--dan-ease);
 }
 
 .dan-menu-item:hover:not(.is-disabled),
-.dan-sub-menu__title:hover {
+.dan-sub-menu:not(.is-disabled) > .dan-sub-menu__title:hover {
   background: var(--dan-color-fill);
   color: var(--dan-color-primary);
+}
+
+.dan-menu-item:focus-visible,
+.dan-sub-menu__title:focus-visible {
+  outline: 2px solid var(--dan-color-primary-light);
+  outline-offset: 1px;
 }
 
 .dan-menu-item.is-active {
@@ -44,7 +62,7 @@
 }
 
 .dan-menu-item.is-disabled,
-.dan-sub-menu.is-disabled .dan-sub-menu__title {
+.dan-sub-menu.is-disabled > .dan-sub-menu__title {
   color: var(--dan-color-text-disabled);
   cursor: not-allowed;
 }
@@ -52,15 +70,20 @@
 .dan-sub-menu {
   position: relative;
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .dan-sub-menu__title {
   justify-content: space-between;
+  width: 100%;
 }
 
 .dan-sub-menu__arrow {
+  flex-shrink: 0;
   width: 0;
   height: 0;
+  margin-left: var(--dan-spacing-sm);
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-top: 5px solid currentColor;
@@ -74,26 +97,83 @@
 
 .dan-sub-menu__list {
   margin: 0;
-  padding: 0 0 0 12px;
+  padding: var(--dan-spacing-xs) 0 var(--dan-spacing-xs) var(--dan-spacing-md);
   list-style: none;
 }
 
 .dan-menu--horizontal > .dan-menu-item,
 .dan-menu--horizontal > .dan-sub-menu {
   display: inline-flex;
+  align-items: stretch;
+}
+
+.dan-menu--horizontal > .dan-menu-item,
+.dan-menu--horizontal > .dan-sub-menu > .dan-sub-menu__title {
+  height: 100%;
+  min-height: var(--dan-control-height-lg);
+  padding: 0 var(--dan-spacing-lg);
+  border-radius: 0;
+}
+
+.dan-menu--horizontal > .dan-menu-item.is-active,
+.dan-menu--horizontal
+  > .dan-menu-item:hover:not(.is-disabled) {
+  background: transparent;
+  box-shadow: inset 0 -2px 0 var(--dan-color-primary);
+}
+
+.dan-menu--horizontal
+  > .dan-sub-menu.is-opened
+  > .dan-sub-menu__title,
+.dan-menu--horizontal
+  > .dan-sub-menu:not(.is-disabled)
+  > .dan-sub-menu__title:hover {
+  background: transparent;
+  color: var(--dan-color-primary);
+  box-shadow: inset 0 -2px 0 var(--dan-color-primary);
+}
+
+.dan-menu--horizontal .dan-sub-menu__arrow {
+  border-top-width: 4px;
 }
 
 .dan-menu--horizontal .dan-sub-menu__list {
   position: absolute;
+  top: 100%;
+  left: 0;
   z-index: var(--dan-z-index-dropdown);
-  min-width: 140px;
-  padding: 4px;
+  min-width: 160px;
+  margin-top: var(--dan-spacing-xs);
+  padding: var(--dan-spacing-xs);
   background: var(--dan-color-bg-elevated);
   border: 1px solid var(--dan-color-border);
   border-radius: var(--dan-radius-md);
   box-shadow: var(--dan-shadow-md);
 }
 
-.dan-menu.is-collapse .dan-sub-menu__list {
+.dan-menu--horizontal .dan-sub-menu__list .dan-menu-item {
+  width: 100%;
+  border-radius: var(--dan-radius-sm);
+}
+
+.dan-menu--horizontal .dan-sub-menu__list .dan-menu-item.is-active {
+  background: var(--dan-color-primary-light);
+  box-shadow: none;
+}
+
+.dan-menu.is-collapse {
+  width: var(--dan-control-height-lg);
+  padding: var(--dan-spacing-sm) var(--dan-spacing-xs);
+}
+
+.dan-menu.is-collapse .dan-sub-menu__list,
+.dan-menu.is-collapse .dan-sub-menu__arrow {
   display: none;
+}
+
+.dan-menu.is-collapse .dan-menu-item,
+.dan-menu.is-collapse .dan-sub-menu__title {
+  justify-content: center;
+  padding-left: var(--dan-spacing-sm);
+  padding-right: var(--dan-spacing-sm);
 }
