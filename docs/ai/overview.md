@@ -1,3 +1,8 @@
+---
+title: AI 组件概览
+description: dan-ui AI 组件只做界面与事件，不内置大模型；含 Chat、流式文本、Markdown 等。
+---
+
 <script setup>
 import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import FakeSse from './demos/chat/fake-sse.vue'

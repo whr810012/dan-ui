@@ -1,5 +1,15 @@
 import { defineConfig } from 'vitepress'
 import { resolve } from 'node:path'
+import {
+  SITE_DESCRIPTION,
+  SITE_ORIGIN,
+  faqJsonLd,
+  homeJsonLd,
+  pageTitle,
+  pageUrl,
+  socialHead,
+  techArticleJsonLd,
+} from './seo'
 
 type SidebarGroup = {
   text: string
@@ -187,9 +197,11 @@ export default defineConfig({
             { text: '介绍', link: '/guide/introduction' },
             { text: '快速开始', link: '/guide/quickstart' },
             { text: '引入方式', link: '/guide/import' },
+            { text: '何时用 dan-ui', link: '/guide/why-dan-ui' },
             { text: '主题定制', link: '/guide/theming' },
             { text: '最佳实践', link: '/guide/best-practices' },
             { text: '无障碍与键盘', link: '/guide/accessibility' },
+            { text: '常见问题', link: '/guide/faq' },
             { text: '发布清单', link: '/guide/checklist' },
             { text: '更新日志', link: '/guide/changelog' },
           ],
@@ -213,6 +225,52 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/whr810012/dan-ui' },
     ],
+  },
+  sitemap: {
+    hostname: SITE_ORIGIN,
+  },
+  transformPageData(pageData) {
+    const isHome = pageData.relativePath === 'index.md'
+    const description =
+      pageData.description ||
+      pageData.frontmatter.description ||
+      SITE_DESCRIPTION
+    pageData.description = description
+    pageData.title = pageTitle(
+      pageData.frontmatter.title || pageData.title,
+      isHome,
+    )
+  },
+  transformHead({ pageData }) {
+    const isHome = pageData.relativePath === 'index.md'
+    const title = pageTitle(
+      pageData.frontmatter.title || pageData.title,
+      isHome,
+    )
+    const description =
+      (pageData.description as string) ||
+      pageData.frontmatter.description ||
+      SITE_DESCRIPTION
+    const url = pageUrl(pageData.relativePath)
+    const head = [
+      ...socialHead({ title, description, url }),
+      ['meta', { name: 'description', content: description }],
+    ]
+
+    if (isHome) {
+      head.push(...homeJsonLd())
+    } else if (pageData.relativePath.includes('guide/faq')) {
+      head.push(faqJsonLd())
+    } else if (
+      pageData.relativePath.startsWith('components/') ||
+      pageData.relativePath.startsWith('ai/') ||
+      pageData.relativePath.startsWith('editor/') ||
+      pageData.relativePath.startsWith('guide/')
+    ) {
+      head.push(techArticleJsonLd({ title, description, url }))
+    }
+
+    return head
   },
   vite: {
     resolve: {

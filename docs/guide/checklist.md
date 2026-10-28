@@ -34,3 +34,4 @@ pnpm build && pnpm test && pnpm docs:build && pnpm lint
 1. 新组件必须有 Demo + API 表 + 侧栏入口。
 2. 中后台组合页参考 [最佳实践](/guide/best-practices)。
 3. 无障碍约定见 [无障碍与键盘](/guide/accessibility)。
+4. 发版后确认 `/dan-ui/sitemap.xml`、`/dan-ui/robots.txt`、抽样页含 canonical / og meta。

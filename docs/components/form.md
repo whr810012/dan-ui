@@ -1,3 +1,8 @@
+---
+title: Form 表单
+description: Vue 3 表单布局与校验，配合 Input、Select、DatePicker 等 dan-ui 控件。
+---
+
 <script setup>
 import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/form/basic.vue'

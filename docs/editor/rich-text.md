@@ -1,3 +1,8 @@
+---
+title: RichText 富文本
+description: 基于 TipTap 的 Vue 3 富文本，支持工具栏、图片上传钩子、表格与 html/json/markdown 输出。
+---
+
 <script setup>
 import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/rich-text/basic.vue'

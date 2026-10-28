@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0
+
+- 文档站 SEO：Open Graph / Twitter、canonical、按页 description、sitemap.xml、robots.txt、JSON-LD（WebSite / SoftwareApplication / TechArticle / FAQPage）
+- 文档站 GEO：产品权威定义、FAQ、何时用 dan-ui、`llms.txt`
+- 强化首页 / 介绍 / 快速开始的可摘要结构
+
 ## 1.3.0
 
 - 新组件：Popconfirm、Segmented、Watermark、FloatButton / FloatButtonGroup、Splitter / SplitterPanel、Tour

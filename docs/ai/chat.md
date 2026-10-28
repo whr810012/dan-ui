@@ -1,3 +1,8 @@
+---
+title: Chat 对话
+description: Vue 3 AI 对话容器组件，消息列表与上下文注入，不内置大模型 SDK。
+---
+
 <script setup>
 import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import FakeSse from './demos/chat/fake-sse.vue'

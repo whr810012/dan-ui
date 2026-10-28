@@ -1,3 +1,8 @@
+---
+title: Table 表格
+description: Vue 3 中后台表格：筛选、列显隐、固定列、多选、展开行、合计、树表与虚拟滚动。
+---
+
 <script setup>
 import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/table/basic.vue'

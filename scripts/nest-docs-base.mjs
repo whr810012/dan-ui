@@ -7,6 +7,7 @@ import {
   cpSync,
   mkdirSync,
   readdirSync,
+  readFileSync,
   rmSync,
   writeFileSync,
   existsSync,
@@ -45,5 +46,16 @@ writeFileSync(
   `<!doctype html><meta http-equiv="refresh" content="0;url=/dan-ui/"><link rel="canonical" href="/dan-ui/"><script>location.replace('/dan-ui/'+location.search+location.hash)</script>`,
 )
 writeFileSync(join(dist, '_redirects'), '/ /dan-ui/ 302\n')
+
+// VitePress sitemap hostname ignores base; rewrite locs under /dan-ui/
+const sitemapPath = join(nested, 'sitemap.xml')
+if (existsSync(sitemapPath)) {
+  const xml = readFileSync(sitemapPath, 'utf8').replace(
+    /<loc>https:\/\/dandanhub\.vip\//g,
+    '<loc>https://dandanhub.vip/dan-ui/',
+  )
+  writeFileSync(sitemapPath, xml)
+  console.log('Rewrote sitemap.xml locs to include /dan-ui/')
+}
 
 console.log(`Nested ${entries.length} entries into docs/.vitepress/dist/dan-ui/`)

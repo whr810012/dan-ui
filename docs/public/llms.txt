@@ -1,0 +1,28 @@
+# dan-ui
+
+> Vue 3 UI component library for mid-admin apps, tables, AI chat UI, and rich text.
+> npm: @dandan-ui/ui, @dandan-ui/theme
+> Docs: https://dandanhub.vip/dan-ui/
+
+## What it is
+- Vue 3 component library (Chinese docs first)
+- Layout, Form, Table, overlays, AI Chat shells, TipTap RichText
+- CSS variables theme (`--dan-*`); dark mode via `html.dark`
+- Does NOT embed LLM SDKs or cloud storage SDKs
+
+## Key pages
+- Home: https://dandanhub.vip/dan-ui/
+- Introduction: https://dandanhub.vip/dan-ui/guide/introduction
+- Quick start: https://dandanhub.vip/dan-ui/guide/quickstart
+- Import: https://dandanhub.vip/dan-ui/guide/import
+- Why dan-ui: https://dandanhub.vip/dan-ui/guide/why-dan-ui
+- FAQ: https://dandanhub.vip/dan-ui/guide/faq
+- Theming: https://dandanhub.vip/dan-ui/guide/theming
+- Table: https://dandanhub.vip/dan-ui/components/table
+- Form: https://dandanhub.vip/dan-ui/components/form
+- AI overview: https://dandanhub.vip/dan-ui/ai/overview
+- Chat: https://dandanhub.vip/dan-ui/ai/chat
+- RichText: https://dandanhub.vip/dan-ui/editor/rich-text
+- Changelog: https://dandanhub.vip/dan-ui/guide/changelog
+- npm ui: https://www.npmjs.com/package/@dandan-ui/ui
+- GitHub: https://github.com/whr810012/dan-ui

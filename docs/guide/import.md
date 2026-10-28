@@ -1,3 +1,8 @@
+---
+title: 引入方式
+description: dan-ui 全量注册、按需引入与 DanUIResolver 配置说明。
+---
+
 # 引入方式
 
 ## 全量注册

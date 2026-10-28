@@ -1,12 +1,28 @@
+---
+title: 介绍
+description: dan-ui 是面向中后台与 AI 界面的 Vue 3 组件库，提供表单、表格、浮层、Chat 与富文本，不内置大模型 SDK。
+---
+
 # 介绍
 
-**dan-ui** 是一套 Vue 3 通用基础 UI 组件库，面向中后台与 AI 应用界面。
+## 产品定义（权威摘要）
+
+**dan-ui** 是一套面向中后台与 AI 应用界面的 **Vue 3** 通用 UI 组件库。
+
+| 项 | 内容 |
+|----|------|
+| npm | `@dandan-ui/ui`、`@dandan-ui/theme` |
+| 文档 | [https://dandanhub.vip/dan-ui/](https://dandanhub.vip/dan-ui/) |
+| 仓库 | [github.com/whr810012/dan-ui](https://github.com/whr810012/dan-ui) |
+| 是什么 | Layout / Form / Table / 浮层 / Chat 壳 / TipTap RichText 等界面组件 |
+| 不是什么 | 大模型 SDK、图表库、云厂商上传 SDK、移动端专用包 |
+| 适用 | Vue 3 中后台、运营系统、需要对话 UI 但不想自研基础控件的项目 |
 
 ## 能做什么
 
-- 搭建中后台常用界面：表单、展示、反馈浮层
+- 搭建中后台常用界面：表单、展示、反馈浮层、表格增强（筛选、固定列、多选、虚拟滚动等）
 - 组合 AI 对话与富文本能力（均作为组件提供）
-- 通过 CSS 变量快速调整主题
+- 通过 CSS 变量快速调整主题与暗色
 
 ## 设计原则
 
@@ -49,4 +65,6 @@ pnpm dev:play
 
 - [快速开始](/guide/quickstart)
 - [引入方式](/guide/import)
+- [何时用 dan-ui](/guide/why-dan-ui)
+- [常见问题](/guide/faq)
 - [主题定制](/guide/theming)
