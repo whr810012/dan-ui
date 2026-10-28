@@ -3,14 +3,27 @@ import { computed } from 'vue'
 import type { ChatMessageModel } from '../../types/chat'
 import { useNamespace } from '../../hooks/useNamespace'
 import { DanAttachment } from '../attachment'
+import { DanButton } from '../button'
 import { DanStreamText } from '../stream-text'
 import { DanThinking } from '../thinking'
 import './style.css'
 
 defineOptions({ name: 'DanChatMessage' })
 
-const props = defineProps<{
-  message: ChatMessageModel
+const props = withDefaults(
+  defineProps<{
+    message: ChatMessageModel
+    showActions?: boolean
+  }>(),
+  {
+    showActions: true,
+  },
+)
+
+const emit = defineEmits<{
+  copy: [message: ChatMessageModel]
+  regenerate: [message: ChatMessageModel]
+  feedback: [payload: { message: ChatMessageModel; type: 'up' | 'down' }]
 }>()
 
 const ns = useNamespace('chat-message')
@@ -25,6 +38,17 @@ const roleLabel = computed(() => {
   } as const
   return map[props.message.role]
 })
+
+const hasParts = computed(() => Boolean(props.message.parts?.length))
+
+async function onCopy() {
+  try {
+    await navigator.clipboard.writeText(props.message.content || '')
+  } catch {
+    /* ignore */
+  }
+  emit('copy', props.message)
+}
 </script>
 
 <template>
@@ -49,14 +73,38 @@ const roleLabel = computed(() => {
     </header>
 
     <DanThinking
-      v-if="message.reasoning"
+      v-if="message.reasoning && !hasParts"
       :content="message.reasoning"
       :collapsed="message.status !== 'streaming'"
     />
 
     <div :class="ns.e('content')">
       <slot :message="message">
+        <template v-if="hasParts">
+          <template v-for="(part, index) in message.parts" :key="index">
+            <DanThinking
+              v-if="part.type === 'thinking'"
+              :content="part.content"
+              :collapsed="message.status !== 'streaming'"
+            />
+            <DanStreamText
+              v-else-if="part.type === 'text'"
+              :content="part.content"
+              :streaming="streaming && index === (message.parts?.length ?? 0) - 1"
+              :as-markdown="message.role !== 'user'"
+            />
+            <div v-else-if="part.type === 'tool'" :class="ns.e('tool')">
+              <strong>{{ part.name }}</strong>
+              <span v-if="part.status" :class="ns.e('tool-status')">
+                {{ part.status }}
+              </span>
+              <pre v-if="part.input != null">{{ part.input }}</pre>
+              <pre v-if="part.output != null">{{ part.output }}</pre>
+            </div>
+          </template>
+        </template>
         <DanStreamText
+          v-else
           :content="message.content"
           :streaming="streaming"
           :as-markdown="message.role !== 'user'"
@@ -70,6 +118,32 @@ const roleLabel = computed(() => {
         :key="file.id || `${file.name}-${index}`"
         :file="file"
       />
+    </div>
+
+    <div
+      v-if="showActions && message.role === 'assistant'"
+      :class="ns.e('actions')"
+    >
+      <slot name="actions" :message="message">
+        <DanButton size="small" text @click="onCopy">复制</DanButton>
+        <DanButton size="small" text @click="emit('regenerate', message)">
+          重新生成
+        </DanButton>
+        <DanButton
+          size="small"
+          text
+          @click="emit('feedback', { message, type: 'up' })"
+        >
+          有用
+        </DanButton>
+        <DanButton
+          size="small"
+          text
+          @click="emit('feedback', { message, type: 'down' })"
+        >
+          无用
+        </DanButton>
+      </slot>
     </div>
   </article>
 </template>

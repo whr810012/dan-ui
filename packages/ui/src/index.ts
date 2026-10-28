@@ -42,8 +42,10 @@ export type { ChatContext } from './hooks/useChatContext'
 export type {
   ChatMessageModel,
   ChatMessageStatus,
+  ChatMessagePart,
   ChatRole,
   ChatAttachment,
+  ChatConversationItem,
 } from './types/chat'
 
 const DanUI: Plugin = {

@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.0
+
+- 新组件：Popconfirm、Segmented、Watermark、FloatButton / FloatButtonGroup、Splitter / SplitterPanel、Tour
+- Select：`multiple` / `filterable` / `collapseTags` / `virtual`
+- Table：可编辑单元格（`editable` + `cell-edit`）、列拖拽排序（`column-drag-end`，扁平表头）
+- Upload：`getUploadedChunks` 断点续传跳过已传分片
+- AI：ChatMessage 操作条与 `parts` 多段渲染；ConversationList 会话侧栏
+- 富文本：表格扩展、图片上传钩子完善、`output="markdown"` / `getMarkdown` / `setMarkdown`
+
 ## 1.2.0
 
 - 无障碍：Tabs 方向键 / Home / End 与 `aria-controls`；Menu / Tree 键盘导航；Dialog / Drawer 补齐 `aria-labelledby`

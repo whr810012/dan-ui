@@ -126,6 +126,15 @@ const emit = defineEmits<{
   'selection-change': [keys: Array<string | number>, rows: TableRow[]]
   'update:expandedRowKeys': [value: Array<string | number>]
   'expandable-change': [row: TableRow, expanded: boolean]
+  'cell-edit': [
+    payload: {
+      row: TableRow
+      prop: string
+      value: unknown
+      index: number
+    },
+  ]
+  'column-drag-end': [props: string[]]
 }>()
 
 const SELECTION_COL_WIDTH = 48
@@ -140,6 +149,14 @@ const innerSelectedKeys = ref<Array<string | number>>([])
 const innerContentExpandKeys = ref<Array<string | number>>([])
 const sortState = ref<TableSortState>({ prop: null, order: null })
 const scrollTop = ref(0)
+const columnOrder = ref<string[]>([])
+const editingCell = ref<{ key: string | number; prop: string } | null>(null)
+const editingValue = ref('')
+const dragProp = ref<string | null>(null)
+
+const canReorderColumns = computed(
+  () => !props.columns.some((col) => col.children?.length),
+)
 
 const isFiltersControlled = computed(() => props.filters !== undefined)
 const isVisibleControlled = computed(() => props.visibleColumns !== undefined)
@@ -195,7 +212,43 @@ const displayColumnTree = computed(() =>
   filterColumnsByVisible(props.columns, new Set(resolvedVisibleProps.value)),
 )
 
-const displayColumns = computed(() => getLeafColumns(displayColumnTree.value))
+const displayColumns = computed(() => {
+  const leaves = getLeafColumns(displayColumnTree.value)
+  if (!columnOrder.value.length) return leaves
+  const map = new Map(
+    leaves
+      .filter((col) => col.prop)
+      .map((col) => [col.prop as string, col] as const),
+  )
+  const ordered: TableColumn[] = []
+  for (const prop of columnOrder.value) {
+    const col = map.get(prop)
+    if (col) {
+      ordered.push(col)
+      map.delete(prop)
+    }
+  }
+  for (const col of map.values()) ordered.push(col)
+  return ordered
+})
+
+watch(
+  () => displayColumnTree.value,
+  () => {
+    const leaves = getLeafColumns(displayColumnTree.value)
+      .map((col) => col.prop)
+      .filter((prop): prop is string => Boolean(prop))
+    if (!columnOrder.value.length) {
+      columnOrder.value = leaves
+      return
+    }
+    const set = new Set(leaves)
+    const kept = columnOrder.value.filter((prop) => set.has(prop))
+    const added = leaves.filter((prop) => !kept.includes(prop))
+    columnOrder.value = [...kept, ...added]
+  },
+  { immediate: true, deep: true },
+)
 
 const fixedMetaList = computed(() => buildFixedLeafMeta(displayColumns.value))
 
@@ -375,6 +428,64 @@ function compareRows(a: TableRow, b: TableRow) {
 function cellText(row: TableRow, prop: string) {
   const value = row[prop]
   return value == null ? '' : String(value)
+}
+
+function isEditing(rowKey: string | number, prop: string) {
+  return (
+    editingCell.value?.key === rowKey && editingCell.value.prop === prop
+  )
+}
+
+function startEdit(row: TableRow, prop: string, index: number) {
+  const col = displayColumns.value.find((item) => item.prop === prop)
+  if (!col?.editable) return
+  const key = getRowKey(row, index)
+  editingCell.value = { key, prop }
+  editingValue.value = cellText(row, prop)
+}
+
+function commitEdit(row: TableRow, prop: string, index: number) {
+  if (!editingCell.value) return
+  const value = editingValue.value
+  editingCell.value = null
+  emit('cell-edit', { row, prop, value, index })
+}
+
+function cancelEdit() {
+  editingCell.value = null
+}
+
+function onColumnDragStart(prop: string | undefined, event: DragEvent) {
+  if (!prop || !canReorderColumns.value) {
+    event.preventDefault()
+    return
+  }
+  const col = displayColumns.value.find((item) => item.prop === prop)
+  if (!col || col.fixed || col.draggable === false) {
+    event.preventDefault()
+    return
+  }
+  dragProp.value = prop
+  event.dataTransfer?.setData('text/plain', prop)
+}
+
+function onColumnDrop(targetProp: string | undefined, event: DragEvent) {
+  event.preventDefault()
+  const from = dragProp.value || event.dataTransfer?.getData('text/plain')
+  dragProp.value = null
+  if (!from || !targetProp || from === targetProp || !canReorderColumns.value) {
+    return
+  }
+  const targetCol = displayColumns.value.find((item) => item.prop === targetProp)
+  if (targetCol?.fixed) return
+  const next = [...columnOrder.value]
+  const fromIndex = next.indexOf(from)
+  const toIndex = next.indexOf(targetProp)
+  if (fromIndex < 0 || toIndex < 0) return
+  next.splice(fromIndex, 1)
+  next.splice(toIndex, 0, from)
+  columnOrder.value = next
+  emit('column-drag-end', next)
 }
 
 function setFilter(prop: string, value: string | number | null) {
@@ -756,6 +867,16 @@ function colMinWidth(col: TableColumn) {
               "
               :colspan="cell.colspan > 1 ? cell.colspan : undefined"
               :rowspan="cell.rowspan > 1 ? cell.rowspan : undefined"
+              :draggable="
+                canReorderColumns &&
+                !!cell.column.prop &&
+                !cell.column.children?.length &&
+                !cell.column.fixed &&
+                cell.column.draggable !== false
+              "
+              @dragstart="onColumnDragStart(cell.column.prop, $event)"
+              @dragover.prevent
+              @drop="onColumnDrop(cell.column.prop, $event)"
             >
               <div :class="ns.e('header-inner')">
                 <span
@@ -952,7 +1073,30 @@ function colMinWidth(col: TableColumn) {
                     :column="col"
                     :index="item.index"
                   >
-                    {{ cellText(item.row, col.prop as string) }}
+                    <input
+                      v-if="
+                        col.editable &&
+                        isEditing(item.key, col.prop as string)
+                      "
+                      v-model="editingValue"
+                      :class="ns.e('edit-input')"
+                      @click.stop
+                      @keydown.enter.prevent="
+                        commitEdit(item.row, col.prop as string, item.index)
+                      "
+                      @keydown.esc.prevent="cancelEdit"
+                      @blur="
+                        commitEdit(item.row, col.prop as string, item.index)
+                      "
+                    />
+                    <span
+                      v-else
+                      @dblclick="
+                        startEdit(item.row, col.prop as string, item.index)
+                      "
+                    >
+                      {{ cellText(item.row, col.prop as string) }}
+                    </span>
                   </slot>
                 </div>
                 <slot
@@ -962,7 +1106,27 @@ function colMinWidth(col: TableColumn) {
                   :column="col"
                   :index="item.index"
                 >
-                  {{ cellText(item.row, col.prop as string) }}
+                  <input
+                    v-if="
+                      col.editable && isEditing(item.key, col.prop as string)
+                    "
+                    v-model="editingValue"
+                    :class="ns.e('edit-input')"
+                    @click.stop
+                    @keydown.enter.prevent="
+                      commitEdit(item.row, col.prop as string, item.index)
+                    "
+                    @keydown.esc.prevent="cancelEdit"
+                    @blur="commitEdit(item.row, col.prop as string, item.index)"
+                  />
+                  <span
+                    v-else
+                    @dblclick="
+                      startEdit(item.row, col.prop as string, item.index)
+                    "
+                  >
+                    {{ cellText(item.row, col.prop as string) }}
+                  </span>
                 </slot>
               </td>
             </tr>

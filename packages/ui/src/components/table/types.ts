@@ -26,6 +26,10 @@ export interface TableColumn {
   visible?: boolean
   /** 固定列（仅叶子列） */
   fixed?: 'left' | 'right'
+  /** 是否可编辑（仅叶子列） */
+  editable?: boolean
+  /** 是否允许拖拽调整列序（仅叶子列；固定列默认不可拖） */
+  draggable?: boolean
   /** 多级表头子列 */
   children?: TableColumn[]
 }

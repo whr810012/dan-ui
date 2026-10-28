@@ -1,0 +1,10 @@
+.dan-watermark {
+  position: relative;
+}
+
+.dan-watermark__layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-repeat: repeat;
+}

@@ -6,6 +6,7 @@ import type {
   UploadBeforeChunkHook,
   UploadChunkInfo,
   UploadFile,
+  UploadGetUploadedChunks,
   UploadRawFile,
   UploadRequestHandler,
   UploadUserFile,
@@ -28,6 +29,8 @@ const props = withDefaults(
     /** 分片大小（字节）；>0 时启用分片上传 */
     chunkSize?: number
     beforeChunkUpload?: UploadBeforeChunkHook
+    /** 查询已上传分片 index，用于断点续传 */
+    getUploadedChunks?: UploadGetUploadedChunks
   }>(),
   {
     fileList: () => [],
@@ -259,8 +262,22 @@ async function upload(file: UploadFile) {
     const chunkSize = props.chunkSize ?? 0
     if (chunkSize > 0 && file.raw.size > chunkSize) {
       const chunks = buildChunks(file.raw, chunkSize)
+      const uploaded = new Set(
+        props.getUploadedChunks
+          ? await props.getUploadedChunks(file)
+          : [],
+      )
       const responses: unknown[] = []
       for (const chunk of chunks) {
+        if (uploaded.has(chunk.index)) {
+          responses.push({ index: chunk.index, skipped: true })
+          file.percentage = Math.min(
+            100,
+            Math.round(((chunk.index + 1) / chunk.total) * 100),
+          )
+          syncList([...files.value])
+          continue
+        }
         if (props.beforeChunkUpload) {
           const ok = await props.beforeChunkUpload(chunk, file)
           if (!ok) throw new Error('chunk upload cancelled')
@@ -277,7 +294,11 @@ async function upload(file: UploadFile) {
             emit('progress', file.percentage, file, files.value)
           },
         })
-        responses.push(response)
+        responses.push(
+          response && typeof response === 'object'
+            ? { index: chunk.index, ...(response as object) }
+            : { index: chunk.index, response },
+        )
       }
       file.status = 'success'
       file.percentage = 100

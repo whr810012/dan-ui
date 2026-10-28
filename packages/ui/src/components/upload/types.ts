@@ -48,3 +48,14 @@ export type UploadBeforeChunkHook = (
   chunk: UploadChunkInfo,
   file: UploadFile,
 ) => boolean | Promise<boolean>
+
+/** 返回已上传完成的分片 index，用于断点续传跳过 */
+export type UploadGetUploadedChunks = (
+  file: UploadFile,
+) => number[] | Promise<number[]>
+
+export interface UploadChunkSuccessMeta {
+  index: number
+  etag?: string
+  response?: unknown
+}

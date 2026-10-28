@@ -1,0 +1,81 @@
+.dan-float-button {
+  position: fixed;
+  z-index: var(--dan-z-index-affix);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-full);
+  background: var(--dan-color-bg-elevated);
+  color: var(--dan-color-text);
+  box-shadow: var(--dan-shadow-md);
+  text-decoration: none;
+  cursor: pointer;
+  font-family: var(--dan-font-family);
+}
+
+.dan-float-button--square {
+  border-radius: var(--dan-radius-lg);
+}
+
+.dan-float-button--primary {
+  border-color: var(--dan-color-primary);
+  background: var(--dan-color-primary);
+  color: var(--dan-color-text-on-color);
+}
+
+.dan-float-button__icon {
+  display: inline-flex;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.dan-float-button__desc {
+  margin-top: 2px;
+  font-size: var(--dan-font-size-xs);
+  line-height: 1;
+}
+
+.dan-float-button-group {
+  position: fixed;
+  z-index: var(--dan-z-index-affix);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.dan-float-button-group__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dan-float-button-group__list .dan-float-button {
+  position: static;
+}
+
+.dan-float-button-group__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--dan-radius-full);
+  background: var(--dan-color-primary);
+  color: var(--dan-color-text-on-color);
+  box-shadow: var(--dan-shadow-md);
+  cursor: pointer;
+}
+
+.dan-float-button-group--square .dan-float-button-group__trigger {
+  border-radius: var(--dan-radius-lg);
+}

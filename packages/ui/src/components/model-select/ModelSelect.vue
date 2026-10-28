@@ -25,6 +25,12 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('model-select')
+
+function unwrap(
+  value: string | number | boolean | null | Array<string | number | boolean | null>,
+) {
+  return Array.isArray(value) ? (value[0] ?? null) : value
+}
 </script>
 
 <template>
@@ -34,8 +40,8 @@ const ns = useNamespace('model-select')
       :options="options"
       :disabled="disabled"
       :placeholder="placeholder"
-      @update:model-value="emit('update:modelValue', $event)"
-      @change="emit('change', $event)"
+      @update:model-value="emit('update:modelValue', unwrap($event))"
+      @change="emit('change', unwrap($event))"
     />
   </div>
 </template>

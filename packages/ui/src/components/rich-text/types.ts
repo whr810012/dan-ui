@@ -1,1 +1,1 @@
-export type RichTextOutput = 'html' | 'json'
+export type RichTextOutput = 'html' | 'json' | 'markdown'

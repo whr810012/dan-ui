@@ -4,6 +4,11 @@ import { EditorContent, useEditor, type JSONContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
 import Image from '@tiptap/extension-image'
+import { Table } from '@tiptap/extension-table'
+import { TableRow } from '@tiptap/extension-table-row'
+import { TableCell } from '@tiptap/extension-table-cell'
+import { TableHeader } from '@tiptap/extension-table-header'
+import MarkdownIt from 'markdown-it'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import { provideRichText } from './editorContext'
@@ -11,6 +16,8 @@ import EditorToolbar from './EditorToolbar.vue'
 import EditorBubbleMenu from './EditorBubbleMenu.vue'
 import type { RichTextOutput } from './types'
 import './style.css'
+
+const md = new MarkdownIt({ html: false, linkify: true, breaks: true })
 
 defineOptions({ name: 'DanRichText' })
 
@@ -54,13 +61,35 @@ const isDisabled = computed(
 )
 const canEdit = computed(() => props.editable && !isDisabled.value)
 
+function htmlToMarkdown(html: string) {
+  return html
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n\n')
+    .replace(/<\/h1>/gi, '\n\n')
+    .replace(/<\/h2>/gi, '\n\n')
+    .replace(/<\/h3>/gi, '\n\n')
+    .replace(/<li>/gi, '- ')
+    .replace(/<\/?[^>]+>/g, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
 function readOutput(editorInstance: {
   getJSON: () => JSONContent
   getHTML: () => string
 }) {
-  return props.output === 'json'
-    ? editorInstance.getJSON()
-    : editorInstance.getHTML()
+  if (props.output === 'json') return editorInstance.getJSON()
+  if (props.output === 'markdown') {
+    return htmlToMarkdown(editorInstance.getHTML())
+  }
+  return editorInstance.getHTML()
+}
+
+function toEditorContent(value: string | JSONContent | null | undefined) {
+  if (value == null || value === '') return ''
+  if (typeof value !== 'string') return value
+  if (props.output === 'markdown') return md.render(value)
+  return value
 }
 
 function isSameContent(
@@ -88,7 +117,7 @@ const initialContent =
         type: 'doc',
         content: [{ type: 'paragraph' }],
       }
-    : (props.modelValue as string) || ''
+    : toEditorContent(props.modelValue as string)
 
 const editor = useEditor({
   extensions: [
@@ -105,6 +134,10 @@ const editor = useEditor({
     Image.configure({
       allowBase64: false,
     }),
+    Table.configure({ resizable: true }),
+    TableRow,
+    TableHeader,
+    TableCell,
   ],
   content: initialContent,
   editable: canEdit.value,
@@ -139,7 +172,9 @@ watch(
     if (!editor.value) return
     const current = readOutput(editor.value)
     if (isSameContent(current, value)) return
-    editor.value.commands.setContent(value || '', { emitUpdate: false })
+    editor.value.commands.setContent(toEditorContent(value) || '', {
+      emitUpdate: false,
+    })
   },
 )
 
@@ -171,6 +206,18 @@ defineExpose({
   openImagePicker,
   focus: () => editor.value?.commands.focus(),
   clear: () => editor.value?.commands.clearContent(true),
+  getMarkdown: () =>
+    editor.value ? htmlToMarkdown(editor.value.getHTML()) : '',
+  setMarkdown: (value: string) =>
+    editor.value?.commands.setContent(md.render(value || ''), {
+      emitUpdate: true,
+    }),
+  insertTable: () =>
+    editor.value
+      ?.chain()
+      .focus()
+      .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+      .run(),
 })
 </script>
 

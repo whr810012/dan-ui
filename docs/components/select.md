@@ -4,22 +4,32 @@ import Basic from './demos/select/basic.vue'
 import Clearable from './demos/select/clearable.vue'
 import Sizes from './demos/select/sizes.vue'
 import Disabled from './demos/select/disabled.vue'
+import Multiple from './demos/select/multiple.vue'
 import basicSrc from './demos/select/basic.vue?raw'
 import clearableSrc from './demos/select/clearable.vue?raw'
 import sizesSrc from './demos/select/sizes.vue?raw'
 import disabledSrc from './demos/select/disabled.vue?raw'
+import multipleSrc from './demos/select/multiple.vue?raw'
 </script>
 
 # Select 选择器
 
 ## 何时使用
 
-从预设选项中单选一项时使用。
+从预设选项中选择一项或多项时使用。
 
 ## 基础用法
 
 <DemoBlock :source="basicSrc">
   <Basic />
+</DemoBlock>
+
+## 多选与搜索
+
+`multiple` + `filterable`；选项很多时可再开 `virtual`。
+
+<DemoBlock :source="multipleSrc">
+  <Multiple />
 </DemoBlock>
 
 ## 可清空与禁用选项

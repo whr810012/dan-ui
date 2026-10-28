@@ -30,6 +30,9 @@ const componentsSidebar = collapsible([
       { text: 'Divider（分割线）', link: '/components/divider' },
       { text: 'Layout（布局）', link: '/components/layout' },
       { text: 'Grid（栅格）', link: '/components/grid' },
+      { text: 'Segmented（分段控制器）', link: '/components/segmented' },
+      { text: 'Splitter（分割面板）', link: '/components/splitter' },
+      { text: 'Watermark（水印）', link: '/components/watermark' },
     ],
   },
   {
@@ -104,7 +107,10 @@ const componentsSidebar = collapsible([
       { text: 'Drawer（抽屉）', link: '/components/drawer' },
       { text: 'Tooltip（文字提示）', link: '/components/tooltip' },
       { text: 'Popover（弹出框）', link: '/components/popover' },
+      { text: 'Popconfirm（气泡确认）', link: '/components/popconfirm' },
       { text: 'Dropdown（下拉菜单）', link: '/components/dropdown' },
+      { text: 'FloatButton（悬浮按钮）', link: '/components/float-button' },
+      { text: 'Tour（漫游式引导）', link: '/components/tour' },
     ],
   },
   {
@@ -113,6 +119,7 @@ const componentsSidebar = collapsible([
       { text: '概览', link: '/ai/overview' },
       { text: 'Chat（对话容器）', link: '/ai/chat' },
       { text: 'ChatMessage（消息）', link: '/ai/chat-message' },
+      { text: 'ConversationList（会话列表）', link: '/ai/conversation-list' },
       { text: 'ChatInput（输入）', link: '/ai/chat-input' },
       { text: 'Markdown（渲染）', link: '/ai/markdown' },
       { text: 'StreamText（流式文本）', link: '/ai/stream-text' },

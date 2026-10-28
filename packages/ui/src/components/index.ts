@@ -259,11 +259,38 @@ export type {
 export { DanPopover } from './popover'
 export type { DanPopoverInstance } from './popover'
 
+export { DanPopconfirm } from './popconfirm'
+export type { DanPopconfirmInstance } from './popconfirm'
+
+export { DanSegmented } from './segmented'
+export type { DanSegmentedInstance, SegmentedOption } from './segmented'
+
+export { DanWatermark } from './watermark'
+export type { DanWatermarkInstance } from './watermark'
+
+export { DanFloatButton, DanFloatButtonGroup } from './float-button'
+export type {
+  DanFloatButtonInstance,
+  DanFloatButtonGroupInstance,
+} from './float-button'
+
+export { DanSplitter, DanSplitterPanel } from './splitter'
+export type {
+  DanSplitterInstance,
+  DanSplitterPanelInstance,
+} from './splitter'
+
+export { DanTour } from './tour'
+export type { DanTourInstance, TourStep } from './tour'
+
 export { DanChat } from './chat'
 export type { DanChatInstance } from './chat'
 
 export { DanChatMessage } from './chat-message'
 export type { DanChatMessageInstance } from './chat-message'
+
+export { DanConversationList } from './conversation-list'
+export type { DanConversationListInstance } from './conversation-list'
 
 export { DanChatInput } from './chat-input'
 export type { DanChatInputInstance } from './chat-input'

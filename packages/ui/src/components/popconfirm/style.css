@@ -1,0 +1,30 @@
+.dan-popconfirm {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.dan-popconfirm__popper {
+  position: fixed;
+  z-index: var(--dan-z-index-dropdown);
+  box-sizing: border-box;
+  padding: var(--dan-spacing-md);
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg-elevated);
+  box-shadow: var(--dan-shadow-md);
+  color: var(--dan-color-text);
+  font-family: var(--dan-font-family);
+  font-size: var(--dan-font-size-md);
+  line-height: var(--dan-line-height);
+}
+
+.dan-popconfirm__title {
+  margin-bottom: var(--dan-spacing-md);
+  font-weight: var(--dan-font-weight-medium);
+}
+
+.dan-popconfirm__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--dan-spacing-sm);
+}

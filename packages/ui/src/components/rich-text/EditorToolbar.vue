@@ -157,6 +157,23 @@ function setLink() {
     <DanButton size="small" text :disabled="isDisabled" @click="emit('image')">
       <DanIcon name="upload" />
     </DanButton>
+    <DanButton
+      size="small"
+      text
+      :type="isActive('table') ? 'primary' : 'default'"
+      :disabled="isDisabled"
+      @click="
+        run((e) =>
+          e
+            .chain()
+            .focus()
+            .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+            .run(),
+        )
+      "
+    >
+      表
+    </DanButton>
 
     <span :class="ns.e('sep')" />
 

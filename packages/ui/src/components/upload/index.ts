@@ -8,6 +8,7 @@ export type {
   UploadBeforeChunkHook,
   UploadChunkInfo,
   UploadFile,
+  UploadGetUploadedChunks,
   UploadRawFile,
   UploadRequestHandler,
   UploadRequestOptions,

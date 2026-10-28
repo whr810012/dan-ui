@@ -16,8 +16,6 @@ describe('DanSelect', () => {
       props: {
         modelValue: 'sh',
         options,
-        'onUpdate:modelValue': (value: string | number | boolean | null) =>
-          wrapper.setProps({ modelValue: value }),
       },
     })
 
@@ -37,7 +35,7 @@ describe('DanSelect', () => {
     ).find((el) => el.textContent?.includes('北京')) as HTMLElement
     option.click()
     await nextTick()
-    expect(wrapper.props('modelValue')).toBe('bj')
+    expect(wrapper.emitted('update:modelValue')?.[0]?.[0]).toBe('bj')
     expect(dropdown.style.display).toBe('none')
 
     wrapper.unmount()
@@ -49,8 +47,6 @@ describe('DanSelect', () => {
       props: {
         modelValue: 'sh',
         options,
-        'onUpdate:modelValue': (value: string | number | boolean | null) =>
-          wrapper.setProps({ modelValue: value }),
       },
     })
 
@@ -64,7 +60,40 @@ describe('DanSelect', () => {
     await trigger.trigger('keydown', { key: 'ArrowDown' })
     await trigger.trigger('keydown', { key: 'Enter' })
     await nextTick()
-    expect(wrapper.props('modelValue')).toBe('bj')
+    expect(wrapper.emitted('update:modelValue')?.at(-1)?.[0]).toBe('bj')
+
+    wrapper.unmount()
+  })
+
+  it('supports multiple selection and filter', async () => {
+    const wrapper = mount(DanSelect, {
+      attachTo: document.body,
+      props: {
+        modelValue: [],
+        multiple: true,
+        filterable: true,
+        options,
+      },
+    })
+
+    await wrapper.find('.dan-select').trigger('click')
+    await nextTick()
+    const dropdown = document.querySelector('.dan-select__dropdown')!
+    const option = Array.from(
+      dropdown.querySelectorAll('.dan-select__option'),
+    ).find((el) => el.textContent?.includes('上海')) as HTMLElement
+    option.click()
+    await nextTick()
+    expect(wrapper.emitted('update:modelValue')?.[0]?.[0]).toEqual(['sh'])
+
+    const input = dropdown.querySelector(
+      '.dan-select__filter-input',
+    ) as HTMLInputElement
+    input.value = '北'
+    input.dispatchEvent(new Event('input'))
+    await nextTick()
+    expect(dropdown.textContent).toContain('北京')
+    expect(dropdown.textContent).not.toContain('深圳')
 
     wrapper.unmount()
   })

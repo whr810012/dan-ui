@@ -35,6 +35,32 @@
   color: var(--dan-color-text);
 }
 
+.dan-chat-message__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.dan-chat-message__tool {
+  margin: 8px 0;
+  padding: 8px 10px;
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-fill);
+  font-size: var(--dan-font-size-sm);
+}
+
+.dan-chat-message__tool pre {
+  margin: 6px 0 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.dan-chat-message__tool-status {
+  margin-left: 8px;
+  color: var(--dan-color-text-secondary);
+}
+
 .dan-chat-message__attachments {
   display: flex;
   flex-wrap: wrap;
