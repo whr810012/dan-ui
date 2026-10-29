@@ -68,7 +68,12 @@ export type {
 } from './autocomplete'
 
 export { DanCascader } from './cascader'
-export type { DanCascaderInstance, CascaderOption } from './cascader'
+export type {
+  DanCascaderInstance,
+  CascaderOption,
+  CascaderPath,
+  CascaderModelValue,
+} from './cascader'
 
 export { DanColorPicker } from './color-picker'
 export type { DanColorPickerInstance } from './color-picker'

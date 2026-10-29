@@ -3,6 +3,7 @@
   display: inline-flex;
   align-items: center;
   min-width: 200px;
+  min-height: var(--dan-control-height-md);
   height: var(--dan-control-height-md);
   border: 1px solid var(--dan-color-border);
   border-radius: var(--dan-radius-md);
@@ -10,6 +11,11 @@
   color: var(--dan-color-text);
   font-family: var(--dan-font-family);
   font-size: var(--dan-font-size-md);
+}
+
+.dan-cascader.is-multiple {
+  height: auto;
+  align-items: flex-start;
 }
 
 .dan-cascader.is-opened {
@@ -27,6 +33,7 @@
   flex: 1;
   align-items: center;
   width: 100%;
+  min-height: var(--dan-control-height-md);
   height: 100%;
   margin: 0;
   padding: 0 28px 0 12px;
@@ -36,6 +43,52 @@
   font: inherit;
   text-align: left;
   cursor: pointer;
+}
+
+.dan-cascader.is-multiple .dan-cascader__trigger {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.dan-cascader__tags {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 2px 0;
+}
+
+.dan-cascader__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 180px;
+  padding: 0 6px;
+  border-radius: var(--dan-radius-sm);
+  background: var(--dan-color-fill);
+  font-size: 12px;
+  line-height: 22px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dan-cascader__tag i {
+  flex-shrink: 0;
+  font-style: normal;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.dan-cascader__tag i:hover {
+  opacity: 1;
+}
+
+.dan-cascader__tag-more {
+  font-size: 12px;
+  line-height: 22px;
+  color: var(--dan-color-text-secondary);
 }
 
 .dan-cascader__placeholder {
@@ -112,7 +165,6 @@
 .dan-cascader__node {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
   padding: 8px 10px;
   border-radius: var(--dan-radius-sm);
@@ -125,11 +177,31 @@
   background: var(--dan-color-primary-light);
 }
 
+.dan-cascader__node.is-checked {
+  color: var(--dan-color-primary);
+}
+
 .dan-cascader__node.is-disabled {
   color: var(--dan-color-text-disabled);
   cursor: not-allowed;
 }
 
+.dan-cascader__check {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--dan-color-border);
+  border-radius: 3px;
+  background: var(--dan-color-bg);
+}
+
+.dan-cascader__node.is-checked .dan-cascader__check {
+  border-color: var(--dan-color-primary);
+  background: var(--dan-color-primary);
+  box-shadow: inset 0 0 0 2px var(--dan-color-bg);
+}
+
 .dan-cascader__arrow {
   opacity: 0.6;
+  margin-left: auto;
 }

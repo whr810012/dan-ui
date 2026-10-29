@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
-import type { CascaderOption } from '../cascader/types'
+import type {
+  CascaderModelValue,
+  CascaderOption,
+  CascaderPath,
+} from '../cascader/types'
 import '../cascader/style.css'
 import './style.css'
 
@@ -9,13 +13,15 @@ defineOptions({ name: 'DanCascaderPanel' })
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: Array<string | number> | null
+    modelValue?: CascaderModelValue
     options?: CascaderOption[]
     filterable?: boolean
     filterPlaceholder?: string
     virtual?: boolean
     itemHeight?: number
     maxColumnHeight?: number
+    /** 多选：v-model 为路径数组 Array<CascaderPath> */
+    multiple?: boolean
   }>(),
   {
     modelValue: null,
@@ -25,12 +31,13 @@ const props = withDefaults(
     virtual: false,
     itemHeight: 34,
     maxColumnHeight: 220,
+    multiple: false,
   },
 )
 
 const emit = defineEmits<{
-  'update:modelValue': [value: Array<string | number> | null]
-  change: [value: Array<string | number> | null]
+  'update:modelValue': [value: CascaderModelValue]
+  change: [value: CascaderModelValue]
 }>()
 
 const ns = useNamespace('cascader')
@@ -38,6 +45,35 @@ const panelNs = useNamespace('cascader-panel')
 const activePath = ref<CascaderOption[]>([])
 const filterQuery = ref('')
 const scrollTops = ref<number[]>([])
+
+function pathEqual(a: CascaderPath, b: CascaderPath) {
+  return a.length === b.length && a.every((v, i) => v === b[i])
+}
+
+const selectedPaths = computed((): CascaderPath[] => {
+  if (!props.modelValue) return []
+  if (props.multiple) {
+    return Array.isArray(props.modelValue[0]) || props.modelValue.length === 0
+      ? (props.modelValue as CascaderPath[])
+      : []
+  }
+  return Array.isArray((props.modelValue as CascaderPath)[0])
+    ? []
+    : [props.modelValue as CascaderPath]
+})
+
+function isPathSelected(path: CascaderPath) {
+  return selectedPaths.value.some((item) => pathEqual(item, path))
+}
+
+function isLeafChecked(level: number, option: CascaderOption) {
+  if (option.children?.length) return false
+  const path = [
+    ...activePath.value.slice(0, level).map((item) => item.value),
+    option.value,
+  ]
+  return isPathSelected(path)
+}
 
 function filterTree(
   options: CascaderOption[],
@@ -64,13 +100,16 @@ const displayOptions = computed(() =>
 )
 
 function syncFromValue() {
-  if (!props.modelValue?.length) {
+  const paths = selectedPaths.value
+  if (!paths.length) {
+    if (!activePath.value.length) return
     activePath.value = []
     return
   }
+  const pathValues = paths[paths.length - 1]!
   const path: CascaderOption[] = []
   let list = displayOptions.value
-  for (const val of props.modelValue) {
+  for (const val of pathValues) {
     const found = list.find((item) => item.value === val)
     if (!found) break
     path.push(found)
@@ -134,14 +173,27 @@ const columnViews = computed((): ColumnView[] => {
   })
 })
 
+function commit(value: CascaderModelValue) {
+  emit('update:modelValue', value)
+  emit('change', value)
+}
+
 function onSelect(level: number, option: CascaderOption) {
   if (option.disabled) return
   activePath.value = [...activePath.value.slice(0, level), option]
-  if (!option.children?.length) {
-    const value = activePath.value.map((item) => item.value)
-    emit('update:modelValue', value)
-    emit('change', value)
+  if (option.children?.length) return
+
+  const path = activePath.value.map((item) => item.value)
+  if (!props.multiple) {
+    commit(path)
+    return
   }
+
+  const exists = selectedPaths.value.some((item) => pathEqual(item, path))
+  const next = exists
+    ? selectedPaths.value.filter((item) => !pathEqual(item, path))
+    : [...selectedPaths.value, path]
+  commit(next)
 }
 
 function onColumnScroll(level: number, event: Event) {
@@ -149,10 +201,26 @@ function onColumnScroll(level: number, event: Event) {
   next[level] = (event.target as HTMLElement).scrollTop
   scrollTops.value = next
 }
+
+function nodeClass(level: number, option: CascaderOption) {
+  return [
+    ns.e('node'),
+    ns.is('active', activePath.value[level]?.value === option.value),
+    ns.is('checked', props.multiple && isLeafChecked(level, option)),
+    ns.is('disabled', !!option.disabled),
+  ]
+}
 </script>
 
 <template>
-  <div :class="[ns.e('panel'), panelNs.b(), ns.is('embedded', true)]">
+  <div
+    :class="[
+      ns.e('panel'),
+      panelNs.b(),
+      ns.is('embedded', true),
+      ns.is('multiple', multiple),
+    ]"
+  >
     <div v-if="filterable" :class="panelNs.e('filter')">
       <input
         v-model="filterQuery"
@@ -177,14 +245,15 @@ function onColumnScroll(level: number, event: Event) {
           <li
             v-for="item in columnViews[level]!.items"
             :key="String(item.option.value)"
-            :class="[
-              ns.e('node'),
-              ns.is('active', activePath[level]?.value === item.option.value),
-              ns.is('disabled', !!item.option.disabled),
-            ]"
+            :class="nodeClass(level, item.option)"
             :style="{ height: `${itemHeight}px`, boxSizing: 'border-box' }"
             @click="onSelect(level, item.option)"
           >
+            <span
+              v-if="multiple && !item.option.children?.length"
+              :class="ns.e('check')"
+              aria-hidden="true"
+            />
             <span>{{ item.option.label }}</span>
             <span
               v-if="item.option.children?.length"
@@ -200,13 +269,14 @@ function onColumnScroll(level: number, event: Event) {
           <li
             v-for="option in col"
             :key="String(option.value)"
-            :class="[
-              ns.e('node'),
-              ns.is('active', activePath[level]?.value === option.value),
-              ns.is('disabled', !!option.disabled),
-            ]"
+            :class="nodeClass(level, option)"
             @click="onSelect(level, option)"
           >
+            <span
+              v-if="multiple && !option.children?.length"
+              :class="ns.e('check')"
+              aria-hidden="true"
+            />
             <span>{{ option.label }}</span>
             <span v-if="option.children?.length" :class="ns.e('arrow')">›</span>
           </li>

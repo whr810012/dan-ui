@@ -4,14 +4,18 @@ import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import { useLocale } from '../../locale'
 import { DanCascaderPanel } from '../cascader-panel'
-import type { CascaderOption } from './types'
+import type {
+  CascaderModelValue,
+  CascaderOption,
+  CascaderPath,
+} from './types'
 import './style.css'
 
 defineOptions({ name: 'DanCascader' })
 
 const props = withDefaults(
   defineProps<{
-    modelValue?: Array<string | number> | null
+    modelValue?: CascaderModelValue
     options?: CascaderOption[]
     disabled?: boolean
     clearable?: boolean
@@ -19,6 +23,8 @@ const props = withDefaults(
     filterable?: boolean
     filterPlaceholder?: string
     virtual?: boolean
+    multiple?: boolean
+    maxTagCount?: number
   }>(),
   {
     modelValue: null,
@@ -28,6 +34,8 @@ const props = withDefaults(
     filterable: false,
     filterPlaceholder: '搜索',
     virtual: false,
+    multiple: false,
+    maxTagCount: 0,
   },
 )
 
@@ -37,8 +45,8 @@ const resolvedPlaceholder = computed(
 )
 
 const emit = defineEmits<{
-  'update:modelValue': [value: Array<string | number> | null]
-  change: [value: Array<string | number> | null]
+  'update:modelValue': [value: CascaderModelValue]
+  change: [value: CascaderModelValue]
   clear: []
 }>()
 
@@ -53,21 +61,61 @@ const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )
 
-const displayLabel = computed(() => {
-  if (!props.modelValue?.length) return ''
+function findPathLabel(path: CascaderPath): string {
   const labels: string[] = []
   let list = props.options
-  for (const val of props.modelValue) {
+  for (const val of path) {
     const found = list.find((item) => item.value === val)
     if (!found) break
     labels.push(found.label)
     list = found.children || []
   }
   return labels.join(' / ')
+}
+
+function pathEqual(a: CascaderPath, b: CascaderPath) {
+  return a.length === b.length && a.every((v, i) => v === b[i])
+}
+
+const selectedPaths = computed((): CascaderPath[] => {
+  if (!props.modelValue) return []
+  if (props.multiple) {
+    if (!Array.isArray(props.modelValue)) return []
+    if (props.modelValue.length === 0) return []
+    return Array.isArray(props.modelValue[0])
+      ? (props.modelValue as CascaderPath[])
+      : []
+  }
+  return [props.modelValue as CascaderPath]
+})
+
+const tags = computed(() =>
+  selectedPaths.value.map((path) => ({
+    path,
+    label: findPathLabel(path),
+  })),
+)
+
+const visibleTags = computed(() => {
+  if (props.maxTagCount > 0 && tags.value.length > props.maxTagCount) {
+    return tags.value.slice(0, props.maxTagCount)
+  }
+  return tags.value
+})
+
+const hiddenTagCount = computed(() => {
+  if (!props.multiple || props.maxTagCount <= 0) return 0
+  return Math.max(0, tags.value.length - props.maxTagCount)
+})
+
+const displayLabel = computed(() => {
+  if (props.multiple) return ''
+  return tags.value[0]?.label || ''
 })
 
 const showClear = computed(
-  () => props.clearable && !!displayLabel.value && !isDisabled.value,
+  () =>
+    props.clearable && selectedPaths.value.length > 0 && !isDisabled.value,
 )
 
 async function openPanel() {
@@ -93,18 +141,28 @@ function toggle() {
   else void openPanel()
 }
 
-function onPanelChange(value: Array<string | number> | null) {
+function onPanelChange(value: CascaderModelValue) {
   emit('update:modelValue', value)
   emit('change', value)
   emitChange('change')
-  if (value?.length) closePanel()
+  if (!props.multiple && value != null) closePanel()
 }
 
 function clear(event: MouseEvent) {
   event.stopPropagation()
-  emit('update:modelValue', null)
-  emit('change', null)
+  const empty: CascaderModelValue = props.multiple ? [] : null
+  emit('update:modelValue', empty)
+  emit('change', empty)
   emit('clear')
+  emitChange('change')
+}
+
+function removeTag(path: CascaderPath, event: MouseEvent) {
+  event.stopPropagation()
+  if (!props.multiple || isDisabled.value) return
+  const next = selectedPaths.value.filter((item) => !pathEqual(item, path))
+  emit('update:modelValue', next)
+  emit('change', next)
   emitChange('change')
 }
 
@@ -122,7 +180,12 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
 <template>
   <div
     ref="rootRef"
-    :class="[ns.b(), ns.is('disabled', isDisabled), ns.is('opened', opened)]"
+    :class="[
+      ns.b(),
+      ns.is('disabled', isDisabled),
+      ns.is('opened', opened),
+      ns.is('multiple', multiple),
+    ]"
   >
     <button
       type="button"
@@ -130,7 +193,24 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
       :disabled="isDisabled"
       @click="toggle"
     >
-      <span v-if="displayLabel" :class="ns.e('value')">{{ displayLabel }}</span>
+      <template v-if="multiple && visibleTags.length">
+        <span :class="ns.e('tags')">
+          <span
+            v-for="tag in visibleTags"
+            :key="tag.path.join('/')"
+            :class="ns.e('tag')"
+          >
+            {{ tag.label }}
+            <i @click="removeTag(tag.path, $event)">×</i>
+          </span>
+          <span v-if="hiddenTagCount" :class="ns.e('tag-more')">
+            +{{ hiddenTagCount }}
+          </span>
+        </span>
+      </template>
+      <span v-else-if="displayLabel" :class="ns.e('value')">{{
+        displayLabel
+      }}</span>
       <span v-else :class="ns.e('placeholder')">{{ resolvedPlaceholder }}</span>
       <span :class="ns.e('suffix')" aria-hidden="true" />
     </button>
@@ -156,6 +236,7 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
           :filterable="filterable"
           :filter-placeholder="filterPlaceholder"
           :virtual="virtual"
+          :multiple="multiple"
           @change="onPanelChange"
         />
       </div>

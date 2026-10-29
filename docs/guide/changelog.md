@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.0
+
+- Cascader / CascaderPanel：`multiple` 多路径选择；触发器标签与 `maxTagCount`
+
 ## 2.2.0
 
 - TreeSelect：`filterable` 面板搜索、`multiple` 多选标签、`maxTagCount` / `checkStrictly`

@@ -57,4 +57,36 @@ describe('DanCascaderPanel', () => {
     expect(nodes.some((n) => n.text().includes('浙江'))).toBe(true)
     expect(nodes.some((n) => n.text().includes('江苏'))).toBe(false)
   })
+
+  it('toggles paths in multiple mode', async () => {
+    const value = ref<Array<Array<string | number>>>([])
+    const Comp = defineComponent({
+      components: { DanCascaderPanel },
+      setup: () => ({
+        value,
+        options: [
+          {
+            value: 'zhejiang',
+            label: '浙江',
+            children: [
+              { value: 'hangzhou', label: '杭州' },
+              { value: 'ningbo', label: '宁波' },
+            ],
+          },
+        ],
+      }),
+      template: `<DanCascaderPanel v-model="value" :options="options" multiple />`,
+    })
+    const wrapper = mount(Comp)
+    await wrapper.findAll('.dan-cascader__node')[0]!.trigger('click')
+    await wrapper.findAll('.dan-cascader__node')[1]!.trigger('click')
+    expect(value.value).toEqual([['zhejiang', 'hangzhou']])
+    await wrapper.findAll('.dan-cascader__node')[2]!.trigger('click')
+    expect(value.value).toEqual([
+      ['zhejiang', 'hangzhou'],
+      ['zhejiang', 'ningbo'],
+    ])
+    await wrapper.findAll('.dan-cascader__node')[1]!.trigger('click')
+    expect(value.value).toEqual([['zhejiang', 'ningbo']])
+  })
 })
