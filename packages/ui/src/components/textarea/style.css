@@ -36,6 +36,11 @@
   line-height: var(--dan-line-height);
 }
 
+.dan-textarea.is-autosize .dan-textarea__inner {
+  resize: none;
+  overflow: hidden;
+}
+
 .dan-textarea__inner::placeholder {
   color: var(--dan-color-text-placeholder);
 }

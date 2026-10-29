@@ -3,9 +3,11 @@ import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/textarea/basic.vue'
 import Limit from './demos/textarea/limit.vue'
 import Disabled from './demos/textarea/disabled.vue'
+import Autosize from './demos/textarea/autosize.vue'
 import basicSrc from './demos/textarea/basic.vue?raw'
 import limitSrc from './demos/textarea/limit.vue?raw'
 import disabledSrc from './demos/textarea/disabled.vue?raw'
+import autosizeSrc from './demos/textarea/autosize.vue?raw'
 </script>
 
 # Textarea 文本域
@@ -32,6 +34,14 @@ import disabledSrc from './demos/textarea/disabled.vue?raw'
   <Disabled />
 </DemoBlock>
 
+## 自适应高度
+
+`autosize` 可按内容增高；对象形式可限制 `minRows` / `maxRows`。
+
+<DemoBlock :source="autosizeSrc">
+  <Autosize />
+</DemoBlock>
+
 ## API
 
 ### Props
@@ -40,11 +50,13 @@ import disabledSrc from './demos/textarea/disabled.vue?raw'
 |------|------|------|--------|------|
 | modelValue / v-model | 绑定文本 | `string` | `''` | 否 |
 | rows | 可见行数 | `number` | `3` | 否 |
+| autosize | 自适应高度 | `boolean \| { minRows?: number; maxRows?: number }` | `false` | 否 |
 | maxlength | 最大字符数 | `number` | — | 否 |
 | showWordLimit | 是否显示字数统计；需同时设置 `maxlength` | `boolean` | `false` | 否 |
 | disabled | 禁用；可继承 Form | `boolean` | `false` | 否 |
 | readonly | 只读 | `boolean` | `false` | 否 |
 | placeholder | 占位文案 | `string` | `''` | 否 |
+
 
 ### Events
 

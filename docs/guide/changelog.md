@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.9.0
+
+- Autocomplete：`debounce` / `loading`、空态、方向键与 Enter 选择
+- Textarea：`autosize`（`minRows` / `maxRows`）
+
 ## 2.8.1
 
 - Upload：替换文件列表时释放 `blob:` 预览 URL，避免泄漏

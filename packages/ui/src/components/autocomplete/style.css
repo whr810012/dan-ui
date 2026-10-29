@@ -69,7 +69,15 @@
   cursor: pointer;
 }
 
-.dan-autocomplete__item:hover {
+.dan-autocomplete__item:hover,
+.dan-autocomplete__item.is-highlighted {
   background: var(--dan-color-fill);
   color: var(--dan-color-primary);
+}
+
+.dan-autocomplete__status {
+  padding: 10px 12px;
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+  text-align: center;
 }
