@@ -28,12 +28,22 @@ import '@dandan-ui/ui/style.css'
 
 ## ConfigProvider
 
-`DanConfigProvider` 可统一尺寸，并通过 `theme` 注入局部 CSS 变量：
+`DanConfigProvider` 可统一尺寸，并通过 `theme` 注入局部 CSS 变量；也可传入 `locale`（内置 `zhCN` / `en`，组件默认文案走 `useLocale`）：
 
 ```vue
-<DanConfigProvider size="large" :theme="{ 'color-primary': '#0f766e' }">
-  <DanButton type="primary">主题按钮</DanButton>
-</DanConfigProvider>
+<script setup>
+import { en } from '@dandan-ui/ui'
+</script>
+
+<template>
+  <DanConfigProvider
+    size="large"
+    :locale="en"
+    :theme="{ 'color-primary': '#0f766e' }"
+  >
+    <DanButton type="primary">主题按钮</DanButton>
+  </DanConfigProvider>
+</template>
 ```
 
 `theme` 的 key 可为短名（如 `color-primary`，自动补成 `--dan-color-primary`），或完整 CSS 变量名。
