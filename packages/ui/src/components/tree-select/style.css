@@ -3,7 +3,7 @@
   display: inline-flex;
   align-items: center;
   min-width: 200px;
-  height: var(--dan-control-height-md);
+  min-height: var(--dan-control-height-md);
   border: 1px solid var(--dan-color-border);
   border-radius: var(--dan-radius-md);
   background: var(--dan-color-bg);
@@ -21,12 +21,17 @@
   color: var(--dan-color-text-disabled);
 }
 
+.dan-tree-select.is-multiple {
+  height: auto;
+  align-items: flex-start;
+}
+
 .dan-tree-select__trigger {
   display: flex;
   flex: 1;
   align-items: center;
   width: 100%;
-  height: 100%;
+  min-height: var(--dan-control-height-md);
   margin: 0;
   padding: 0 28px 0 12px;
   border: 0;
@@ -37,8 +42,54 @@
   cursor: pointer;
 }
 
+.dan-tree-select.is-multiple .dan-tree-select__trigger {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  flex-wrap: wrap;
+}
+
 .dan-tree-select__placeholder {
   color: var(--dan-color-text-placeholder);
+}
+
+.dan-tree-select__tags {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 2px 0;
+}
+
+.dan-tree-select__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 140px;
+  padding: 0 6px;
+  border-radius: var(--dan-radius-sm);
+  background: var(--dan-color-fill);
+  font-size: 12px;
+  line-height: 22px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dan-tree-select__tag i {
+  flex-shrink: 0;
+  font-style: normal;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.dan-tree-select__tag i:hover {
+  opacity: 1;
+}
+
+.dan-tree-select__tag-more {
+  font-size: 12px;
+  line-height: 22px;
+  color: var(--dan-color-text-secondary);
 }
 
 .dan-tree-select__suffix {
@@ -75,11 +126,36 @@
 }
 
 .dan-tree-select__panel {
-  max-height: 260px;
+  max-height: 280px;
   overflow: auto;
   padding: 4px;
   border: 1px solid var(--dan-color-border);
   border-radius: var(--dan-radius-md);
   background: var(--dan-color-bg-elevated);
   box-shadow: var(--dan-shadow-md);
+}
+
+.dan-tree-select__filter {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 4px;
+  background: var(--dan-color-bg-elevated);
+}
+
+.dan-tree-select__filter-input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 30px;
+  padding: 0 8px;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-sm);
+  background: var(--dan-color-bg);
+  color: inherit;
+  font: inherit;
+  outline: none;
+}
+
+.dan-tree-select__filter-input:focus {
+  border-color: var(--dan-color-primary);
 }

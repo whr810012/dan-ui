@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.0
+
+- TreeSelect：`filterable` 面板搜索、`multiple` 多选标签、`maxTagCount` / `checkStrictly`
+
 ## 2.1.0
 
 - Cascader / CascaderPanel：`filterable` 搜索、`virtual` 长列虚拟滚动；下拉复用 Panel
