@@ -32,6 +32,11 @@ description: dan-ui 是面向中后台与 AI 界面的 Vue 3 组件库，提供�
 - AI 组件不内置具体大模型接口，由业务侧自行对接
 - 组件提供清晰的 Props、Events、Slots，便于按需使用
 
+## 从这里搭起来
+
+- [快速开始](/guide/quickstart) · [从零搭建](/guide/scaffold) · [Admin 模板配方](/guide/admin-template)
+- [版本与迁移](/guide/versioning)（2.0 兼容承诺）
+
 ## 安装
 
 ```bash

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0
+
+- 生态文档：Admin 模板配方（登录壳 + 权限菜单）、从零搭建、版本与迁移承诺、图标扩展指南
+- 确立 2.x 语义化版本与弃用策略（theme / ui 同号发布）
+- 无运行时破坏性变更（相对 1.9）；升级以文档与承诺为主
+
 ## 1.9.0
 
 - Locale：扩展 `LocaleMessages`（dialog / datePicker / formList / agentSteps / toolCall 等），高频组件默认文案走 `useLocale`

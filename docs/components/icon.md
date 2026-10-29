@@ -10,7 +10,7 @@ import gallerySrc from './demos/icon/gallery.vue?raw'
 
 ## 何时使用
 
-需要状态图标、操作图标，或自定义 SVG 时使用。
+需要状态图标、操作图标，或自定义 SVG 时使用。扩展方式（插槽 / 外置库）见 [图标扩展](/guide/icons)。
 
 ## 基础用法
 
