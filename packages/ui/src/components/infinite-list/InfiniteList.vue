@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
+import { useLocale } from '../../locale'
 import './style.css'
 
 defineOptions({ name: 'DanInfiniteList' })
@@ -22,9 +23,15 @@ const props = withDefaults(
     disabled: false,
     threshold: 80,
     height: 320,
-    loadingText: '加载中…',
-    finishedText: '没有更多了',
   },
+)
+
+const { t } = useLocale()
+const resolvedLoadingText = computed(
+  () => props.loadingText ?? t('infiniteList.loading'),
+)
+const resolvedFinishedText = computed(
+  () => props.finishedText ?? t('infiniteList.finished'),
 )
 
 const emit = defineEmits<{
@@ -71,8 +78,8 @@ watch(
     </div>
     <div :class="ns.e('footer')">
       <slot name="footer">
-        <span v-if="loading">{{ loadingText }}</span>
-        <span v-else-if="finished">{{ finishedText }}</span>
+        <span v-if="loading">{{ resolvedLoadingText }}</span>
+        <span v-else-if="finished">{{ resolvedFinishedText }}</span>
       </slot>
     </div>
   </div>

@@ -1,18 +1,19 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
+import { useLocale } from '../../locale'
 import type { AgentStepItem, AgentStepStatus } from './types'
 import './style.css'
 
 defineOptions({ name: 'DanAgentSteps' })
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     steps?: AgentStepItem[]
     title?: string
   }>(),
   {
     steps: () => [],
-    title: '执行计划',
   },
 )
 
@@ -21,20 +22,22 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('agent-steps')
+const { t } = useLocale()
+const resolvedTitle = computed(() => props.title ?? t('agentSteps.title'))
 
-const statusLabel: Record<AgentStepStatus, string> = {
-  pending: '待执行',
-  running: '进行中',
-  done: '完成',
-  error: '失败',
-  skipped: '跳过',
-}
+const statusLabel = computed<Record<AgentStepStatus, string>>(() => ({
+  pending: t('agentSteps.pending'),
+  running: t('agentSteps.running'),
+  done: t('agentSteps.done'),
+  error: t('agentSteps.error'),
+  skipped: t('agentSteps.skipped'),
+}))
 </script>
 
 <template>
   <section :class="ns.b()" aria-label="agent steps">
-    <header v-if="title || $slots.title" :class="ns.e('header')">
-      <slot name="title">{{ title }}</slot>
+    <header v-if="resolvedTitle || $slots.title" :class="ns.e('header')">
+      <slot name="title">{{ resolvedTitle }}</slot>
     </header>
     <ol :class="ns.e('list')">
       <li
@@ -69,6 +72,8 @@ const statusLabel: Record<AgentStepStatus, string> = {
         </button>
       </li>
     </ol>
-    <div v-if="!steps.length" :class="ns.e('empty')">暂无步骤</div>
+    <div v-if="!steps.length" :class="ns.e('empty')">
+      {{ t('agentSteps.empty') }}
+    </div>
   </section>
 </template>

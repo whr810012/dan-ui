@@ -2,6 +2,7 @@
 import { computed, inject } from 'vue'
 import { formContextKey } from '../../hooks/useFormContext'
 import { useNamespace } from '../../hooks/useNamespace'
+import { useLocale } from '../../locale'
 import { getByPath, setByPath } from '../../utils/path'
 import { DanButton } from '../button'
 import './style.css'
@@ -16,10 +17,11 @@ const props = withDefaults(
     /** 新增行的工厂函数 */
     createItem?: () => Record<string, unknown>
   }>(),
-  {
-    addText: '添加一项',
-  },
+  {},
 )
+
+const { t } = useLocale()
+const resolvedAddText = computed(() => props.addText ?? t('formList.add'))
 
 const form = inject(formContextKey, undefined)
 const ns = useNamespace('form-list')
@@ -65,11 +67,11 @@ function remove(index: number) {
         :class="ns.e('remove')"
         @click="remove(index)"
       >
-        删除
+        {{ t('formList.remove') }}
       </DanButton>
     </div>
     <DanButton size="small" :class="ns.e('add')" @click="add">
-      {{ addText }}
+      {{ resolvedAddText }}
     </DanButton>
   </div>
 </template>

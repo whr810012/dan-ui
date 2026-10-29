@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.9.0
+
+- Locale：扩展 `LocaleMessages`（dialog / datePicker / formList / agentSteps / toolCall 等），高频组件默认文案走 `useLocale`
+- 文档：SSR / Nuxt 指南；发布清单补齐「可上生产」勾选；无障碍发版抽样矩阵
+- 工程：`pnpm bundle:report` 本地产物体积报告
+
 ## 1.8.0
 
 - 新组件：ChatWorkspace、AgentSteps、MediaPreview、PromptTemplate

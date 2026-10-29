@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
+import { useLocale } from '../../locale'
 import './style.css'
 
 defineOptions({ name: 'DanMediaPreview' })
@@ -26,6 +27,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('media-preview')
+const { t } = useLocale()
 
 const resolvedType = computed(() => {
   if (props.type !== 'auto') return props.type
@@ -39,7 +41,7 @@ const resolvedType = computed(() => {
 })
 
 const displayName = computed(
-  () => props.name || props.src?.split('/').pop() || '附件',
+  () => props.name || props.src?.split('/').pop() || t('mediaPreview.attachment'),
 )
 </script>
 
@@ -58,17 +60,17 @@ const displayName = computed(
       <div :class="ns.e('icon')" aria-hidden="true">PDF</div>
       <div :class="ns.e('meta')">
         <div :class="ns.e('name')">{{ displayName }}</div>
-        <div :class="ns.e('hint')">PDF 预览由业务侧嵌入或新开</div>
+        <div :class="ns.e('hint')">{{ t('mediaPreview.pdfHint') }}</div>
       </div>
       <button type="button" :class="ns.e('action')" @click="emit('open')">
-        打开
+        {{ t('mediaPreview.open') }}
       </button>
     </div>
     <div v-else :class="ns.e('file')">
       <div :class="ns.e('icon')" aria-hidden="true">FILE</div>
       <div :class="ns.e('meta')">
         <div :class="ns.e('name')">{{ displayName }}</div>
-        <div :class="ns.e('hint')">通用文件占位</div>
+        <div :class="ns.e('hint')">{{ t('mediaPreview.fileHint') }}</div>
       </div>
       <button
         v-if="src"
@@ -76,7 +78,7 @@ const displayName = computed(
         :class="ns.e('action')"
         @click="emit('open')"
       >
-        打开
+        {{ t('mediaPreview.open') }}
       </button>
     </div>
     <slot />

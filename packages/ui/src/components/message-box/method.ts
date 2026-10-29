@@ -1,4 +1,5 @@
 import { createApp, h, ref } from 'vue'
+import zhCN from '../../locale/zh-CN'
 import MessageBoxHost from './MessageBoxHost.vue'
 import type { MessageBoxAction, MessageBoxOptions } from './types'
 
@@ -35,8 +36,8 @@ function open(
                 message: options.message ?? message,
                 title: options.title ?? title ?? '提示',
                 type: options.type ?? 'info',
-                confirmText: options.confirmText ?? '确定',
-                cancelText: options.cancelText ?? '取消',
+                confirmText: options.confirmText ?? zhCN.dialog.confirm,
+                cancelText: options.cancelText ?? zhCN.dialog.cancel,
                 showCancel: options.showCancel ?? boxType === 'confirm',
                 showConfirm: options.showConfirm ?? true,
                 closeOnClickModal: options.closeOnClickModal ?? false,

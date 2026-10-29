@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
+import { useLocale } from '../../locale'
 import type { CascaderOption } from './types'
 import './style.css'
 
@@ -20,8 +21,12 @@ const props = withDefaults(
     options: () => [],
     disabled: false,
     clearable: false,
-    placeholder: '请选择',
   },
+)
+
+const { t } = useLocale()
+const resolvedPlaceholder = computed(
+  () => props.placeholder ?? t('cascader.placeholder'),
 )
 
 const emit = defineEmits<{
@@ -130,7 +135,7 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
       @click="toggle"
     >
       <span v-if="displayLabel" :class="ns.e('value')">{{ displayLabel }}</span>
-      <span v-else :class="ns.e('placeholder')">{{ placeholder }}</span>
+      <span v-else :class="ns.e('placeholder')">{{ resolvedPlaceholder }}</span>
       <span :class="ns.e('suffix')" aria-hidden="true" />
     </button>
     <button

@@ -216,6 +216,7 @@ export default defineConfig({
             { text: '引入方式', link: '/guide/import' },
             { text: '何时用 dan-ui', link: '/guide/why-dan-ui' },
             { text: '主题定制', link: '/guide/theming' },
+            { text: 'SSR / Nuxt', link: '/guide/ssr' },
             { text: '最佳实践', link: '/guide/best-practices' },
             { text: '无障碍与键盘', link: '/guide/accessibility' },
             { text: '常见问题', link: '/guide/faq' },

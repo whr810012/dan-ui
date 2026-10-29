@@ -39,7 +39,6 @@ const props = withDefaults(
   {
     options: () => [],
     disabled: false,
-    placeholder: '请选择',
     clearable: false,
     multiple: false,
     filterable: false,
@@ -63,6 +62,9 @@ const config = injectConfig()
 const { form, emitChange } = useFormItem()
 const ns = useNamespace('select')
 const { t } = useLocale()
+const resolvedPlaceholder = computed(
+  () => props.placeholder ?? t('select.placeholder'),
+)
 const focused = ref(false)
 const opened = ref(false)
 const highlightIndex = ref(-1)
@@ -412,7 +414,7 @@ onBeforeUnmount(() => {
         v-else
         :class="[ns.e('value'), ns.is('placeholder', !selectedLabel)]"
       >
-        {{ selectedLabel || placeholder }}
+        {{ selectedLabel || resolvedPlaceholder }}
       </span>
     </button>
     <span
@@ -443,7 +445,7 @@ onBeforeUnmount(() => {
           v-model="filterQuery"
           type="text"
           :class="ns.e('filter-input')"
-          :placeholder="placeholder"
+          :placeholder="resolvedPlaceholder"
           @keydown="onKeydown"
         />
       </div>

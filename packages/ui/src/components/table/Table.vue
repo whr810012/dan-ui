@@ -995,7 +995,7 @@ function colMinWidth(col: TableColumn) {
     ]"
   >
     <div v-if="loading" :class="ns.e('loading')">
-      <slot name="loading">加载中…</slot>
+      <slot name="loading">{{ t('table.loading') }}</slot>
     </div>
     <div v-if="showSettings" :class="ns.e('toolbar')">
       <DanDropdown trigger="click" :hide-on-click="false" placement="bottom">

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
+import { useLocale } from '../../locale'
 import {
   calcPopupPosition,
   type PopupPlacement,
@@ -23,9 +24,6 @@ const props = withDefaults(
     visible?: boolean
   }>(),
   {
-    title: '确定执行此操作？',
-    confirmText: '确定',
-    cancelText: '取消',
     confirmType: 'primary',
     placement: 'top',
     disabled: false,
@@ -33,6 +31,15 @@ const props = withDefaults(
     offset: 8,
     visible: undefined,
   },
+)
+
+const { t } = useLocale()
+const resolvedTitle = computed(() => props.title ?? t('popconfirm.title'))
+const resolvedConfirmText = computed(
+  () => props.confirmText ?? t('popconfirm.confirm'),
+)
+const resolvedCancelText = computed(
+  () => props.cancelText ?? t('popconfirm.cancel'),
 )
 
 const emit = defineEmits<{
@@ -168,12 +175,14 @@ defineExpose({ show: open, hide: close })
       @click.stop
     >
       <div :class="ns.e('title')">
-        <slot name="title">{{ title }}</slot>
+        <slot name="title">{{ resolvedTitle }}</slot>
       </div>
       <div :class="ns.e('actions')">
-        <DanButton size="small" @click="onCancel">{{ cancelText }}</DanButton>
+        <DanButton size="small" @click="onCancel">{{
+          resolvedCancelText
+        }}</DanButton>
         <DanButton size="small" :type="confirmType" @click="onConfirm">
-          {{ confirmText }}
+          {{ resolvedConfirmText }}
         </DanButton>
       </div>
     </div>

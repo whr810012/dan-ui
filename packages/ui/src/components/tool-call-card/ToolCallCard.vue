@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
+import { useLocale } from '../../locale'
 import './style.css'
 
 defineOptions({ name: 'DanToolCallCard' })
@@ -24,6 +25,7 @@ const props = withDefaults(
 )
 
 const ns = useNamespace('tool-call-card')
+const { t } = useLocale()
 const expanded = ref(
   props.defaultExpanded ||
     props.status === 'running' ||
@@ -32,10 +34,10 @@ const expanded = ref(
 
 const statusLabel = computed(() => {
   const map = {
-    pending: '等待',
-    running: '运行中',
-    done: '完成',
-    error: '错误',
+    pending: t('toolCallCard.pending'),
+    running: t('toolCallCard.running'),
+    done: t('toolCallCard.done'),
+    error: t('toolCallCard.error'),
   } as const
   return map[props.status]
 })
@@ -86,7 +88,9 @@ const outputText = computed(() =>
       <div v-if="outputText || streaming" :class="ns.e('block')">
         <div :class="ns.e('label')">
           Output
-          <span v-if="streaming" :class="ns.e('streaming')">流式中…</span>
+          <span v-if="streaming" :class="ns.e('streaming')">{{
+            t('toolCallCard.streaming')
+          }}</span>
         </div>
         <pre :class="ns.e('pre')">{{ outputText }}<span
           v-if="streaming"
@@ -98,7 +102,7 @@ const outputText = computed(() =>
         v-if="!inputText && !outputText && !streaming"
         :class="ns.e('empty')"
       >
-        暂无参数
+        {{ t('toolCallCard.empty') }}
       </div>
     </div>
   </div>

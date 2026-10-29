@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
+import { useLocale } from '../../locale'
 import './style.css'
 
 defineOptions({ name: 'DanPromptLibrary' })
@@ -30,6 +31,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('prompt-library')
+const { t } = useLocale()
 const activeGroup = ref<string | 'all'>('all')
 
 const groups = computed(() => {
@@ -66,11 +68,13 @@ const filtered = computed(() => {
         :class="[ns.e('group'), ns.is('active', activeGroup === group)]"
         @click="activeGroup = group"
       >
-        {{ group === 'all' ? '全部' : group }}
+        {{ group === 'all' ? t('promptLibrary.all') : group }}
       </button>
     </div>
     <ul :class="ns.e('list')">
-      <li v-if="!filtered.length" :class="ns.e('empty')">暂无模板</li>
+      <li v-if="!filtered.length" :class="ns.e('empty')">
+        {{ t('promptLibrary.empty') }}
+      </li>
       <li
         v-for="item in filtered"
         :key="item.id"

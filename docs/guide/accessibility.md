@@ -28,6 +28,21 @@
 5. Tabs / Menu / Tree / Select 可用方向键完成主路径。
 6. 暗色模式下对比度仍可辨认（边框 / 占位符 / disabled / 固定列阴影）。
 
+## 发版抽样矩阵（1.9）
+
+每发次版本至少抽测一行「组件 × 动作」：
+
+| 组件 | 键盘 | 朗读 / 语义 | 备注 |
+|------|------|-------------|------|
+| Dialog | Esc、Trap、焦点还原 | `aria-modal` + 标题 | 关 `destroyOnClose` 再测一次 |
+| Select | ↓↑ Enter Esc | 触发器可聚焦 | multiple 时 Tag 删除键 |
+| Table | 列设置、排序可 Tab 到 | 加载态文案 | 虚拟表仅测可视区 |
+| DatePicker | 打开面板、选日、Esc | 触发器 label | month/year/week |
+| ChatInput | Tab 到发送 / 停止 | 按钮 `aria-label` | 附件列表可删 |
+| Tour | 下一步 / 跳过 | 步骤可读 | — |
+
+自动化：目前以单测 + 本清单人工抽检为主；完整 Playwright 视觉回归留待后续工程轨。
+
 ## 对比度与焦点环
 
 - 交互控件应保留可见的 `:focus-visible` 轮廓（主题主色描边或浏览器默认环）。

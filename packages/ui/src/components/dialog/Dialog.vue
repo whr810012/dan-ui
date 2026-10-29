@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useFocusTrap } from '../../hooks/useFocusTrap'
 import { useNamespace } from '../../hooks/useNamespace'
+import { useLocale } from '../../locale'
 import { DanButton } from '../button'
 import { DanIcon } from '../icon'
 import './style.css'
@@ -34,11 +35,17 @@ const props = withDefaults(
     closeOnPressEscape: true,
     showCancel: true,
     showConfirm: true,
-    cancelText: '取消',
-    confirmText: '确定',
     confirmLoading: false,
     destroyOnClose: false,
   },
+)
+
+const { t } = useLocale()
+const resolvedCancelText = computed(
+  () => props.cancelText ?? t('dialog.cancel'),
+)
+const resolvedConfirmText = computed(
+  () => props.confirmText ?? t('dialog.confirm'),
 )
 
 const emit = defineEmits<{
@@ -123,7 +130,7 @@ onBeforeUnmount(() => {
             v-if="showClose"
             type="button"
             :class="ns.e('close')"
-            aria-label="关闭"
+            :aria-label="t('common.close')"
             @click="close"
           >
             <DanIcon name="close" />
@@ -137,16 +144,16 @@ onBeforeUnmount(() => {
           :class="ns.e('footer')"
         >
           <slot name="footer">
-            <DanButton v-if="showCancel" @click="onCancel">{{
-              cancelText
-            }}</DanButton>
+            <DanButton v-if="showCancel" @click="onCancel">
+              {{ resolvedCancelText }}
+            </DanButton>
             <DanButton
               v-if="showConfirm"
               type="primary"
               :loading="confirmLoading"
               @click="onConfirm"
             >
-              {{ confirmText }}
+              {{ resolvedConfirmText }}
             </DanButton>
           </slot>
         </footer>

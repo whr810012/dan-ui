@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
+import { useLocale } from '../../locale'
 import { DanTree } from '../tree'
 import type { TreeNode } from '../tree'
 import './style.css'
@@ -21,8 +22,12 @@ const props = withDefaults(
     data: () => [],
     disabled: false,
     clearable: false,
-    placeholder: '请选择',
   },
+)
+
+const { t } = useLocale()
+const resolvedPlaceholder = computed(
+  () => props.placeholder ?? t('treeSelect.placeholder'),
 )
 
 const emit = defineEmits<{
@@ -118,7 +123,7 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
       @click="toggle"
     >
       <span v-if="display" :class="ns.e('value')">{{ display }}</span>
-      <span v-else :class="ns.e('placeholder')">{{ placeholder }}</span>
+      <span v-else :class="ns.e('placeholder')">{{ resolvedPlaceholder }}</span>
       <span :class="ns.e('suffix')" aria-hidden="true" />
     </button>
     <button

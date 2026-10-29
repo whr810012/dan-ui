@@ -3,6 +3,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { injectConfig } from '../../hooks/useConfig'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
+import { useLocale } from '../../locale'
 import type { DanSize } from '../../hooks/useConfig'
 import {
   WEEK_LABELS,
@@ -52,11 +53,19 @@ const props = withDefaults(
     type: 'date',
     disabled: false,
     clearable: false,
-    placeholder: '选择日期',
-    startPlaceholder: '开始日期',
-    endPlaceholder: '结束日期',
     shortcuts: () => [],
   },
+)
+
+const { t } = useLocale()
+const resolvedPlaceholder = computed(
+  () => props.placeholder ?? t('datePicker.placeholder'),
+)
+const resolvedStartPlaceholder = computed(
+  () => props.startPlaceholder ?? t('datePicker.startPlaceholder'),
+)
+const resolvedEndPlaceholder = computed(
+  () => props.endPlaceholder ?? t('datePicker.endPlaceholder'),
 )
 
 const emit = defineEmits<{
@@ -571,7 +580,11 @@ onBeforeUnmount(() => {
     >
       <span v-if="displayValue" :class="ns.e('value')">{{ displayValue }}</span>
       <span v-else :class="ns.e('placeholder')">
-        {{ isRange ? `${startPlaceholder} - ${endPlaceholder}` : placeholder }}
+        {{
+          isRange
+            ? `${resolvedStartPlaceholder} - ${resolvedEndPlaceholder}`
+            : resolvedPlaceholder
+        }}
       </span>
       <span :class="ns.e('suffix')" aria-hidden="true" />
     </button>
@@ -759,18 +772,30 @@ onBeforeUnmount(() => {
               :class="ns.e('today')"
               @click="selectToday"
             >
-              {{ isMonth ? '本月' : isYear ? '今年' : isWeek ? '本周' : '今天' }}
+              {{
+                isMonth
+                  ? t('datePicker.thisMonth')
+                  : isYear
+                    ? t('datePicker.thisYear')
+                    : isWeek
+                      ? t('datePicker.thisWeek')
+                      : t('datePicker.today')
+              }}
             </button>
             <span v-if="isRange && !isDateTime" :class="ns.e('hint')">
-              {{ rangePicking ? '请选择结束日期' : '请选择开始日期' }}
+              {{
+                rangePicking
+                  ? t('datePicker.pickEnd')
+                  : t('datePicker.pickStart')
+              }}
             </span>
             <span v-else-if="isRange && isDateTime" :class="ns.e('hint')">
               {{
                 rangePicking
-                  ? '请选择结束日期'
+                  ? t('datePicker.pickEnd')
                   : draftEndDate
-                    ? '可调整时间后确认'
-                    : '请选择开始日期'
+                    ? t('datePicker.adjustTime')
+                    : t('datePicker.pickStart')
               }}
             </span>
             <button
@@ -780,7 +805,7 @@ onBeforeUnmount(() => {
               :disabled="!draftDate || (isRange && !draftEndDate)"
               @click="confirmDateTime"
             >
-              确定
+              {{ t('datePicker.confirm') }}
             </button>
           </div>
         </div>
