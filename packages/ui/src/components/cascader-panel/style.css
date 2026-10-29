@@ -1,0 +1,8 @@
+.dan-cascader-panel {
+  position: static;
+  display: inline-flex;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+  box-shadow: none;
+}

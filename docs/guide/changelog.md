@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.0
+
+- 新组件：Typography（Text / Title / Paragraph）、CheckTag、QRCode、Countdown、InfiniteList、CascaderPanel
+- Space：`compact` 紧凑贴合模式
+
 ## 1.5.0
 
 - 新组件：InputTag、PageHeader、Link、ToolCallCard、ArtifactPanel、PromptLibrary

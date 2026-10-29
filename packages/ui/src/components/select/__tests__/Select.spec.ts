@@ -60,7 +60,8 @@ describe('DanSelect', () => {
     await trigger.trigger('keydown', { key: 'ArrowDown' })
     await trigger.trigger('keydown', { key: 'Enter' })
     await nextTick()
-    expect(wrapper.emitted('update:modelValue')?.at(-1)?.[0]).toBe('bj')
+    const emitted = wrapper.emitted('update:modelValue')
+    expect(emitted?.[emitted.length - 1]?.[0]).toBe('bj')
 
     wrapper.unmount()
   })

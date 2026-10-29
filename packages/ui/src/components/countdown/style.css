@@ -1,0 +1,8 @@
+.dan-countdown {
+  display: inline-block;
+}
+
+.dan-countdown .dan-statistic__value {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--dan-font-family-mono, ui-monospace, monospace);
+}

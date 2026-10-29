@@ -1,0 +1,23 @@
+.dan-infinite-list {
+  box-sizing: border-box;
+  overflow: auto;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+}
+
+.dan-infinite-list.is-disabled {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.dan-infinite-list__content {
+  min-height: 100%;
+}
+
+.dan-infinite-list__footer {
+  padding: 12px;
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+  text-align: center;
+}

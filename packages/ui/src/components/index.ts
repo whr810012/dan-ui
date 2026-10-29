@@ -103,6 +103,28 @@ export type { DanFormInstance, DanFormItemInstance } from './form'
 export { DanSpace } from './space'
 export type { DanSpaceInstance } from './space'
 
+export { DanText, DanTitle, DanParagraph, DanTypography } from './typography'
+export type {
+  DanTextInstance,
+  DanTitleInstance,
+  DanParagraphInstance,
+} from './typography'
+
+export { DanCheckTag } from './check-tag'
+export type { DanCheckTagInstance } from './check-tag'
+
+export { DanQRCode } from './qrcode'
+export type { DanQRCodeInstance } from './qrcode'
+
+export { DanCountdown } from './countdown'
+export type { DanCountdownInstance } from './countdown'
+
+export { DanInfiniteList } from './infinite-list'
+export type { DanInfiniteListInstance } from './infinite-list'
+
+export { DanCascaderPanel } from './cascader-panel'
+export type { DanCascaderPanelInstance } from './cascader-panel'
+
 export { DanDivider } from './divider'
 export type { DanDividerInstance } from './divider'
 

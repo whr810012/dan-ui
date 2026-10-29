@@ -1,0 +1,141 @@
+.dan-text,
+.dan-title,
+.dan-paragraph {
+  margin: 0;
+  color: var(--dan-color-text);
+  font-family: var(--dan-font-family);
+  line-height: 1.6;
+}
+
+.dan-text--small {
+  font-size: var(--dan-font-size-sm);
+}
+
+.dan-text--default {
+  font-size: var(--dan-font-size-md);
+}
+
+.dan-text--large {
+  font-size: var(--dan-font-size-lg);
+}
+
+.dan-text.is-strong {
+  font-weight: 600;
+}
+
+.dan-text.is-italic {
+  font-style: italic;
+}
+
+.dan-text.is-underline {
+  text-decoration: underline;
+}
+
+.dan-text.is-truncated {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+
+.dan-text.is-disabled {
+  color: var(--dan-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.dan-text.is-code {
+  padding: 0.1em 0.4em;
+  border-radius: var(--dan-radius-sm);
+  background: var(--dan-color-fill);
+  font-family: var(--dan-font-family-mono, ui-monospace, monospace);
+  font-size: 0.9em;
+}
+
+.dan-text.is-mark {
+  padding: 0 0.2em;
+  background: var(--dan-color-warning-light);
+}
+
+.dan-text--primary,
+.dan-title--primary,
+.dan-paragraph--primary {
+  color: var(--dan-color-primary);
+}
+
+.dan-text--success,
+.dan-title--success,
+.dan-paragraph--success {
+  color: var(--dan-color-success);
+}
+
+.dan-text--warning,
+.dan-title--warning,
+.dan-paragraph--warning {
+  color: var(--dan-color-warning);
+}
+
+.dan-text--danger,
+.dan-title--danger,
+.dan-paragraph--danger {
+  color: var(--dan-color-danger);
+}
+
+.dan-text--info,
+.dan-title--info,
+.dan-paragraph--info {
+  color: var(--dan-color-info);
+}
+
+.dan-title {
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--dan-color-text);
+}
+
+.dan-title--h1 {
+  font-size: 32px;
+}
+
+.dan-title--h2 {
+  font-size: 28px;
+}
+
+.dan-title--h3 {
+  font-size: 24px;
+}
+
+.dan-title--h4 {
+  font-size: 20px;
+}
+
+.dan-title--h5 {
+  font-size: 16px;
+}
+
+.dan-title--h6 {
+  font-size: 14px;
+}
+
+.dan-title.is-truncated {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dan-paragraph {
+  font-size: var(--dan-font-size-md);
+}
+
+.dan-paragraph--default {
+  margin-bottom: 1em;
+}
+
+.dan-paragraph--tight {
+  margin-bottom: 0.5em;
+}
+
+.dan-paragraph--loose {
+  margin-bottom: 1.5em;
+}

@@ -11,3 +11,5 @@ import basicSrc from './demos/space/basic.vue?raw'
 <DemoBlock :source="basicSrc">
   <Basic />
 </DemoBlock>
+
+`compact` 可将子元素间距压为 0，适合按钮组贴合。
