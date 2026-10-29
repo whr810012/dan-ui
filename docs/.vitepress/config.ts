@@ -37,6 +37,7 @@ const componentsSidebar = collapsible([
       { text: 'Button（按钮）', link: '/components/button' },
       { text: 'Icon（图标）', link: '/components/icon' },
       { text: 'Space（间距）', link: '/components/space' },
+      { text: 'Scrollbar（滚动条）', link: '/components/scrollbar' },
       { text: 'Divider（分割线）', link: '/components/divider' },
       { text: 'Typography（排版）', link: '/components/typography' },
       { text: 'Layout（布局）', link: '/components/layout' },

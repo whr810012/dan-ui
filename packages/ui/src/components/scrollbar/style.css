@@ -1,0 +1,68 @@
+.dan-scrollbar {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+
+.dan-scrollbar__wrap {
+  height: 100%;
+  overflow: auto;
+}
+
+.dan-scrollbar__wrap.is-hidden-bar {
+  scrollbar-width: none;
+}
+
+.dan-scrollbar__wrap.is-hidden-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.dan-scrollbar__view {
+  display: inline-block;
+  min-width: 100%;
+  box-sizing: border-box;
+}
+
+.dan-scrollbar__bar {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  z-index: 1;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-scrollbar:hover .dan-scrollbar__bar,
+.dan-scrollbar.is-always .dan-scrollbar__bar {
+  opacity: 1;
+}
+
+.dan-scrollbar__bar.is-vertical {
+  top: 2px;
+  width: 6px;
+}
+
+.dan-scrollbar__bar.is-horizontal {
+  left: 2px;
+  height: 6px;
+}
+
+.dan-scrollbar__thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--dan-color-text-secondary) 45%, transparent);
+  cursor: default;
+  transition: background var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-scrollbar__thumb:hover {
+  background: color-mix(in srgb, var(--dan-color-text-secondary) 70%, transparent);
+}
+
+.dan-scrollbar.is-native .dan-scrollbar__bar {
+  display: none;
+}

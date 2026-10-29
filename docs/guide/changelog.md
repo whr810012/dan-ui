@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.6.0
+
+- 新组件：Scrollbar（自定义滚动条、`native` / `always`、滚动方法暴露）
+
 ## 2.5.0
 
 - Select：`remote` / `remoteMethod` / `loading` / `remoteDebounce`；选中 label 缓存

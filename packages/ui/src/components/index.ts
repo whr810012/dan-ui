@@ -112,6 +112,9 @@ export { DanFormList } from './form-list'
 export type { DanFormListInstance } from './form-list'
 
 export { DanSpace } from './space'
+
+export { DanScrollbar } from './scrollbar'
+export type { DanScrollbarInstance } from './scrollbar'
 export type { DanSpaceInstance } from './space'
 
 export { DanText, DanTitle, DanParagraph, DanTypography } from './typography'
