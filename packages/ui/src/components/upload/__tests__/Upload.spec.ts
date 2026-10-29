@@ -173,9 +173,12 @@ describe('DanUpload', () => {
   })
 
   it('renders picture-card list with image preview', async () => {
-    const createObjectURL = vi
-      .spyOn(URL, 'createObjectURL')
-      .mockReturnValue('blob:mock-pic')
+    const createObjectURL = vi.fn(() => 'blob:mock-pic')
+    Object.defineProperty(URL, 'createObjectURL', {
+      configurable: true,
+      writable: true,
+      value: createObjectURL,
+    })
     const fileList = ref<UploadFile[]>([])
     const Comp = defineComponent({
       components: { DanUpload },
@@ -201,6 +204,5 @@ describe('DanUpload', () => {
     expect(createObjectURL).toHaveBeenCalled()
     expect(fileList.value[0]?.url).toBe('blob:mock-pic')
     expect(wrapper.find('.dan-upload__card-thumb').exists()).toBe(true)
-    createObjectURL.mockRestore()
   })
 })
