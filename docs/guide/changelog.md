@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.0
+
+- 新组件：TimeSelect（`start` / `end` / `step` / `minTime` / `maxTime`）
+
 ## 2.3.0
 
 - Cascader / CascaderPanel：`multiple` 多路径选择；触发器标签与 `maxTagCount`

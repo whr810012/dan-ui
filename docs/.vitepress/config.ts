@@ -57,6 +57,8 @@ const componentsSidebar = collapsible([
       { text: 'Rate（评分）', link: '/components/rate' },
       { text: 'DatePicker（日期选择）', link: '/components/date-picker' },
       { text: 'TimePicker（时间选择）', link: '/components/time-picker' },
+      { text: 'TimeSelect（时间点）', link: '/components/time-select' },
+
       { text: 'Autocomplete（自动完成）', link: '/components/autocomplete' },
       { text: 'Cascader（级联选择）', link: '/components/cascader' },
       { text: 'CascaderPanel（级联面板）', link: '/components/cascader-panel' },

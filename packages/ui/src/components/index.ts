@@ -61,6 +61,9 @@ export {
 export { DanTimePicker } from './time-picker'
 export type { DanTimePickerInstance } from './time-picker'
 
+export { DanTimeSelect } from './time-select'
+export type { DanTimeSelectInstance } from './time-select'
+
 export { DanAutocomplete } from './autocomplete'
 export type {
   DanAutocompleteInstance,

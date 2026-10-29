@@ -1,0 +1,124 @@
+.dan-time-select {
+  --dan-time-select-height: var(--dan-control-height-md);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 140px;
+  height: var(--dan-time-select-height);
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+  color: var(--dan-color-text);
+  font-family: var(--dan-font-family);
+  font-size: var(--dan-font-size-md);
+}
+
+.dan-time-select--small {
+  --dan-time-select-height: var(--dan-control-height-sm);
+}
+.dan-time-select--large {
+  --dan-time-select-height: var(--dan-control-height-lg);
+}
+
+.dan-time-select.is-opened {
+  border-color: var(--dan-color-primary);
+  box-shadow: 0 0 0 3px var(--dan-color-primary-light);
+}
+
+.dan-time-select.is-disabled {
+  background: var(--dan-color-fill);
+  color: var(--dan-color-text-disabled);
+}
+
+.dan-time-select__trigger {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0 28px 0 12px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dan-time-select__placeholder {
+  color: var(--dan-color-text-placeholder);
+}
+
+.dan-time-select__suffix {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--dan-color-text-secondary);
+  transform: translateY(-40%);
+  pointer-events: none;
+}
+
+.dan-time-select__clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--dan-color-fill);
+  color: var(--dan-color-text-secondary);
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.dan-time-select:has(.dan-time-select__clear) .dan-time-select__suffix {
+  display: none;
+}
+
+.dan-time-select__panel {
+  max-height: 220px;
+  overflow: auto;
+  padding: 4px;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg-elevated);
+  box-shadow: var(--dan-shadow-md);
+}
+
+.dan-time-select__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dan-time-select__option {
+  padding: 6px 10px;
+  border-radius: var(--dan-radius-sm);
+  cursor: pointer;
+}
+
+.dan-time-select__option:hover {
+  background: var(--dan-color-fill);
+}
+
+.dan-time-select__option.is-active {
+  color: var(--dan-color-primary);
+  background: var(--dan-color-primary-light);
+  font-weight: 500;
+}
+
+.dan-time-select__empty {
+  padding: 12px;
+  color: var(--dan-color-text-secondary);
+  text-align: center;
+  font-size: 13px;
+}
