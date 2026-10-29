@@ -13,9 +13,15 @@
   line-height: 0;
 }
 
-.dan-empty__image svg {
+.dan-empty__image svg,
+.dan-empty__img {
   width: 100%;
   height: auto;
+  display: block;
+}
+
+.dan-empty__img {
+  object-fit: contain;
 }
 
 .dan-empty__description {

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.7.0
+
+- Empty：`type` 预设（search / network / permission）、`image` URL、插画样式
+
 ## 2.6.0
 
 - 新组件：Scrollbar（自定义滚动条、`native` / `always`、滚动方法暴露）
