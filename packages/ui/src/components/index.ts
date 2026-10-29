@@ -77,6 +77,7 @@ export type {
   CascaderPath,
   CascaderModelValue,
 } from './cascader'
+export { cascaderPathEqual, normalizeCascaderPaths } from './cascader'
 
 export { DanColorPicker } from './color-picker'
 export type { DanColorPickerInstance } from './color-picker'

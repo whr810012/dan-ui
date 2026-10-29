@@ -174,10 +174,16 @@ describe('DanUpload', () => {
 
   it('renders picture-card list with image preview', async () => {
     const createObjectURL = vi.fn(() => 'blob:mock-pic')
+    const revokeObjectURL = vi.fn()
     Object.defineProperty(URL, 'createObjectURL', {
       configurable: true,
       writable: true,
       value: createObjectURL,
+    })
+    Object.defineProperty(URL, 'revokeObjectURL', {
+      configurable: true,
+      writable: true,
+      value: revokeObjectURL,
     })
     const fileList = ref<UploadFile[]>([])
     const Comp = defineComponent({
@@ -204,5 +210,18 @@ describe('DanUpload', () => {
     expect(createObjectURL).toHaveBeenCalled()
     expect(fileList.value[0]?.url).toBe('blob:mock-pic')
     expect(wrapper.find('.dan-upload__card-thumb').exists()).toBe(true)
+
+    createObjectURL.mockReturnValueOnce('blob:mock-pic-2')
+    const image2 = new File([new Uint8Array(4)], 'pic2.png', {
+      type: 'image/png',
+    })
+    Object.defineProperty(input.element, 'files', {
+      value: [image2],
+      configurable: true,
+    })
+    await input.trigger('change')
+    await nextTick()
+    expect(revokeObjectURL).toHaveBeenCalledWith('blob:mock-pic')
+    expect(fileList.value[0]?.url).toBe('blob:mock-pic-2')
   })
 })

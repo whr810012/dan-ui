@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
-import type {
-  CascaderModelValue,
-  CascaderOption,
-  CascaderPath,
+import {
+  cascaderPathEqual,
+  normalizeCascaderPaths,
+  type CascaderModelValue,
+  type CascaderOption,
+  type CascaderPath,
 } from '../cascader/types'
 import '../cascader/style.css'
 import './style.css'
@@ -46,24 +48,12 @@ const activePath = ref<CascaderOption[]>([])
 const filterQuery = ref('')
 const scrollTops = ref<number[]>([])
 
-function pathEqual(a: CascaderPath, b: CascaderPath) {
-  return a.length === b.length && a.every((v, i) => v === b[i])
-}
-
-const selectedPaths = computed((): CascaderPath[] => {
-  if (!props.modelValue) return []
-  if (props.multiple) {
-    return Array.isArray(props.modelValue[0]) || props.modelValue.length === 0
-      ? (props.modelValue as CascaderPath[])
-      : []
-  }
-  return Array.isArray((props.modelValue as CascaderPath)[0])
-    ? []
-    : [props.modelValue as CascaderPath]
-})
+const selectedPaths = computed((): CascaderPath[] =>
+  normalizeCascaderPaths(props.modelValue, props.multiple),
+)
 
 function isPathSelected(path: CascaderPath) {
-  return selectedPaths.value.some((item) => pathEqual(item, path))
+  return selectedPaths.value.some((item) => cascaderPathEqual(item, path))
 }
 
 function isLeafChecked(level: number, option: CascaderOption) {
@@ -189,9 +179,11 @@ function onSelect(level: number, option: CascaderOption) {
     return
   }
 
-  const exists = selectedPaths.value.some((item) => pathEqual(item, path))
+  const exists = selectedPaths.value.some((item) =>
+    cascaderPathEqual(item, path),
+  )
   const next = exists
-    ? selectedPaths.value.filter((item) => !pathEqual(item, path))
+    ? selectedPaths.value.filter((item) => !cascaderPathEqual(item, path))
     : [...selectedPaths.value, path]
   commit(next)
 }

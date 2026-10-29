@@ -4,10 +4,12 @@ import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import { useLocale } from '../../locale'
 import { DanCascaderPanel } from '../cascader-panel'
-import type {
-  CascaderModelValue,
-  CascaderOption,
-  CascaderPath,
+import {
+  cascaderPathEqual,
+  normalizeCascaderPaths,
+  type CascaderModelValue,
+  type CascaderOption,
+  type CascaderPath,
 } from './types'
 import './style.css'
 
@@ -73,21 +75,9 @@ function findPathLabel(path: CascaderPath): string {
   return labels.join(' / ')
 }
 
-function pathEqual(a: CascaderPath, b: CascaderPath) {
-  return a.length === b.length && a.every((v, i) => v === b[i])
-}
-
-const selectedPaths = computed((): CascaderPath[] => {
-  if (!props.modelValue) return []
-  if (props.multiple) {
-    if (!Array.isArray(props.modelValue)) return []
-    if (props.modelValue.length === 0) return []
-    return Array.isArray(props.modelValue[0])
-      ? (props.modelValue as CascaderPath[])
-      : []
-  }
-  return [props.modelValue as CascaderPath]
-})
+const selectedPaths = computed((): CascaderPath[] =>
+  normalizeCascaderPaths(props.modelValue, props.multiple),
+)
 
 const tags = computed(() =>
   selectedPaths.value.map((path) => ({
@@ -160,7 +150,9 @@ function clear(event: MouseEvent) {
 function removeTag(path: CascaderPath, event: MouseEvent) {
   event.stopPropagation()
   if (!props.multiple || isDisabled.value) return
-  const next = selectedPaths.value.filter((item) => !pathEqual(item, path))
+  const next = selectedPaths.value.filter(
+    (item) => !cascaderPathEqual(item, path),
+  )
   emit('update:modelValue', next)
   emit('change', next)
   emitChange('change')

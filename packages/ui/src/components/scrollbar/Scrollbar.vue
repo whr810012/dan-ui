@@ -40,12 +40,21 @@ const emit = defineEmits<{
 
 const ns = useNamespace('scrollbar')
 const wrapRef = ref<HTMLElement | null>(null)
-const viewRef = ref<HTMLElement | null>(null)
+const viewRef = ref<HTMLElement | { $el?: HTMLElement } | null>(null)
 const sizeWidth = ref('0')
 const sizeHeight = ref('0')
 const moveX = ref(0)
 const moveY = ref(0)
 const hovering = ref(false)
+
+function resolveEl(
+  target: HTMLElement | { $el?: HTMLElement } | null,
+): HTMLElement | null {
+  if (!target) return null
+  if (target instanceof HTMLElement) return target
+  const el = target.$el
+  return el instanceof HTMLElement ? el : null
+}
 
 function toCssSize(value?: string | number) {
   if (value == null || value === '') return undefined
@@ -131,7 +140,8 @@ onMounted(async () => {
   if (typeof ResizeObserver !== 'undefined') {
     resizeObserver = new ResizeObserver(() => update())
     if (wrapRef.value) resizeObserver.observe(wrapRef.value)
-    if (viewRef.value) resizeObserver.observe(viewRef.value)
+    const viewEl = resolveEl(viewRef.value)
+    if (viewEl) resizeObserver.observe(viewEl)
   }
   window.addEventListener('resize', update)
 })

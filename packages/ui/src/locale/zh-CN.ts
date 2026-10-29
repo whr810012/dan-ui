@@ -4,6 +4,9 @@ const zhCN: LocaleMessages = {
   name: 'zh-CN',
   empty: {
     description: '暂无数据',
+    search: '没有找到相关结果',
+    network: '网络异常，请稍后重试',
+    permission: '暂无访问权限',
   },
   common: {
     confirm: '确定',

@@ -72,7 +72,12 @@ watch(
   () => props.fileList,
   (list) => {
     if (syncingFromInner) return
-    files.value = normalizeList(list)
+    const next = normalizeList(list)
+    const keep = new Set(next.map((item) => item.uid))
+    files.value.forEach((file) => {
+      if (!keep.has(file.uid)) revokePreview(file)
+    })
+    files.value = next
   },
   { deep: true },
 )
@@ -155,7 +160,13 @@ function addFile(file: File) {
         : undefined,
   }
 
-  const next = props.multiple ? [...files.value, uploadFile] : [uploadFile]
+  let next: UploadFile[]
+  if (props.multiple) {
+    next = [...files.value, uploadFile]
+  } else {
+    files.value.forEach(revokePreview)
+    next = [uploadFile]
+  }
   syncList(next)
   emit('change', uploadFile, next)
   emitChange('change')

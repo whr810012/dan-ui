@@ -9,3 +9,4 @@ export type {
   CascaderPath,
   CascaderModelValue,
 } from './types'
+export { cascaderPathEqual, normalizeCascaderPaths } from './types'

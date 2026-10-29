@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.8.1
+
+- Upload：替换文件列表时释放 `blob:` 预览 URL，避免泄漏
+- Cascader：规范 `normalizeCascaderPaths`，修复空数组 / 错误形态静默误判
+- Empty：预设文案接入 locale（`search` / `network` / `permission`）
+- Scrollbar：自定义 `tag` 时正确解析 `$el` 供 ResizeObserver 使用
+
 ## 2.8.0
 
 - Upload：`listType="picture-card"` 照片墙；图片本地预览 URL

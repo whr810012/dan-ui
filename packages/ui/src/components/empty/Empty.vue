@@ -31,9 +31,9 @@ const { t } = useLocale()
 const typeDescription = computed(() => {
   const map: Record<EmptyType, string> = {
     default: t('empty.description'),
-    search: '没有找到相关结果',
-    network: '网络异常，请稍后重试',
-    permission: '暂无访问权限',
+    search: t('empty.search'),
+    network: t('empty.network'),
+    permission: t('empty.permission'),
   }
   return map[props.type] || map.default
 })

@@ -2,6 +2,9 @@ export interface LocaleMessages {
   name: string
   empty: {
     description: string
+    search: string
+    network: string
+    permission: string
   }
   common: {
     confirm: string

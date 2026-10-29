@@ -4,6 +4,9 @@ const en: LocaleMessages = {
   name: 'en',
   empty: {
     description: 'No data',
+    search: 'No matching results',
+    network: 'Network error, please try again',
+    permission: 'No access permission',
   },
   common: {
     confirm: 'OK',
