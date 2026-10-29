@@ -172,3 +172,103 @@
   cursor: not-allowed;
   opacity: 0.5;
 }
+
+.dan-upload__card-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--dan-spacing-md);
+  margin: 0;
+}
+
+.dan-upload__card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  overflow: hidden;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+}
+
+.dan-upload__card-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dan-upload__card-name {
+  padding: var(--dan-spacing-xs);
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+  text-align: center;
+  word-break: break-all;
+}
+
+.dan-upload__card-mask {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--dan-spacing-xs);
+  background: color-mix(in srgb, #000 45%, transparent);
+  color: #fff;
+  font-size: var(--dan-font-size-sm);
+  opacity: 0;
+  transition: opacity var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-upload__card:hover .dan-upload__card-mask,
+.dan-upload__card.is-uploading .dan-upload__card-mask,
+.dan-upload__card.is-fail .dan-upload__card-mask {
+  opacity: 1;
+}
+
+.dan-upload__card-remove {
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--dan-radius-sm);
+  background: transparent;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dan-upload__card-add {
+  flex-direction: column;
+  border-style: dashed;
+  color: var(--dan-color-text-secondary);
+  cursor: pointer;
+  transition:
+    border-color var(--dan-duration-fast) var(--dan-ease),
+    color var(--dan-duration-fast) var(--dan-ease),
+    background-color var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-upload__card-add:hover {
+  color: var(--dan-color-primary);
+  border-color: var(--dan-color-primary);
+  background: var(--dan-color-primary-light);
+}
+
+.dan-upload__card-add-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.dan-upload__card-add-text {
+  margin-top: 4px;
+  font-size: var(--dan-font-size-sm);
+}
+
+.dan-upload.is-disabled .dan-upload__card-add {
+  cursor: not-allowed;
+  opacity: 0.7;
+}

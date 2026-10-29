@@ -6,6 +6,8 @@ import Drag from './demos/upload/drag.vue'
 import dragSrc from './demos/upload/drag.vue?raw'
 import Chunk from './demos/upload/chunk.vue'
 import chunkSrc from './demos/upload/chunk.vue?raw'
+import PictureCard from './demos/upload/picture-card.vue'
+import pictureCardSrc from './demos/upload/picture-card.vue?raw'
 </script>
 
 # Upload 上传
@@ -32,6 +34,14 @@ import chunkSrc from './demos/upload/chunk.vue?raw'
   <Chunk />
 </DemoBlock>
 
+## 照片墙
+
+`list-type="picture-card"` 以卡片缩略图展示；图片会自动生成本地预览 URL。
+
+<DemoBlock :source="pictureCardSrc">
+  <PictureCard />
+</DemoBlock>
+
 ## Upload Props
 
 | 属性 | 说明 | 类型 | 默认值 |
@@ -43,9 +53,11 @@ import chunkSrc from './demos/upload/chunk.vue?raw'
 | limit | 最大上传数量 | `number` | — |
 | drag | 是否启用拖拽 | `boolean` | `false` |
 | autoUpload | 选中后是否自动上传 | `boolean` | `true` |
+| listType | 列表样式 | `'text' \| 'picture-card'` | `'text'` |
 | httpRequest | 自定义上传方法 | `UploadRequestHandler` | 内置 mock |
 | chunkSize | 分片大小（字节）；`>0` 且文件更大时启用分片 | `number` | `0` |
 | beforeChunkUpload | 每片上传前钩子，返回 `false` 中断 | `(chunk, file) => boolean \| Promise<boolean>` | — |
+
 
 ## Upload Events
 

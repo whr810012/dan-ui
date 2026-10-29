@@ -25,7 +25,7 @@ const props = withDefaults(
     drag?: boolean
     autoUpload?: boolean
     httpRequest?: UploadRequestHandler
-    listType?: 'text'
+    listType?: 'text' | 'picture-card'
     /** 分片大小（字节）；>0 时启用分片上传 */
     chunkSize?: number
     beforeChunkUpload?: UploadBeforeChunkHook
@@ -128,6 +128,17 @@ function handleFiles(fileList: FileList | File[]) {
   }
 }
 
+function isImageFile(file: File | UploadFile) {
+  const name = 'name' in file ? file.name : ''
+  const type = 'type' in file && typeof file.type === 'string' ? file.type : ''
+  if (type.startsWith('image/')) return true
+  return /\.(png|jpe?g|gif|webp|bmp|svg)$/i.test(name)
+}
+
+function previewUrl(file: UploadFile) {
+  return file.url || ''
+}
+
 function addFile(file: File) {
   const raw = file as UploadRawFile
   raw.uid = ++seed
@@ -138,6 +149,10 @@ function addFile(file: File) {
     status: 'ready',
     uid: raw.uid,
     raw,
+    url:
+      isImageFile(raw) && typeof URL.createObjectURL === 'function'
+        ? URL.createObjectURL(raw)
+        : undefined,
   }
 
   const next = props.multiple ? [...files.value, uploadFile] : [uploadFile]
@@ -364,15 +379,27 @@ function retry(file: UploadFile) {
   void upload(file)
 }
 
+function revokePreview(file: UploadFile) {
+  if (file.url?.startsWith('blob:')) {
+    URL.revokeObjectURL(file.url)
+  }
+}
+
 function remove(file: UploadFile) {
   if (isDisabled.value) return
   abort(file)
+  revokePreview(file)
   const next = files.value.filter((item) => item.uid !== file.uid)
   syncList(next)
   emit('remove', file, next)
   emit('change', file, next)
   emitChange('change')
 }
+
+const isPictureCard = computed(() => props.listType === 'picture-card')
+const canAddMore = computed(
+  () => props.limit == null || files.value.length < props.limit,
+)
 
 function onInputChange(event: Event) {
   const input = event.target as HTMLInputElement
@@ -405,6 +432,7 @@ function submit() {
 }
 
 function clearFiles() {
+  files.value.forEach(revokePreview)
   syncList([])
 }
 
@@ -419,7 +447,14 @@ defineExpose({
 </script>
 
 <template>
-  <div :class="[ns.b(), ns.is('disabled', isDisabled), ns.is('drag', drag)]">
+  <div
+    :class="[
+      ns.b(),
+      ns.is('disabled', isDisabled),
+      ns.is('drag', drag),
+      ns.is('picture-card', isPictureCard),
+    ]"
+  >
     <input
       ref="inputRef"
       type="file"
@@ -430,67 +465,118 @@ defineExpose({
       @change="onInputChange"
     />
 
-    <div
-      v-if="drag"
-      :class="[ns.e('dragger'), ns.is('dragover', dragOver)]"
-      role="button"
-      tabindex="0"
-      @click="openFileDialog"
-      @keydown.enter.prevent="openFileDialog"
-      @keydown.space.prevent="openFileDialog"
-      @dragover="onDragOver"
-      @dragleave="onDragLeave"
-      @drop="onDrop"
-    >
-      <slot>
-        <div :class="ns.e('tip')">
-          <p :class="ns.e('tip-title')">将文件拖到此处，或点击上传</p>
-          <p v-if="limit" :class="ns.e('tip-sub')">
-            最多上传 {{ limit }} 个文件
-          </p>
-        </div>
-      </slot>
-    </div>
-
-    <div v-else :class="ns.e('trigger')" @click="openFileDialog">
-      <slot>
-        <button type="button" :class="ns.e('button')" :disabled="isDisabled">
-          选择文件
-        </button>
-      </slot>
-    </div>
-
-    <ul v-if="files.length" :class="ns.e('list')">
-      <li v-for="file in files" :key="file.uid" :class="ns.e('item')">
-        <div :class="ns.e('item-info')">
-          <span :class="ns.e('item-name')" :title="file.name">{{
-            file.name
-          }}</span>
-          <span v-if="file.size != null" :class="ns.e('item-size')">{{
-            formatSize(file.size)
-          }}</span>
-          <span :class="[ns.e('item-status'), ns.is(file.status, true)]">
-            {{
-              file.status === 'uploading'
-                ? `${file.percentage ?? 0}%`
-                : file.status === 'success'
-                  ? '完成'
-                  : file.status === 'fail'
-                    ? '失败'
-                    : '待上传'
-            }}
-          </span>
-        </div>
-        <button
-          type="button"
-          :class="ns.e('item-remove')"
-          :disabled="isDisabled"
-          aria-label="移除文件"
-          @click="remove(file)"
+    <template v-if="isPictureCard">
+      <ul :class="[ns.e('list'), ns.e('card-list')]">
+        <li
+          v-for="file in files"
+          :key="file.uid"
+          :class="[ns.e('card'), ns.is(file.status, true)]"
         >
-          ×
-        </button>
-      </li>
-    </ul>
+          <img
+            v-if="previewUrl(file)"
+            :src="previewUrl(file)"
+            :alt="file.name"
+            :class="ns.e('card-thumb')"
+          />
+          <div v-else :class="ns.e('card-name')" :title="file.name">
+            {{ file.name }}
+          </div>
+          <div :class="ns.e('card-mask')">
+            <span v-if="file.status === 'uploading'">
+              {{ file.percentage ?? 0 }}%
+            </span>
+            <span v-else-if="file.status === 'fail'">失败</span>
+            <button
+              type="button"
+              :class="ns.e('card-remove')"
+              :disabled="isDisabled"
+              aria-label="移除文件"
+              @click="remove(file)"
+            >
+              ×
+            </button>
+          </div>
+        </li>
+        <li
+          v-if="canAddMore"
+          :class="[ns.e('card'), ns.e('card-add')]"
+          role="button"
+          tabindex="0"
+          @click="openFileDialog"
+          @keydown.enter.prevent="openFileDialog"
+          @keydown.space.prevent="openFileDialog"
+        >
+          <slot>
+            <span :class="ns.e('card-add-icon')">+</span>
+            <span :class="ns.e('card-add-text')">上传</span>
+          </slot>
+        </li>
+      </ul>
+    </template>
+
+    <template v-else>
+      <div
+        v-if="drag"
+        :class="[ns.e('dragger'), ns.is('dragover', dragOver)]"
+        role="button"
+        tabindex="0"
+        @click="openFileDialog"
+        @keydown.enter.prevent="openFileDialog"
+        @keydown.space.prevent="openFileDialog"
+        @dragover="onDragOver"
+        @dragleave="onDragLeave"
+        @drop="onDrop"
+      >
+        <slot>
+          <div :class="ns.e('tip')">
+            <p :class="ns.e('tip-title')">将文件拖到此处，或点击上传</p>
+            <p v-if="limit" :class="ns.e('tip-sub')">
+              最多上传 {{ limit }} 个文件
+            </p>
+          </div>
+        </slot>
+      </div>
+
+      <div v-else :class="ns.e('trigger')" @click="openFileDialog">
+        <slot>
+          <button type="button" :class="ns.e('button')" :disabled="isDisabled">
+            选择文件
+          </button>
+        </slot>
+      </div>
+
+      <ul v-if="files.length" :class="ns.e('list')">
+        <li v-for="file in files" :key="file.uid" :class="ns.e('item')">
+          <div :class="ns.e('item-info')">
+            <span :class="ns.e('item-name')" :title="file.name">{{
+              file.name
+            }}</span>
+            <span v-if="file.size != null" :class="ns.e('item-size')">{{
+              formatSize(file.size)
+            }}</span>
+            <span :class="[ns.e('item-status'), ns.is(file.status, true)]">
+              {{
+                file.status === 'uploading'
+                  ? `${file.percentage ?? 0}%`
+                  : file.status === 'success'
+                    ? '完成'
+                    : file.status === 'fail'
+                      ? '失败'
+                      : '待上传'
+              }}
+            </span>
+          </div>
+          <button
+            type="button"
+            :class="ns.e('item-remove')"
+            :disabled="isDisabled"
+            aria-label="移除文件"
+            @click="remove(file)"
+          >
+            ×
+          </button>
+        </li>
+      </ul>
+    </template>
   </div>
 </template>

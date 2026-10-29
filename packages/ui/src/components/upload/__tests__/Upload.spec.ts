@@ -171,4 +171,36 @@ describe('DanUpload', () => {
     })
     expect(httpRequest).toHaveBeenCalledTimes(2)
   })
+
+  it('renders picture-card list with image preview', async () => {
+    const createObjectURL = vi
+      .spyOn(URL, 'createObjectURL')
+      .mockReturnValue('blob:mock-pic')
+    const fileList = ref<UploadFile[]>([])
+    const Comp = defineComponent({
+      components: { DanUpload },
+      setup: () => ({ fileList }),
+      template: `<DanUpload
+        v-model:file-list="fileList"
+        list-type="picture-card"
+        :auto-upload="false"
+      />`,
+    })
+    const wrapper = mount(Comp)
+    expect(wrapper.find('.dan-upload__card-add').exists()).toBe(true)
+    const input = wrapper.get('input[type="file"]')
+    const image = new File([new Uint8Array(4)], 'pic.png', {
+      type: 'image/png',
+    })
+    Object.defineProperty(input.element, 'files', {
+      value: [image],
+      configurable: true,
+    })
+    await input.trigger('change')
+    await nextTick()
+    expect(createObjectURL).toHaveBeenCalled()
+    expect(fileList.value[0]?.url).toBe('blob:mock-pic')
+    expect(wrapper.find('.dan-upload__card-thumb').exists()).toBe(true)
+    createObjectURL.mockRestore()
+  })
 })

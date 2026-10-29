@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.8.0
+
+- Upload：`listType="picture-card"` 照片墙；图片本地预览 URL
+
 ## 2.7.0
 
 - Empty：`type` 预设（search / network / permission）、`image` URL、插画样式
