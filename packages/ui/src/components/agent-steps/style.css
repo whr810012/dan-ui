@@ -1,0 +1,111 @@
+.dan-agent-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg-elevated, var(--dan-color-bg));
+}
+
+.dan-agent-steps__header {
+  color: var(--dan-color-text);
+  font-size: var(--dan-font-size-sm);
+  font-weight: var(--dan-font-weight-medium);
+}
+
+.dan-agent-steps__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dan-agent-steps__button {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: var(--dan-radius-sm);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+
+.dan-agent-steps__button:hover {
+  background: var(--dan-color-fill);
+}
+
+.dan-agent-steps__index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--dan-color-fill);
+  color: var(--dan-color-text-secondary);
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.dan-agent-steps__item.is-running .dan-agent-steps__index {
+  background: var(--dan-color-primary-light);
+  color: var(--dan-color-primary);
+}
+
+.dan-agent-steps__item.is-done .dan-agent-steps__index {
+  background: var(--dan-color-success-light, var(--dan-color-primary-light));
+  color: var(--dan-color-success, var(--dan-color-primary));
+}
+
+.dan-agent-steps__item.is-error .dan-agent-steps__index {
+  background: var(--dan-color-danger-light, #fee2e2);
+  color: var(--dan-color-danger, #dc2626);
+}
+
+.dan-agent-steps__main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.dan-agent-steps__title {
+  font-size: var(--dan-font-size-sm);
+  color: var(--dan-color-text);
+}
+
+.dan-agent-steps__desc {
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-xs);
+}
+
+.dan-agent-steps__badge {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--dan-color-text-secondary);
+}
+
+.dan-agent-steps__badge--running {
+  color: var(--dan-color-primary);
+}
+
+.dan-agent-steps__badge--done {
+  color: var(--dan-color-success, var(--dan-color-primary));
+}
+
+.dan-agent-steps__badge--error {
+  color: var(--dan-color-danger, #dc2626);
+}
+
+.dan-agent-steps__empty {
+  color: var(--dan-color-text-placeholder);
+  font-size: var(--dan-font-size-sm);
+}

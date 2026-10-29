@@ -136,11 +136,15 @@ const componentsSidebar = collapsible([
     text: 'AI',
     items: [
       { text: '概览', link: '/ai/overview' },
+      { text: '工作台配方', link: '/ai/workspace' },
       { text: 'Chat（对话容器）', link: '/ai/chat' },
+      { text: 'ChatWorkspace（工作台布局）', link: '/ai/chat-workspace' },
       { text: 'ChatMessage（消息）', link: '/ai/chat-message' },
       { text: 'ConversationList（会话列表）', link: '/ai/conversation-list' },
       { text: 'ChatInput（输入）', link: '/ai/chat-input' },
       { text: 'ToolCallCard（工具调用）', link: '/ai/tool-call-card' },
+      { text: 'AgentSteps（Agent 步骤）', link: '/ai/agent-steps' },
+      { text: 'MediaPreview（多模态预览）', link: '/ai/media-preview' },
       { text: 'ArtifactPanel（结果侧栏）', link: '/ai/artifact-panel' },
       { text: 'Markdown（渲染）', link: '/ai/markdown' },
       { text: 'StreamText（流式文本）', link: '/ai/stream-text' },
@@ -153,6 +157,7 @@ const componentsSidebar = collapsible([
       { text: 'Attachment（附件）', link: '/ai/attachment' },
       { text: 'Prompt（提示词）', link: '/ai/prompt' },
       { text: 'PromptLibrary（提示词库）', link: '/ai/prompt-library' },
+      { text: 'PromptTemplate（变量模板）', link: '/ai/prompt-template' },
     ],
   },
   {

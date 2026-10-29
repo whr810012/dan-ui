@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.0
+
+- 新组件：ChatWorkspace、AgentSteps、MediaPreview、PromptTemplate
+- 工具：`patchChatToolPart`（按 `toolCallId` 流式就地更新）；ToolCallCard 支持 `streaming`
+- 文档：AI 工作台整页配方
+
 ## 1.7.0
 
 - Table：`loading` / `#loading` / `#empty`、`multiSort`（Shift 多列排序）、`exportCsv` / `exportData` / `export-csv`

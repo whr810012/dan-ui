@@ -13,15 +13,22 @@ const props = withDefaults(
     status?: 'pending' | 'running' | 'done' | 'error'
     /** 默认是否展开详情 */
     defaultExpanded?: boolean
+    /** 输出仍在流式追加时显示指示 */
+    streaming?: boolean
   }>(),
   {
     status: 'done',
     defaultExpanded: false,
+    streaming: false,
   },
 )
 
 const ns = useNamespace('tool-call-card')
-const expanded = ref(props.defaultExpanded)
+const expanded = ref(
+  props.defaultExpanded ||
+    props.status === 'running' ||
+    props.status === 'error',
+)
 
 const statusLabel = computed(() => {
   const map = {
@@ -76,12 +83,19 @@ const outputText = computed(() =>
         <div :class="ns.e('label')">Input</div>
         <pre :class="ns.e('pre')">{{ inputText }}</pre>
       </div>
-      <div v-if="outputText" :class="ns.e('block')">
-        <div :class="ns.e('label')">Output</div>
-        <pre :class="ns.e('pre')">{{ outputText }}</pre>
+      <div v-if="outputText || streaming" :class="ns.e('block')">
+        <div :class="ns.e('label')">
+          Output
+          <span v-if="streaming" :class="ns.e('streaming')">流式中…</span>
+        </div>
+        <pre :class="ns.e('pre')">{{ outputText }}<span
+          v-if="streaming"
+          :class="ns.e('cursor')"
+          aria-hidden="true"
+        >▍</span></pre>
       </div>
       <div
-        v-if="!inputText && !outputText"
+        v-if="!inputText && !outputText && !streaming"
         :class="ns.e('empty')"
       >
         暂无参数

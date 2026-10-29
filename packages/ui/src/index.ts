@@ -37,6 +37,8 @@ export type {
 export { useFormItem } from './hooks/useFormItem'
 export { validateValue } from './utils/validate'
 export { getByPath, setByPath } from './utils/path'
+export { patchChatToolPart } from './utils/patchChatToolPart'
+export type { PatchChatToolPartInput } from './utils/patchChatToolPart'
 
 export { useLocale, zhCN, en } from './locale'
 export type { LocaleMessages } from './locale'

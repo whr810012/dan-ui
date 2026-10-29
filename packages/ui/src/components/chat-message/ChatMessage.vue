@@ -82,7 +82,14 @@ async function onCopy() {
     <div :class="ns.e('content')">
       <slot :message="message">
         <template v-if="hasParts">
-          <template v-for="(part, index) in message.parts" :key="index">
+          <template
+            v-for="(part, index) in message.parts"
+            :key="
+              part.type === 'tool'
+                ? part.toolCallId || `tool-${index}`
+                : `${part.type}-${index}`
+            "
+          >
             <DanThinking
               v-if="part.type === 'thinking'"
               :content="part.content"
@@ -100,7 +107,13 @@ async function onCopy() {
               :input="part.input"
               :output="part.output"
               :status="part.status || 'done'"
-              :default-expanded="part.status === 'error' || part.status === 'running'"
+              :streaming="
+                streaming &&
+                (part.status === 'running' || part.status === 'pending')
+              "
+              :default-expanded="
+                part.status === 'error' || part.status === 'running'
+              "
             />
           </template>
         </template>

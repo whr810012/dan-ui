@@ -21,11 +21,15 @@ dan-ui 的 AI 组件只负责界面、事件与插槽，不内置任何大模型
   <FakeSse />
 </DemoBlock>
 
+## 完整工作台
+
+需要「会话侧栏 + 对话 + Artifact」整页时，直接看 [AI 工作台配方](/ai/workspace)（1.8）。
+
 ## 接入方式
 
 1. 用 `DanChat` 展示消息列表  
 2. 用 `DanChatInput` 收集输入并触发 `send`  
-3. 业务侧请求 SSE / WebSocket，把增量写入消息 `content`  
+3. 业务侧请求 SSE / WebSocket，把增量写入消息 `content` 或 `parts`（工具用 `patchChatToolPart`）  
 4. 响应 `stop`，并把消息 `status` 设为 `stopped`
 
 ## 消息模型

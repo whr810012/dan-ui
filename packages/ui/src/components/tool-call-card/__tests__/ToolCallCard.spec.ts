@@ -14,9 +14,10 @@ describe('DanToolCallCard', () => {
     })
     expect(wrapper.text()).toContain('search')
     expect(wrapper.text()).toContain('运行中')
-    expect(wrapper.find('.dan-tool-call-card__body').exists()).toBe(false)
-    await wrapper.find('.dan-tool-call-card__header').trigger('click')
+    // running 默认展开
     expect(wrapper.find('.dan-tool-call-card__body').exists()).toBe(true)
     expect(wrapper.text()).toContain('dan-ui')
+    await wrapper.find('.dan-tool-call-card__header').trigger('click')
+    expect(wrapper.find('.dan-tool-call-card__body').exists()).toBe(false)
   })
 })

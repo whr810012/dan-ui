@@ -21,6 +21,8 @@ export type ChatMessagePart =
   | {
       type: 'tool'
       name: string
+      /** 流式就地更新时的稳定 id */
+      toolCallId?: string
       input?: unknown
       output?: unknown
       status?: 'pending' | 'running' | 'done' | 'error'

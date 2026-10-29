@@ -70,9 +70,28 @@
 }
 
 .dan-tool-call-card__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin: 8px 0 4px;
   color: var(--dan-color-text-secondary);
   font-size: var(--dan-font-size-xs);
+}
+
+.dan-tool-call-card__streaming {
+  color: var(--dan-color-primary);
+}
+
+.dan-tool-call-card__cursor {
+  display: inline-block;
+  margin-left: 1px;
+  animation: dan-tool-call-blink 1s steps(1) infinite;
+}
+
+@keyframes dan-tool-call-blink {
+  50% {
+    opacity: 0;
+  }
 }
 
 .dan-tool-call-card__pre {

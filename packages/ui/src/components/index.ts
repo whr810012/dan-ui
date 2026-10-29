@@ -321,11 +321,24 @@ export type { DanTourInstance, TourStep } from './tour'
 export { DanChat } from './chat'
 export type { DanChatInstance } from './chat'
 
+export { DanChatWorkspace } from './chat-workspace'
+export type { DanChatWorkspaceInstance } from './chat-workspace'
+
 export { DanChatMessage } from './chat-message'
 export type { DanChatMessageInstance } from './chat-message'
 
 export { DanToolCallCard } from './tool-call-card'
 export type { DanToolCallCardInstance } from './tool-call-card'
+
+export { DanAgentSteps } from './agent-steps'
+export type {
+  DanAgentStepsInstance,
+  AgentStepItem,
+  AgentStepStatus,
+} from './agent-steps'
+
+export { DanMediaPreview } from './media-preview'
+export type { DanMediaPreviewInstance } from './media-preview'
 
 export { DanArtifactPanel } from './artifact-panel'
 export type { DanArtifactPanelInstance } from './artifact-panel'
@@ -371,6 +384,13 @@ export type { DanAttachmentInstance } from './attachment'
 
 export { DanPrompt } from './prompt'
 export type { DanPromptInstance } from './prompt'
+
+export {
+  DanPromptTemplate,
+  extractPromptVariables,
+  renderPromptTemplate,
+} from './prompt-template'
+export type { DanPromptTemplateInstance } from './prompt-template'
 
 export { DanRichText, DanEditorToolbar, DanEditorBubbleMenu } from './rich-text'
 export type {
