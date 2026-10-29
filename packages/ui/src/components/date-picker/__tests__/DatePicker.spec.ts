@@ -117,4 +117,69 @@ describe('DanDatePicker', () => {
     expect(value.value).toMatch(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/)
     wrapper.unmount()
   })
+
+  it('selects month value as YYYY-MM', async () => {
+    const value = ref<string | null>(null)
+    const Comp = defineComponent({
+      components: { DanDatePicker },
+      setup() {
+        return { value }
+      },
+      template: `<DanDatePicker v-model="value" type="month" />`,
+    })
+    const wrapper = mount(Comp, { attachTo: document.body })
+    await wrapper.get('.dan-date-picker__trigger').trigger('click')
+    await nextTick()
+    const cell = document.querySelector(
+      '.dan-date-picker__month-cell',
+    ) as HTMLButtonElement
+    cell.click()
+    await nextTick()
+    expect(value.value).toMatch(/^\d{4}-\d{2}$/)
+    wrapper.unmount()
+  })
+
+  it('selects year value as YYYY', async () => {
+    const value = ref<string | null>(null)
+    const Comp = defineComponent({
+      components: { DanDatePicker },
+      setup() {
+        return { value }
+      },
+      template: `<DanDatePicker v-model="value" type="year" />`,
+    })
+    const wrapper = mount(Comp, { attachTo: document.body })
+    await wrapper.get('.dan-date-picker__trigger').trigger('click')
+    await nextTick()
+    const cells = Array.from(
+      document.querySelectorAll('.dan-date-picker__month-cell'),
+    ) as HTMLButtonElement[]
+    cells[1].click()
+    await nextTick()
+    expect(value.value).toMatch(/^\d{4}$/)
+    wrapper.unmount()
+  })
+
+  it('selects week as Monday YYYY-MM-DD', async () => {
+    const value = ref<string | null>(null)
+    const Comp = defineComponent({
+      components: { DanDatePicker },
+      setup() {
+        return { value }
+      },
+      template: `<DanDatePicker v-model="value" type="week" />`,
+    })
+    const wrapper = mount(Comp, { attachTo: document.body })
+    await wrapper.get('.dan-date-picker__trigger').trigger('click')
+    await nextTick()
+    const day = document.querySelector(
+      '.dan-date-picker__day:not(.is-other):not(.is-disabled)',
+    ) as HTMLButtonElement
+    day.click()
+    await nextTick()
+    expect(value.value).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    const [y, m, d] = value.value!.split('-').map(Number)
+    expect(new Date(y, m - 1, d).getDay()).toBe(1)
+    wrapper.unmount()
+  })
 })

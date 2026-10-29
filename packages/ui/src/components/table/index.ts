@@ -11,6 +11,7 @@ export type {
   TableFilterOption,
   TableFilters,
   TableRow,
+  TableSortItem,
   TableSortOrder,
   TableSortState,
 } from './types'

@@ -26,6 +26,7 @@ import type {
   TableColumnFilter,
   TableFilters,
   TableRow,
+  TableSortItem,
   TableSortOrder,
   TableSortState,
 } from './types'
@@ -86,6 +87,10 @@ const props = withDefaults(
     }) => Record<string, string>
     /** 行拖拽排序（树表不支持） */
     rowDraggable?: boolean
+    /** 加载中遮罩 */
+    loading?: boolean
+    /** 多列排序（Shift+点击表头追加） */
+    multiSort?: boolean
   }>(),
   {
     data: () => [],
@@ -115,6 +120,8 @@ const props = withDefaults(
     showSummary: false,
     summaryMethod: undefined,
     rowDraggable: false,
+    loading: false,
+    multiSort: false,
   },
 )
 
@@ -123,7 +130,8 @@ const emit = defineEmits<{
   'filter-change': [value: TableFilters]
   'update:visibleColumns': [value: string[]]
   'column-visibility-change': [value: string[]]
-  'sort-change': [value: TableSortState]
+  'sort-change': [value: TableSortState | TableSortItem[]]
+  'export-csv': [csv: string]
   'update:expandRowKeys': [value: Array<string | number>]
   'expand-change': [row: TableRow, expanded: boolean]
   'update:selectedRowKeys': [value: Array<string | number>]
@@ -165,6 +173,7 @@ const innerExpandKeys = ref<Array<string | number>>([])
 const innerSelectedKeys = ref<Array<string | number>>([])
 const innerContentExpandKeys = ref<Array<string | number>>([])
 const sortState = ref<TableSortState>({ prop: null, order: null })
+const multiSortState = ref<TableSortItem[]>([])
 const scrollTop = ref(0)
 const columnOrder = ref<string[]>([])
 const editingCell = ref<{ key: string | number; prop: string } | null>(null)
@@ -459,9 +468,12 @@ function matchRowFilters(row: TableRow) {
   return true
 }
 
-function compareRows(a: TableRow, b: TableRow) {
-  const { prop, order } = sortState.value
-  if (!prop || !order) return 0
+function compareByProp(
+  a: TableRow,
+  b: TableRow,
+  prop: string,
+  order: 'asc' | 'desc',
+) {
   const av = a[prop]
   const bv = b[prop]
   if (av == null && bv == null) return 0
@@ -473,6 +485,19 @@ function compareRows(a: TableRow, b: TableRow) {
   const as = String(av)
   const bs = String(bv)
   return order === 'asc' ? as.localeCompare(bs) : bs.localeCompare(as)
+}
+
+function compareRows(a: TableRow, b: TableRow) {
+  if (props.multiSort && multiSortState.value.length) {
+    for (const item of multiSortState.value) {
+      const result = compareByProp(a, b, item.prop, item.order)
+      if (result !== 0) return result
+    }
+    return 0
+  }
+  const { prop, order } = sortState.value
+  if (!prop || !order) return 0
+  return compareByProp(a, b, prop, order)
 }
 
 function cellText(row: TableRow, prop: string) {
@@ -657,20 +682,92 @@ function setColumnVisible(prop: string, visible: boolean) {
   emit('column-visibility-change', current)
 }
 
-function toggleSort(col: TableColumn) {
+function toggleSort(col: TableColumn, event?: MouseEvent) {
   if (!col.sortable || !col.prop) return
+  const prop = col.prop
+
+  if (props.multiSort && event?.shiftKey) {
+    const next = [...multiSortState.value]
+    const index = next.findIndex((item) => item.prop === prop)
+    if (index < 0) {
+      next.push({ prop, order: 'asc' })
+    } else if (next[index]!.order === 'asc') {
+      next[index] = { prop, order: 'desc' }
+    } else {
+      next.splice(index, 1)
+    }
+    multiSortState.value = next
+    sortState.value = next[0]
+      ? { prop: next[0].prop, order: next[0].order }
+      : { prop: null, order: null }
+    emit('sort-change', [...next])
+    return
+  }
+
   let order: TableSortOrder = 'asc'
-  if (sortState.value.prop === col.prop) {
+  if (props.multiSort) {
+    const current = multiSortState.value.find((item) => item.prop === prop)
+    if (!current) order = 'asc'
+    else if (current.order === 'asc') order = 'desc'
+    else order = null
+    multiSortState.value = order ? [{ prop, order }] : []
+    sortState.value = { prop: order ? prop : null, order }
+    emit('sort-change', order ? [{ prop, order }] : [])
+    return
+  }
+
+  if (sortState.value.prop === prop) {
     if (sortState.value.order === 'asc') order = 'desc'
     else if (sortState.value.order === 'desc') order = null
     else order = 'asc'
   }
   sortState.value = {
-    prop: order ? col.prop : null,
+    prop: order ? prop : null,
     order,
   }
+  multiSortState.value = order ? [{ prop, order }] : []
   emit('sort-change', { ...sortState.value })
 }
+
+function sortPriority(prop?: string) {
+  if (!prop || !props.multiSort) return 0
+  const index = multiSortState.value.findIndex((item) => item.prop === prop)
+  return index >= 0 ? index + 1 : 0
+}
+
+function sortOrderOf(prop?: string): TableSortOrder {
+  if (!prop) return null
+  if (props.multiSort) {
+    return multiSortState.value.find((item) => item.prop === prop)?.order ?? null
+  }
+  return sortState.value.prop === prop ? sortState.value.order : null
+}
+
+function escapeCsvCell(value: unknown) {
+  const text = value == null ? '' : String(value)
+  if (/[",\n]/.test(text)) return `"${text.replace(/"/g, '""')}"`
+  return text
+}
+
+function exportCsv() {
+  const cols = displayColumns.value.filter((col) => col.prop)
+  const header = cols.map((col) => escapeCsvCell(col.label)).join(',')
+  const lines = displayRows.value.map(({ row }) =>
+    cols.map((col) => escapeCsvCell(row[col.prop!])).join(','),
+  )
+  const csv = [header, ...lines].join('\n')
+  emit('export-csv', csv)
+  return csv
+}
+
+function exportData() {
+  return displayRows.value.map(({ row }) => ({ ...row }))
+}
+
+defineExpose({
+  exportCsv,
+  exportData,
+})
 
 const processedTree = computed(() => {
   let rows = props.data
@@ -679,8 +776,10 @@ const processedTree = computed(() => {
       ? filterTreeRows(rows, props.treeChildren, matchRowFilters)
       : rows.filter((row) => matchRowFilters(row))
   }
-  const { prop, order } = sortState.value
-  if (!prop || !order) return rows
+  const hasSort = props.multiSort
+    ? multiSortState.value.length > 0
+    : Boolean(sortState.value.prop && sortState.value.order)
+  if (!hasSort) return rows
   return props.tree
     ? sortTreeRows(rows, props.treeChildren, compareRows)
     : [...rows].sort(compareRows)
@@ -892,8 +991,12 @@ function colMinWidth(col: TableColumn) {
       ns.is('tree', tree),
       ns.is('virtual', virtual),
       ns.is('fixed', hasFixedColumns),
+      ns.is('loading', loading),
     ]"
   >
+    <div v-if="loading" :class="ns.e('loading')">
+      <slot name="loading">加载中…</slot>
+    </div>
     <div v-if="showSettings" :class="ns.e('toolbar')">
       <DanDropdown trigger="click" :hide-on-click="false" placement="bottom">
         <button type="button" :class="ns.e('settings-btn')">
@@ -1033,15 +1136,25 @@ function colMinWidth(col: TableColumn) {
               <div :class="ns.e('header-inner')">
                 <span
                   :class="ns.e('header-label')"
-                  @click="toggleSort(cell.column)"
+                  @click="toggleSort(cell.column, $event)"
                 >
                   {{ cell.column.label }}
+                  <span
+                    v-if="
+                      multiSort &&
+                      cell.column.sortable &&
+                      sortPriority(cell.column.prop)
+                    "
+                    :class="ns.e('sort-priority')"
+                  >
+                    {{ sortPriority(cell.column.prop) }}
+                  </span>
                   <span
                     v-if="cell.column.sortable && cell.column.prop"
                     :class="[
                       ns.e('sort'),
-                      sortState.prop === cell.column.prop && sortState.order
-                        ? ns.is(sortState.order)
+                      sortOrderOf(cell.column.prop)
+                        ? ns.is(sortOrderOf(cell.column.prop)!)
                         : '',
                     ]"
                   >
@@ -1397,7 +1510,9 @@ function colMinWidth(col: TableColumn) {
       </table>
 
       <div v-if="isEmpty" :class="ns.e('empty')">
-        <DanEmpty :description="resolvedEmptyText" :image-size="72" />
+        <slot name="empty">
+          <DanEmpty :description="resolvedEmptyText" :image-size="72" />
+        </slot>
       </div>
     </div>
   </div>

@@ -98,6 +98,15 @@ const field: FormItemContext = reactive({
   resetField,
   clearValidate,
   $el: null as HTMLElement | null,
+  validateState: '',
+  validateMessage: '',
+})
+
+watch(validateState, (value) => {
+  field.validateState = value
+})
+watch(validateMessage, (value) => {
+  field.validateMessage = value
 })
 
 watch(

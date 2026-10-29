@@ -176,6 +176,35 @@
   gap: 2px;
 }
 
+.dan-date-picker__months {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.dan-date-picker__month-cell {
+  height: 40px;
+  border: 0;
+  border-radius: var(--dan-radius-sm);
+  background: transparent;
+  color: var(--dan-color-text);
+  cursor: pointer;
+}
+
+.dan-date-picker__month-cell:hover:not(.is-selected) {
+  background: var(--dan-color-fill);
+}
+
+.dan-date-picker__month-cell.is-selected {
+  background: var(--dan-color-primary);
+  color: var(--dan-color-text-on-color);
+}
+
+.dan-date-picker__month-cell.is-other {
+  color: var(--dan-color-text-placeholder);
+}
+
 .dan-date-picker__weekdays {
   margin-bottom: 4px;
   color: var(--dan-color-text-secondary);

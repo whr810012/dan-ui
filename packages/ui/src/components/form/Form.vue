@@ -3,6 +3,7 @@ import { toRef } from 'vue'
 import {
   provideForm,
   type FormContext,
+  type FormFieldState,
   type FormItemContext,
 } from '../../hooks/useFormContext'
 import { useNamespace } from '../../hooks/useNamespace'
@@ -56,7 +57,19 @@ function scrollToField(prop: string) {
   field?.$el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
 
-async function validate() {
+function getFieldsState(): FormFieldState[] {
+  return fields.map((field) => ({
+    prop: field.prop,
+    valid: field.validateState !== 'error',
+    message: field.validateMessage || '',
+    validateState: field.validateState || '',
+  }))
+}
+
+async function validate(): Promise<{
+  valid: boolean
+  fields: FormFieldState[]
+}> {
   const results = await Promise.all(
     fields.map(async (field) => ({
       field,
@@ -67,7 +80,11 @@ async function validate() {
   if (firstError && props.scrollToError && firstError.field.prop) {
     scrollToField(firstError.field.prop)
   }
-  return results.every((item) => item.ok)
+  const fieldStates = getFieldsState()
+  return {
+    valid: results.every((item) => item.ok),
+    fields: fieldStates,
+  }
 }
 
 async function validateField(prop: string) {
@@ -96,6 +113,7 @@ defineExpose({
   resetFields,
   clearValidate,
   scrollToField,
+  getFieldsState,
 })
 </script>
 

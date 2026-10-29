@@ -1,7 +1,35 @@
 .dan-table {
+  position: relative;
   width: 100%;
   font-size: var(--dan-font-size-md);
   color: var(--dan-color-text);
+}
+
+.dan-table__loading {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--dan-color-bg) 72%, transparent);
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+  pointer-events: all;
+}
+
+.dan-table__sort-priority {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 14px;
+  height: 14px;
+  margin-left: 4px;
+  border-radius: var(--dan-radius-full);
+  background: var(--dan-color-primary);
+  color: var(--dan-color-text-on-color, #fff);
+  font-size: 10px;
+  line-height: 1;
 }
 
 .dan-table__toolbar {

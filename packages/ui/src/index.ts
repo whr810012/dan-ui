@@ -29,6 +29,7 @@ export {
 } from './hooks/useFormContext'
 export type {
   FormContext,
+  FormFieldState,
   FormItemContext,
   FormRule,
   FormRules,

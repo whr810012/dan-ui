@@ -19,6 +19,15 @@ export interface FormItemContext {
   clearValidate: () => void
   /** FormItem 根节点，用于滚到字段 */
   $el?: HTMLElement | null
+  validateState?: string
+  validateMessage?: string
+}
+
+export interface FormFieldState {
+  prop?: string
+  valid: boolean
+  message: string
+  validateState: string
 }
 
 export type { FormRule, FormRules }

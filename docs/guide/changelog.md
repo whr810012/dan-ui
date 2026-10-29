@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.7.0
+
+- Table：`loading` / `#loading` / `#empty`、`multiSort`（Shift 多列排序）、`exportCsv` / `exportData` / `export-csv`
+- Form：`validate` 返回 `{ valid, fields }`，新增 `getFieldsState`；新组件 FormList（动态数组字段）
+- DatePicker：`type="month" | "year" | "week"`
+
 ## 1.6.0
 
 - 新组件：Typography（Text / Title / Paragraph）、CheckTag、QRCode、Countdown、InfiniteList、CascaderPanel

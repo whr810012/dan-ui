@@ -20,7 +20,14 @@ defineOptions({ name: 'DanDatePicker' })
 
 type DateModel = string | null
 type RangeModel = [string, string] | null
-type PickerType = 'date' | 'daterange' | 'datetime' | 'datetimerange'
+type PickerType =
+  | 'date'
+  | 'daterange'
+  | 'datetime'
+  | 'datetimerange'
+  | 'month'
+  | 'year'
+  | 'week'
 
 export interface DatePickerShortcut {
   text: string
@@ -78,6 +85,21 @@ const isRange = computed(
 const isDateTime = computed(
   () => props.type === 'datetime' || props.type === 'datetimerange',
 )
+const isMonth = computed(() => props.type === 'month')
+const isYear = computed(() => props.type === 'year')
+const isWeek = computed(() => props.type === 'week')
+
+function formatMonth(date: Date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+}
+
+function startOfWeek(date: Date) {
+  const d = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+  const day = d.getDay()
+  const diff = day === 0 ? -6 : 1 - day
+  d.setDate(d.getDate() + diff)
+  return d
+}
 
 const draftDate = ref<Date | null>(null)
 const draftEndDate = ref<Date | null>(null)
@@ -97,6 +119,42 @@ const initialView = (() => {
 })()
 
 const viewDate = ref(initialView ?? new Date())
+
+const monthCells = computed(() =>
+  Array.from({ length: 12 }, (_, i) => ({
+    month: i,
+    label: `${i + 1}月`,
+  })),
+)
+
+const yearCells = computed(() => {
+  const base = Math.floor(viewDate.value.getFullYear() / 10) * 10
+  return Array.from({ length: 12 }, (_, i) => base - 1 + i)
+})
+
+function prevYear() {
+  viewDate.value = new Date(
+    viewDate.value.getFullYear() - 1,
+    viewDate.value.getMonth(),
+    1,
+  )
+}
+
+function nextYear() {
+  viewDate.value = new Date(
+    viewDate.value.getFullYear() + 1,
+    viewDate.value.getMonth(),
+    1,
+  )
+}
+
+function prevDecade() {
+  viewDate.value = new Date(viewDate.value.getFullYear() - 10, 0, 1)
+}
+
+function nextDecade() {
+  viewDate.value = new Date(viewDate.value.getFullYear() + 10, 0, 1)
+}
 
 const resolvedSize = computed(() => props.size ?? config.size.value)
 const isDisabled = computed(
@@ -251,10 +309,21 @@ function dayClass(cell: {
   ]
   if (
     !isRange.value &&
+    !isWeek.value &&
     selectedDate.value &&
     isSameDay(cell.date, selectedDate.value)
   ) {
     classes.push(ns.is('selected', true))
+  }
+  if (isWeek.value && selectedDate.value) {
+    const weekStart = startOfWeek(selectedDate.value)
+    const weekEnd = new Date(weekStart)
+    weekEnd.setDate(weekStart.getDate() + 6)
+    if (isSameDay(cell.date, weekStart) || isSameDay(cell.date, weekEnd)) {
+      classes.push(ns.is('selected', true))
+    } else if (isInRange(cell.date, weekStart, weekEnd)) {
+      classes.push(ns.is('in-range', true))
+    }
   }
   if (isRange.value) {
     const start = rangePicking.value ?? rangeValue.value.start
@@ -279,8 +348,30 @@ function dayClass(cell: {
   return classes
 }
 
+function selectMonth(monthIndex: number) {
+  if (isDisabled.value) return
+  const date = new Date(viewDate.value.getFullYear(), monthIndex, 1)
+  if (isDateDisabled(date)) return
+  setValue(formatMonth(date))
+  closePanel()
+}
+
+function selectYear(year: number) {
+  if (isDisabled.value) return
+  const date = new Date(year, 0, 1)
+  if (isDateDisabled(date)) return
+  setValue(String(year))
+  closePanel()
+}
+
 function selectDay(date: Date) {
   if (isDisabled.value || isDateDisabled(date)) return
+
+  if (isWeek.value) {
+    setValue(formatDate(startOfWeek(date)))
+    closePanel()
+    return
+  }
 
   if (isDateTime.value && !isRange.value) {
     draftDate.value = date
@@ -397,6 +488,21 @@ function nextMonth() {
 function selectToday() {
   const today = new Date()
   if (isDateDisabled(today)) return
+  if (isMonth.value) {
+    setValue(formatMonth(today))
+    closePanel()
+    return
+  }
+  if (isYear.value) {
+    setValue(String(today.getFullYear()))
+    closePanel()
+    return
+  }
+  if (isWeek.value) {
+    setValue(formatDate(startOfWeek(today)))
+    closePanel()
+    return
+  }
   if (isDateTime.value) {
     draftDate.value = today
     draftHour.value = today.getHours()
@@ -504,36 +610,86 @@ onBeforeUnmount(() => {
             <button
               type="button"
               :class="ns.e('nav')"
-              aria-label="上个月"
-              @click="prevMonth"
+              aria-label="上一步"
+              @click="
+                isYear ? prevDecade() : isMonth ? prevYear() : prevMonth()
+              "
             >
               ‹
             </button>
-            <span :class="ns.e('month')">{{ monthLabel }}</span>
+            <span :class="ns.e('month')">
+              {{
+                isYear
+                  ? `${yearCells[1]} - ${yearCells[10]}`
+                  : isMonth
+                    ? String(viewDate.getFullYear())
+                    : monthLabel
+              }}
+            </span>
             <button
               type="button"
               :class="ns.e('nav')"
-              aria-label="下个月"
-              @click="nextMonth"
+              aria-label="下一步"
+              @click="
+                isYear ? nextDecade() : isMonth ? nextYear() : nextMonth()
+              "
             >
               ›
             </button>
           </div>
-          <div :class="ns.e('weekdays')">
-            <span v-for="label in WEEK_LABELS" :key="label">{{ label }}</span>
-          </div>
-          <div :class="ns.e('days')">
+
+          <div v-if="isYear" :class="ns.e('months')">
             <button
-              v-for="cell in cells"
-              :key="formatDate(cell.date)"
+              v-for="year in yearCells"
+              :key="year"
               type="button"
-              :class="dayClass(cell)"
-              :disabled="isDateDisabled(cell.date)"
-              @click="selectDay(cell.date)"
+              :class="[
+                ns.e('month-cell'),
+                ns.is('selected', modelValue === String(year)),
+                ns.is('other', year === yearCells[0] || year === yearCells[11]),
+              ]"
+              @click="selectYear(year)"
+            >
+              {{ year }}
+            </button>
+          </div>
+
+          <div v-else-if="isMonth" :class="ns.e('months')">
+            <button
+              v-for="cell in monthCells"
+              :key="cell.month"
+              type="button"
+              :class="[
+                ns.e('month-cell'),
+                ns.is(
+                  'selected',
+                  modelValue ===
+                    formatMonth(new Date(viewDate.getFullYear(), cell.month, 1)),
+                ),
+              ]"
+              @click="selectMonth(cell.month)"
             >
               {{ cell.label }}
             </button>
           </div>
+
+          <template v-else>
+            <div :class="ns.e('weekdays')">
+              <span v-for="label in WEEK_LABELS" :key="label">{{ label }}</span>
+            </div>
+            <div :class="ns.e('days')">
+              <button
+                v-for="cell in cells"
+                :key="formatDate(cell.date)"
+                type="button"
+                :class="dayClass(cell)"
+                :disabled="isDateDisabled(cell.date)"
+                @click="selectDay(cell.date)"
+              >
+                {{ cell.label }}
+              </button>
+            </div>
+          </template>
 
           <div v-if="isDateTime" :class="ns.e('time')">
             <div :class="ns.e('time-block')">
@@ -598,12 +754,12 @@ onBeforeUnmount(() => {
 
           <div :class="ns.e('footer')">
             <button
-              v-if="!isRange || isDateTime"
+              v-if="!isRange || isDateTime || isMonth || isYear || isWeek"
               type="button"
               :class="ns.e('today')"
               @click="selectToday"
             >
-              今天
+              {{ isMonth ? '本月' : isYear ? '今年' : isWeek ? '本周' : '今天' }}
             </button>
             <span v-if="isRange && !isDateTime" :class="ns.e('hint')">
               {{ rangePicking ? '请选择结束日期' : '请选择开始日期' }}

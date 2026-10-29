@@ -100,6 +100,9 @@ export type { DanSelectInstance, SelectOption } from './select'
 export { DanForm, DanFormItem } from './form'
 export type { DanFormInstance, DanFormItemInstance } from './form'
 
+export { DanFormList } from './form-list'
+export type { DanFormListInstance } from './form-list'
+
 export { DanSpace } from './space'
 export type { DanSpaceInstance } from './space'
 
@@ -212,6 +215,7 @@ export type {
   TableFilterOption,
   TableFilters,
   TableRow,
+  TableSortItem,
   TableSortOrder,
   TableSortState,
 } from './table'

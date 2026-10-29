@@ -46,3 +46,9 @@ export interface TableSortState {
   prop: string | null
   order: TableSortOrder
 }
+
+/** 多列排序项（prop 必填） */
+export interface TableSortItem {
+  prop: string
+  order: 'asc' | 'desc'
+}

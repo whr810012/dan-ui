@@ -29,13 +29,14 @@ describe('DanForm', () => {
     const wrapper = mount(Comp)
     const formRef = (wrapper.vm as any).formRef
     const valid = await formRef.validate()
-    expect(valid).toBe(false)
+    expect(valid.valid).toBe(false)
+    expect(valid.fields[0]?.message).toContain('请输入姓名')
     await nextTick()
     expect(wrapper.text()).toContain('请输入姓名')
 
     ;(wrapper.vm as any).model.name = 'Ada'
     const ok = await formRef.validate()
-    expect(ok).toBe(true)
+    expect(ok.valid).toBe(true)
   })
 
   it('supports nested field path', async () => {
@@ -63,9 +64,9 @@ describe('DanForm', () => {
 
     const wrapper = mount(Comp)
     const formRef = (wrapper.vm as any).formRef
-    expect(await formRef.validate()).toBe(false)
+    expect((await formRef.validate()).valid).toBe(false)
     ;(wrapper.vm as any).model.user.email = 'a@b.com'
-    expect(await formRef.validate()).toBe(true)
+    expect((await formRef.validate()).valid).toBe(true)
   })
 
   it('resetFields restores initial values', async () => {

@@ -14,6 +14,7 @@ import SelectionDemo from './demos/table/selection.vue'
 import ExpandableDemo from './demos/table/expandable.vue'
 import SummaryDemo from './demos/table/summary.vue'
 import ResizeDragDemo from './demos/table/resize-drag.vue'
+import LoadingExportDemo from './demos/table/loading-export.vue'
 import basicSrc from './demos/table/basic.vue?raw'
 import multiHeaderSrc from './demos/table/multi-header.vue?raw'
 import treeSrc from './demos/table/tree.vue?raw'
@@ -23,6 +24,7 @@ import selectionSrc from './demos/table/selection.vue?raw'
 import expandableSrc from './demos/table/expandable.vue?raw'
 import summarySrc from './demos/table/summary.vue?raw'
 import resizeDragSrc from './demos/table/resize-drag.vue?raw'
+import loadingExportSrc from './demos/table/loading-export.vue?raw'
 </script>
 
 # Table 表格
@@ -101,6 +103,14 @@ import resizeDragSrc from './demos/table/resize-drag.vue?raw'
   <ResizeDragDemo />
 </DemoBlock>
 
+## 加载、多列排序与导出
+
+`loading` 遮罩；`multi-sort` 下按住 Shift 点表头叠加排序；实例方法 `exportCsv` / `exportData`，并触发 `export-csv`。
+
+<DemoBlock :source="loadingExportSrc">
+  <LoadingExportDemo />
+</DemoBlock>
+
 ## Props
 
 | 属性 | 说明 | 类型 | 默认值 |
@@ -132,6 +142,8 @@ import resizeDragSrc from './demos/table/resize-drag.vue?raw'
 | showSummary | 合计行 | `boolean` | `false` |
 | summaryMethod | 自定义合计 | `( { columns, data } ) => Record<string, string>` | — |
 | rowDraggable | 行拖拽排序（树表无效） | `boolean` | `false` |
+| loading | 加载遮罩 | `boolean` | `false` |
+| multiSort | 多列排序（Shift+点击叠加） | `boolean` | `false` |
 
 ## TableColumn
 
@@ -155,7 +167,8 @@ import resizeDragSrc from './demos/table/resize-drag.vue?raw'
 |------|------|
 | update:filters / filter-change | 筛选变化 |
 | update:visibleColumns / column-visibility-change | 列显隐变化 |
-| sort-change | `{ prop, order }` |
+| sort-change | 单列 `{ prop, order }`；多列时为 `TableSortItem[]` |
+| export-csv | `exportCsv()` 时抛出 CSV 字符串 |
 | update:expandRowKeys / expand-change | 树节点展开变化 |
 | update:selectedRowKeys / selection-change | 多选变化；`selection-change` 参数 `(keys, rows)` |
 | update:expandedRowKeys / expandable-change | 内容展开行变化 |
@@ -164,9 +177,18 @@ import resizeDragSrc from './demos/table/resize-drag.vue?raw'
 | column-resize-end | 列宽变化 `{ prop, width }` |
 | row-drag-end | 行序变化 `{ from, to, keys }` |
 
+## Expose
+
+| 方法 | 说明 |
+|------|------|
+| exportCsv | 导出当前可见列为 CSV，并触发 `export-csv` |
+| exportData | 返回当前展示行数据浅拷贝 |
+
 ## Slots
 
 | 插槽 | 说明 |
 |------|------|
 | `[prop]` | 自定义单元格，参数 `{ row, column, index }` |
 | expand | 内容展开区，参数 `{ row, index }`（需 `expandable`） |
+| loading | 自定义加载层内容 |
+| empty | 无数据时自定义空态 |

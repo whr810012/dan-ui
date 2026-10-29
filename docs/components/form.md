@@ -8,9 +8,11 @@ import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/form/basic.vue'
 import Controls from './demos/form/controls.vue'
 import LabelTop from './demos/form/label-top.vue'
+import FormListDemo from './demos/form/form-list.vue'
 import basicSrc from './demos/form/basic.vue?raw'
 import controlsSrc from './demos/form/controls.vue?raw'
 import labelTopSrc from './demos/form/label-top.vue?raw'
+import formListSrc from './demos/form/form-list.vue?raw'
 </script>
 
 # Form 表单
@@ -37,6 +39,14 @@ import labelTopSrc from './demos/form/label-top.vue?raw'
 
 <DemoBlock :source="labelTopSrc">
   <LabelTop />
+</DemoBlock>
+
+## 动态列表 FormList
+
+在 Form 内用 `DanFormList` 管理数组字段；`prop` 指向数组路径，插槽提供 `row` / `index` / `remove`。
+
+<DemoBlock :source="formListSrc">
+  <FormListDemo />
 </DemoBlock>
 
 ## API
@@ -71,8 +81,9 @@ import labelTopSrc from './demos/form/label-top.vue?raw'
 
 | 方法 | 说明 | 签名 |
 |------|------|------|
-| validate | 校验全部已注册字段 | `() => Promise<boolean>` |
+| validate | 校验全部已注册字段 | `() => Promise<{ valid: boolean; fields: FormFieldState[] }>` |
 | validateField | 校验单个字段 | `(prop: string) => Promise<boolean>` |
+| getFieldsState | 当前各字段校验快照 | `() => FormFieldState[]` |
 | resetFields | 恢复各字段初始值并清空校验 | `() => void` |
 | clearValidate | 清空校验态；可传字段名或字段名数组 | `(props?: string \| string[]) => void` |
 | scrollToField | 滚到指定字段 FormItem | `(prop: string) => void` |
@@ -105,7 +116,22 @@ import labelTopSrc from './demos/form/label-top.vue?raw'
 - 子控件触发 `change` / `blur` 时按 rule.trigger 过滤后校验。
 - 校验失败时在控件下方显示首条错误信息。
 
+### FormList Props
+
+| 属性 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| prop | 对应 `model` 上的数组路径 | `string` | — |
+| addText | 添加按钮文案 | `string` | `'添加一项'` |
+| createItem | 新增行工厂函数 | `() => Record<string, unknown>` | `() => ({})` |
+
+### FormList Slots
+
+| 插槽 | 说明 |
+|------|------|
+| default | `{ row, index, remove }` |
+
 ### 注意事项
 
 - `model` 请使用 `reactive` / `ref` 对象，确保双向绑定生效。
 - 嵌套路径如 `profile.email` 要求 `model.profile` 事先存在。
+- `Form.validate()` 自 1.7 起返回 `{ valid, fields }`（破坏性变更）。

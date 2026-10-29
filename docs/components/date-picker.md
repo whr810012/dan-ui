@@ -10,11 +10,13 @@ import Shortcuts from './demos/date-picker/shortcuts.vue'
 import shortcutsSrc from './demos/date-picker/shortcuts.vue?raw'
 import DateTime from './demos/date-picker/datetime.vue'
 import datetimeSrc from './demos/date-picker/datetime.vue?raw'
+import Panels from './demos/date-picker/panels.vue'
+import panelsSrc from './demos/date-picker/panels.vue?raw'
 </script>
 
 # DatePicker 日期选择器
 
-选择单日、范围、日期时间；值约定为 `YYYY-MM-DD` 或 `YYYY-MM-DD HH:mm`。
+选择单日、范围、日期时间、月 / 年 / 周；值约定为 `YYYY-MM-DD`、`YYYY-MM-DD HH:mm`、`YYYY-MM`、`YYYY` 或周一起始日。
 
 ## 基础用法
 
@@ -52,12 +54,20 @@ import datetimeSrc from './demos/date-picker/datetime.vue?raw'
   <DateTime />
 </DemoBlock>
 
+## 月 / 年 / 周
+
+`month` 值为 `YYYY-MM`，`year` 为 `YYYY`，`week` 为该周周一的 `YYYY-MM-DD`。
+
+<DemoBlock :source="panelsSrc">
+  <Panels />
+</DemoBlock>
+
 ## DatePicker Props
 
 | 属性 | 说明 | 类型 | 默认值 |
 |------|------|------|--------|
 | modelValue / v-model | 单日 `string`，范围 `[string, string]` | `string \| [string, string] \| null` | `null` |
-| type | `date` / `daterange` / `datetime` / `datetimerange` | `string` | `'date'` |
+| type | `date` / `daterange` / `datetime` / `datetimerange` / `month` / `year` / `week` | `string` | `'date'` |
 | size | 尺寸 | `'small' \| 'default' \| 'large'` | 继承 ConfigProvider |
 | disabled | 禁用 | `boolean` | `false` |
 | clearable | 可清空 | `boolean` | `false` |

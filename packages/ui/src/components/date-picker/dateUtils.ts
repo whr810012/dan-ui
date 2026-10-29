@@ -85,9 +85,34 @@ export function parseDateTime(value?: string | null): Date | null {
   return date
 }
 
-/** Accepts YYYY-MM-DD or YYYY-MM-DD HH:mm */
+export function parseMonth(value?: string | null): Date | null {
+  if (!value) return null
+  const matched = /^(\d{4})-(\d{2})$/.exec(value.trim())
+  if (!matched) return null
+  const year = Number(matched[1])
+  const month = Number(matched[2])
+  if (month < 1 || month > 12) return null
+  const date = new Date(year, month - 1, 1)
+  if (date.getFullYear() !== year || date.getMonth() !== month - 1) return null
+  return date
+}
+
+export function parseYear(value?: string | null): Date | null {
+  if (!value) return null
+  const matched = /^(\d{4})$/.exec(value.trim())
+  if (!matched) return null
+  const year = Number(matched[1])
+  return new Date(year, 0, 1)
+}
+
+/** Accepts YYYY / YYYY-MM / YYYY-MM-DD / YYYY-MM-DD HH:mm */
 export function parseDateLike(value?: string | null): Date | null {
-  return parseDateTime(value) ?? parseDate(value)
+  return (
+    parseDateTime(value) ??
+    parseDate(value) ??
+    parseMonth(value) ??
+    parseYear(value)
+  )
 }
 
 export interface CalendarCell {
