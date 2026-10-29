@@ -1,0 +1,50 @@
+.dan-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--dan-color-text);
+  font-size: inherit;
+  line-height: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-link.is-underline {
+  text-decoration: underline;
+}
+
+.dan-link.is-underline-hover:hover {
+  text-decoration: underline;
+}
+
+.dan-link--default:hover {
+  color: var(--dan-color-primary);
+}
+
+.dan-link--primary {
+  color: var(--dan-color-primary);
+}
+
+.dan-link--success {
+  color: var(--dan-color-success);
+}
+
+.dan-link--warning {
+  color: var(--dan-color-warning);
+}
+
+.dan-link--danger {
+  color: var(--dan-color-danger);
+}
+
+.dan-link--info {
+  color: var(--dan-color-info);
+}
+
+.dan-link.is-disabled {
+  color: var(--dan-color-text-disabled);
+  cursor: not-allowed;
+  text-decoration: none;
+  pointer-events: none;
+}

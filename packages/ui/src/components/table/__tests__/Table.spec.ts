@@ -172,6 +172,60 @@ describe('DanTable', () => {
     expect(wrapper.find('tfoot').text()).toContain('15')
   })
 
+  it('emits column-resize-end when dragging header resizer', async () => {
+    const wrapper = mount(DanTable, {
+      props: {
+        columns: [
+          { prop: 'name', label: '姓名', width: 120 },
+          { prop: 'age', label: '年龄', width: 80 },
+        ],
+        data,
+        border: true,
+      },
+    })
+    const resizer = wrapper.find('.dan-table__column-resizer')
+    expect(resizer.exists()).toBe(true)
+    await resizer.trigger('mousedown', { clientX: 100 })
+    window.dispatchEvent(new MouseEvent('mousemove', { clientX: 140 }))
+    window.dispatchEvent(new MouseEvent('mouseup'))
+    await nextTick()
+    const payload = wrapper.emitted('column-resize-end')?.[0]?.[0] as {
+      prop: string
+      width: number
+    }
+    expect(payload.prop).toBe('name')
+    expect(payload.width).toBe(160)
+  })
+
+  it('emits row-drag-end with reordered keys', async () => {
+    const wrapper = mount(DanTable, {
+      props: {
+        columns: [{ prop: 'name', label: '姓名' }],
+        data,
+        rowDraggable: true,
+      },
+    })
+    const handles = wrapper.findAll('.dan-table__row-drag-handle')
+    expect(handles).toHaveLength(3)
+    await handles[0]!.trigger('dragstart', {
+      dataTransfer: { setData: () => undefined, effectAllowed: 'move' },
+    })
+    const rows = wrapper
+      .findAll('tbody tr')
+      .filter((row) => !row.classes().includes('dan-table__virtual-pad'))
+    await rows[2]!.trigger('drop', {
+      dataTransfer: { getData: () => '1' },
+    })
+    const payload = wrapper.emitted('row-drag-end')?.[0]?.[0] as {
+      from: number
+      to: number
+      keys: Array<string | number>
+    }
+    expect(payload.from).toBe(0)
+    expect(payload.to).toBe(2)
+    expect(payload.keys.map(String)).toEqual(['2', '3', '1'])
+  })
+
   it('virtually renders a window of rows', async () => {
     const many = Array.from({ length: 200 }, (_, i) => ({
       id: i + 1,

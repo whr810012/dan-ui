@@ -92,4 +92,33 @@ describe('DanForm', () => {
     ;(wrapper.vm as any).formRef.resetFields()
     expect((wrapper.vm as any).model.title).toBe('init')
   })
+
+  it('scrollToField scrolls the form item into view', async () => {
+    const Comp = defineComponent({
+      components: { DanForm, DanFormItem, DanInput },
+      setup(_, { expose }) {
+        const formRef = ref<InstanceType<typeof DanForm>>()
+        const model = reactive({ name: '' })
+        expose({ formRef })
+        return { formRef, model }
+      },
+      template: `
+        <DanForm ref="formRef" :model="model" scroll-to-error>
+          <DanFormItem label="姓名" prop="name">
+            <DanInput v-model="model.name" />
+          </DanFormItem>
+        </DanForm>
+      `,
+    })
+    const wrapper = mount(Comp, { attachTo: document.body })
+    await nextTick()
+    const item = wrapper.find('.dan-form-item').element as HTMLElement
+    let called = false
+    item.scrollIntoView = () => {
+      called = true
+    }
+    ;(wrapper.vm as any).formRef.scrollToField('name')
+    expect(called).toBe(true)
+    wrapper.unmount()
+  })
 })

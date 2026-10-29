@@ -1,0 +1,94 @@
+.dan-tool-call-card {
+  margin: 8px 0;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg-muted);
+  overflow: hidden;
+}
+
+.dan-tool-call-card.is-error {
+  border-color: var(--dan-color-danger);
+}
+
+.dan-tool-call-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin: 0;
+  padding: 8px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--dan-color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dan-tool-call-card__name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 600;
+}
+
+.dan-tool-call-card__badge {
+  flex: 0 0 auto;
+  padding: 2px 8px;
+  border-radius: var(--dan-radius-full);
+  background: var(--dan-color-fill);
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-xs);
+}
+
+.dan-tool-call-card__badge--running {
+  background: var(--dan-color-primary-light);
+  color: var(--dan-color-primary);
+}
+
+.dan-tool-call-card__badge--done {
+  background: var(--dan-color-success-light);
+  color: var(--dan-color-success);
+}
+
+.dan-tool-call-card__badge--error {
+  background: var(--dan-color-danger-light);
+  color: var(--dan-color-danger);
+}
+
+.dan-tool-call-card__chevron {
+  color: var(--dan-color-text-secondary);
+  font-size: 12px;
+}
+
+.dan-tool-call-card__body {
+  padding: 0 12px 12px;
+  border-top: 1px solid var(--dan-color-border-light);
+}
+
+.dan-tool-call-card__block + .dan-tool-call-card__block {
+  margin-top: 8px;
+}
+
+.dan-tool-call-card__label {
+  margin: 8px 0 4px;
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-xs);
+}
+
+.dan-tool-call-card__pre {
+  margin: 0;
+  padding: 8px;
+  border-radius: var(--dan-radius-sm);
+  background: var(--dan-color-bg);
+  color: var(--dan-color-text);
+  font-family: var(--dan-font-family-mono, ui-monospace, monospace);
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.dan-tool-call-card__empty {
+  padding-top: 8px;
+  color: var(--dan-color-text-placeholder);
+  font-size: var(--dan-font-size-sm);
+}

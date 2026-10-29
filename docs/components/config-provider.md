@@ -35,6 +35,7 @@ import sizeSrc from './demos/config-provider/size.vue?raw'
 | size | 向下提供的默认控件尺寸 | `'small' \| 'default' \| 'large'` | `'default'` | 否 |
 | zIndex | 浮层类组件起始层级（预留给 Dialog 等） | `number` | `2000` | 否 |
 | namespace | CSS / BEM 命名空间前缀 | `string` | `'dan'` | 否 |
+| locale | 轻量文案包（`zhCN` / `en`，不绑 vue-i18n） | `LocaleMessages` | `zhCN` | 否 |
 | theme | 局部覆盖 CSS 变量 | `Record<string, string>` | `{}` | 否 |
 
 ### theme 写法

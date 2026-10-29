@@ -51,6 +51,7 @@ import labelTopSrc from './demos/form/label-top.vue?raw'
 | size | 向下提供的默认尺寸 | `'small' \| 'default' \| 'large'` | — | 否 |
 | labelWidth | 统一标签宽度，如 `'88px'` | `string` | — | 否 |
 | labelPosition | 标签布局 | `'left' \| 'right' \| 'top'` | `'right'` | 否 |
+| scrollToError | `validate` 失败时滚到首个错误项 | `boolean` | `false` | 否 |
 
 ### FormRules / FormRule
 
@@ -74,6 +75,7 @@ import labelTopSrc from './demos/form/label-top.vue?raw'
 | validateField | 校验单个字段 | `(prop: string) => Promise<boolean>` |
 | resetFields | 恢复各字段初始值并清空校验 | `() => void` |
 | clearValidate | 清空校验态；可传字段名或字段名数组 | `(props?: string \| string[]) => void` |
+| scrollToField | 滚到指定字段 FormItem | `(prop: string) => void` |
 
 ### Form Slots
 

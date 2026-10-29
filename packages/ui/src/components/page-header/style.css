@@ -1,0 +1,83 @@
+.dan-page-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dan-spacing-sm);
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--dan-spacing-md) 0;
+  color: var(--dan-color-text);
+}
+
+.dan-page-header__breadcrumb {
+  font-size: var(--dan-font-size-sm);
+  color: var(--dan-color-text-secondary);
+}
+
+.dan-page-header__main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--dan-spacing-md);
+}
+
+.dan-page-header__heading {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--dan-spacing-sm);
+  min-width: 0;
+}
+
+.dan-page-header__back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  margin-top: 2px;
+  padding: 0;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+  color: var(--dan-color-text);
+  cursor: pointer;
+  transition:
+    border-color var(--dan-duration-fast) var(--dan-ease),
+    background var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-page-header__back:hover {
+  border-color: var(--dan-color-primary);
+  color: var(--dan-color-primary);
+}
+
+.dan-page-header__titles {
+  min-width: 0;
+}
+
+.dan-page-header__title {
+  margin: 0;
+  font-size: var(--dan-font-size-xl, 20px);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--dan-color-text);
+}
+
+.dan-page-header__subtitle {
+  margin-top: 4px;
+  font-size: var(--dan-font-size-sm);
+  line-height: 1.5;
+  color: var(--dan-color-text-secondary);
+}
+
+.dan-page-header__extra {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--dan-spacing-sm);
+}
+
+.dan-page-header__content {
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-md);
+}

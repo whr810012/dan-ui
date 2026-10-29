@@ -20,11 +20,14 @@ const props = withDefaults(
     size?: DanSize
     labelWidth?: string
     labelPosition?: 'left' | 'right' | 'top'
+    /** validate 失败时自动滚到首个错误项 */
+    scrollToError?: boolean
   }>(),
   {
     rules: () => ({}),
     disabled: false,
     labelPosition: 'right',
+    scrollToError: false,
   },
 )
 
@@ -48,9 +51,23 @@ const context: FormContext = {
 
 provideForm(context)
 
+function scrollToField(prop: string) {
+  const field = fields.find((item) => item.prop === prop)
+  field?.$el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+}
+
 async function validate() {
-  const results = await Promise.all(fields.map((field) => field.validate()))
-  return results.every(Boolean)
+  const results = await Promise.all(
+    fields.map(async (field) => ({
+      field,
+      ok: await field.validate(),
+    })),
+  )
+  const firstError = results.find((item) => !item.ok)
+  if (firstError && props.scrollToError && firstError.field.prop) {
+    scrollToField(firstError.field.prop)
+  }
+  return results.every((item) => item.ok)
 }
 
 async function validateField(prop: string) {
@@ -63,11 +80,11 @@ function resetFields() {
   fields.forEach((field) => field.resetField())
 }
 
-function clearValidate(props?: string | string[]) {
-  const list = !props
+function clearValidate(propsArg?: string | string[]) {
+  const list = !propsArg
     ? fields
     : fields.filter((field) => {
-        const targets = Array.isArray(props) ? props : [props]
+        const targets = Array.isArray(propsArg) ? propsArg : [propsArg]
         return field.prop && targets.includes(field.prop)
       })
   list.forEach((field) => field.clearValidate())
@@ -78,6 +95,7 @@ defineExpose({
   validateField,
   resetFields,
   clearValidate,
+  scrollToField,
 })
 </script>
 

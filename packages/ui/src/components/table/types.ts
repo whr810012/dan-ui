@@ -30,6 +30,8 @@ export interface TableColumn {
   editable?: boolean
   /** 是否允许拖拽调整列序（仅叶子列；固定列默认不可拖） */
   draggable?: boolean
+  /** 是否允许拖拽调整列宽（仅叶子列；默认 true） */
+  resizable?: boolean
   /** 多级表头子列 */
   children?: TableColumn[]
 }

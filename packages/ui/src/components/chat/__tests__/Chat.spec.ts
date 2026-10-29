@@ -43,7 +43,10 @@ describe('DanChat', () => {
 
     const textarea = wrapper.find('textarea')
     await textarea.setValue('帮我写个按钮')
-    await wrapper.find('button').trigger('click')
+    const sendBtn = wrapper
+      .findAll('button')
+      .find((btn) => btn.text() === '发送')
+    await sendBtn!.trigger('click')
     expect(onSend).toHaveBeenCalledWith('帮我写个按钮')
 
     generating.value = true

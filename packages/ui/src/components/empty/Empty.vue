@@ -1,21 +1,27 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useLocale } from '../../locale'
 import { useNamespace } from '../../hooks/useNamespace'
 import './style.css'
 
 defineOptions({ name: 'DanEmpty' })
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     description?: string
     imageSize?: number
   }>(),
   {
-    description: '暂无数据',
+    description: undefined,
     imageSize: 96,
   },
 )
 
 const ns = useNamespace('empty')
+const { t } = useLocale()
+const resolvedDescription = computed(
+  () => props.description ?? t('empty.description'),
+)
 </script>
 
 <template>
@@ -47,7 +53,7 @@ const ns = useNamespace('empty')
       </slot>
     </div>
     <div :class="ns.e('description')">
-      <slot name="description">{{ description }}</slot>
+      <slot name="description">{{ resolvedDescription }}</slot>
     </div>
     <div v-if="$slots.default" :class="ns.e('extra')">
       <slot />

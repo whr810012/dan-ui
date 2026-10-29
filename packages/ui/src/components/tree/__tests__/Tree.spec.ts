@@ -63,4 +63,50 @@ describe('DanTree', () => {
     expect(clicks).toContain(11)
     wrapper.unmount()
   })
+
+  it('emits node-drag-end with reordered data', async () => {
+    const data = ref<Array<{ id: number; label: string; children?: unknown[] }>>([
+      { id: 1, label: 'A', children: [{ id: 11, label: 'A1' }] },
+      { id: 2, label: 'B' },
+    ])
+    const Comp = defineComponent({
+      components: { DanTree },
+      setup: () => ({
+        data,
+        onDragEnd: (payload: { data: typeof data.value }) => {
+          data.value = payload.data as typeof data.value
+        },
+      }),
+      template: `
+        <DanTree
+          :data="data"
+          default-expand-all
+          draggable
+          @node-drag-end="onDragEnd"
+        />
+      `,
+    })
+    const wrapper = mount(Comp)
+    await nextTick()
+    const contents = wrapper.findAll('.dan-tree-node__content')
+    const drag = contents.find((el) => el.attributes('data-tree-id') === '2')!
+    const drop = contents.find((el) => el.attributes('data-tree-id') === '1')!
+    await drag.trigger('dragstart', {
+      dataTransfer: { setData: () => undefined, effectAllowed: 'move' },
+    })
+    Object.defineProperty(drop.element, 'getBoundingClientRect', {
+      value: () => ({ top: 0, height: 40, bottom: 40, left: 0, right: 100, width: 100, x: 0, y: 0, toJSON: () => ({}) }),
+    })
+    await drop.trigger('dragover', { clientY: 20, currentTarget: drop.element })
+    await drop.trigger('drop', {
+      clientY: 20,
+      currentTarget: drop.element,
+      dataTransfer: { getData: () => '2' },
+    })
+    await nextTick()
+    expect(data.value.map((n) => n.id)).toEqual([1])
+    expect(data.value[0]?.children?.map((n) => (n as { id: number }).id)).toEqual([
+      11, 2,
+    ])
+  })
 })

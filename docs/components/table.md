@@ -13,6 +13,7 @@ import FixedDemo from './demos/table/fixed.vue'
 import SelectionDemo from './demos/table/selection.vue'
 import ExpandableDemo from './demos/table/expandable.vue'
 import SummaryDemo from './demos/table/summary.vue'
+import ResizeDragDemo from './demos/table/resize-drag.vue'
 import basicSrc from './demos/table/basic.vue?raw'
 import multiHeaderSrc from './demos/table/multi-header.vue?raw'
 import treeSrc from './demos/table/tree.vue?raw'
@@ -21,6 +22,7 @@ import fixedSrc from './demos/table/fixed.vue?raw'
 import selectionSrc from './demos/table/selection.vue?raw'
 import expandableSrc from './demos/table/expandable.vue?raw'
 import summarySrc from './demos/table/summary.vue?raw'
+import resizeDragSrc from './demos/table/resize-drag.vue?raw'
 </script>
 
 # Table 表格
@@ -91,6 +93,14 @@ import summarySrc from './demos/table/summary.vue?raw'
   <SummaryDemo />
 </DemoBlock>
 
+## 列宽与行拖拽
+
+拖拽表头右缘调整列宽（叶子列，`resizable: false` 可关闭）；开启 `row-draggable` 显示行手柄，在 `row-drag-end` 中按 `keys` 重排数据。树表不支持行拖拽；分组表头仅叶子列可调宽。
+
+<DemoBlock :source="resizeDragSrc">
+  <ResizeDragDemo />
+</DemoBlock>
+
 ## Props
 
 | 属性 | 说明 | 类型 | 默认值 |
@@ -121,6 +131,7 @@ import summarySrc from './demos/table/summary.vue?raw'
 | expandedRowKeys | 受控内容展开 key | `(string \| number)[]` | — |
 | showSummary | 合计行 | `boolean` | `false` |
 | summaryMethod | 自定义合计 | `( { columns, data } ) => Record<string, string>` | — |
+| rowDraggable | 行拖拽排序（树表无效） | `boolean` | `false` |
 
 ## TableColumn
 
@@ -134,6 +145,9 @@ import summarySrc from './demos/table/summary.vue?raw'
 | hideable | 是否可在列设置中隐藏，默认 `true`（叶子列） |
 | visible | 初始是否显示，默认 `true`（叶子列） |
 | fixed | 固定列 `'left' \| 'right'`（叶子列） |
+| editable | 可编辑单元格（叶子列） |
+| draggable | 是否可拖列序，默认允许（固定列除外） |
+| resizable | 是否可拖列宽，默认 `true`（叶子列） |
 
 ## Events
 
@@ -145,6 +159,10 @@ import summarySrc from './demos/table/summary.vue?raw'
 | update:expandRowKeys / expand-change | 树节点展开变化 |
 | update:selectedRowKeys / selection-change | 多选变化；`selection-change` 参数 `(keys, rows)` |
 | update:expandedRowKeys / expandable-change | 内容展开行变化 |
+| cell-edit | 可编辑提交 `{ row, prop, value, index }` |
+| column-drag-end | 列序变化，参数为 prop 数组 |
+| column-resize-end | 列宽变化 `{ prop, width }` |
+| row-drag-end | 行序变化 `{ from, to, keys }` |
 
 ## Slots
 

@@ -5,11 +5,41 @@
   border: 1px solid var(--dan-color-border);
   border-radius: var(--dan-radius-lg);
   background: var(--dan-color-bg);
+  transition: border-color var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-chat-input.is-dragging {
+  border-color: var(--dan-color-primary);
+  box-shadow: 0 0 0 3px var(--dan-color-primary-light);
+}
+
+.dan-chat-input__attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dan-chat-input__composer {
+  position: relative;
+}
+
+.dan-chat-input__commands {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 6px);
+  left: 0;
+  z-index: 5;
 }
 
 .dan-chat-input__actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--dan-spacing-sm);
+}
+
+.dan-chat-input__tools {
+  display: flex;
   align-items: center;
   gap: var(--dan-spacing-sm);
 }

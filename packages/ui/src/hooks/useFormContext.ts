@@ -17,6 +17,8 @@ export interface FormItemContext {
   validate: (trigger?: string) => Promise<boolean>
   resetField: () => void
   clearValidate: () => void
+  /** FormItem 根节点，用于滚到字段 */
+  $el?: HTMLElement | null
 }
 
 export type { FormRule, FormRules }

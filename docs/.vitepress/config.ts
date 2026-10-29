@@ -49,6 +49,7 @@ const componentsSidebar = collapsible([
     text: '表单',
     items: [
       { text: 'Input（输入框）', link: '/components/input' },
+      { text: 'InputTag（标签输入）', link: '/components/input-tag' },
       { text: 'InputNumber（数字输入）', link: '/components/input-number' },
       { text: 'Upload（上传）', link: '/components/upload' },
       { text: 'Slider（滑块）', link: '/components/slider' },
@@ -73,6 +74,7 @@ const componentsSidebar = collapsible([
     text: '数据展示',
     items: [
       { text: 'Tag（标签）', link: '/components/tag' },
+      { text: 'Link（文字链接）', link: '/components/link' },
       { text: 'Badge（徽标）', link: '/components/badge' },
       { text: 'Avatar（头像）', link: '/components/avatar' },
       { text: 'Alert（警告）', link: '/components/alert' },
@@ -99,6 +101,7 @@ const componentsSidebar = collapsible([
       { text: 'Tabs（标签页）', link: '/components/tabs' },
       { text: 'Menu（菜单）', link: '/components/menu' },
       { text: 'Breadcrumb（面包屑）', link: '/components/breadcrumb' },
+      { text: 'PageHeader（页头）', link: '/components/page-header' },
       { text: 'Pagination（分页）', link: '/components/pagination' },
       { text: 'Steps（步骤条）', link: '/components/steps' },
       { text: 'Affix（固钉）', link: '/components/affix' },
@@ -131,6 +134,8 @@ const componentsSidebar = collapsible([
       { text: 'ChatMessage（消息）', link: '/ai/chat-message' },
       { text: 'ConversationList（会话列表）', link: '/ai/conversation-list' },
       { text: 'ChatInput（输入）', link: '/ai/chat-input' },
+      { text: 'ToolCallCard（工具调用）', link: '/ai/tool-call-card' },
+      { text: 'ArtifactPanel（结果侧栏）', link: '/ai/artifact-panel' },
       { text: 'Markdown（渲染）', link: '/ai/markdown' },
       { text: 'StreamText（流式文本）', link: '/ai/stream-text' },
       { text: 'CodeBlock（代码块）', link: '/ai/code-block' },
@@ -141,6 +146,7 @@ const componentsSidebar = collapsible([
       { text: 'TokenUsage（用量）', link: '/ai/token-usage' },
       { text: 'Attachment（附件）', link: '/ai/attachment' },
       { text: 'Prompt（提示词）', link: '/ai/prompt' },
+      { text: 'PromptLibrary（提示词库）', link: '/ai/prompt-library' },
     ],
   },
   {

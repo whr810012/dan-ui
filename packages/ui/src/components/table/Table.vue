@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { useLocale } from '../../locale'
 import { useNamespace } from '../../hooks/useNamespace'
 import { DanCheckbox } from '../checkbox'
 import { DanDropdown, DanDropdownMenu } from '../dropdown'
@@ -40,7 +41,7 @@ const props = withDefaults(
     border?: boolean
     stripe?: boolean
     emptyText?: string
-    /** 显示「列设置」入口，默认自动：存在 hideable 列时开启 */
+    /** 显示列设置入口，默认自动：存在 hideable 列时开启 */
     showColumnSettings?: boolean
     /** 受控筛选条件 */
     filters?: TableFilters
@@ -83,6 +84,8 @@ const props = withDefaults(
       columns: TableColumn[]
       data: TableRow[]
     }) => Record<string, string>
+    /** 行拖拽排序（树表不支持） */
+    rowDraggable?: boolean
   }>(),
   {
     data: () => [],
@@ -90,7 +93,7 @@ const props = withDefaults(
     rowKey: 'id',
     border: false,
     stripe: false,
-    emptyText: '暂无数据',
+    emptyText: undefined,
     showColumnSettings: undefined,
     filters: undefined,
     visibleColumns: undefined,
@@ -111,6 +114,7 @@ const props = withDefaults(
     expandedRowKeys: undefined,
     showSummary: false,
     summaryMethod: undefined,
+    rowDraggable: false,
   },
 )
 
@@ -135,12 +139,25 @@ const emit = defineEmits<{
     },
   ]
   'column-drag-end': [props: string[]]
+  'column-resize-end': [payload: { prop: string; width: number }]
+  'row-drag-end': [
+    payload: {
+      from: number
+      to: number
+      keys: Array<string | number>
+    },
+  ]
 }>()
 
 const SELECTION_COL_WIDTH = 48
 const EXPANDABLE_COL_WIDTH = 48
+const ROW_DRAG_COL_WIDTH = 36
 
 const ns = useNamespace('table')
+const { t } = useLocale()
+const resolvedEmptyText = computed(
+  () => props.emptyText ?? t('table.emptyText'),
+)
 
 const innerFilters = ref<TableFilters>({})
 const innerVisible = ref<string[]>([])
@@ -153,10 +170,16 @@ const columnOrder = ref<string[]>([])
 const editingCell = ref<{ key: string | number; prop: string } | null>(null)
 const editingValue = ref('')
 const dragProp = ref<string | null>(null)
+const columnWidths = ref<Record<string, number>>({})
+const resizing = ref<{ prop: string; startX: number; startW: number } | null>(
+  null,
+)
+const dragRowKey = ref<string | number | null>(null)
 
 const canReorderColumns = computed(
   () => !props.columns.some((col) => col.children?.length),
 )
+const canDragRows = computed(() => props.rowDraggable && !props.tree)
 
 const isFiltersControlled = computed(() => props.filters !== undefined)
 const isVisibleControlled = computed(() => props.visibleColumns !== undefined)
@@ -250,7 +273,13 @@ watch(
   { immediate: true, deep: true },
 )
 
-const fixedMetaList = computed(() => buildFixedLeafMeta(displayColumns.value))
+const columnsForLayout = computed(() =>
+  displayColumns.value.map((col) => {
+    if (!col.prop || columnWidths.value[col.prop] == null) return col
+    return { ...col, width: columnWidths.value[col.prop] }
+  }),
+)
+const fixedMetaList = computed(() => buildFixedLeafMeta(columnsForLayout.value))
 
 const fixedMetaMap = computed(() => {
   const map = new Map<string, (typeof fixedMetaList.value)[number]>()
@@ -275,6 +304,7 @@ function leafFixedClass(prop?: string) {
 
 const leadingOffset = computed(() => {
   let offset = 0
+  if (canDragRows.value) offset += ROW_DRAG_COL_WIDTH
   if (props.selection) offset += SELECTION_COL_WIDTH
   if (props.expandable) offset += EXPANDABLE_COL_WIDTH
   return offset
@@ -288,9 +318,11 @@ function leafFixedStyle(prop?: string) {
   return { ...style, left: `${left}px` }
 }
 
-function selectionCellStyle(): Record<string, string> | undefined {
-  if (!props.selection) return undefined
-  if (!hasFixedColumns.value && !props.expandable) return undefined
+function rowDragCellStyle(): Record<string, string> | undefined {
+  if (!canDragRows.value) return undefined
+  if (!hasFixedColumns.value && !props.selection && !props.expandable) {
+    return undefined
+  }
   return {
     position: 'sticky',
     left: '0px',
@@ -298,18 +330,36 @@ function selectionCellStyle(): Record<string, string> | undefined {
   }
 }
 
-function expandableCellStyle(): Record<string, string> | undefined {
-  if (!props.expandable) return undefined
-  if (!hasFixedColumns.value && !props.selection) return undefined
+function selectionCellStyle(): Record<string, string> | undefined {
+  if (!props.selection) return undefined
+  if (!hasFixedColumns.value && !props.expandable && !canDragRows.value) {
+    return undefined
+  }
   return {
     position: 'sticky',
-    left: props.selection ? `${SELECTION_COL_WIDTH}px` : '0px',
+    left: canDragRows.value ? `${ROW_DRAG_COL_WIDTH}px` : '0px',
+    zIndex: '5',
+  }
+}
+
+function expandableCellStyle(): Record<string, string> | undefined {
+  if (!props.expandable) return undefined
+  if (!hasFixedColumns.value && !props.selection && !canDragRows.value) {
+    return undefined
+  }
+  let left = 0
+  if (canDragRows.value) left += ROW_DRAG_COL_WIDTH
+  if (props.selection) left += SELECTION_COL_WIDTH
+  return {
+    position: 'sticky',
+    left: `${left}px`,
     zIndex: '5',
   }
 }
 
 const tableColSpan = computed(() => {
   let n = displayColumns.value.length
+  if (canDragRows.value) n += 1
   if (props.selection) n += 1
   if (props.expandable) n += 1
   return n || 1
@@ -486,6 +536,84 @@ function onColumnDrop(targetProp: string | undefined, event: DragEvent) {
   next.splice(toIndex, 0, from)
   columnOrder.value = next
   emit('column-drag-end', next)
+}
+
+function resolveColumnPixelWidth(col: TableColumn): number {
+  if (col.prop && columnWidths.value[col.prop] != null) {
+    return columnWidths.value[col.prop]!
+  }
+  if (typeof col.width === 'number') return col.width
+  if (typeof col.width === 'string') {
+    const n = Number.parseInt(col.width, 10)
+    if (Number.isFinite(n)) return n
+  }
+  if (typeof col.minWidth === 'number') return col.minWidth
+  if (typeof col.minWidth === 'string') {
+    const n = Number.parseInt(col.minWidth, 10)
+    if (Number.isFinite(n)) return n
+  }
+  return 120
+}
+
+function canResizeColumn(col: TableColumn) {
+  return Boolean(col.prop) && !col.children?.length && col.resizable !== false
+}
+
+function onColumnResizeStart(prop: string | undefined, event: MouseEvent) {
+  if (!prop) return
+  const col = displayColumns.value.find((item) => item.prop === prop)
+  if (!col || !canResizeColumn(col)) return
+  event.preventDefault()
+  event.stopPropagation()
+  const startW = resolveColumnPixelWidth(col)
+  resizing.value = { prop, startX: event.clientX, startW }
+  const onMove = (moveEvent: MouseEvent) => {
+    if (!resizing.value) return
+    const next = Math.max(
+      48,
+      resizing.value.startW + (moveEvent.clientX - resizing.value.startX),
+    )
+    columnWidths.value = {
+      ...columnWidths.value,
+      [resizing.value.prop]: next,
+    }
+  }
+  const onUp = () => {
+    if (resizing.value) {
+      const width = columnWidths.value[resizing.value.prop] ?? startW
+      emit('column-resize-end', { prop: resizing.value.prop, width })
+    }
+    resizing.value = null
+    window.removeEventListener('mousemove', onMove)
+    window.removeEventListener('mouseup', onUp)
+  }
+  window.addEventListener('mousemove', onMove)
+  window.addEventListener('mouseup', onUp)
+}
+
+function onRowDragStart(key: string | number, event: DragEvent) {
+  if (!canDragRows.value) {
+    event.preventDefault()
+    return
+  }
+  dragRowKey.value = key
+  event.dataTransfer?.setData('text/plain', String(key))
+  if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move'
+}
+
+function onRowDrop(targetKey: string | number, event: DragEvent) {
+  event.preventDefault()
+  const fromKey = dragRowKey.value ?? event.dataTransfer?.getData('text/plain')
+  dragRowKey.value = null
+  if (fromKey == null || !canDragRows.value) return
+  const keys = displayRows.value.map((item) => item.key)
+  const from = keys.findIndex((key) => String(key) === String(fromKey))
+  const to = keys.findIndex((key) => String(key) === String(targetKey))
+  if (from < 0 || to < 0 || from === to) return
+  const next = [...keys]
+  const [moved] = next.splice(from, 1)
+  next.splice(to, 0, moved!)
+  emit('row-drag-end', { from, to, keys: next })
 }
 
 function setFilter(prop: string, value: string | number | null) {
@@ -741,6 +869,9 @@ function onWrapperScroll(event: Event) {
 }
 
 function colWidth(col: TableColumn) {
+  if (col.prop && columnWidths.value[col.prop] != null) {
+    return `${columnWidths.value[col.prop]}px`
+  }
   if (col.width == null) return undefined
   return typeof col.width === 'number' ? `${col.width}px` : col.width
 }
@@ -767,7 +898,7 @@ function colMinWidth(col: TableColumn) {
       <DanDropdown trigger="click" :hide-on-click="false" placement="bottom">
         <button type="button" :class="ns.e('settings-btn')">
           <DanIcon name="setting" :size="14" />
-          列设置
+          {{ t('table.columnSettings') }}
         </button>
         <template #dropdown>
           <DanDropdownMenu>
@@ -799,6 +930,10 @@ function colMinWidth(col: TableColumn) {
       <table :class="ns.e('table')">
         <colgroup>
           <col
+            v-if="canDragRows"
+            :style="{ width: `${ROW_DRAG_COL_WIDTH}px` }"
+          />
+          <col
             v-if="selection"
             :style="{ width: `${SELECTION_COL_WIDTH}px` }"
           />
@@ -818,12 +953,27 @@ function colMinWidth(col: TableColumn) {
         <thead>
           <tr v-for="(row, rowIndex) in headerRows" :key="rowIndex">
             <th
+              v-if="canDragRows && rowIndex === 0"
+              :class="[
+                ns.e('cell'),
+                ns.e('header-cell'),
+                ns.e('drag-cell'),
+                hasFixedColumns || selection || expandable
+                  ? ns.is('fixed-left', true)
+                  : '',
+              ]"
+              :style="rowDragCellStyle()"
+              :rowspan="headerRows.length"
+            />
+            <th
               v-if="selection && rowIndex === 0"
               :class="[
                 ns.e('cell'),
                 ns.e('header-cell'),
                 ns.e('selection-cell'),
-                hasFixedColumns || expandable ? ns.is('fixed-left', true) : '',
+                hasFixedColumns || expandable || canDragRows
+                  ? ns.is('fixed-left', true)
+                  : '',
               ]"
               :style="selectionCellStyle()"
               :rowspan="headerRows.length"
@@ -840,7 +990,9 @@ function colMinWidth(col: TableColumn) {
                 ns.e('cell'),
                 ns.e('header-cell'),
                 ns.e('expandable-cell'),
-                hasFixedColumns || selection ? ns.is('fixed-left', true) : '',
+                hasFixedColumns || selection || canDragRows
+                  ? ns.is('fixed-left', true)
+                  : '',
               ]"
               :style="expandableCellStyle()"
               :rowspan="headerRows.length"
@@ -933,7 +1085,7 @@ function colMinWidth(col: TableColumn) {
                             resolveFilterConfig(cell.column)?.options ?? []
                           "
                           clearable
-                          placeholder="请选择"
+                          :placeholder="t('table.filterSelectPlaceholder')"
                           @update:model-value="
                             (val) =>
                               setFilter(
@@ -953,7 +1105,7 @@ function colMinWidth(col: TableColumn) {
                                 )
                           "
                           clearable
-                          placeholder="输入关键词"
+                          :placeholder="t('table.filterPlaceholder')"
                           @update:model-value="
                             (val) =>
                               setFilter(cell.column.prop as string, val || null)
@@ -965,12 +1117,18 @@ function colMinWidth(col: TableColumn) {
                         :class="ns.e('filter-clear')"
                         @click="clearFilter(cell.column.prop as string)"
                       >
-                        清除
+                        {{ t('table.filterClear') }}
                       </button>
                     </div>
                   </template>
                 </DanPopover>
               </div>
+              <span
+                v-if="canResizeColumn(cell.column)"
+                :class="ns.e('column-resizer')"
+                @mousedown="onColumnResizeStart(cell.column.prop, $event)"
+                @click.stop
+              />
             </th>
           </tr>
         </thead>
@@ -993,13 +1151,35 @@ function colMinWidth(col: TableColumn) {
             <tr
               :class="ns.e('row')"
               :style="virtual ? { height: `${rowHeight}px` } : undefined"
+              @dragover.prevent
+              @drop="onRowDrop(item.key, $event)"
             >
+              <td
+                v-if="canDragRows"
+                :class="[
+                  ns.e('cell'),
+                  ns.e('drag-cell'),
+                  hasFixedColumns || selection || expandable
+                    ? ns.is('fixed-left', true)
+                    : '',
+                ]"
+                :style="rowDragCellStyle()"
+              >
+                <span
+                  :class="ns.e('row-drag-handle')"
+                  draggable="true"
+                  aria-label="拖拽排序"
+                  @dragstart="onRowDragStart(item.key, $event)"
+                >
+                  ⋮⋮
+                </span>
+              </td>
               <td
                 v-if="selection"
                 :class="[
                   ns.e('cell'),
                   ns.e('selection-cell'),
-                  hasFixedColumns || expandable
+                  hasFixedColumns || expandable || canDragRows
                     ? ns.is('fixed-left', true)
                     : '',
                 ]"
@@ -1017,7 +1197,7 @@ function colMinWidth(col: TableColumn) {
                 :class="[
                   ns.e('cell'),
                   ns.e('expandable-cell'),
-                  hasFixedColumns || selection
+                  hasFixedColumns || selection || canDragRows
                     ? ns.is('fixed-left', true)
                     : '',
                 ]"
@@ -1161,11 +1341,23 @@ function colMinWidth(col: TableColumn) {
         <tfoot v-if="showSummary && !isEmpty">
           <tr :class="ns.e('summary-row')">
             <td
+              v-if="canDragRows"
+              :class="[
+                ns.e('cell'),
+                ns.e('summary-cell'),
+                ns.e('drag-cell'),
+                hasFixedColumns || selection || expandable
+                  ? ns.is('fixed-left', true)
+                  : '',
+              ]"
+              :style="rowDragCellStyle()"
+            />
+            <td
               v-if="selection"
               :class="[
                 ns.e('cell'),
                 ns.e('summary-cell'),
-                hasFixedColumns || expandable
+                hasFixedColumns || expandable || canDragRows
                   ? ns.is('fixed-left', true)
                   : '',
               ]"
@@ -1176,7 +1368,9 @@ function colMinWidth(col: TableColumn) {
               :class="[
                 ns.e('cell'),
                 ns.e('summary-cell'),
-                hasFixedColumns || selection ? ns.is('fixed-left', true) : '',
+                hasFixedColumns || selection || canDragRows
+                  ? ns.is('fixed-left', true)
+                  : '',
               ]"
               :style="expandableCellStyle()"
             />
@@ -1192,7 +1386,7 @@ function colMinWidth(col: TableColumn) {
               :style="leafFixedStyle(col.prop)"
             >
               <template v-if="colIndex === 0 && summaryCells[col.prop!] == null">
-                合计
+                {{ t('table.summary') }}
               </template>
               <template v-else>
                 {{ summaryCells[col.prop as string] ?? '' }}
@@ -1203,7 +1397,7 @@ function colMinWidth(col: TableColumn) {
       </table>
 
       <div v-if="isEmpty" :class="ns.e('empty')">
-        <DanEmpty :description="emptyText" :image-size="72" />
+        <DanEmpty :description="resolvedEmptyText" :image-size="72" />
       </div>
     </div>
   </div>

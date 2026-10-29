@@ -31,6 +31,22 @@
   cursor: not-allowed;
 }
 
+.dan-tree.is-draggable .dan-tree-node__content[draggable='true'] {
+  cursor: grab;
+}
+
+.dan-tree-node__content.is-drop-before {
+  box-shadow: inset 0 2px 0 var(--dan-color-primary);
+}
+
+.dan-tree-node__content.is-drop-after {
+  box-shadow: inset 0 -2px 0 var(--dan-color-primary);
+}
+
+.dan-tree-node__content.is-drop-inner {
+  background: var(--dan-color-primary-light);
+}
+
 .dan-tree-node__expand {
   display: inline-flex;
   width: 14px;

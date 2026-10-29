@@ -37,6 +37,9 @@ export { useFormItem } from './hooks/useFormItem'
 export { validateValue } from './utils/validate'
 export { getByPath, setByPath } from './utils/path'
 
+export { useLocale, zhCN, en } from './locale'
+export type { LocaleMessages } from './locale'
+
 export { provideChat, injectChat, chatContextKey } from './hooks/useChatContext'
 export type { ChatContext } from './hooks/useChatContext'
 export type {

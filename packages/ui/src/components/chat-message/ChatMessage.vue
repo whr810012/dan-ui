@@ -6,6 +6,7 @@ import { DanAttachment } from '../attachment'
 import { DanButton } from '../button'
 import { DanStreamText } from '../stream-text'
 import { DanThinking } from '../thinking'
+import { DanToolCallCard } from '../tool-call-card'
 import './style.css'
 
 defineOptions({ name: 'DanChatMessage' })
@@ -93,14 +94,14 @@ async function onCopy() {
               :streaming="streaming && index === (message.parts?.length ?? 0) - 1"
               :as-markdown="message.role !== 'user'"
             />
-            <div v-else-if="part.type === 'tool'" :class="ns.e('tool')">
-              <strong>{{ part.name }}</strong>
-              <span v-if="part.status" :class="ns.e('tool-status')">
-                {{ part.status }}
-              </span>
-              <pre v-if="part.input != null">{{ part.input }}</pre>
-              <pre v-if="part.output != null">{{ part.output }}</pre>
-            </div>
+            <DanToolCallCard
+              v-else-if="part.type === 'tool'"
+              :name="part.name"
+              :input="part.input"
+              :output="part.output"
+              :status="part.status || 'done'"
+              :default-expanded="part.status === 'error' || part.status === 'running'"
+            />
           </template>
         </template>
         <DanStreamText

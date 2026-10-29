@@ -1,0 +1,94 @@
+.dan-input-tag {
+  --dan-input-tag-min-height: var(--dan-control-height-md);
+  --dan-input-tag-font-size: var(--dan-font-size-md);
+
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--dan-input-tag-min-height);
+  padding: 4px 8px;
+  gap: 6px;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+  color: var(--dan-color-text);
+  font-size: var(--dan-input-tag-font-size);
+  cursor: text;
+  transition:
+    border-color var(--dan-duration-fast) var(--dan-ease),
+    box-shadow var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-input-tag--small {
+  --dan-input-tag-min-height: var(--dan-control-height-sm);
+  --dan-input-tag-font-size: var(--dan-font-size-sm);
+}
+
+.dan-input-tag--large {
+  --dan-input-tag-min-height: var(--dan-control-height-lg);
+  --dan-input-tag-font-size: var(--dan-font-size-lg);
+}
+
+.dan-input-tag.is-focus {
+  border-color: var(--dan-color-primary);
+  box-shadow: 0 0 0 3px var(--dan-color-primary-light);
+}
+
+.dan-input-tag.is-disabled {
+  background: var(--dan-color-fill);
+  color: var(--dan-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.dan-input-tag__tags {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.dan-input-tag__input {
+  flex: 1 1 80px;
+  min-width: 80px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.dan-input-tag__input::placeholder {
+  color: var(--dan-color-text-placeholder);
+}
+
+.dan-input-tag__input:disabled {
+  cursor: not-allowed;
+}
+
+.dan-input-tag__clear {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--dan-radius-full);
+  background: transparent;
+  color: var(--dan-color-text-secondary);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dan-input-tag__clear:hover {
+  color: var(--dan-color-text);
+}

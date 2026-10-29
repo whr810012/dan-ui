@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { useLocale } from '../../locale'
 import { useNamespace } from '../../hooks/useNamespace'
 import { DanButton } from '../button'
 import './style.css'
@@ -25,6 +26,8 @@ const props = withDefaults(
     steps: () => [],
   },
 )
+
+const { t } = useLocale()
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
@@ -162,16 +165,18 @@ onBeforeUnmount(() => {
             {{ current + 1 }} / {{ steps.length }}
           </span>
           <div :class="ns.e('actions')">
-            <DanButton size="small" text @click="close">跳过</DanButton>
+            <DanButton size="small" text @click="close">
+              {{ t('tour.skip') }}
+            </DanButton>
             <DanButton
               v-if="current > 0"
               size="small"
               @click="prev"
             >
-              上一步
+              {{ t('tour.prev') }}
             </DanButton>
             <DanButton size="small" type="primary" @click="next">
-              {{ isLast ? '完成' : '下一步' }}
+              {{ isLast ? t('tour.finish') : t('tour.next') }}
             </DanButton>
           </div>
         </div>

@@ -15,6 +15,9 @@ export type { DanIconInstance, IconName } from './icon'
 export { DanInput } from './input'
 export type { DanInputInstance } from './input'
 
+export { DanInputTag } from './input-tag'
+export type { DanInputTagInstance } from './input-tag'
+
 export { DanInputNumber } from './input-number'
 export type { DanInputNumberInstance } from './input-number'
 
@@ -120,6 +123,12 @@ export type { DanColInstance } from './col'
 
 export { DanTag } from './tag'
 export type { DanTagInstance } from './tag'
+
+export { DanLink } from './link'
+export type { DanLinkInstance } from './link'
+
+export { DanPageHeader } from './page-header'
+export type { DanPageHeaderInstance } from './page-header'
 
 export { DanBadge } from './badge'
 export type { DanBadgeInstance } from './badge'
@@ -288,6 +297,18 @@ export type { DanChatInstance } from './chat'
 
 export { DanChatMessage } from './chat-message'
 export type { DanChatMessageInstance } from './chat-message'
+
+export { DanToolCallCard } from './tool-call-card'
+export type { DanToolCallCardInstance } from './tool-call-card'
+
+export { DanArtifactPanel } from './artifact-panel'
+export type { DanArtifactPanelInstance } from './artifact-panel'
+
+export { DanPromptLibrary } from './prompt-library'
+export type {
+  DanPromptLibraryInstance,
+  PromptTemplate,
+} from './prompt-library'
 
 export { DanConversationList } from './conversation-list'
 export type { DanConversationListInstance } from './conversation-list'

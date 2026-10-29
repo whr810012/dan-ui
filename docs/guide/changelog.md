@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.5.0
+
+- 新组件：InputTag、PageHeader、Link、ToolCallCard、ArtifactPanel、PromptLibrary
+- Table：列宽拖拽（`column-resize-end`）、行拖拽排序（`rowDraggable` / `row-drag-end`）
+- Tree：节点拖拽（`draggable` / `allowDrag` / `allowDrop` / `node-drag-end`）
+- Form：`scrollToError`、`scrollToField`
+- ConfigProvider：轻量 `locale`（内置 `zhCN` / `en`，`useLocale`）
+- ChatInput：附件选择与拖拽、`v-model:attachments`、斜杠指令 `commands`；`send` 载荷改为 `{ content, attachments }`
+- ChatMessage：工具段改用 ToolCallCard 可折叠展示
+
 ## 1.4.0
 
 - 文档站 SEO：Open Graph / Twitter、canonical、按页 description、sitemap.xml、robots.txt、JSON-LD（WebSite / SoftwareApplication / TechArticle / FAQPage）

@@ -10,6 +10,7 @@ import {
 } from 'vue'
 import { injectConfig } from '../../hooks/useConfig'
 import { useFormItem } from '../../hooks/useFormItem'
+import { useLocale } from '../../locale'
 import { useNamespace } from '../../hooks/useNamespace'
 import type { DanSize } from '../../hooks/useConfig'
 import type { SelectOption } from './types'
@@ -61,6 +62,7 @@ const attrs = useAttrs()
 const config = injectConfig()
 const { form, emitChange } = useFormItem()
 const ns = useNamespace('select')
+const { t } = useLocale()
 const focused = ref(false)
 const opened = ref(false)
 const highlightIndex = ref(-1)
@@ -479,7 +481,9 @@ onBeforeUnmount(() => {
           v-if="virtual"
           :style="{ height: `${virtualPadBottom}px`, flex: 'none' }"
         />
-        <div v-if="!filteredOptions.length" :class="ns.e('empty')">暂无数据</div>
+        <div v-if="!filteredOptions.length" :class="ns.e('empty')">
+          {{ t('select.empty') }}
+        </div>
       </div>
     </div>
   </Teleport>

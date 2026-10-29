@@ -2,6 +2,8 @@
 import { computed, toRef } from 'vue'
 import { provideConfig, type DanSize } from '../../hooks/useConfig'
 import { useNamespace } from '../../hooks/useNamespace'
+import zhCN from '../../locale/zh-CN'
+import type { LocaleMessages } from '../../locale/types'
 import './style.css'
 
 defineOptions({ name: 'DanConfigProvider' })
@@ -11,6 +13,8 @@ const props = withDefaults(
     size?: DanSize
     zIndex?: number
     namespace?: string
+    /** 轻量文案包；不引入 vue-i18n */
+    locale?: LocaleMessages
     /** CSS 变量覆盖，key 可为 `color-primary` 或完整 `--dan-color-primary` */
     theme?: Record<string, string>
   }>(),
@@ -18,6 +22,7 @@ const props = withDefaults(
     size: 'default',
     zIndex: 2000,
     namespace: 'dan',
+    locale: () => zhCN,
     theme: () => ({}),
   },
 )
@@ -28,6 +33,7 @@ provideConfig({
   size: toRef(props, 'size'),
   zIndex: toRef(props, 'zIndex'),
   namespace: toRef(props, 'namespace'),
+  locale: toRef(props, 'locale'),
 })
 
 const themeStyle = computed(() => {

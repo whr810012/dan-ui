@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useLocale } from '../../locale'
 import { useNamespace } from '../../hooks/useNamespace'
 import './style.css'
 
@@ -32,6 +33,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('pagination')
+const { t } = useLocale()
 
 const pageCount = computed(() =>
   Math.max(1, Math.ceil(props.total / props.pageSize) || 1),
@@ -84,7 +86,7 @@ function go(page: number) {
         :disabled="currentPage <= 1 || disabled"
         @click="go(currentPage - 1)"
       >
-        上一页
+        {{ t('pagination.prev') }}
       </button>
 
       <div v-else-if="part === 'pager'" :class="ns.e('pager')" role="list">
@@ -116,11 +118,11 @@ function go(page: number) {
         :disabled="currentPage >= pageCount || disabled"
         @click="go(currentPage + 1)"
       >
-        下一页
+        {{ t('pagination.next') }}
       </button>
 
       <span v-else-if="part === 'total'" :class="ns.e('total')">
-        共 {{ total }} 条
+        {{ t('pagination.total', { total }) }}
       </span>
     </template>
   </div>

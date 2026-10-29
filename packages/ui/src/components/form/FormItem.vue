@@ -34,6 +34,7 @@ const props = withDefaults(
 
 const ns = useNamespace('form-item')
 const form = inject(formContextKey, undefined)
+const rootRef = ref<HTMLElement | null>(null)
 const validateState = ref('')
 const validateMessage = ref('')
 const initialValue = ref<unknown>()
@@ -96,6 +97,7 @@ const field: FormItemContext = reactive({
   validate,
   resetField,
   clearValidate,
+  $el: null as HTMLElement | null,
 })
 
 watch(
@@ -108,6 +110,7 @@ watch(
 provideFormItem(field)
 
 onMounted(() => {
+  field.$el = rootRef.value
   initialValue.value = fieldValue.value
   form?.addField(field)
 })
@@ -119,6 +122,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div
+    ref="rootRef"
     :class="[
       ns.b(),
       ns.is('error', validateState === 'error'),

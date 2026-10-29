@@ -3,6 +3,13 @@ import { nextTick, ref, watch } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
 import TreeNodeView from './TreeNode.vue'
 import type { TreeNode } from './types'
+import {
+  findNode,
+  isDescendant,
+  reorderTree,
+  resolveDropType,
+  type TreeDropType,
+} from './treeDragUtils'
 import './style.css'
 
 defineOptions({ name: 'DanTree' })
@@ -13,12 +20,20 @@ const props = withDefaults(
     defaultExpandAll?: boolean
     showCheckbox?: boolean
     checkedKeys?: Array<string | number>
+    draggable?: boolean
+    allowDrag?: (node: TreeNode) => boolean
+    allowDrop?: (
+      dragging: TreeNode,
+      drop: TreeNode,
+      type: TreeDropType,
+    ) => boolean
   }>(),
   {
     data: () => [],
     defaultExpandAll: false,
     showCheckbox: false,
     checkedKeys: () => [],
+    draggable: false,
   },
 )
 
@@ -26,6 +41,14 @@ const emit = defineEmits<{
   'update:checkedKeys': [keys: Array<string | number>]
   'node-click': [node: TreeNode]
   check: [keys: Array<string | number>, node: TreeNode]
+  'node-drag-end': [
+    payload: {
+      dragNode: TreeNode
+      dropNode: TreeNode
+      dropType: TreeDropType
+      data: TreeNode[]
+    },
+  ]
 }>()
 
 const ns = useNamespace('tree')
@@ -33,6 +56,9 @@ const rootRef = ref<HTMLElement | null>(null)
 const expanded = ref<Set<string | number>>(new Set())
 const checked = ref<Set<string | number>>(new Set(props.checkedKeys))
 const focusedId = ref<string | number | null>(null)
+const dragNodeId = ref<string | number | null>(null)
+const dropTargetId = ref<string | number | null>(null)
+const dropType = ref<TreeDropType | null>(null)
 
 watch(
   () => props.checkedKeys,
@@ -154,12 +180,68 @@ function onKeydown(event: KeyboardEvent) {
     focusNode(visible[visible.length - 1]!.id)
   }
 }
+
+function onNodeDragStart(node: TreeNode, event: DragEvent) {
+  if (!props.draggable || node.disabled) {
+    event.preventDefault()
+    return
+  }
+  if (props.allowDrag && !props.allowDrag(node)) {
+    event.preventDefault()
+    return
+  }
+  dragNodeId.value = node.id
+  event.dataTransfer?.setData('text/plain', String(node.id))
+  if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move'
+}
+
+function onNodeDragOver(node: TreeNode, event: DragEvent) {
+  if (!props.draggable || dragNodeId.value == null) return
+  const dragging = findNode(props.data, dragNodeId.value)
+  if (!dragging || dragging.id === node.id || isDescendant(dragging, node.id)) {
+    return
+  }
+  const target = event.currentTarget as HTMLElement | null
+  if (!target) return
+  const type = resolveDropType(event.clientY, target.getBoundingClientRect())
+  if (props.allowDrop && !props.allowDrop(dragging, node, type)) return
+  event.preventDefault()
+  dropTargetId.value = node.id
+  dropType.value = type
+}
+
+function onNodeDrop(node: TreeNode, event: DragEvent) {
+  event.preventDefault()
+  const dragId =
+    dragNodeId.value ?? event.dataTransfer?.getData('text/plain') ?? null
+  const type = dropType.value
+  clearDragState()
+  if (dragId == null || type == null || !props.draggable) return
+  const dragging = findNode(props.data, dragId)
+  const dropping = findNode(props.data, node.id)
+  if (!dragging || !dropping) return
+  if (props.allowDrop && !props.allowDrop(dragging, dropping, type)) return
+  const next = reorderTree(props.data, dragId, node.id, type)
+  if (!next) return
+  emit('node-drag-end', {
+    dragNode: dragging,
+    dropNode: dropping,
+    dropType: type,
+    data: next,
+  })
+}
+
+function clearDragState() {
+  dragNodeId.value = null
+  dropTargetId.value = null
+  dropType.value = null
+}
 </script>
 
 <template>
   <div
     ref="rootRef"
-    :class="ns.b()"
+    :class="[ns.b(), ns.is('draggable', draggable)]"
     role="tree"
     tabindex="0"
     @keydown="onKeydown"
@@ -173,10 +255,17 @@ function onKeydown(event: KeyboardEvent) {
       :checked="checked"
       :show-checkbox="showCheckbox"
       :focused-id="focusedId"
+      :draggable="draggable"
+      :drop-target-id="dropTargetId"
+      :drop-type="dropType"
       @toggle-expand="toggleExpand"
       @toggle-check="toggleCheck"
       @node-click="onClick"
       @focus-node="focusNode"
+      @node-drag-start="onNodeDragStart"
+      @node-drag-over="onNodeDragOver"
+      @node-drop="onNodeDrop"
+      @node-drag-end="clearDragState"
     />
   </div>
 </template>

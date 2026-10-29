@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useLocale } from '../../locale'
 import { useNamespace } from '../../hooks/useNamespace'
 import type { ChatConversationItem } from '../../types/chat'
 import { DanButton } from '../button'
@@ -27,6 +28,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('conversation-list')
+const { t } = useLocale()
 
 function onSelect(item: ChatConversationItem) {
   emit('update:modelValue', item.id)
@@ -68,7 +70,9 @@ function onSelect(item: ChatConversationItem) {
           ×
         </button>
       </li>
-      <li v-if="!items.length" :class="ns.e('empty')">暂无会话</li>
+      <li v-if="!items.length" :class="ns.e('empty')">
+        {{ t('conversationList.empty') }}
+      </li>
     </ul>
   </aside>
 </template>
