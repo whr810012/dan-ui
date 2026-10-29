@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.0
+
+- Cascader / CascaderPanel：`filterable` 搜索、`virtual` 长列虚拟滚动；下拉复用 Panel
+- FormItem：`dependencies` 依赖字段变化时重校验
+- 文档：Image / Avatar / Carousel / Card 等 Demo 使用 `withBase`，适配 `/dan-ui/` 部署
+
 ## 2.0.0
 
 - 生态文档：Admin 模板配方（登录壳 + 权限菜单）、从零搭建、版本与迁移承诺、图标扩展指南

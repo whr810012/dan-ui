@@ -1,8 +1,35 @@
 .dan-cascader-panel {
   position: static;
   display: inline-flex;
+  flex-direction: column;
   border: 1px solid var(--dan-color-border);
   border-radius: var(--dan-radius-md);
   background: var(--dan-color-bg);
   box-shadow: none;
+  overflow: hidden;
+}
+
+.dan-cascader-panel__filter {
+  padding: 8px;
+  border-bottom: 1px solid var(--dan-color-border-light);
+}
+
+.dan-cascader-panel__filter-input {
+  width: 100%;
+  box-sizing: border-box;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-sm);
+  background: var(--dan-color-bg);
+  color: var(--dan-color-text);
+  font: inherit;
+}
+
+.dan-cascader-panel__columns {
+  display: inline-flex;
+}
+
+.dan-cascader__dropdown {
+  z-index: var(--dan-z-index-dropdown);
 }

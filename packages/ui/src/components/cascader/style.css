@@ -84,6 +84,17 @@
   overflow: hidden;
 }
 
+.dan-cascader__dropdown {
+  z-index: var(--dan-z-index-dropdown);
+}
+
+.dan-cascader__dropdown .dan-cascader-panel {
+  border: 0;
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg-elevated);
+  box-shadow: var(--dan-shadow-md);
+}
+
 .dan-cascader__menu {
   min-width: 140px;
   max-height: 220px;

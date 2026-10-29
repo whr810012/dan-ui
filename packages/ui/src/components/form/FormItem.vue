@@ -26,9 +26,14 @@ const props = withDefaults(
     prop?: string
     required?: boolean
     labelWidth?: string
+    /**
+     * 依赖的其它字段 prop；依赖值变化时重新校验本字段（trigger: change）
+     */
+    dependencies?: string[]
   }>(),
   {
     required: undefined,
+    dependencies: () => [],
   },
 )
 
@@ -114,6 +119,18 @@ watch(
   (prop) => {
     field.prop = prop
   },
+)
+
+watch(
+  () =>
+    form && props.dependencies.length
+      ? props.dependencies.map((dep) => getByPath(form.model.value, dep))
+      : null,
+  () => {
+    if (!props.prop || !props.dependencies.length) return
+    void validate('change')
+  },
+  { deep: true },
 )
 
 provideFormItem(field)

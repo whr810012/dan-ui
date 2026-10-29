@@ -1,4 +1,5 @@
 <script setup>
+import { withBase } from 'vitepress'
 import { DanButton, DanCard, DanSpace } from '@dandan-ui/ui'
 </script>
 
@@ -14,7 +15,7 @@ import { DanButton, DanCard, DanSpace } from '@dandan-ui/ui'
     <DanCard shadow="hover" style="width: 280px">
       <template #cover>
         <img
-          src="/images/city-rainbow.png"
+          :src="withBase('/images/city-rainbow.png')"
           alt="城市彩虹"
           style="height: 140px; object-fit: cover"
         />

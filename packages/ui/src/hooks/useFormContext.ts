@@ -10,6 +10,7 @@ export interface FormContext {
   labelWidth?: Ref<string | undefined>
   addField: (field: FormItemContext) => void
   removeField: (field: FormItemContext) => void
+  validateField: (prop: string) => Promise<boolean>
 }
 
 export interface FormItemContext {

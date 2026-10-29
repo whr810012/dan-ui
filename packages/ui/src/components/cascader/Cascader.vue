@@ -3,6 +3,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import { useLocale } from '../../locale'
+import { DanCascaderPanel } from '../cascader-panel'
 import type { CascaderOption } from './types'
 import './style.css'
 
@@ -15,12 +16,18 @@ const props = withDefaults(
     disabled?: boolean
     clearable?: boolean
     placeholder?: string
+    filterable?: boolean
+    filterPlaceholder?: string
+    virtual?: boolean
   }>(),
   {
     modelValue: null,
     options: () => [],
     disabled: false,
     clearable: false,
+    filterable: false,
+    filterPlaceholder: '搜索',
+    virtual: false,
   },
 )
 
@@ -39,20 +46,12 @@ const ns = useNamespace('cascader')
 const { form, emitChange } = useFormItem()
 const opened = ref(false)
 const rootRef = ref<HTMLElement | null>(null)
+const panelRef = ref<HTMLElement | null>(null)
 const panelStyle = ref<Record<string, string>>({})
-const activePath = ref<CascaderOption[]>([])
 
 const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )
-
-const columns = computed(() => {
-  const cols: CascaderOption[][] = [props.options]
-  for (const node of activePath.value) {
-    if (node.children?.length) cols.push(node.children)
-  }
-  return cols
-})
 
 const displayLabel = computed(() => {
   if (!props.modelValue?.length) return ''
@@ -94,21 +93,15 @@ function toggle() {
   else void openPanel()
 }
 
-function onSelect(level: number, option: CascaderOption) {
-  if (option.disabled) return
-  activePath.value = [...activePath.value.slice(0, level), option]
-  if (!option.children?.length) {
-    const value = activePath.value.map((item) => item.value)
-    emit('update:modelValue', value)
-    emit('change', value)
-    emitChange('change')
-    closePanel()
-  }
+function onPanelChange(value: Array<string | number> | null) {
+  emit('update:modelValue', value)
+  emit('change', value)
+  emitChange('change')
+  if (value?.length) closePanel()
 }
 
 function clear(event: MouseEvent) {
   event.stopPropagation()
-  activePath.value = []
   emit('update:modelValue', null)
   emit('change', null)
   emit('clear')
@@ -116,7 +109,10 @@ function clear(event: MouseEvent) {
 }
 
 function onDoc(event: MouseEvent) {
-  if (!rootRef.value?.contains(event.target as Node)) closePanel()
+  const target = event.target as Node
+  if (rootRef.value?.contains(target)) return
+  if (panelRef.value?.contains(target)) return
+  closePanel()
 }
 
 onMounted(() => document.addEventListener('mousedown', onDoc))
@@ -148,22 +144,20 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
       ×
     </button>
     <Teleport to="body">
-      <div v-if="opened" :class="ns.e('panel')" :style="panelStyle">
-        <ul v-for="(col, level) in columns" :key="level" :class="ns.e('menu')">
-          <li
-            v-for="option in col"
-            :key="String(option.value)"
-            :class="[
-              ns.e('node'),
-              ns.is('active', activePath[level]?.value === option.value),
-              ns.is('disabled', !!option.disabled),
-            ]"
-            @click="onSelect(level, option)"
-          >
-            <span>{{ option.label }}</span>
-            <span v-if="option.children?.length" :class="ns.e('arrow')">›</span>
-          </li>
-        </ul>
+      <div
+        v-if="opened"
+        ref="panelRef"
+        :class="ns.e('dropdown')"
+        :style="panelStyle"
+      >
+        <DanCascaderPanel
+          :model-value="modelValue"
+          :options="options"
+          :filterable="filterable"
+          :filter-placeholder="filterPlaceholder"
+          :virtual="virtual"
+          @change="onPanelChange"
+        />
       </div>
     </Teleport>
   </div>

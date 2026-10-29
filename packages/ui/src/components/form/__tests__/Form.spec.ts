@@ -1,5 +1,5 @@
 import { defineComponent, nextTick, reactive, ref } from 'vue'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { DanForm, DanFormItem } from '../index'
 import { DanInput } from '../../input'
@@ -92,6 +92,49 @@ describe('DanForm', () => {
     ;(wrapper.vm as any).model.title = 'changed'
     ;(wrapper.vm as any).formRef.resetFields()
     expect((wrapper.vm as any).model.title).toBe('init')
+  })
+
+  it('revalidates when dependencies change', async () => {
+    const Comp = defineComponent({
+      components: { DanForm, DanFormItem, DanInput },
+      setup(_, { expose }) {
+        const formRef = ref<InstanceType<typeof DanForm>>()
+        const model = reactive({ password: '', confirm: 'x' })
+        const rules = {
+          confirm: [
+            {
+              validator: (
+                _rule: unknown,
+                value: unknown,
+                callback: (error?: string) => void,
+              ) => {
+                if (value !== model.password) callback('两次输入不一致')
+                else callback()
+              },
+              trigger: 'change',
+            },
+          ],
+        }
+        expose({ formRef, model })
+        return { formRef, model, rules }
+      },
+      template: `
+        <DanForm ref="formRef" :model="model" :rules="rules">
+          <DanFormItem prop="password">
+            <DanInput v-model="model.password" />
+          </DanFormItem>
+          <DanFormItem prop="confirm" :dependencies="['password']">
+            <DanInput v-model="model.confirm" />
+          </DanFormItem>
+        </DanForm>
+      `,
+    })
+    const wrapper = mount(Comp)
+    await (wrapper.vm as any).formRef.validateField('confirm')
+    expect(wrapper.text()).toContain('两次输入不一致')
+    ;(wrapper.vm as any).model.password = 'x'
+    await flushPromises()
+    expect(wrapper.text()).not.toContain('两次输入不一致')
   })
 
   it('scrollToField scrolls the form item into view', async () => {

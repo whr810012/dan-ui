@@ -102,6 +102,7 @@ import formListSrc from './demos/form/form-list.vue?raw'
 | prop | 对应 `model` 的字段路径，支持 `a.b.c` | `string` | — | 校验时必填 |
 | required | 强制显示必填星号；不传则根据 rules 推断 | `boolean` | — | 否 |
 | labelWidth | 覆盖 Form 的标签宽度 | `string` | — | 否 |
+| dependencies | 依赖字段 prop 列表；依赖变化时按 `change` 重校验本字段 | `string[]` | `[]` | 否 |
 
 ### FormItem Slots
 

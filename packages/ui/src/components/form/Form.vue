@@ -35,6 +35,12 @@ const props = withDefaults(
 const ns = useNamespace('form')
 const fields: FormItemContext[] = []
 
+async function validateField(prop: string) {
+  const field = fields.find((item) => item.prop === prop)
+  if (!field) return true
+  return field.validate()
+}
+
 const context: FormContext = {
   model: toRef(props, 'model'),
   rules: toRef(props, 'rules'),
@@ -48,6 +54,7 @@ const context: FormContext = {
     const index = fields.indexOf(field)
     if (index > -1) fields.splice(index, 1)
   },
+  validateField,
 }
 
 provideForm(context)
@@ -85,12 +92,6 @@ async function validate(): Promise<{
     valid: results.every((item) => item.ok),
     fields: fieldStates,
   }
-}
-
-async function validateField(prop: string) {
-  const field = fields.find((item) => item.prop === prop)
-  if (!field) return true
-  return field.validate()
 }
 
 function resetFields() {
