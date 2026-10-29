@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.0
+
+- Select：`remote` / `remoteMethod` / `loading` / `remoteDebounce`；选中 label 缓存
+
 ## 2.4.0
 
 - 新组件：TimeSelect（`start` / `end` / `step` / `minTime` / `maxTime`）

@@ -35,6 +35,13 @@ const props = withDefaults(
     virtual?: boolean
     itemHeight?: number
     maxDropdownHeight?: number
+    /** 远程搜索：不过滤本地 options，改由 remoteMethod 拉数 */
+    remote?: boolean
+    remoteMethod?: (query: string) => void
+    /** 远程请求中（由业务控制） */
+    loading?: boolean
+    /** 远程方法防抖毫秒 */
+    remoteDebounce?: number
   }>(),
   {
     options: () => [],
@@ -46,6 +53,9 @@ const props = withDefaults(
     virtual: false,
     itemHeight: 34,
     maxDropdownHeight: 240,
+    remote: false,
+    loading: false,
+    remoteDebounce: 300,
   },
 )
 
@@ -75,11 +85,51 @@ const listRef = ref<HTMLElement | null>(null)
 const filterInputRef = ref<HTMLInputElement | null>(null)
 const panelStyle = ref<Record<string, string>>({})
 const scrollTop = ref(0)
+const labelCache = ref(new Map<string, string>())
+let remoteTimer: ReturnType<typeof setTimeout> | null = null
 
 const resolvedSize = computed(() => props.size ?? config.size.value)
 const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )
+const isFilterable = computed(() => props.filterable || props.remote)
+
+function rememberLabels(list: SelectOption[]) {
+  const next = new Map(labelCache.value)
+  for (const item of list) next.set(String(item.value), item.label)
+  labelCache.value = next
+}
+
+watch(
+  () => props.options,
+  (list) => rememberLabels(list),
+  { deep: true, immediate: true },
+)
+
+function invokeRemote(query: string) {
+  if (!props.remote || !props.remoteMethod) return
+  props.remoteMethod(query)
+}
+
+function scheduleRemote(query: string) {
+  if (!props.remote) return
+  if (remoteTimer) clearTimeout(remoteTimer)
+  const delay = Math.max(0, props.remoteDebounce)
+  if (delay === 0) {
+    invokeRemote(query)
+    return
+  }
+  remoteTimer = setTimeout(() => {
+    remoteTimer = null
+    invokeRemote(query)
+  }, delay)
+}
+
+watch(filterQuery, (query) => {
+  if (!props.remote || !opened.value) return
+  scheduleRemote(query)
+})
+
 
 const rootClass = computed(() => attrs.class)
 const rootStyle = computed(
@@ -102,16 +152,20 @@ const selectedValues = computed<SelectValue[]>(() => {
 })
 
 const selectedLabels = computed(() =>
-  selectedValues.value.map(
-    (value) =>
-      props.options.find((item) => String(item.value) === String(value))
-        ?.label ?? String(value),
-  ),
+  selectedValues.value.map((value) => {
+    const key = String(value)
+    return (
+      props.options.find((item) => String(item.value) === key)?.label ??
+      labelCache.value.get(key) ??
+      key
+    )
+  }),
 )
 
 const selectedLabel = computed(() => selectedLabels.value[0] ?? '')
 
 const filteredOptions = computed(() => {
+  if (props.remote) return props.options
   const q = filterQuery.value.trim().toLowerCase()
   if (!props.filterable || !q) return props.options
   return props.options.filter((item) => item.label.toLowerCase().includes(q))
@@ -223,13 +277,18 @@ async function openPanel() {
   syncHighlightFromValue()
   await nextTick()
   updatePanelPosition()
-  if (props.filterable) filterInputRef.value?.focus()
+  if (isFilterable.value) filterInputRef.value?.focus()
+  if (props.remote) invokeRemote('')
 }
 
 function closePanel() {
   opened.value = false
   highlightIndex.value = -1
   filterQuery.value = ''
+  if (remoteTimer) {
+    clearTimeout(remoteTimer)
+    remoteTimer = null
+  }
 }
 
 function togglePanel() {
@@ -240,6 +299,7 @@ function togglePanel() {
 
 function selectOption(item: SelectOption) {
   if (item.disabled) return
+  rememberLabels([item])
   if (props.multiple) {
     const next = [...selectedValues.value]
     const index = next.findIndex((value) => String(value) === String(item.value))
@@ -316,7 +376,7 @@ function onKeydown(event: KeyboardEvent) {
     return
   }
   if ((key === 'Enter' || key === ' ') && opened.value) {
-    if (props.filterable && key === ' ') return
+    if (isFilterable.value && key === ' ') return
     event.preventDefault()
     const item = filteredOptions.value[highlightIndex.value]
     if (item) selectOption(item)
@@ -360,6 +420,7 @@ onBeforeUnmount(() => {
   document.removeEventListener('click', onDocumentClick, true)
   window.removeEventListener('scroll', onScrollOrResize, true)
   window.removeEventListener('resize', onScrollOrResize)
+  if (remoteTimer) clearTimeout(remoteTimer)
 })
 </script>
 
@@ -439,7 +500,7 @@ onBeforeUnmount(() => {
       :aria-multiselectable="multiple || undefined"
       @click.stop
     >
-      <div v-if="filterable" :class="ns.e('filter')">
+      <div v-if="isFilterable" :class="ns.e('filter')">
         <input
           ref="filterInputRef"
           v-model="filterQuery"
@@ -455,37 +516,42 @@ onBeforeUnmount(() => {
         :style="{ maxHeight: `${maxDropdownHeight}px` }"
         @scroll="onListScroll"
       >
-        <div
-          v-if="virtual"
-          :style="{ height: `${virtualPadTop}px`, flex: 'none' }"
-        />
-        <div
-          v-for="{ item, index } in virtualOptions"
-          :key="String(item.value)"
-          :class="[
-            ns.e('option'),
-            ns.is('selected', isSelected(item.value)),
-            ns.is('highlighted', index === highlightIndex),
-            ns.is('disabled', item.disabled),
-          ]"
-          :style="virtual ? { height: `${itemHeight}px` } : undefined"
-          role="option"
-          :aria-selected="isSelected(item.value)"
-          @click="selectOption(item)"
-          @mouseenter="!item.disabled && (highlightIndex = index)"
-        >
-          <span v-if="multiple" :class="ns.e('check')">
-            {{ isSelected(item.value) ? '✓' : '' }}
-          </span>
-          {{ item.label }}
+        <div v-if="loading" :class="ns.e('loading')">
+          {{ t('common.loading') }}
         </div>
-        <div
-          v-if="virtual"
-          :style="{ height: `${virtualPadBottom}px`, flex: 'none' }"
-        />
-        <div v-if="!filteredOptions.length" :class="ns.e('empty')">
-          {{ t('select.empty') }}
-        </div>
+        <template v-else>
+          <div
+            v-if="virtual"
+            :style="{ height: `${virtualPadTop}px`, flex: 'none' }"
+          />
+          <div
+            v-for="{ item, index } in virtualOptions"
+            :key="String(item.value)"
+            :class="[
+              ns.e('option'),
+              ns.is('selected', isSelected(item.value)),
+              ns.is('highlighted', index === highlightIndex),
+              ns.is('disabled', item.disabled),
+            ]"
+            :style="virtual ? { height: `${itemHeight}px` } : undefined"
+            role="option"
+            :aria-selected="isSelected(item.value)"
+            @click="selectOption(item)"
+            @mouseenter="!item.disabled && (highlightIndex = index)"
+          >
+            <span v-if="multiple" :class="ns.e('check')">
+              {{ isSelected(item.value) ? '✓' : '' }}
+            </span>
+            {{ item.label }}
+          </div>
+          <div
+            v-if="virtual"
+            :style="{ height: `${virtualPadBottom}px`, flex: 'none' }"
+          />
+          <div v-if="!filteredOptions.length" :class="ns.e('empty')">
+            {{ t('select.empty') }}
+          </div>
+        </template>
       </div>
     </div>
   </Teleport>

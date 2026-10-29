@@ -5,11 +5,13 @@ import Clearable from './demos/select/clearable.vue'
 import Sizes from './demos/select/sizes.vue'
 import Disabled from './demos/select/disabled.vue'
 import Multiple from './demos/select/multiple.vue'
+import Remote from './demos/select/remote.vue'
 import basicSrc from './demos/select/basic.vue?raw'
 import clearableSrc from './demos/select/clearable.vue?raw'
 import sizesSrc from './demos/select/sizes.vue?raw'
 import disabledSrc from './demos/select/disabled.vue?raw'
 import multipleSrc from './demos/select/multiple.vue?raw'
+import remoteSrc from './demos/select/remote.vue?raw'
 </script>
 
 # Select 选择器
@@ -30,6 +32,14 @@ import multipleSrc from './demos/select/multiple.vue?raw'
 
 <DemoBlock :source="multipleSrc">
   <Multiple />
+</DemoBlock>
+
+## 远程搜索
+
+`remote` 开启后由 `remoteMethod(query)` 拉取选项；配合 `loading` 展示加载态。选中后即使 options 被替换，仍会缓存 label。
+
+<DemoBlock :source="remoteSrc">
+  <Remote />
 </DemoBlock>
 
 ## 可清空与禁用选项
@@ -56,12 +66,18 @@ import multipleSrc from './demos/select/multiple.vue?raw'
 
 | 属性 | 说明 | 类型 | 默认值 | 必填 |
 |------|------|------|--------|------|
-| modelValue / v-model | 当前选中值；清空后为 `null` | `string \| number \| boolean \| null` | — | 否 |
+| modelValue / v-model | 当前选中值；清空后为 `null` / `[]` | `string \| number \| boolean \| null \| Array` | — | 否 |
 | options | 选项列表 | `SelectOption[]` | `[]` | 否 |
 | placeholder | 未选择时的占位项文案 | `string` | `'请选择'` | 否 |
 | clearable | 是否显示清空 | `boolean` | `false` | 否 |
 | disabled | 禁用；可继承 Form | `boolean` | `false` | 否 |
 | size | 尺寸；未传继承 ConfigProvider | `'small' \| 'default' \| 'large'` | — | 否 |
+| multiple / filterable / virtual | 多选 / 本地搜索 / 虚拟列表 | `boolean` | `false` | 否 |
+| remote | 远程搜索（自动显示搜索框） | `boolean` | `false` | 否 |
+| remoteMethod | 远程查询回调 | `(query: string) => void` | — | 否 |
+| loading | 远程加载中 | `boolean` | `false` | 否 |
+| remoteDebounce | 远程防抖毫秒 | `number` | `300` | 否 |
+
 
 ### SelectOption
 

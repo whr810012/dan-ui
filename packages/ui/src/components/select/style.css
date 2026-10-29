@@ -204,7 +204,8 @@
   cursor: not-allowed;
 }
 
-.dan-select__empty {
+.dan-select__empty,
+.dan-select__loading {
   padding: 12px;
   color: var(--dan-color-text-placeholder);
   text-align: center;
