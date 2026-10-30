@@ -55,7 +55,15 @@
   cursor: pointer;
 }
 
-.dan-mentions__item:hover {
+.dan-mentions__item:hover,
+.dan-mentions__item.is-highlighted {
   background: var(--dan-color-fill);
   color: var(--dan-color-primary);
+}
+
+.dan-mentions__status {
+  padding: 10px 12px;
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+  text-align: center;
 }

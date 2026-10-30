@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.10.0
+
+- Badge：`offset` / `showZero`
+- Mentions：方向键与 Enter / Esc、`loading`、`filterOption`、`search`
+
 ## 2.9.0
 
 - Autocomplete：`debounce` / `loading`、空态、方向键与 Enter 选择
