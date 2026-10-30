@@ -33,7 +33,7 @@ import loadingExportSrc from './demos/table/loading-export.vue?raw'
 
 ## 基础用法
 
-表头漏斗可筛选；右上角「列设置」可勾选显示列；点击可排序列表头切换升序 / 降序 / 取消。
+表头漏斗可筛选（面板内编辑草稿，点「筛选」生效、「重置」清空）；无匹配结果时展示空筛提示并可一键清除。右上角「列设置」可勾选显示列；点击可排序列表头切换升序 / 降序 / 取消。
 
 <DemoBlock :source="basicSrc">
   <Basic />

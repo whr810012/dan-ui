@@ -18,8 +18,12 @@ export interface LocaleMessages {
     columnSettings: string
     summary: string
     filterClear: string
+    filterConfirm: string
+    filterReset: string
     filterPlaceholder: string
     filterSelectPlaceholder: string
+    filterEmptyText: string
+    filterEmptyClear: string
     loading: string
   }
   select: {

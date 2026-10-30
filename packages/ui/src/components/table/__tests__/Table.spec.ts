@@ -47,6 +47,51 @@ describe('DanTable', () => {
     expect(wrapper.text()).toContain('李四')
   })
 
+  it('applies filter only after confirm', async () => {
+    const wrapper = mount(DanTable, {
+      attachTo: document.body,
+      props: { columns, data },
+    })
+    await nextTick()
+
+    const table = wrapper.vm as unknown as {
+      setFilterDraft: (prop: string, value: string | null) => void
+      confirmFilter: (prop: string) => void
+    }
+    table.setFilterDraft('name', '李')
+    await nextTick()
+    expect(wrapper.findAll('tbody tr')).toHaveLength(3)
+
+    table.confirmFilter('name')
+    await nextTick()
+    expect(wrapper.findAll('tbody tr')).toHaveLength(1)
+    expect(wrapper.text()).toContain('李四')
+
+    wrapper.unmount()
+  })
+
+  it('shows filter empty hint and clears filters', async () => {
+    const wrapper = mount(DanTable, {
+      props: { columns, data },
+    })
+    const table = wrapper.vm as unknown as {
+      setFilterDraft: (prop: string, value: string | null) => void
+      confirmFilter: (prop: string) => void
+      clearAllFilters: () => void
+    }
+    table.setFilterDraft('name', '不存在的人')
+    table.confirmFilter('name')
+    await nextTick()
+
+    expect(wrapper.find('.dan-table__empty').exists()).toBe(true)
+    expect(wrapper.text()).toContain('未找到匹配的筛选结果')
+    table.clearAllFilters()
+    await nextTick()
+    expect(wrapper.findAll('tbody tr')).toHaveLength(3)
+
+    wrapper.unmount()
+  })
+
   it('hides columns via visibleColumns', async () => {
     const wrapper = mount(DanTable, {
       props: {

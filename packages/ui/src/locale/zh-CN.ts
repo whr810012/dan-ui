@@ -20,8 +20,12 @@ const zhCN: LocaleMessages = {
     columnSettings: '列设置',
     summary: '合计',
     filterClear: '清除',
+    filterConfirm: '筛选',
+    filterReset: '重置',
     filterPlaceholder: '输入关键词',
     filterSelectPlaceholder: '请选择',
+    filterEmptyText: '未找到匹配的筛选结果',
+    filterEmptyClear: '清除筛选',
     loading: '加载中…',
   },
   select: {

@@ -163,11 +163,11 @@ const ROW_DRAG_COL_WIDTH = 36
 
 const ns = useNamespace('table')
 const { t } = useLocale()
-const resolvedEmptyText = computed(
-  () => props.emptyText ?? t('table.emptyText'),
-)
-
 const innerFilters = ref<TableFilters>({})
+/** 筛选面板草稿值（确认后才写入 filters） */
+const filterDrafts = ref<TableFilters>({})
+/** 当前打开的筛选项 prop */
+const openFilterProp = ref<string | null>(null)
 const innerVisible = ref<string[]>([])
 const innerExpandKeys = ref<Array<string | number>>([])
 const innerSelectedKeys = ref<Array<string | number>>([])
@@ -656,6 +656,66 @@ function clearFilter(prop: string) {
   setFilter(prop, null)
 }
 
+function clearAllFilters() {
+  if (isFiltersControlled.value) {
+    emit('update:filters', {})
+  } else {
+    innerFilters.value = {}
+  }
+  filterDrafts.value = {}
+  emit('filter-change', {})
+}
+
+function hasFilterValue(value: string | number | null | undefined) {
+  return value != null && value !== ''
+}
+
+const hasActiveFilters = computed(() =>
+  Object.values(resolvedFilters.value).some((value) => hasFilterValue(value)),
+)
+
+const emptyDescription = computed(() => {
+  if (props.emptyText) return props.emptyText
+  if (hasActiveFilters.value) return t('table.filterEmptyText')
+  return t('table.emptyText')
+})
+
+function syncFilterDraft(prop: string) {
+  const current = resolvedFilters.value[prop]
+  filterDrafts.value = {
+    ...filterDrafts.value,
+    [prop]: hasFilterValue(current) ? current : null,
+  }
+}
+
+function onFilterVisibleChange(prop: string, visible: boolean) {
+  if (visible) {
+    openFilterProp.value = prop
+    syncFilterDraft(prop)
+  } else if (openFilterProp.value === prop) {
+    openFilterProp.value = null
+  }
+}
+
+function setFilterDraft(prop: string, value: string | number | null) {
+  filterDrafts.value = {
+    ...filterDrafts.value,
+    [prop]: value == null || value === '' ? null : value,
+  }
+}
+
+function confirmFilter(prop: string) {
+  const draft = filterDrafts.value[prop]
+  setFilter(prop, hasFilterValue(draft) ? (draft as string | number) : null)
+  openFilterProp.value = null
+}
+
+function resetFilter(prop: string) {
+  filterDrafts.value = { ...filterDrafts.value, [prop]: null }
+  clearFilter(prop)
+  openFilterProp.value = null
+}
+
 function isColumnVisible(prop: string) {
   return resolvedVisibleProps.value.includes(prop)
 }
@@ -767,6 +827,10 @@ function exportData() {
 defineExpose({
   exportCsv,
   exportData,
+  confirmFilter,
+  resetFilter,
+  setFilterDraft,
+  clearAllFilters,
 })
 
 const processedTree = computed(() => {
@@ -1167,14 +1231,18 @@ function colMinWidth(col: TableColumn) {
                   v-if="cell.column.prop && resolveFilterConfig(cell.column)"
                   trigger="click"
                   placement="bottom"
-                  :width="200"
+                  :width="220"
+                  :visible="openFilterProp === cell.column.prop"
+                  @update:visible="
+                    (v) =>
+                      onFilterVisibleChange(cell.column.prop as string, v)
+                  "
                 >
                   <button
                     type="button"
                     :class="[
                       ns.e('filter-btn'),
-                      resolvedFilters[cell.column.prop] != null &&
-                      resolvedFilters[cell.column.prop] !== ''
+                      hasFilterValue(resolvedFilters[cell.column.prop])
                         ? ns.is('active')
                         : '',
                     ]"
@@ -1191,7 +1259,7 @@ function colMinWidth(col: TableColumn) {
                       >
                         <DanSelect
                           :model-value="
-                            (resolvedFilters[cell.column.prop as string] as
+                            (filterDrafts[cell.column.prop as string] as
                               string | number | null) ?? null
                           "
                           :options="
@@ -1201,7 +1269,7 @@ function colMinWidth(col: TableColumn) {
                           :placeholder="t('table.filterSelectPlaceholder')"
                           @update:model-value="
                             (val) =>
-                              setFilter(
+                              setFilterDraft(
                                 cell.column.prop as string,
                                 val as string | number | null,
                               )
@@ -1211,27 +1279,39 @@ function colMinWidth(col: TableColumn) {
                       <template v-else>
                         <DanInput
                           :model-value="
-                            resolvedFilters[cell.column.prop as string] == null
+                            filterDrafts[cell.column.prop as string] == null
                               ? ''
                               : String(
-                                  resolvedFilters[cell.column.prop as string],
+                                  filterDrafts[cell.column.prop as string],
                                 )
                           "
                           clearable
                           :placeholder="t('table.filterPlaceholder')"
                           @update:model-value="
                             (val) =>
-                              setFilter(cell.column.prop as string, val || null)
+                              setFilterDraft(
+                                cell.column.prop as string,
+                                val || null,
+                              )
                           "
                         />
                       </template>
-                      <button
-                        type="button"
-                        :class="ns.e('filter-clear')"
-                        @click="clearFilter(cell.column.prop as string)"
-                      >
-                        {{ t('table.filterClear') }}
-                      </button>
+                      <div :class="ns.e('filter-actions')">
+                        <button
+                          type="button"
+                          :class="ns.e('filter-reset')"
+                          @click="resetFilter(cell.column.prop as string)"
+                        >
+                          {{ t('table.filterReset') }}
+                        </button>
+                        <button
+                          type="button"
+                          :class="ns.e('filter-confirm')"
+                          @click="confirmFilter(cell.column.prop as string)"
+                        >
+                          {{ t('table.filterConfirm') }}
+                        </button>
+                      </div>
                     </div>
                   </template>
                 </DanPopover>
@@ -1511,7 +1591,15 @@ function colMinWidth(col: TableColumn) {
 
       <div v-if="isEmpty" :class="ns.e('empty')">
         <slot name="empty">
-          <DanEmpty :description="resolvedEmptyText" :image-size="72" />
+          <DanEmpty :description="emptyDescription" :image-size="72" />
+          <button
+            v-if="hasActiveFilters && !emptyText"
+            type="button"
+            :class="ns.e('filter-empty-clear')"
+            @click="clearAllFilters"
+          >
+            {{ t('table.filterEmptyClear') }}
+          </button>
         </slot>
       </div>
     </div>

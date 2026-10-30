@@ -20,8 +20,12 @@ const en: LocaleMessages = {
     columnSettings: 'Columns',
     summary: 'Total',
     filterClear: 'Clear',
+    filterConfirm: 'Filter',
+    filterReset: 'Reset',
     filterPlaceholder: 'Keyword',
     filterSelectPlaceholder: 'Select',
+    filterEmptyText: 'No matching results',
+    filterEmptyClear: 'Clear filters',
     loading: 'Loading…',
   },
   select: {
