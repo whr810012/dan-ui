@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.18.0
+
+- Tabs：`closable` / `addable` / `editable`；`tabRemove` / `tabAdd` / `edit`；TabPane 可覆盖 `closable`
+
 ## 2.17.0
 
 - Popover：`trigger` 增补 `focus` / `contextmenu`；文档补齐 `showAfter` / `hideAfter`

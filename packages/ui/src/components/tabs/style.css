@@ -26,6 +26,9 @@
 
 .dan-tabs__item {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   margin: 0;
   padding: 10px var(--dan-spacing-lg);
   border: 0;
@@ -39,6 +42,77 @@
     color var(--dan-duration-fast) var(--dan-ease),
     background-color var(--dan-duration-fast) var(--dan-ease),
     border-color var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-tabs__item.is-closable {
+  padding-right: var(--dan-spacing-md);
+}
+
+.dan-tabs__label {
+  display: inline-block;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dan-tabs__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--dan-radius-sm);
+  background: transparent;
+  color: var(--dan-color-text-secondary);
+  cursor: pointer;
+  transition:
+    color var(--dan-duration-fast) var(--dan-ease),
+    background-color var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-tabs__close:hover:not(:disabled) {
+  color: var(--dan-color-text);
+  background: var(--dan-color-fill);
+}
+
+.dan-tabs__close:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.dan-tabs__new {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 28px;
+  height: 28px;
+  margin: 0 0 0 var(--dan-spacing-xs);
+  padding: 0;
+  border: 1px dashed var(--dan-color-border);
+  border-radius: var(--dan-radius-sm);
+  background: transparent;
+  color: var(--dan-color-text-secondary);
+  cursor: pointer;
+  transition:
+    color var(--dan-duration-fast) var(--dan-ease),
+    border-color var(--dan-duration-fast) var(--dan-ease),
+    background-color var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-tabs__new:hover {
+  color: var(--dan-color-primary);
+  border-color: var(--dan-color-primary);
+  background: var(--dan-color-primary-light);
+}
+
+.dan-tabs__new:focus-visible {
+  outline: 2px solid var(--dan-color-primary-light);
+  outline-offset: 2px;
 }
 
 .dan-tabs__item:hover:not(.is-disabled):not(.is-active) {

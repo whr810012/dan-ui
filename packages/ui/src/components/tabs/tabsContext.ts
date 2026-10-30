@@ -5,6 +5,8 @@ export interface TabsPane {
   name: string | number
   label: string
   disabled: boolean
+  /** 单页覆盖；未设置时跟随 Tabs 的 closable / editable */
+  closable?: boolean
 }
 
 export interface TabsContext {

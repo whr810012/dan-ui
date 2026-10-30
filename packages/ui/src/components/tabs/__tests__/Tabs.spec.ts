@@ -76,4 +76,39 @@ describe('DanTabs', () => {
     await nextTick()
     expect(active.value).toBe('a')
   })
+
+  it('emits tabRemove / tabAdd when editable', async () => {
+    const active = ref('a')
+    const removed: Array<string | number> = []
+    let added = 0
+    const Comp = defineComponent({
+      components: { DanTabs, DanTabPane },
+      setup() {
+        return {
+          active,
+          onRemove: (name: string | number) => removed.push(name),
+          onAdd: () => {
+            added += 1
+          },
+        }
+      },
+      template: `
+        <DanTabs v-model="active" editable @tab-remove="onRemove" @tab-add="onAdd">
+          <DanTabPane label="A" name="a">pane-a</DanTabPane>
+          <DanTabPane label="B" name="b" :closable="false">pane-b</DanTabPane>
+        </DanTabs>
+      `,
+    })
+
+    const wrapper = mount(Comp)
+    await nextTick()
+    expect(wrapper.findAll('.dan-tabs__close')).toHaveLength(1)
+    expect(wrapper.find('.dan-tabs__new').exists()).toBe(true)
+
+    await wrapper.find('.dan-tabs__close').trigger('click')
+    expect(removed).toEqual(['a'])
+
+    await wrapper.find('.dan-tabs__new').trigger('click')
+    expect(added).toBe(1)
+  })
 })

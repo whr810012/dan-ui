@@ -11,10 +11,16 @@ const props = withDefaults(
     name: string | number
     label?: string
     disabled?: boolean
+    /**
+     * 覆盖 Tabs 级 closable / editable。
+     * 默认 `undefined` 表示跟随父级（需显式默认，避免 Boolean 缺省被转成 false）。
+     */
+    closable?: boolean
   }>(),
   {
     label: '',
     disabled: false,
+    closable: undefined,
   },
 )
 
@@ -27,6 +33,7 @@ const paneInfo = computed(() => ({
   name: props.name,
   label: props.label || String(props.name),
   disabled: props.disabled,
+  closable: props.closable,
 }))
 
 tabs.register(paneInfo.value)

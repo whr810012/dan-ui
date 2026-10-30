@@ -1,6 +1,6 @@
 {
   "name": "@dandan-ui/theme",
-  "version": "2.17.0",
+  "version": "2.18.0",
   "description": "CSS design tokens for dan-ui",
   "type": "module",
   "license": "MIT",
