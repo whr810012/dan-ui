@@ -69,8 +69,7 @@ function getPrecision(value: number) {
 }
 
 function toPrecision(value: number) {
-  const precision = numPrecision.value
-  if (precision == null || precision < 0) return value
+  const precision = Math.max(0, Math.floor(numPrecision.value))
   return Number.parseFloat(value.toFixed(precision))
 }
 
@@ -134,9 +133,9 @@ const displayValue = computed(() => {
   if (props.modelValue == null || Number.isNaN(Number(props.modelValue))) {
     return ''
   }
-  let value = Number(props.modelValue)
+  const value = Number(props.modelValue)
   if (typeof props.precision === 'number') {
-    value = Number(value.toFixed(props.precision))
+    return value.toFixed(Math.max(0, Math.floor(props.precision)))
   }
   return String(value)
 })

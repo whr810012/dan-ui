@@ -4,6 +4,8 @@ import Basic from './demos/input-number/basic.vue'
 import basicSrc from './demos/input-number/basic.vue?raw'
 import Controls from './demos/input-number/controls.vue'
 import controlsSrc from './demos/input-number/controls.vue?raw'
+import Precision from './demos/input-number/precision.vue'
+import precisionSrc from './demos/input-number/precision.vue?raw'
 </script>
 
 # InputNumber 数字输入框
@@ -18,10 +20,18 @@ import controlsSrc from './demos/input-number/controls.vue?raw'
 
 ## 控制按钮
 
-右侧按钮或隐藏控制按钮。
+`controls-position="right"` 将加减钮叠在右侧；`controls=false` 可隐藏。
 
 <DemoBlock :source="controlsSrc">
   <Controls />
+</DemoBlock>
+
+## 精度与步进
+
+`precision` 控制展示与写入小数位；`stepStrictly` 限制为 step 的倍数。
+
+<DemoBlock :source="precisionSrc">
+  <Precision />
 </DemoBlock>
 
 ## InputNumber Props

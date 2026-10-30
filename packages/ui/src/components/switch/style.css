@@ -15,6 +15,10 @@
   cursor: not-allowed;
 }
 
+.dan-switch.is-loading {
+  cursor: wait;
+}
+
 .dan-switch__core {
   position: relative;
   width: 40px;
@@ -32,6 +36,9 @@
   position: absolute;
   top: 50%;
   left: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 18px;
   height: 18px;
   border-radius: 50%;
@@ -45,4 +52,8 @@
 
 .dan-switch.is-checked .dan-switch__action {
   left: 20px;
+}
+
+.dan-switch__loading {
+  color: var(--dan-color-primary);
 }

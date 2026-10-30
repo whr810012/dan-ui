@@ -41,4 +41,30 @@ describe('DanInputNumber', () => {
       wrapper.get('.dan-input-number__increase').attributes('disabled'),
     ).toBeDefined()
   })
+
+  it('applies precision and right controls', async () => {
+    const value = ref(1)
+    const Comp = defineComponent({
+      components: { DanInputNumber },
+      setup() {
+        return { value }
+      },
+      template: `
+        <DanInputNumber
+          v-model="value"
+          :step="0.2"
+          :precision="2"
+          controls-position="right"
+        />
+      `,
+    })
+
+    const wrapper = mount(Comp)
+    expect(wrapper.classes()).toContain('is-controls-right')
+    await wrapper.get('.dan-input-number__increase').trigger('click')
+    await nextTick()
+    expect(value.value).toBe(1.2)
+    expect(wrapper.get('input').element.value).toBe('1.20')
+  })
 })
+

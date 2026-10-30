@@ -4,10 +4,12 @@ import Basic from './demos/switch/basic.vue'
 import Text from './demos/switch/text.vue'
 import Value from './demos/switch/value.vue'
 import Disabled from './demos/switch/disabled.vue'
+import Loading from './demos/switch/loading.vue'
 import basicSrc from './demos/switch/basic.vue?raw'
 import textSrc from './demos/switch/text.vue?raw'
 import valueSrc from './demos/switch/value.vue?raw'
 import disabledSrc from './demos/switch/disabled.vue?raw'
+import loadingSrc from './demos/switch/loading.vue?raw'
 </script>
 
 # Switch 开关
@@ -34,6 +36,14 @@ import disabledSrc from './demos/switch/disabled.vue?raw'
   <Value />
 </DemoBlock>
 
+## 加载与切换前确认
+
+`loading` 显示加载并禁止切换。`beforeChange` 可返回 `false` 或 rejected Promise 以阻止切换；返回 Promise 期间也会进入加载态。
+
+<DemoBlock :source="loadingSrc">
+  <Loading />
+</DemoBlock>
+
 ## 禁用
 
 <DemoBlock :source="disabledSrc">
@@ -51,6 +61,8 @@ import disabledSrc from './demos/switch/disabled.vue?raw'
 | inactiveValue | 关闭时写入的值 | `boolean \| string \| number` | `false` | 否 |
 | activeText | 打开侧文案 | `string` | — | 否 |
 | inactiveText | 关闭侧文案 | `string` | — | 否 |
+| loading | 加载中，禁止切换 | `boolean` | `false` | 否 |
+| beforeChange | 切换前钩子；`false` / reject 阻止切换 | `() => boolean \| Promise<boolean>` | — | 否 |
 | disabled | 禁用；可继承 Form | `boolean` | `false` | 否 |
 
 ### Events
@@ -60,13 +72,9 @@ import disabledSrc from './demos/switch/disabled.vue?raw'
 | update:modelValue | `v-model` 更新 | `(value: boolean \| string \| number) => void` |
 | change | 切换完成，并联动 FormItem | `(value: boolean \| string \| number) => void` |
 
-### Slots
-
-无内容插槽；文案通过 `activeText` / `inactiveText` 配置。
-
 ### 无障碍
 
-根节点为 `button[role=switch]`，带 `aria-checked`。
+根节点为 `button[role=switch]`，带 `aria-checked`；加载时设置 `aria-busy`。
 
 ### Token
 

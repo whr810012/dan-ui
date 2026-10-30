@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.12.0
+
+- Switch：`loading`、`beforeChange`（支持异步确认）
+- InputNumber：完善 `precision` / 右侧控制文档与用例
+
 ## 2.11.0
 
 - Progress：`textInside` / `striped` / `stripedFlow` / `indeterminate`
