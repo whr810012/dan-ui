@@ -7,6 +7,14 @@
   align-items: flex-start;
 }
 
+.dan-dialog.is-align-center {
+  align-items: center;
+}
+
+.dan-dialog.is-dragging {
+  user-select: none;
+}
+
 .dan-dialog__mask {
   position: absolute;
   inset: 0;
@@ -32,6 +40,10 @@
   gap: var(--dan-spacing-md);
   padding: var(--dan-spacing-lg) var(--dan-spacing-xl);
   border-bottom: 1px solid var(--dan-color-border-light);
+}
+
+.dan-dialog__header.is-draggable {
+  cursor: move;
 }
 
 .dan-dialog__title {

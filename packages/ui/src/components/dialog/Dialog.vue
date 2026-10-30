@@ -24,6 +24,10 @@ const props = withDefaults(
     confirmText?: string
     confirmLoading?: boolean
     destroyOnClose?: boolean
+    /** 垂直居中（忽略 top） */
+    alignCenter?: boolean
+    /** 拖拽标题栏移动 */
+    draggable?: boolean
   }>(),
   {
     modelValue: false,
@@ -37,6 +41,8 @@ const props = withDefaults(
     showConfirm: true,
     confirmLoading: false,
     destroyOnClose: false,
+    alignCenter: false,
+    draggable: false,
   },
 )
 
@@ -60,7 +66,20 @@ const ns = useNamespace('dialog')
 const panelRef = ref<HTMLElement | null>(null)
 const titleId = `dan-dialog-title-${Math.random().toString(36).slice(2, 9)}`
 const rendered = computed(() => props.modelValue || !props.destroyOnClose)
+const dragging = ref(false)
+const offset = ref({ x: 0, y: 0 })
 useFocusTrap(panelRef, () => props.modelValue)
+
+const panelStyle = computed(() => {
+  const style: Record<string, string> = {
+    width: props.width,
+    transform: `translate(${offset.value.x}px, ${offset.value.y}px)`,
+  }
+  if (!props.alignCenter) {
+    style.marginTop = props.top
+  }
+  return style
+})
 
 function close() {
   emit('update:modelValue', false)
@@ -86,11 +105,40 @@ function onKeydown(event: KeyboardEvent) {
   }
 }
 
+function onDragPointerDown(event: PointerEvent) {
+  if (!props.draggable || !props.modelValue) return
+  const target = event.target as HTMLElement | null
+  if (target?.closest('button, a, input, textarea, select')) return
+  event.preventDefault()
+
+  const startX = event.clientX
+  const startY = event.clientY
+  const origin = { ...offset.value }
+  dragging.value = true
+
+  const onMove = (ev: PointerEvent) => {
+    offset.value = {
+      x: origin.x + (ev.clientX - startX),
+      y: origin.y + (ev.clientY - startY),
+    }
+  }
+
+  const onUp = () => {
+    dragging.value = false
+    document.removeEventListener('pointermove', onMove)
+    document.removeEventListener('pointerup', onUp)
+  }
+
+  document.addEventListener('pointermove', onMove)
+  document.addEventListener('pointerup', onUp)
+}
+
 watch(
   () => props.modelValue,
   (value) => {
     if (typeof document === 'undefined') return
     if (value) {
+      offset.value = { x: 0, y: 0 }
       emit('open')
       document.addEventListener('keydown', onKeydown)
       document.body.style.overflow = 'hidden'
@@ -110,19 +158,30 @@ onBeforeUnmount(() => {
 
 <template>
   <Teleport to="body">
-    <div v-if="rendered" v-show="modelValue" :class="ns.b()">
+    <div
+      v-if="rendered"
+      v-show="modelValue"
+      :class="[
+        ns.b(),
+        ns.is('align-center', alignCenter),
+        ns.is('dragging', dragging),
+      ]"
+    >
       <div :class="ns.e('mask')" @click="onMaskClick" />
       <div
         ref="panelRef"
-        :class="ns.e('panel')"
+        :class="[ns.e('panel'), ns.is('draggable', draggable)]"
         role="dialog"
         aria-modal="true"
         :aria-labelledby="titleId"
         tabindex="-1"
-        :style="{ width, marginTop: top }"
+        :style="panelStyle"
         @click.stop
       >
-        <header :class="ns.e('header')">
+        <header
+          :class="[ns.e('header'), ns.is('draggable', draggable)]"
+          @pointerdown="onDragPointerDown"
+        >
           <span :id="titleId" :class="ns.e('title')">
             <slot name="title">{{ title }}</slot>
           </span>

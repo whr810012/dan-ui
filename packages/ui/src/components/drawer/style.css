@@ -20,6 +20,59 @@
   box-shadow: var(--dan-shadow-lg);
 }
 
+.dan-drawer.is-resizing {
+  user-select: none;
+  cursor: col-resize;
+}
+
+.dan-drawer--ttb.is-resizing,
+.dan-drawer--btt.is-resizing {
+  cursor: row-resize;
+}
+
+.dan-drawer__resizer {
+  position: absolute;
+  z-index: 2;
+  background: transparent;
+}
+
+.dan-drawer--rtl .dan-drawer__resizer,
+.dan-drawer--ltr .dan-drawer__resizer {
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  cursor: col-resize;
+}
+
+.dan-drawer--rtl .dan-drawer__resizer {
+  left: 0;
+}
+
+.dan-drawer--ltr .dan-drawer__resizer {
+  right: 0;
+}
+
+.dan-drawer--ttb .dan-drawer__resizer,
+.dan-drawer--btt .dan-drawer__resizer {
+  left: 0;
+  right: 0;
+  height: 6px;
+  cursor: row-resize;
+}
+
+.dan-drawer--ttb .dan-drawer__resizer {
+  bottom: 0;
+}
+
+.dan-drawer--btt .dan-drawer__resizer {
+  top: 0;
+}
+
+.dan-drawer__resizer:hover,
+.dan-drawer.is-resizing .dan-drawer__resizer {
+  background: var(--dan-color-primary-light);
+}
+
 .dan-drawer--rtl .dan-drawer__panel {
   top: 0;
   right: 0;

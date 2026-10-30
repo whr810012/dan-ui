@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.14.0
+
+- Drawer：`resizable` / `v-model:size` / `minSize`；文档补齐 `destroyOnClose`
+- Dialog：`alignCenter` / `draggable`；文档补齐 `destroyOnClose`
+
 ## 2.13.0
 
 - Alert：`center`、`closeText`

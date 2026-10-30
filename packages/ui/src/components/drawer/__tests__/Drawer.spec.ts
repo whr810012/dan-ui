@@ -29,4 +29,29 @@ describe('DanDrawer', () => {
 
     wrapper.unmount()
   })
+
+  it('shows resizer and destroys on close', async () => {
+    const wrapper = mount(DanDrawer, {
+      attachTo: document.body,
+      props: {
+        modelValue: true,
+        resizable: true,
+        destroyOnClose: true,
+        title: '可调整',
+        'onUpdate:modelValue': (value: boolean) =>
+          wrapper.setProps({ modelValue: value }),
+      },
+      slots: { default: '临时内容' },
+    })
+    await nextTick()
+    expect(document.querySelector('.dan-drawer__resizer')).toBeTruthy()
+
+    ;(document.querySelector('.dan-drawer__close') as HTMLButtonElement).click()
+    await nextTick()
+    await wrapper.setProps({ modelValue: false })
+    await nextTick()
+    expect(document.body.textContent).not.toContain('临时内容')
+    wrapper.unmount()
+  })
 })
+
