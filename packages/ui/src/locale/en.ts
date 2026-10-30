@@ -112,6 +112,14 @@ const en: LocaleMessages = {
     loading: 'Loading…',
     finished: 'No more',
   },
+  upload: {
+    select: 'Select file',
+    dragText: 'Drop file here, or click to upload',
+    dragActive: 'Release to upload',
+    limitHint: 'Up to {limit} files',
+    acceptHint: 'Accepted: {accept}',
+    cardAdd: 'Upload',
+  },
 }
 
 export default en

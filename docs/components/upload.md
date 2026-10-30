@@ -4,6 +4,8 @@ import Basic from './demos/upload/basic.vue'
 import basicSrc from './demos/upload/basic.vue?raw'
 import Drag from './demos/upload/drag.vue'
 import dragSrc from './demos/upload/drag.vue?raw'
+import TipSlot from './demos/upload/tip-slot.vue'
+import tipSlotSrc from './demos/upload/tip-slot.vue?raw'
 import Chunk from './demos/upload/chunk.vue'
 import chunkSrc from './demos/upload/chunk.vue?raw'
 import PictureCard from './demos/upload/picture-card.vue'
@@ -22,8 +24,18 @@ import pictureCardSrc from './demos/upload/picture-card.vue?raw'
 
 ## 拖拽上传
 
+拖拽区展示图标与 locale 文案；`limit` / `accept` 会自动出现在副文案。可用 `tip` 或 `#tip` 在触发区下方补充说明。
+
 <DemoBlock :source="dragSrc">
   <Drag />
+</DemoBlock>
+
+## 自定义文案与 tip
+
+`drag-text` 覆盖主文案；`#tip` 自定义底部提示（优先于 `tip` 属性的默认渲染）。
+
+<DemoBlock :source="tipSlotSrc">
+  <TipSlot />
 </DemoBlock>
 
 ## 可中断与分片上传
@@ -52,6 +64,8 @@ import pictureCardSrc from './demos/upload/picture-card.vue?raw'
 | disabled | 禁用 | `boolean` | `false` |
 | limit | 最大上传数量 | `number` | — |
 | drag | 是否启用拖拽 | `boolean` | `false` |
+| dragText | 拖拽区主文案 | `string` | locale |
+| tip | 触发区下方提示 | `string` | `''` |
 | autoUpload | 选中后是否自动上传 | `boolean` | `true` |
 | listType | 列表样式 | `'text' \| 'picture-card'` | `'text'` |
 | httpRequest | 自定义上传方法 | `UploadRequestHandler` | 内置 mock |
@@ -67,6 +81,13 @@ import pictureCardSrc from './demos/upload/picture-card.vue?raw'
 | remove | 移除文件 | `(file, fileList)` |
 | exceed | 超出 limit | `(files, fileList)` |
 | success / error / progress | 上传过程 | 见类型 |
+
+## Upload Slots
+
+| 插槽 | 说明 |
+|------|------|
+| default | 触发区内容（按钮 / 拖拽区内部） |
+| tip | 触发区下方提示（覆盖 `tip` 属性文本） |
 
 ## Upload 方法
 

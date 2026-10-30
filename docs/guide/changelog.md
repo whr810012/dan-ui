@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.21.0
+
+- Upload：拖拽区图标与 locale 文案；`dragText` / `tip` / `#tip`；自动展示 `limit` / `accept` 副文案
+
 ## 2.20.0
 
 - Table：筛选面板改为确认 / 重置；无匹配结果时展示空筛提示与「清除筛选」

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref, useSlots, watch } from 'vue'
 import { useFormItem } from '../../hooks/useFormItem'
+import { useLocale } from '../../locale'
 import { useNamespace } from '../../hooks/useNamespace'
+import { DanIcon } from '../icon'
 import type {
   UploadBeforeChunkHook,
   UploadChunkInfo,
@@ -23,6 +25,10 @@ const props = withDefaults(
     disabled?: boolean
     limit?: number
     drag?: boolean
+    /** 拖拽区主文案；未传走 locale */
+    dragText?: string
+    /** 触发区下方提示文案；也可用 #tip 插槽 */
+    tip?: string
     autoUpload?: boolean
     httpRequest?: UploadRequestHandler
     listType?: 'text' | 'picture-card'
@@ -38,6 +44,8 @@ const props = withDefaults(
     multiple: false,
     disabled: false,
     drag: false,
+    dragText: undefined,
+    tip: '',
     autoUpload: true,
     listType: 'text',
     chunkSize: 0,
@@ -55,6 +63,8 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('upload')
+const { t } = useLocale()
+const slots = useSlots()
 const { form, emitChange } = useFormItem()
 const inputRef = ref<HTMLInputElement | null>(null)
 const dragOver = ref(false)
@@ -64,6 +74,25 @@ const abortMap = new Map<number, () => void>()
 const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )
+
+const resolvedDragText = computed(
+  () =>
+    props.dragText ||
+    (dragOver.value ? t('upload.dragActive') : t('upload.dragText')),
+)
+
+const dragSubHints = computed(() => {
+  const hints: string[] = []
+  if (props.limit != null) {
+    hints.push(t('upload.limitHint', { limit: props.limit }))
+  }
+  if (props.accept) {
+    hints.push(t('upload.acceptHint', { accept: props.accept }))
+  }
+  return hints
+})
+
+const showTip = computed(() => Boolean(slots.tip) || Boolean(props.tip))
 
 const files = ref<UploadFile[]>(normalizeList(props.fileList))
 let syncingFromInner = false
@@ -519,7 +548,7 @@ defineExpose({
         >
           <slot>
             <span :class="ns.e('card-add-icon')">+</span>
-            <span :class="ns.e('card-add-text')">上传</span>
+            <span :class="ns.e('card-add-text')">{{ t('upload.cardAdd') }}</span>
           </slot>
         </li>
       </ul>
@@ -539,10 +568,15 @@ defineExpose({
         @drop="onDrop"
       >
         <slot>
-          <div :class="ns.e('tip')">
-            <p :class="ns.e('tip-title')">将文件拖到此处，或点击上传</p>
-            <p v-if="limit" :class="ns.e('tip-sub')">
-              最多上传 {{ limit }} 个文件
+          <div :class="ns.e('drag-inner')">
+            <DanIcon name="upload" :size="36" :class="ns.e('drag-icon')" />
+            <p :class="ns.e('drag-title')">{{ resolvedDragText }}</p>
+            <p
+              v-for="(hint, index) in dragSubHints"
+              :key="index"
+              :class="ns.e('drag-sub')"
+            >
+              {{ hint }}
             </p>
           </div>
         </slot>
@@ -551,7 +585,7 @@ defineExpose({
       <div v-else :class="ns.e('trigger')" @click="openFileDialog">
         <slot>
           <button type="button" :class="ns.e('button')" :disabled="isDisabled">
-            选择文件
+            {{ t('upload.select') }}
           </button>
         </slot>
       </div>
@@ -589,5 +623,9 @@ defineExpose({
         </li>
       </ul>
     </template>
+
+    <div v-if="showTip" :class="ns.e('tip')">
+      <slot name="tip">{{ tip }}</slot>
+    </div>
   </div>
 </template>

@@ -112,6 +112,14 @@ const zhCN: LocaleMessages = {
     loading: '加载中…',
     finished: '没有更多了',
   },
+  upload: {
+    select: '选择文件',
+    dragText: '将文件拖到此处，或点击上传',
+    dragActive: '松开鼠标上传文件',
+    limitHint: '最多上传 {limit} 个文件',
+    acceptHint: '支持扩展名：{accept}',
+    cardAdd: '上传',
+  },
 }
 
 export default zhCN

@@ -172,6 +172,31 @@ describe('DanUpload', () => {
     expect(httpRequest).toHaveBeenCalledTimes(2)
   })
 
+  it('renders drag text, accept/limit hints and tip slot', async () => {
+    const wrapper = mount(DanUpload, {
+      props: {
+        drag: true,
+        dragText: '自定义拖拽文案',
+        accept: '.png,.pdf',
+        limit: 3,
+        autoUpload: false,
+      },
+      slots: {
+        tip: '底部 tip 插槽',
+      },
+    })
+
+    expect(wrapper.text()).toContain('自定义拖拽文案')
+    expect(wrapper.text()).toContain('最多上传 3 个文件')
+    expect(wrapper.text()).toContain('.png,.pdf')
+    expect(wrapper.find('.dan-upload__tip').text()).toContain('底部 tip 插槽')
+    expect(wrapper.find('.dan-upload__drag-icon').exists()).toBe(true)
+
+    await wrapper.find('.dan-upload__dragger').trigger('dragover')
+    // dragText 固定时不切换为「松开…」
+    expect(wrapper.text()).toContain('自定义拖拽文案')
+  })
+
   it('renders picture-card list with image preview', async () => {
     const createObjectURL = vi.fn(() => 'blob:mock-pic')
     const revokeObjectURL = vi.fn()

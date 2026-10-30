@@ -112,4 +112,12 @@ export interface LocaleMessages {
     loading: string
     finished: string
   }
+  upload: {
+    select: string
+    dragText: string
+    dragActive: string
+    limitHint: string
+    acceptHint: string
+    cardAdd: string
+  }
 }

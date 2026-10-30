@@ -14,7 +14,9 @@ function onExceed() {
     v-model:file-list="fileList"
     drag
     multiple
+    accept=".png,.jpg,.jpeg,.pdf"
     :limit="2"
+    tip="单个文件建议不超过 10MB；仅作演示，实际上传由 http-request 接入。"
     @exceed="onExceed"
   />
 </template>
