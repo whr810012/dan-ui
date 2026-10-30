@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, type CSSProperties } from 'vue'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import './style.css'
 
 defineOptions({ name: 'DanSlider' })
+
+export type SliderMark = string | { label?: string; style?: CSSProperties }
 
 const props = withDefaults(
   defineProps<{
@@ -15,6 +17,8 @@ const props = withDefaults(
     disabled?: boolean
     showStops?: boolean
     showTooltip?: boolean
+    /** 刻度标记：键为数值，值为文案或 { label, style } */
+    marks?: Record<number, SliderMark>
   }>(),
   {
     modelValue: 0,
@@ -59,6 +63,26 @@ const stops = computed(() => {
   return result
 })
 
+const markList = computed(() => {
+  if (!props.marks) return []
+  return Object.keys(props.marks)
+    .map(Number)
+    .filter((value) => Number.isFinite(value))
+    .sort((a, b) => a - b)
+    .filter((value) => value >= props.min && value <= props.max)
+    .map((value) => {
+      const mark = props.marks![value]!
+      const label = typeof mark === 'string' ? mark : (mark.label ?? String(value))
+      const style = typeof mark === 'string' ? undefined : mark.style
+      return {
+        value,
+        label,
+        style,
+        percent: ((value - props.min) / range.value) * 100,
+      }
+    })
+})
+
 function clamp(value: number) {
   let next = Math.min(props.max, Math.max(props.min, value))
   if (props.step > 0) {
@@ -101,6 +125,11 @@ function valueFromClientX(clientX: number) {
 function onRunwayClick(event: MouseEvent) {
   if (isDisabled.value) return
   setValue(valueFromClientX(event.clientX), true)
+}
+
+function onMarkClick(value: number) {
+  if (isDisabled.value) return
+  setValue(value, true)
 }
 
 function onKeydown(event: KeyboardEvent) {
@@ -150,15 +179,22 @@ function onPointerUp(event: PointerEvent) {
       ns.b(),
       ns.is('disabled', isDisabled),
       ns.is('dragging', dragging),
+      ns.is('with-marks', markList.length > 0),
     ]"
   >
     <div ref="runwayRef" :class="ns.e('runway')" @click="onRunwayClick">
       <div :class="ns.e('bar')" :style="{ width: `${percent}%` }" />
       <div
         v-for="stop in stops"
-        :key="stop"
+        :key="`stop-${stop}`"
         :class="ns.e('stop')"
         :style="{ left: `${stop}%` }"
+      />
+      <div
+        v-for="mark in markList"
+        :key="`mark-stop-${mark.value}`"
+        :class="ns.e('stop')"
+        :style="{ left: `${mark.percent}%` }"
       />
       <div
         :class="ns.e('button-wrapper')"
@@ -178,6 +214,19 @@ function onPointerUp(event: PointerEvent) {
         <div :class="ns.e('button')" />
         <div v-if="showTooltip" :class="ns.e('tooltip')">{{ modelValue }}</div>
       </div>
+    </div>
+    <div v-if="markList.length" :class="ns.e('marks')">
+      <button
+        v-for="mark in markList"
+        :key="`mark-${mark.value}`"
+        type="button"
+        :class="ns.e('mark')"
+        :style="[{ left: `${mark.percent}%` }, mark.style]"
+        :disabled="isDisabled"
+        @click.stop="onMarkClick(mark.value)"
+      >
+        {{ mark.label }}
+      </button>
     </div>
   </div>
 </template>

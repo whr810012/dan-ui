@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.15.0
+
+- Rate：`clearable`（再点同星清空）；文档补齐 `allowHalf`
+- Slider：`marks` 刻度标记（可点击跳转）
+
 ## 2.14.0
 
 - Drawer：`resizable` / `v-model:size` / `minSize`；文档补齐 `destroyOnClose`

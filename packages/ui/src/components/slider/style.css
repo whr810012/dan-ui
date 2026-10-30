@@ -110,3 +110,39 @@
 .dan-slider.is-disabled .dan-slider__button-wrapper {
   cursor: not-allowed;
 }
+
+.dan-slider.is-with-marks {
+  padding-bottom: 28px;
+}
+
+.dan-slider__marks {
+  position: relative;
+  width: 100%;
+  height: 0;
+  margin-top: 14px;
+}
+
+.dan-slider__mark {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--dan-color-text-secondary);
+  font: inherit;
+  font-size: var(--dan-font-size-xs);
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.dan-slider__mark:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.dan-slider__mark:hover:not(:disabled) {
+  color: var(--dan-color-primary);
+}

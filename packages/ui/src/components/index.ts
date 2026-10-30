@@ -36,7 +36,7 @@ export type {
 } from './upload'
 
 export { DanSlider } from './slider'
-export type { DanSliderInstance } from './slider'
+export type { DanSliderInstance, SliderMark } from './slider'
 
 export { DanRate } from './rate'
 export type { DanRateInstance } from './rate'

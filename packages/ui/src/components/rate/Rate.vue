@@ -11,6 +11,8 @@ const props = withDefaults(
     modelValue?: number
     max?: number
     allowHalf?: boolean
+    /** 再次点击相同分值时清空为 0 */
+    clearable?: boolean
     disabled?: boolean
     voidColor?: string
     activeColor?: string
@@ -19,6 +21,7 @@ const props = withDefaults(
     modelValue: 0,
     max: 5,
     allowHalf: false,
+    clearable: false,
     disabled: false,
     voidColor: '',
     activeColor: '',
@@ -69,7 +72,12 @@ function onLeave() {
 }
 
 function onClick(index: number, event: MouseEvent) {
-  setValue(scoreFromEvent(index, event))
+  const next = scoreFromEvent(index, event)
+  if (props.clearable && next === props.modelValue) {
+    setValue(0)
+    return
+  }
+  setValue(next)
 }
 
 function itemClass(index: number) {
