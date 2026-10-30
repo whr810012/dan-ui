@@ -36,6 +36,10 @@ export interface LocaleMessages {
   treeSelect: {
     placeholder: string
   }
+  tree: {
+    emptyText: string
+    filterEmptyText: string
+  }
   pagination: {
     /** 支持 `{total}` 占位 */
     total: string

@@ -21,4 +21,24 @@ describe('DanInput', () => {
     expect(wrapper.find('.dan-input__suffix').exists()).toBe(true)
     expect(wrapper.find('.dan-input__clear').exists()).toBe(true)
   })
+
+  it('shows word limit and formats via formatter/parser', async () => {
+    const wrapper = mount(DanInput, {
+      props: {
+        modelValue: '13800138000',
+        maxlength: 11,
+        showWordLimit: true,
+        formatter: (v: string | number) =>
+          String(v).replace(/(\d{3})(\d{4})(\d{4})/, '$1 $2 $3'),
+        parser: (v: string) => v.replace(/\s/g, ''),
+      },
+    })
+    expect(wrapper.find('.dan-input__count').text()).toBe('11 / 11')
+    expect((wrapper.find('input').element as HTMLInputElement).value).toBe(
+      '138 0013 8000',
+    )
+
+    await wrapper.find('input').setValue('138 0013 8001')
+    expect(wrapper.emitted('update:modelValue')?.[0]?.[0]).toBe('13800138001')
+  })
 })

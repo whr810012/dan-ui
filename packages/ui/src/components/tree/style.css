@@ -65,3 +65,18 @@
 .dan-tree-node__label {
   min-width: 0;
 }
+
+.dan-tree-node__content.is-highlight .dan-tree-node__label {
+  color: var(--dan-color-text);
+}
+
+.dan-tree-node__mark {
+  padding: 0 1px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--dan-color-warning) 35%, transparent);
+  color: inherit;
+}
+
+.dan-tree__empty {
+  padding: var(--dan-spacing-lg) var(--dan-spacing-md);
+}

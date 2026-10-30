@@ -38,6 +38,10 @@ const en: LocaleMessages = {
   treeSelect: {
     placeholder: 'Select',
   },
+  tree: {
+    emptyText: 'No data',
+    filterEmptyText: 'No matching nodes',
+  },
   pagination: {
     total: '{total} in total',
     prev: 'Prev',

@@ -11,10 +11,16 @@ const props = withDefaults(
   defineProps<{
     modelValue?: Array<string | number | boolean>
     disabled?: boolean
+    /** 组内复选框带边框 */
+    border?: boolean
+    /** 按钮样式组 */
+    button?: boolean
   }>(),
   {
     modelValue: () => [],
     disabled: false,
+    border: false,
+    button: false,
   },
 )
 
@@ -32,6 +38,8 @@ const groupDisabled = computed(
 provideCheckboxGroup({
   modelValue: toRef(props, 'modelValue'),
   disabled: groupDisabled,
+  border: toRef(props, 'border'),
+  button: toRef(props, 'button'),
   changeEvent(value) {
     emit('update:modelValue', value)
     emit('change', value)
@@ -41,7 +49,14 @@ provideCheckboxGroup({
 </script>
 
 <template>
-  <div :class="[ns.b(), ns.is('disabled', groupDisabled)]" role="group">
+  <div
+    :class="[
+      ns.b(),
+      ns.is('disabled', groupDisabled),
+      ns.is('button', button),
+    ]"
+    role="group"
+  >
     <slot />
   </div>
 </template>

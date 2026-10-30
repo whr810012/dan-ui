@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { TreeNode } from './types'
 import type { TreeDropType } from './treeDragUtils'
 
 defineOptions({ name: 'DanTreeNodeView' })
 
-defineProps<{
+const props = defineProps<{
   node: TreeNode
   depth: number
   expanded: Set<string | number>
@@ -14,6 +15,7 @@ defineProps<{
   draggable?: boolean
   dropTargetId?: string | number | null
   dropType?: TreeDropType | null
+  filterQuery?: string
 }>()
 
 const emit = defineEmits<{
@@ -26,6 +28,37 @@ const emit = defineEmits<{
   nodeDrop: [node: TreeNode, event: DragEvent]
   nodeDragEnd: []
 }>()
+
+const isHighlight = computed(() => {
+  const q = props.filterQuery?.trim()
+  if (!q) return false
+  return props.node.label.toLowerCase().includes(q.toLowerCase())
+})
+
+const highlightedLabel = computed(() => {
+  const q = props.filterQuery?.trim()
+  if (!q || !isHighlight.value) {
+    return [{ text: props.node.label, mark: false }]
+  }
+  const source = props.node.label
+  const lower = source.toLowerCase()
+  const needle = q.toLowerCase()
+  const parts: Array<{ text: string; mark: boolean }> = []
+  let start = 0
+  let index = lower.indexOf(needle, start)
+  while (index >= 0) {
+    if (index > start) {
+      parts.push({ text: source.slice(start, index), mark: false })
+    }
+    parts.push({ text: source.slice(index, index + q.length), mark: true })
+    start = index + q.length
+    index = lower.indexOf(needle, start)
+  }
+  if (start < source.length) {
+    parts.push({ text: source.slice(start), mark: false })
+  }
+  return parts
+})
 
 function forwardDragStart(node: TreeNode, event: DragEvent) {
   emit('nodeDragStart', node, event)
@@ -53,6 +86,7 @@ function forwardDrop(node: TreeNode, event: DragEvent) {
       :class="{
         'is-disabled': node.disabled,
         'is-focused': focusedId === node.id,
+        'is-highlight': isHighlight,
         'is-drop-before': dropTargetId === node.id && dropType === 'before',
         'is-drop-after': dropTargetId === node.id && dropType === 'after',
         'is-drop-inner': dropTargetId === node.id && dropType === 'inner',
@@ -91,7 +125,14 @@ function forwardDrop(node: TreeNode, event: DragEvent) {
         @click.stop
         @change="emit('toggleCheck', node)"
       />
-      <span class="dan-tree-node__label">{{ node.label }}</span>
+      <span class="dan-tree-node__label">
+        <template v-for="(part, index) in highlightedLabel" :key="index">
+          <mark v-if="part.mark" class="dan-tree-node__mark">{{
+            part.text
+          }}</mark>
+          <template v-else>{{ part.text }}</template>
+        </template>
+      </span>
     </div>
     <template v-if="node.children?.length && expanded.has(node.id)">
       <TreeNode
@@ -106,6 +147,7 @@ function forwardDrop(node: TreeNode, event: DragEvent) {
         :draggable="draggable"
         :drop-target-id="dropTargetId"
         :drop-type="dropType"
+        :filter-query="filterQuery"
         @toggle-expand="emit('toggleExpand', $event)"
         @toggle-check="emit('toggleCheck', $event)"
         @node-click="emit('nodeClick', $event)"

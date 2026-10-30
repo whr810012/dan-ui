@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.25.0
+
+- Tree：`filter(query)` 过滤高亮、祖先自动展开；无匹配空态；`filterMethod` / `emptyText`
+
+## 2.24.0
+
+- Checkbox / CheckboxGroup：`border` 边框样式、`button` 按钮组样式
+
+## 2.23.0
+
+- Input：`showWordLimit` 字数统计；`formatter` / `parser` 展示与绑定值分离
+
 ## 2.22.0
 
 - Popconfirm：`trigger` 对齐 Popover（`click` / `hover` / `focus` / `contextmenu`）；补齐 `showAfter` / `hideAfter`

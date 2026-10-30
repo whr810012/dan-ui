@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
+import { useLocale } from '../../locale'
 import { useNamespace } from '../../hooks/useNamespace'
+import { DanEmpty } from '../empty'
 import TreeNodeView from './TreeNode.vue'
 import type { TreeNode } from './types'
 import {
@@ -27,6 +29,9 @@ const props = withDefaults(
       drop: TreeNode,
       type: TreeDropType,
     ) => boolean
+    /** 过滤方法；返回 true 保留节点 */
+    filterMethod?: (query: string, node: TreeNode) => boolean
+    emptyText?: string
   }>(),
   {
     data: () => [],
@@ -34,6 +39,7 @@ const props = withDefaults(
     showCheckbox: false,
     checkedKeys: () => [],
     draggable: false,
+    emptyText: undefined,
   },
 )
 
@@ -52,6 +58,7 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('tree')
+const { t } = useLocale()
 const rootRef = ref<HTMLElement | null>(null)
 const expanded = ref<Set<string | number>>(new Set())
 const checked = ref<Set<string | number>>(new Set(props.checkedKeys))
@@ -59,6 +66,7 @@ const focusedId = ref<string | number | null>(null)
 const dragNodeId = ref<string | number | null>(null)
 const dropTargetId = ref<string | number | null>(null)
 const dropType = ref<TreeDropType | null>(null)
+const filterQuery = ref('')
 
 watch(
   () => props.checkedKeys,
@@ -85,6 +93,67 @@ watch(
   },
   { immediate: true, deep: true },
 )
+
+function defaultFilterMethod(query: string, node: TreeNode) {
+  return node.label.toLowerCase().includes(query.toLowerCase())
+}
+
+function matchNode(node: TreeNode, query: string) {
+  if (!query) return true
+  const method = props.filterMethod ?? defaultFilterMethod
+  return method(query, node)
+}
+
+function filterTreeData(
+  nodes: TreeNode[],
+  query: string,
+): { tree: TreeNode[]; expandIds: Set<string | number> } {
+  const expandIds = new Set<string | number>()
+  if (!query) return { tree: nodes, expandIds }
+
+  const walk = (list: TreeNode[]): TreeNode[] => {
+    const result: TreeNode[] = []
+    for (const node of list) {
+      const children = node.children?.length ? walk(node.children) : []
+      const selfMatch = matchNode(node, query)
+      if (selfMatch || children.length) {
+        if (children.length) expandIds.add(node.id)
+        result.push({
+          ...node,
+          children: children.length ? children : undefined,
+        })
+      }
+    }
+    return result
+  }
+
+  return { tree: walk(nodes), expandIds }
+}
+
+const filteredResult = computed(() =>
+  filterTreeData(props.data, filterQuery.value.trim()),
+)
+
+const displayData = computed(() => filteredResult.value.tree)
+
+const resolvedExpanded = computed(() => {
+  if (!filterQuery.value.trim()) return expanded.value
+  const merged = new Set(expanded.value)
+  for (const id of filteredResult.value.expandIds) merged.add(id)
+  return merged
+})
+
+const isEmpty = computed(() => displayData.value.length === 0)
+
+const emptyDescription = computed(() => {
+  if (props.emptyText) return props.emptyText
+  if (filterQuery.value.trim()) return t('tree.filterEmptyText')
+  return t('tree.emptyText')
+})
+
+function filter(query: string) {
+  filterQuery.value = query
+}
 
 function toggleExpand(node: TreeNode) {
   if (!node.children?.length) return
@@ -117,7 +186,7 @@ function flattenVisible(nodes: TreeNode[]): TreeNode[] {
   const walk = (list: TreeNode[]) => {
     for (const node of list) {
       result.push(node)
-      if (node.children?.length && expanded.value.has(node.id)) {
+      if (node.children?.length && resolvedExpanded.value.has(node.id)) {
         walk(node.children)
       }
     }
@@ -137,7 +206,9 @@ function focusNode(id: string | number) {
 }
 
 function onKeydown(event: KeyboardEvent) {
-  const visible = flattenVisible(props.data).filter((node) => !node.disabled)
+  const visible = flattenVisible(displayData.value).filter(
+    (node) => !node.disabled,
+  )
   if (!visible.length) return
   const currentIndex = visible.findIndex((node) => node.id === focusedId.value)
   const current = currentIndex >= 0 ? visible[currentIndex] : visible[0]
@@ -157,7 +228,7 @@ function onKeydown(event: KeyboardEvent) {
     focusNode(prev.id)
   } else if (event.key === 'ArrowRight' && current) {
     event.preventDefault()
-    if (current.children?.length && !expanded.value.has(current.id)) {
+    if (current.children?.length && !resolvedExpanded.value.has(current.id)) {
       toggleExpand(current)
     } else if (current.children?.length) {
       const child = current.children.find((item) => !item.disabled)
@@ -165,7 +236,7 @@ function onKeydown(event: KeyboardEvent) {
     }
   } else if (event.key === 'ArrowLeft' && current) {
     event.preventDefault()
-    if (current.children?.length && expanded.value.has(current.id)) {
+    if (current.children?.length && resolvedExpanded.value.has(current.id)) {
       toggleExpand(current)
     }
   } else if ((event.key === 'Enter' || event.key === ' ') && current) {
@@ -236,36 +307,51 @@ function clearDragState() {
   dropTargetId.value = null
   dropType.value = null
 }
+
+defineExpose({ filter })
 </script>
 
 <template>
   <div
     ref="rootRef"
-    :class="[ns.b(), ns.is('draggable', draggable)]"
+    :class="[
+      ns.b(),
+      ns.is('draggable', draggable),
+      ns.is('empty', isEmpty),
+      ns.is('filtered', Boolean(filterQuery.trim())),
+    ]"
     role="tree"
     tabindex="0"
     @keydown="onKeydown"
   >
-    <TreeNodeView
-      v-for="node in data"
-      :key="node.id"
-      :node="node"
-      :depth="0"
-      :expanded="expanded"
-      :checked="checked"
-      :show-checkbox="showCheckbox"
-      :focused-id="focusedId"
-      :draggable="draggable"
-      :drop-target-id="dropTargetId"
-      :drop-type="dropType"
-      @toggle-expand="toggleExpand"
-      @toggle-check="toggleCheck"
-      @node-click="onClick"
-      @focus-node="focusNode"
-      @node-drag-start="onNodeDragStart"
-      @node-drag-over="onNodeDragOver"
-      @node-drop="onNodeDrop"
-      @node-drag-end="clearDragState"
-    />
+    <template v-if="!isEmpty">
+      <TreeNodeView
+        v-for="node in displayData"
+        :key="node.id"
+        :node="node"
+        :depth="0"
+        :expanded="resolvedExpanded"
+        :checked="checked"
+        :show-checkbox="showCheckbox"
+        :focused-id="focusedId"
+        :draggable="draggable"
+        :drop-target-id="dropTargetId"
+        :drop-type="dropType"
+        :filter-query="filterQuery.trim()"
+        @toggle-expand="toggleExpand"
+        @toggle-check="toggleCheck"
+        @node-click="onClick"
+        @focus-node="focusNode"
+        @node-drag-start="onNodeDragStart"
+        @node-drag-over="onNodeDragOver"
+        @node-drop="onNodeDrop"
+        @node-drag-end="clearDragState"
+      />
+    </template>
+    <div v-else :class="ns.e('empty')">
+      <slot name="empty">
+        <DanEmpty :description="emptyDescription" :image-size="64" />
+      </slot>
+    </div>
   </div>
 </template>

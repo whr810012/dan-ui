@@ -3,9 +3,11 @@ import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/checkbox/basic.vue'
 import Group from './demos/checkbox/group.vue'
 import Indeterminate from './demos/checkbox/indeterminate.vue'
+import Button from './demos/checkbox/button.vue'
 import basicSrc from './demos/checkbox/basic.vue?raw'
 import groupSrc from './demos/checkbox/group.vue?raw'
 import indeterminateSrc from './demos/checkbox/indeterminate.vue?raw'
+import buttonSrc from './demos/checkbox/button.vue?raw'
 </script>
 
 # Checkbox 多选框
@@ -32,6 +34,14 @@ import indeterminateSrc from './demos/checkbox/indeterminate.vue?raw'
   <Indeterminate />
 </DemoBlock>
 
+## 边框与按钮样式
+
+`border` 为带边框选项；`button` 为按钮组样式（可在 Group 上统一开启）。
+
+<DemoBlock :source="buttonSrc">
+  <Button />
+</DemoBlock>
+
 ## API
 
 ### Checkbox Props
@@ -42,6 +52,8 @@ import indeterminateSrc from './demos/checkbox/indeterminate.vue?raw'
 | label | 在 Group 内表示该选项的值 | `string \| number \| boolean` | — | 组内建议必填 |
 | disabled | 禁用当前项；也可继承 Group / Form | `boolean` | `false` | 否 |
 | indeterminate | 半选样式（仅视觉，常用于全选） | `boolean` | `false` | 否 |
+| border | 边框样式 | `boolean` | `false` | 否 |
+| button | 按钮样式 | `boolean` | `false` | 否 |
 
 ### Checkbox Events
 
@@ -62,6 +74,8 @@ import indeterminateSrc from './demos/checkbox/indeterminate.vue?raw'
 |------|------|------|--------|------|
 | modelValue / v-model | 已选值数组 | `Array<string \| number \| boolean>` | `[]` | 否 |
 | disabled | 禁用整组 | `boolean` | `false` | 否 |
+| border | 组内统一边框样式 | `boolean` | `false` | 否 |
+| button | 组内统一按钮样式 | `boolean` | `false` | 否 |
 
 ### CheckboxGroup Events
 

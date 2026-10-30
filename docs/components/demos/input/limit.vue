@@ -1,20 +1,27 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DanInput } from '@dandan-ui/ui'
+import { DanInput, DanSpace } from '@dandan-ui/ui'
 
 const value = ref('')
+const phone = ref('13800138000')
 </script>
 
 <template>
-  <div style="display: grid; gap: 8px; max-width: 360px">
+  <DanSpace direction="vertical" style="width: 100%; max-width: 360px">
     <DanInput
       v-model="value"
       maxlength="20"
+      show-word-limit
       placeholder="最多 20 个字符"
       clearable
     />
-    <div style="font-size: 13px; color: var(--dan-color-text-secondary)">
-      {{ value.length }} / 20
-    </div>
-  </div>
+    <DanInput
+      v-model="phone"
+      maxlength="11"
+      show-word-limit
+      placeholder="手机号"
+      :formatter="(v) => String(v).replace(/(\d{3})(\d{0,4})(\d{0,4})/, (_, a, b, c) => [a, b, c].filter(Boolean).join(' '))"
+      :parser="(v) => v.replace(/\s/g, '')"
+    />
+  </DanSpace>
 </template>

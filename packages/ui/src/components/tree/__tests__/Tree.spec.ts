@@ -4,6 +4,42 @@ import { describe, expect, it } from 'vitest'
 import { DanTree } from '../index'
 
 describe('DanTree', () => {
+  it('filters nodes and highlights matches', async () => {
+    const Comp = defineComponent({
+      components: { DanTree },
+      setup: () => ({
+        data: [
+          {
+            id: 1,
+            label: '文档',
+            children: [
+              { id: 11, label: '指南' },
+              { id: 12, label: '组件' },
+            ],
+          },
+          { id: 2, label: '资源' },
+        ],
+      }),
+      template: `<DanTree ref="tree" :data="data" />`,
+    })
+    const wrapper = mount(Comp)
+    await nextTick()
+    const tree = wrapper.findComponent(DanTree).vm as {
+      filter: (query: string) => void
+    }
+    tree.filter('组')
+    await nextTick()
+    expect(wrapper.text()).toContain('文档')
+    expect(wrapper.text()).toContain('组件')
+    expect(wrapper.text()).not.toContain('资源')
+    expect(wrapper.find('.dan-tree-node__mark').text()).toBe('组')
+
+    tree.filter('不存在')
+    await nextTick()
+    expect(wrapper.find('.dan-tree__empty').exists()).toBe(true)
+    expect(wrapper.text()).toContain('无匹配节点')
+  })
+
   it('checks node', async () => {
     const checkedKeys = ref<Array<string | number>>([])
     const Comp = defineComponent({

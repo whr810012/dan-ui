@@ -82,3 +82,16 @@
 .dan-input__suffix {
   margin-left: var(--dan-spacing-xs);
 }
+
+.dan-input__count {
+  flex: 0 0 auto;
+  margin-left: var(--dan-spacing-xs);
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.dan-input.is-exceed .dan-input__count {
+  color: var(--dan-color-danger);
+}

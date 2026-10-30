@@ -18,6 +18,12 @@ const props = withDefaults(
     clearable?: boolean
     placeholder?: string
     maxlength?: number
+    /** 展示字数统计（需配合 maxlength） */
+    showWordLimit?: boolean
+    /** 显示值格式化（不影响 v-model，除非配合 parser） */
+    formatter?: (value: string | number) => string
+    /** 将输入解析回 modelValue */
+    parser?: (value: string) => string
   }>(),
   {
     modelValue: '',
@@ -26,6 +32,7 @@ const props = withDefaults(
     readonly: false,
     clearable: false,
     placeholder: '',
+    showWordLimit: false,
   },
 )
 
@@ -48,13 +55,25 @@ const resolvedSize = computed(() => props.size ?? config.size.value)
 const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )
+const rawValue = computed(() => String(props.modelValue ?? ''))
+const displayValue = computed(() =>
+  props.formatter ? props.formatter(props.modelValue ?? '') : rawValue.value,
+)
 const showClear = computed(
   () =>
     props.clearable &&
     !isDisabled.value &&
     !props.readonly &&
-    String(props.modelValue ?? '').length > 0,
+    rawValue.value.length > 0,
 )
+const showLimit = computed(
+  () =>
+    props.showWordLimit &&
+    props.maxlength != null &&
+    props.maxlength >= 0 &&
+    !isDisabled.value,
+)
+const wordCount = computed(() => rawValue.value.length)
 
 /** class / style 落在外层容器，避免 max-width 只作用到 inner 导致后缀错位 */
 const rootClass = computed(() => attrs.class)
@@ -70,14 +89,29 @@ const inputAttrs = computed(() => {
   return result
 })
 
-function onInput(event: Event) {
-  const value = (event.target as HTMLInputElement).value
+function normalize(value: string) {
+  return props.parser ? props.parser(value) : value
+}
+
+function commit(value: string) {
   emit('update:modelValue', value)
   emit('input', value)
 }
 
+function onInput(event: Event) {
+  const el = event.target as HTMLInputElement
+  let next = normalize(el.value)
+  if (props.maxlength != null && next.length > props.maxlength) {
+    next = next.slice(0, props.maxlength)
+  }
+  commit(next)
+  if (props.formatter || props.parser) {
+    el.value = props.formatter ? props.formatter(next) : next
+  }
+}
+
 function onChange(event: Event) {
-  const value = (event.target as HTMLInputElement).value
+  const value = normalize((event.target as HTMLInputElement).value)
   emit('change', value)
   emitChange('change')
 }
@@ -94,8 +128,7 @@ function onFocus(event: FocusEvent) {
 }
 
 function onClear() {
-  emit('update:modelValue', '')
-  emit('input', '')
+  commit('')
   emit('change', '')
   emit('clear')
   emitChange('change')
@@ -109,6 +142,7 @@ function onClear() {
       ns.m(resolvedSize),
       ns.is('disabled', isDisabled),
       ns.is('focus', focused),
+      ns.is('exceed', showLimit && wordCount > (maxlength ?? 0)),
       rootClass,
     ]"
     :style="rootStyle"
@@ -119,7 +153,7 @@ function onClear() {
     <input
       :class="ns.e('inner')"
       :type="type"
-      :value="modelValue"
+      :value="displayValue"
       :disabled="isDisabled"
       :readonly="readonly"
       :placeholder="placeholder"
@@ -142,6 +176,9 @@ function onClear() {
     </span>
     <span v-if="$slots.suffix" :class="ns.e('suffix')">
       <slot name="suffix" />
+    </span>
+    <span v-if="showLimit" :class="ns.e('count')">
+      {{ wordCount }} / {{ maxlength }}
     </span>
   </div>
 </template>

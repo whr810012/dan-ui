@@ -38,6 +38,10 @@ const zhCN: LocaleMessages = {
   treeSelect: {
     placeholder: '请选择',
   },
+  tree: {
+    emptyText: '暂无数据',
+    filterEmptyText: '无匹配节点',
+  },
   pagination: {
     total: '共 {total} 条',
     prev: '上一页',

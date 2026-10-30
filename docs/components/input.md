@@ -70,7 +70,9 @@ import limitSrc from './demos/input/limit.vue?raw'
   <Affix />
 </DemoBlock>
 
-## 字数限制
+## 字数限制与格式化
+
+`show-word-limit` 需配合 `maxlength`；`formatter` / `parser` 可分离展示值与绑定值。
 
 <DemoBlock :source="limitSrc">
   <Limit />
@@ -90,6 +92,9 @@ import limitSrc from './demos/input/limit.vue?raw'
 | clearable | 有内容且非禁用/只读时显示清空按钮 | `boolean` | `false` | 否 |
 | placeholder | 占位文案 | `string` | `''` | 否 |
 | maxlength | 最大输入长度（透传原生） | `number` | — | 否 |
+| showWordLimit | 展示字数统计（需 `maxlength`） | `boolean` | `false` | 否 |
+| formatter | 展示值格式化 | `(value) => string` | — | 否 |
+| parser | 将输入解析回 `v-model` | `(value) => string` | — | 否 |
 
 其余原生属性（如 `autocomplete`、`name`）可通过透传 attrs 传到内部 `<input>`。
 

@@ -13,10 +13,16 @@ const props = withDefaults(
     label?: string | number | boolean
     disabled?: boolean
     indeterminate?: boolean
+    /** 边框样式；组内也可由 CheckboxGroup.border 开启 */
+    border?: boolean
+    /** 按钮样式；组内也可由 CheckboxGroup.button 开启 */
+    button?: boolean
   }>(),
   {
     disabled: false,
     indeterminate: false,
+    border: false,
+    button: false,
   },
 )
 
@@ -36,6 +42,14 @@ const isDisabled = computed(
     props.disabled ||
     group?.disabled.value === true ||
     form?.disabled.value === true,
+)
+
+const isBorder = computed(
+  () => props.border || group?.border.value === true,
+)
+
+const isButton = computed(
+  () => props.button || group?.button.value === true,
 )
 
 const isChecked = computed(() => {
@@ -91,9 +105,11 @@ function onChange(event: Event) {
       ns.is('checked', isChecked),
       ns.is('disabled', isDisabled),
       ns.is('indeterminate', indeterminate),
+      ns.is('border', isBorder && !isButton),
+      ns.is('button', isButton),
     ]"
   >
-    <span :class="ns.e('input')">
+    <span v-if="!isButton" :class="ns.e('input')">
       <input
         :class="ns.e('original')"
         type="checkbox"
@@ -108,6 +124,14 @@ function onChange(event: Event) {
         />
       </span>
     </span>
+    <input
+      v-else
+      :class="ns.e('original')"
+      type="checkbox"
+      :checked="isChecked"
+      :disabled="isDisabled"
+      @change="onChange"
+    />
     <span v-if="$slots.default || label != null" :class="ns.e('label')">
       <slot>{{ label }}</slot>
     </span>
