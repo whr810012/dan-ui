@@ -8,8 +8,11 @@ import './style.css'
 defineOptions({ name: 'DanNotificationHost' })
 
 const props = defineProps<{
-  items: Array<NotificationOptions & { id: string }>
+  items: Array<
+    NotificationOptions & { id: string; repeat: number; tick: number }
+  >
   position: NotificationPosition
+  offset?: number
 }>()
 
 const emit = defineEmits<{
@@ -23,6 +26,12 @@ const list = computed(() =>
     (item) => (item.position ?? 'top-right') === props.position,
   ),
 )
+
+const hostStyle = computed(() => {
+  const offset = `${props.offset ?? 16}px`
+  if (props.position.startsWith('top')) return { top: offset }
+  return { bottom: offset }
+})
 </script>
 
 <template>
@@ -30,6 +39,7 @@ const list = computed(() =>
     v-show="list.length"
     :class="[ns.b(), ns.m(position)]"
     aria-live="polite"
+    :style="hostStyle"
   >
     <NotificationItem
       v-for="item in list"
@@ -40,6 +50,8 @@ const list = computed(() =>
       :type="item.type"
       :duration="item.duration"
       :show-close="item.showClose"
+      :repeat="item.repeat"
+      :tick="item.tick"
       @close="emit('close', $event)"
     />
   </div>

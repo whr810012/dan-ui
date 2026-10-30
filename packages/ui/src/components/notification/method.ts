@@ -9,10 +9,21 @@ import type {
 
 interface NotificationRecord extends NotificationOptions {
   id: string
+  repeat: number
+  tick: number
 }
 
-const state = reactive<{ items: NotificationRecord[] }>({
+const state = reactive<{
+  items: NotificationRecord[]
+  offsets: Record<NotificationPosition, number>
+}>({
   items: [],
+  offsets: {
+    'top-right': 16,
+    'top-left': 16,
+    'bottom-right': 16,
+    'bottom-left': 16,
+  },
 })
 
 const positions: NotificationPosition[] = [
@@ -37,6 +48,7 @@ function ensureHost() {
             key: position,
             items: state.items,
             position,
+            offset: state.offsets[position],
             onClose: close,
           }),
         )
@@ -54,15 +66,44 @@ function open(options: NotificationOptions | string): NotificationHandler {
   ensureHost()
   const normalized: NotificationOptions =
     typeof options === 'string' ? { message: options } : options
+  const type = normalized.type || 'info'
+  const position = normalized.position ?? 'top-right'
+  const title = normalized.title ?? ''
+  const message = normalized.message ?? ''
+  const grouping = normalized.grouping !== false
+  const offset = normalized.offset ?? 16
+  state.offsets[position] = offset
+
+  if (grouping) {
+    const existing = state.items.find(
+      (item) =>
+        (item.title ?? '') === title &&
+        (item.message ?? '') === message &&
+        (item.type || 'info') === type &&
+        (item.position ?? 'top-right') === position,
+    )
+    if (existing) {
+      existing.repeat += 1
+      existing.duration = normalized.duration ?? existing.duration ?? 4500
+      existing.showClose = normalized.showClose ?? existing.showClose ?? true
+      existing.tick += 1
+      return { close: () => close(existing.id) }
+    }
+  }
+
   const id = normalized.id || `dan-notification-${seed++}`
   state.items.push({
     id,
-    title: normalized.title ?? '',
-    message: normalized.message ?? '',
-    type: normalized.type || 'info',
+    title,
+    message,
+    type,
     duration: normalized.duration ?? 4500,
     showClose: normalized.showClose ?? true,
-    position: normalized.position ?? 'top-right',
+    position,
+    offset,
+    grouping,
+    repeat: 1,
+    tick: 0,
   })
   return {
     close: () => close(id),

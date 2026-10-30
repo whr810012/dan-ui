@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
 import { DanIcon } from '../icon'
 import type { IconName } from '../icon'
@@ -16,6 +16,8 @@ const props = withDefaults(
     type?: NotificationType
     duration?: number
     showClose?: boolean
+    repeat?: number
+    tick?: number
   }>(),
   {
     title: '',
@@ -23,6 +25,8 @@ const props = withDefaults(
     type: 'info',
     duration: 4500,
     showClose: true,
+    repeat: 1,
+    tick: 0,
   },
 )
 
@@ -53,6 +57,11 @@ function startTimer() {
   timer.value = window.setTimeout(() => emit('close', props.id), props.duration)
 }
 
+watch(
+  () => [props.tick, props.duration] as const,
+  () => startTimer(),
+)
+
 onMounted(startTimer)
 onBeforeUnmount(clearTimer)
 </script>
@@ -68,7 +77,10 @@ onBeforeUnmount(clearTimer)
   >
     <DanIcon :name="iconMap[type]" :class="ns.e('icon')" />
     <div :class="ns.e('main')">
-      <div v-if="title" :class="ns.e('title')">{{ title }}</div>
+      <div v-if="title" :class="ns.e('title')">
+        {{ title }}
+        <span v-if="repeat > 1" :class="ns.e('badge')">{{ repeat }}</span>
+      </div>
       <div v-if="message" :class="ns.e('content')">{{ message }}</div>
     </div>
     <button

@@ -1,6 +1,5 @@
 .dan-message {
   position: fixed;
-  top: 20px;
   left: 50%;
   z-index: var(--dan-z-index-message);
   display: flex;
@@ -50,6 +49,20 @@
 
 .dan-message__content {
   flex: 1;
+}
+
+.dan-message__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--dan-radius-full);
+  background: var(--dan-color-fill);
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-xs);
+  line-height: 1;
 }
 
 .dan-message__close {

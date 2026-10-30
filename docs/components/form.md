@@ -8,10 +8,12 @@ import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/form/basic.vue'
 import Controls from './demos/form/controls.vue'
 import LabelTop from './demos/form/label-top.vue'
+import Asterisk from './demos/form/asterisk.vue'
 import FormListDemo from './demos/form/form-list.vue'
 import basicSrc from './demos/form/basic.vue?raw'
 import controlsSrc from './demos/form/controls.vue?raw'
 import labelTopSrc from './demos/form/label-top.vue?raw'
+import asteriskSrc from './demos/form/asterisk.vue?raw'
 import formListSrc from './demos/form/form-list.vue?raw'
 </script>
 
@@ -41,6 +43,14 @@ import formListSrc from './demos/form/form-list.vue?raw'
   <LabelTop />
 </DemoBlock>
 
+## 必填星号位置
+
+`requireAsteriskPosition` 可为 `left` / `right`。
+
+<DemoBlock :source="asteriskSrc">
+  <Asterisk />
+</DemoBlock>
+
 ## 动态列表 FormList
 
 在 Form 内用 `DanFormList` 管理数组字段；`prop` 指向数组路径，插槽提供 `row` / `index` / `remove`。
@@ -61,6 +71,7 @@ import formListSrc from './demos/form/form-list.vue?raw'
 | size | 向下提供的默认尺寸 | `'small' \| 'default' \| 'large'` | — | 否 |
 | labelWidth | 统一标签宽度，如 `'88px'` | `string` | — | 否 |
 | labelPosition | 标签布局 | `'left' \| 'right' \| 'top'` | `'right'` | 否 |
+| requireAsteriskPosition | 必填星号位置 | `'left' \| 'right'` | `'left'` | 否 |
 | scrollToError | `validate` 失败时滚到首个错误项 | `boolean` | `false` | 否 |
 
 ### FormRules / FormRule

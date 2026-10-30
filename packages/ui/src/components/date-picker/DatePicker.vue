@@ -47,6 +47,8 @@ const props = withDefaults(
     endPlaceholder?: string
     disabledDate?: (date: Date) => boolean
     shortcuts?: DatePickerShortcut[]
+    /** 范围模式下左右面板月份可独立切换 */
+    unlinkPanels?: boolean
   }>(),
   {
     modelValue: null,
@@ -54,6 +56,7 @@ const props = withDefaults(
     disabled: false,
     clearable: false,
     shortcuts: () => [],
+    unlinkPanels: false,
   },
 )
 
@@ -128,6 +131,13 @@ const initialView = (() => {
 })()
 
 const viewDate = ref(initialView ?? new Date())
+const viewEndDate = ref(
+  new Date(
+    (initialView ?? new Date()).getFullYear(),
+    (initialView ?? new Date()).getMonth() + 1,
+    1,
+  ),
+)
 
 const monthCells = computed(() =>
   Array.from({ length: 12 }, (_, i) => ({
@@ -201,7 +211,24 @@ const monthLabel = computed(
   () =>
     `${viewDate.value.getFullYear()} 年 ${viewDate.value.getMonth() + 1} 月`,
 )
+const endMonthLabel = computed(
+  () =>
+    `${viewEndDate.value.getFullYear()} 年 ${viewEndDate.value.getMonth() + 1} 月`,
+)
 const cells = computed(() => buildCalendarDays(viewDate.value))
+const endCells = computed(() => buildCalendarDays(viewEndDate.value))
+const showDualPanels = computed(
+  () => isRange.value && !isMonth.value && !isYear.value && !isWeek.value,
+)
+
+watch(
+  viewDate,
+  (value) => {
+    if (props.unlinkPanels) return
+    viewEndDate.value = new Date(value.getFullYear(), value.getMonth() + 1, 1)
+  },
+  { immediate: true },
+)
 
 const hours = computed(() => Array.from({ length: 24 }, (_, i) => i))
 const minutes = computed(() =>
@@ -494,6 +521,30 @@ function nextMonth() {
   )
 }
 
+function prevEndMonth() {
+  if (!props.unlinkPanels) {
+    prevMonth()
+    return
+  }
+  viewEndDate.value = new Date(
+    viewEndDate.value.getFullYear(),
+    viewEndDate.value.getMonth() - 1,
+    1,
+  )
+}
+
+function nextEndMonth() {
+  if (!props.unlinkPanels) {
+    nextMonth()
+    return
+  }
+  viewEndDate.value = new Date(
+    viewEndDate.value.getFullYear(),
+    viewEndDate.value.getMonth() + 1,
+    1,
+  )
+}
+
 function selectToday() {
   const today = new Date()
   if (isDateDisabled(today)) return
@@ -619,7 +670,7 @@ onBeforeUnmount(() => {
           </button>
         </div>
         <div :class="ns.e('main')">
-          <div :class="ns.e('header')">
+          <div v-if="!showDualPanels" :class="ns.e('header')">
             <button
               type="button"
               :class="ns.e('nav')"
@@ -685,6 +736,92 @@ onBeforeUnmount(() => {
               {{ cell.label }}
             </button>
           </div>
+
+          <template v-else-if="showDualPanels">
+            <div
+              :class="[
+                ns.e('calendars'),
+                ns.is('unlink', unlinkPanels),
+              ]"
+            >
+              <div :class="ns.e('calendar')">
+                <div :class="ns.e('header')">
+                  <button
+                    type="button"
+                    :class="ns.e('nav')"
+                    aria-label="上一月"
+                    @click="prevMonth"
+                  >
+                    ‹
+                  </button>
+                  <span :class="ns.e('month')">{{ monthLabel }}</span>
+                  <button
+                    type="button"
+                    :class="ns.e('nav')"
+                    aria-label="下一月"
+                    @click="nextMonth"
+                  >
+                    ›
+                  </button>
+                </div>
+                <div :class="ns.e('weekdays')">
+                  <span v-for="label in WEEK_LABELS" :key="`l-${label}`">{{
+                    label
+                  }}</span>
+                </div>
+                <div :class="ns.e('days')">
+                  <button
+                    v-for="cell in cells"
+                    :key="`l-${formatDate(cell.date)}`"
+                    type="button"
+                    :class="dayClass(cell)"
+                    :disabled="isDateDisabled(cell.date)"
+                    @click="selectDay(cell.date)"
+                  >
+                    {{ cell.label }}
+                  </button>
+                </div>
+              </div>
+              <div :class="ns.e('calendar')">
+                <div :class="ns.e('header')">
+                  <button
+                    type="button"
+                    :class="ns.e('nav')"
+                    aria-label="上一月"
+                    @click="prevEndMonth"
+                  >
+                    ‹
+                  </button>
+                  <span :class="ns.e('month')">{{ endMonthLabel }}</span>
+                  <button
+                    type="button"
+                    :class="ns.e('nav')"
+                    aria-label="下一月"
+                    @click="nextEndMonth"
+                  >
+                    ›
+                  </button>
+                </div>
+                <div :class="ns.e('weekdays')">
+                  <span v-for="label in WEEK_LABELS" :key="`r-${label}`">{{
+                    label
+                  }}</span>
+                </div>
+                <div :class="ns.e('days')">
+                  <button
+                    v-for="cell in endCells"
+                    :key="`r-${formatDate(cell.date)}`"
+                    type="button"
+                    :class="dayClass(cell)"
+                    :disabled="isDateDisabled(cell.date)"
+                    @click="selectDay(cell.date)"
+                  >
+                    {{ cell.label }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </template>
 
           <template v-else>
             <div :class="ns.e('weekdays')">

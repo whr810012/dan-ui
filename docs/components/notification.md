@@ -19,7 +19,7 @@ import basicSrc from './demos/notification/basic.vue?raw'
 ```ts
 import { DanNotification } from '@dandan-ui/ui'
 
-DanNotification({ title, message, type, duration, position })
+DanNotification({ title, message, type, duration, position, offset, grouping })
 DanNotification.success / warning / info / error
 DanNotification.closeAll()
 ```
@@ -31,3 +31,5 @@ DanNotification.closeAll()
 | duration | 自动关闭毫秒，`0` 不关闭 | `4500` |
 | position | `top-right` 等四角 | `top-right` |
 | showClose | 关闭按钮 | `true` |
+| offset | 距边缘偏移（px） | `16` |
+| grouping | 相同通知合并计数 | `true` |

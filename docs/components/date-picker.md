@@ -12,6 +12,8 @@ import DateTime from './demos/date-picker/datetime.vue'
 import datetimeSrc from './demos/date-picker/datetime.vue?raw'
 import Panels from './demos/date-picker/panels.vue'
 import panelsSrc from './demos/date-picker/panels.vue?raw'
+import Unlink from './demos/date-picker/unlink.vue'
+import unlinkSrc from './demos/date-picker/unlink.vue?raw'
 </script>
 
 # DatePicker 日期选择器
@@ -26,8 +28,16 @@ import panelsSrc from './demos/date-picker/panels.vue?raw'
 
 ## 范围选择
 
+默认双月联动；也可开启 `unlinkPanels` 独立翻月。
+
 <DemoBlock :source="rangeSrc">
   <Range />
+</DemoBlock>
+
+## 独立面板
+
+<DemoBlock :source="unlinkSrc">
+  <Unlink />
 </DemoBlock>
 
 ## 禁用日期
@@ -75,6 +85,7 @@ import panelsSrc from './demos/date-picker/panels.vue?raw'
 | startPlaceholder / endPlaceholder | 范围占位 | `string` | — |
 | disabledDate | 禁用日期 | `(date: Date) => boolean` | — |
 | shortcuts | 快捷项 | `{ text, value }[]` | `[]` |
+| unlinkPanels | 范围双面板月份独立切换 | `boolean` | `false` |
 
 ## DatePicker Events
 

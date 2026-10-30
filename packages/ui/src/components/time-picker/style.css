@@ -13,6 +13,10 @@
   font-size: var(--dan-font-size-md);
 }
 
+.dan-time-picker.is-range {
+  width: 220px;
+}
+
 .dan-time-picker--small {
   --dan-time-picker-height: var(--dan-control-height-sm);
 }
@@ -91,6 +95,35 @@
   border-radius: var(--dan-radius-md);
   background: var(--dan-color-bg-elevated);
   box-shadow: var(--dan-shadow-md);
+}
+
+.dan-time-picker__panel.is-range {
+  width: 180px;
+}
+
+.dan-time-picker__sides {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.dan-time-picker__side {
+  margin: 0;
+  padding: 6px 4px;
+  border: 0;
+  border-radius: var(--dan-radius-sm);
+  background: transparent;
+  color: var(--dan-color-text-secondary);
+  font: inherit;
+  font-size: var(--dan-font-size-xs);
+  cursor: pointer;
+}
+
+.dan-time-picker__side.is-active {
+  color: var(--dan-color-primary);
+  background: var(--dan-color-primary-light);
+  font-weight: 500;
 }
 
 .dan-time-picker__columns {

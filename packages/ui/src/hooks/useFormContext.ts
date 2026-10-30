@@ -8,6 +8,7 @@ export interface FormContext {
   disabled: Ref<boolean>
   size?: Ref<'small' | 'default' | 'large' | undefined>
   labelWidth?: Ref<string | undefined>
+  requireAsteriskPosition?: Ref<'left' | 'right'>
   addField: (field: FormItemContext) => void
   removeField: (field: FormItemContext) => void
   validateField: (prop: string) => Promise<boolean>

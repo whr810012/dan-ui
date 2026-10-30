@@ -182,4 +182,24 @@ describe('DanDatePicker', () => {
     expect(new Date(y, m - 1, d).getDay()).toBe(1)
     wrapper.unmount()
   })
+
+  it('renders dual calendars with unlinkPanels', async () => {
+    const value = ref<[string, string] | null>(null)
+    const Comp = defineComponent({
+      components: { DanDatePicker },
+      setup() {
+        return { value }
+      },
+      template: `<DanDatePicker v-model="value" type="daterange" unlink-panels />`,
+    })
+    const wrapper = mount(Comp, { attachTo: document.body })
+    await wrapper.get('.dan-date-picker__trigger').trigger('click')
+    await nextTick()
+    expect(document.querySelectorAll('.dan-date-picker__calendar').length).toBe(
+      2,
+    )
+    expect(document.querySelector('.dan-date-picker__calendars')).toBeTruthy()
+    wrapper.unmount()
+  })
 })
+

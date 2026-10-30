@@ -21,6 +21,8 @@ const props = withDefaults(
     size?: DanSize
     labelWidth?: string
     labelPosition?: 'left' | 'right' | 'top'
+    /** 必填星号位置 */
+    requireAsteriskPosition?: 'left' | 'right'
     /** validate 失败时自动滚到首个错误项 */
     scrollToError?: boolean
   }>(),
@@ -28,6 +30,7 @@ const props = withDefaults(
     rules: () => ({}),
     disabled: false,
     labelPosition: 'right',
+    requireAsteriskPosition: 'left',
     scrollToError: false,
   },
 )
@@ -47,6 +50,7 @@ const context: FormContext = {
   disabled: toRef(props, 'disabled'),
   size: toRef(props, 'size'),
   labelWidth: toRef(props, 'labelWidth'),
+  requireAsteriskPosition: toRef(props, 'requireAsteriskPosition'),
   addField(field) {
     fields.push(field)
   },
@@ -123,6 +127,7 @@ defineExpose({
     :class="[
       ns.b(),
       ns.m(`label-${labelPosition}`),
+      ns.m(`asterisk-${requireAsteriskPosition}`),
       ns.is('disabled', disabled),
     ]"
     @submit.prevent

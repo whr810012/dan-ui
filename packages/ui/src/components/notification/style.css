@@ -10,23 +10,36 @@
 }
 
 .dan-notification--top-right {
-  top: 16px;
   right: 16px;
 }
 
 .dan-notification--top-left {
-  top: 16px;
   left: 16px;
 }
 
 .dan-notification--bottom-right {
   right: 16px;
-  bottom: 16px;
 }
 
 .dan-notification--bottom-left {
   left: 16px;
-  bottom: 16px;
+}
+
+.dan-notification__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  padding: 0 5px;
+  border-radius: var(--dan-radius-full);
+  background: var(--dan-color-fill);
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-xs);
+  font-weight: var(--dan-font-weight-medium);
+  line-height: 1;
+  vertical-align: middle;
 }
 
 .dan-notification__item {
@@ -70,6 +83,8 @@
 }
 
 .dan-notification__title {
+  display: flex;
+  align-items: center;
   margin-bottom: 4px;
   font-size: var(--dan-font-size-md);
   font-weight: var(--dan-font-weight-semibold);

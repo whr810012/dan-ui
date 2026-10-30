@@ -299,6 +299,20 @@
   min-width: 280px;
 }
 
+.dan-date-picker__calendars {
+  display: flex;
+  gap: var(--dan-spacing-md);
+}
+
+.dan-date-picker__calendar {
+  min-width: 260px;
+}
+
+.dan-date-picker__nav:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 .dan-date-picker__time {
   display: flex;
   flex-direction: column;

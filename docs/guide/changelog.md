@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.16.0
+
+- Message / Notification：`offset`、`grouping`（相同内容合并计数）
+- Form：`requireAsteriskPosition`；补齐 `labelPosition=left` 样式
+- Checkbox：文档确认 `indeterminate`（已有能力）
+- TimePicker：`isRange` 时间范围 + `clearable` 文档
+- DatePicker：`unlinkPanels` 范围双面板独立翻月
+
 ## 2.15.0
 
 - Rate：`clearable`（再点同星清空）；文档补齐 `allowHalf`

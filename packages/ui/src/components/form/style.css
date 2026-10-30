@@ -23,15 +23,25 @@
   text-align: right;
 }
 
+.dan-form--label-left .dan-form-item__label {
+  text-align: left;
+}
+
 .dan-form--label-top .dan-form-item__label {
   text-align: left;
   line-height: 1.4;
   padding-right: 0;
 }
 
-.dan-form-item.is-required .dan-form-item__label::before {
+.dan-form--asterisk-left .dan-form-item.is-required .dan-form-item__label::before {
   content: '*';
   margin-right: 4px;
+  color: var(--dan-color-danger);
+}
+
+.dan-form--asterisk-right .dan-form-item.is-required .dan-form-item__label::after {
+  content: '*';
+  margin-left: 4px;
   color: var(--dan-color-danger);
 }
 

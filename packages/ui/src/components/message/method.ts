@@ -4,10 +4,13 @@ import type { MessageHandler, MessageOptions, MessageType } from './types'
 
 interface MessageRecord extends MessageOptions {
   id: string
+  repeat: number
+  tick: number
 }
 
-const state = reactive<{ items: MessageRecord[] }>({
+const state = reactive<{ items: MessageRecord[]; offset: number }>({
   items: [],
+  offset: 20,
 })
 
 let seed = 1
@@ -22,6 +25,7 @@ function ensureHost() {
       return () =>
         h(MessageHost, {
           items: state.items,
+          offset: state.offset,
           onClose: close,
         })
     },
@@ -38,13 +42,36 @@ function open(options: MessageOptions | string): MessageHandler {
   ensureHost()
   const normalized: MessageOptions =
     typeof options === 'string' ? { message: options } : options
+  const type = normalized.type || 'info'
+  const message = normalized.message
+  const grouping = normalized.grouping !== false
+  const offset = normalized.offset ?? 20
+  state.offset = offset
+
+  if (grouping) {
+    const existing = state.items.find(
+      (item) => item.message === message && (item.type || 'info') === type,
+    )
+    if (existing) {
+      existing.repeat += 1
+      existing.duration = normalized.duration ?? existing.duration ?? 3000
+      existing.showClose = normalized.showClose ?? existing.showClose ?? false
+      existing.tick += 1
+      return { close: () => close(existing.id) }
+    }
+  }
+
   const id = normalized.id || `dan-message-${seed++}`
   state.items.push({
     id,
-    message: normalized.message,
-    type: normalized.type || 'info',
+    message,
+    type,
     duration: normalized.duration ?? 3000,
     showClose: normalized.showClose ?? false,
+    offset,
+    grouping,
+    repeat: 1,
+    tick: 0,
   })
   return {
     close: () => close(id),

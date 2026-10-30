@@ -5,6 +5,25 @@ import { DanForm, DanFormItem } from '../index'
 import { DanInput } from '../../input'
 
 describe('DanForm', () => {
+  it('applies asterisk position class', () => {
+    const Comp = defineComponent({
+      components: { DanForm, DanFormItem, DanInput },
+      setup() {
+        const model = reactive({ name: '' })
+        return { model }
+      },
+      template: `
+        <DanForm :model="model" require-asterisk-position="right">
+          <DanFormItem label="姓名" prop="name" required>
+            <DanInput v-model="model.name" />
+          </DanFormItem>
+        </DanForm>
+      `,
+    })
+    const wrapper = mount(Comp)
+    expect(wrapper.find('form').classes()).toContain('dan-form--asterisk-right')
+  })
+
   it('validates required fields', async () => {
     const Comp = defineComponent({
       components: { DanForm, DanFormItem, DanInput },
