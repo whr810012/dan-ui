@@ -38,6 +38,9 @@ const zhCN: LocaleMessages = {
     total: '共 {total} 条',
     prev: '上一页',
     next: '下一页',
+    goto: '前往',
+    pageClassifier: '页',
+    pageSize: '{size} 条/页',
   },
   dialog: {
     confirm: '确定',

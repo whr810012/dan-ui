@@ -37,6 +37,10 @@ export interface LocaleMessages {
     total: string
     prev: string
     next: string
+    goto: string
+    pageClassifier: string
+    /** 支持 `{size}` 占位 */
+    pageSize: string
   }
   dialog: {
     confirm: string

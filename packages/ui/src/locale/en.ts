@@ -38,6 +38,9 @@ const en: LocaleMessages = {
     total: '{total} in total',
     prev: 'Prev',
     next: 'Next',
+    goto: 'Go to',
+    pageClassifier: '',
+    pageSize: '{size}/page',
   },
   dialog: {
     confirm: 'OK',

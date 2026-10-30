@@ -12,6 +12,14 @@ const props = withDefaults(
     status?: 'normal' | 'success' | 'warning' | 'exception'
     strokeWidth?: number
     showText?: boolean
+    /** 百分比文字显示在条内（仅 line） */
+    textInside?: boolean
+    /** 条纹进度条（仅 line） */
+    striped?: boolean
+    /** 条纹流动动画，需同时开启 striped */
+    stripedFlow?: boolean
+    /** 不确定进度动画 */
+    indeterminate?: boolean
     color?: string
     width?: number
   }>(),
@@ -21,6 +29,10 @@ const props = withDefaults(
     status: 'normal',
     strokeWidth: 8,
     showText: true,
+    textInside: false,
+    striped: false,
+    stripedFlow: false,
+    indeterminate: false,
     width: 120,
   },
 )
@@ -33,8 +45,15 @@ const pct = computed(() =>
 
 const statusType = computed(() => {
   if (props.status !== 'normal') return props.status
-  if (pct.value >= 100) return 'success'
+  if (!props.indeterminate && pct.value >= 100) return 'success'
   return 'normal'
+})
+
+const lineStroke = computed(() => {
+  if (props.textInside && !props.indeterminate) {
+    return Math.max(props.strokeWidth, 18)
+  }
+  return props.strokeWidth
 })
 
 const barColor = computed(() => {
@@ -50,27 +69,65 @@ const barColor = computed(() => {
 
 const circleRadius = computed(() => (props.width - props.strokeWidth) / 2)
 const circlePerimeter = computed(() => 2 * Math.PI * circleRadius.value)
-const circleOffset = computed(
-  () => circlePerimeter.value * (1 - pct.value / 100),
+const circleOffset = computed(() => {
+  if (props.indeterminate) return circlePerimeter.value * 0.75
+  return circlePerimeter.value * (1 - pct.value / 100)
+})
+
+const showOutsideText = computed(
+  () =>
+    props.showText &&
+    props.type === 'line' &&
+    !props.textInside &&
+    !props.indeterminate,
+)
+
+const showInsideText = computed(
+  () =>
+    props.showText &&
+    props.type === 'line' &&
+    props.textInside &&
+    !props.indeterminate,
 )
 </script>
 
 <template>
   <div
-    :class="[ns.b(), ns.m(type), ns.m(statusType)]"
+    :class="[
+      ns.b(),
+      ns.m(type),
+      ns.m(statusType),
+      ns.is('text-inside', textInside && type === 'line'),
+      ns.is('indeterminate', indeterminate),
+    ]"
     role="progressbar"
-    :aria-valuenow="pct"
-    aria-valuemin="0"
-    aria-valuemax="100"
+    :aria-valuenow="indeterminate ? undefined : pct"
+    :aria-valuemin="indeterminate ? undefined : 0"
+    :aria-valuemax="indeterminate ? undefined : 100"
+    :aria-busy="indeterminate || undefined"
   >
     <div v-if="type === 'line'" :class="ns.e('bar-wrap')">
-      <div :class="ns.e('bar-outer')" :style="{ height: `${strokeWidth}px` }">
+      <div
+        :class="ns.e('bar-outer')"
+        :style="{ height: `${lineStroke}px` }"
+      >
         <div
-          :class="ns.e('bar-inner')"
-          :style="{ width: `${pct}%`, background: barColor }"
-        />
+          :class="[
+            ns.e('bar-inner'),
+            ns.is('striped', striped),
+            ns.is('striped-flow', striped && stripedFlow),
+          ]"
+          :style="{
+            width: indeterminate ? undefined : `${pct}%`,
+            backgroundColor: barColor,
+          }"
+        >
+          <span v-if="showInsideText" :class="ns.e('inner-text')">
+            <slot>{{ pct }}%</slot>
+          </span>
+        </div>
       </div>
-      <span v-if="showText" :class="ns.e('text')">
+      <span v-if="showOutsideText" :class="ns.e('text')">
         <slot>{{ pct }}%</slot>
       </span>
     </div>
@@ -89,21 +146,27 @@ const circleOffset = computed(
           fill="none"
           :stroke-width="strokeWidth"
         />
-        <circle
-          :class="ns.e('circle-path')"
-          :cx="width / 2"
-          :cy="width / 2"
-          :r="circleRadius"
-          fill="none"
-          :stroke="barColor"
-          :stroke-width="strokeWidth"
-          stroke-linecap="round"
-          :stroke-dasharray="circlePerimeter"
-          :stroke-dashoffset="circleOffset"
-          :transform="`rotate(-90 ${width / 2} ${width / 2})`"
-        />
+        <g
+          :class="ns.is('circle-spin', indeterminate)"
+          :style="{ transformOrigin: `${width / 2}px ${width / 2}px` }"
+        >
+          <g :transform="`rotate(-90 ${width / 2} ${width / 2})`">
+            <circle
+              :class="ns.e('circle-path')"
+              :cx="width / 2"
+              :cy="width / 2"
+              :r="circleRadius"
+              fill="none"
+              :stroke="barColor"
+              :stroke-width="strokeWidth"
+              stroke-linecap="round"
+              :stroke-dasharray="circlePerimeter"
+              :stroke-dashoffset="circleOffset"
+            />
+          </g>
+        </g>
       </svg>
-      <span v-if="showText" :class="ns.e('circle-text')">
+      <span v-if="showText && !indeterminate" :class="ns.e('circle-text')">
         <slot>{{ pct }}%</slot>
       </span>
     </div>

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.11.0
+
+- Progress：`textInside` / `striped` / `stripedFlow` / `indeterminate`
+- Pagination：`sizes` / `jumper` 布局、`pageSizes`、`v-model:pageSize`、`size-change`
+
 ## 2.10.0
 
 - Badge：`offset` / `showZero`

@@ -18,6 +18,7 @@
 }
 
 .dan-progress__bar-outer {
+  position: relative;
   flex: 1;
   overflow: hidden;
   border-radius: var(--dan-radius-full);
@@ -25,9 +26,47 @@
 }
 
 .dan-progress__bar-inner {
+  position: relative;
   height: 100%;
   border-radius: inherit;
   transition: width var(--dan-duration-normal) var(--dan-ease);
+}
+
+.dan-progress__bar-inner.is-striped {
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.28) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.28) 50%,
+    rgba(255, 255, 255, 0.28) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 1rem 1rem;
+}
+
+.dan-progress__bar-inner.is-striped-flow {
+  animation: dan-progress-stripes 1s linear infinite;
+}
+
+.dan-progress.is-indeterminate .dan-progress__bar-inner {
+  width: 40%;
+  transition: none;
+  animation: dan-progress-indeterminate 1.4s ease-in-out infinite;
+}
+
+.dan-progress__inner-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  color: var(--dan-color-text-on-color);
+  font-size: var(--dan-font-size-xs);
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .dan-progress__text {
@@ -59,6 +98,10 @@
   transition: stroke-dashoffset var(--dan-duration-normal) var(--dan-ease);
 }
 
+.dan-progress .is-circle-spin {
+  animation: dan-progress-circle 1.2s linear infinite;
+}
+
 .dan-progress__circle-text {
   position: absolute;
   inset: 0;
@@ -67,4 +110,28 @@
   justify-content: center;
   font-size: var(--dan-font-size-md);
   font-weight: var(--dan-font-weight-medium);
+}
+
+@keyframes dan-progress-stripes {
+  from {
+    background-position: 1rem 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+@keyframes dan-progress-indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+@keyframes dan-progress-circle {
+  to {
+    transform: rotate(360deg);
+  }
 }
