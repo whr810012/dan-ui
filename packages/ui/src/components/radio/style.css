@@ -67,9 +67,88 @@
   line-height: 1.5;
 }
 
+.dan-radio.is-border {
+  height: var(--dan-control-height-md);
+  padding: 0 var(--dan-spacing-md);
+  margin-right: var(--dan-spacing-sm);
+  border: 1px solid var(--dan-color-border);
+  border-radius: var(--dan-radius-md);
+  background: var(--dan-color-bg);
+  transition:
+    border-color var(--dan-duration-fast) var(--dan-ease),
+    background-color var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-radio.is-border.is-checked {
+  border-color: var(--dan-color-primary);
+  background: var(--dan-color-primary-light);
+}
+
+.dan-radio.is-border.is-disabled {
+  background: var(--dan-color-fill);
+}
+
+.dan-radio.is-button {
+  position: relative;
+  height: var(--dan-control-height-md);
+  margin: 0;
+  padding: 0 var(--dan-spacing-lg);
+  border: 1px solid var(--dan-color-border);
+  border-left-width: 0;
+  background: var(--dan-color-bg);
+  transition:
+    color var(--dan-duration-fast) var(--dan-ease),
+    border-color var(--dan-duration-fast) var(--dan-ease),
+    background-color var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-radio.is-button:first-child {
+  border-left-width: 1px;
+  border-radius: var(--dan-radius-md) 0 0 var(--dan-radius-md);
+}
+
+.dan-radio.is-button:last-child {
+  border-radius: 0 var(--dan-radius-md) var(--dan-radius-md) 0;
+}
+
+.dan-radio.is-button:only-child {
+  border-radius: var(--dan-radius-md);
+}
+
+.dan-radio.is-button .dan-radio__original {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+
+.dan-radio.is-button .dan-radio__label {
+  color: var(--dan-color-text);
+}
+
+.dan-radio.is-button.is-checked {
+  z-index: 1;
+  border-color: var(--dan-color-primary);
+  background: var(--dan-color-primary);
+}
+
+.dan-radio.is-button.is-checked .dan-radio__label {
+  color: #fff;
+}
+
+.dan-radio.is-button.is-disabled {
+  background: var(--dan-color-fill);
+}
+
 .dan-radio-group {
   display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
   min-height: var(--dan-control-height-md);
+}
+
+.dan-radio-group.is-button {
+  flex-wrap: nowrap;
 }

@@ -12,9 +12,15 @@ const props = withDefaults(
     modelValue?: string | number | boolean
     label?: string | number | boolean
     disabled?: boolean
+    /** 边框样式；组内也可由 RadioGroup.border 开启 */
+    border?: boolean
+    /** 按钮样式；组内也可由 RadioGroup.button 开启 */
+    button?: boolean
   }>(),
   {
     disabled: false,
+    border: false,
+    button: false,
   },
 )
 
@@ -32,6 +38,14 @@ const isDisabled = computed(
     props.disabled ||
     group?.disabled.value === true ||
     form?.disabled.value === true,
+)
+
+const isBorder = computed(
+  () => props.border || group?.border.value === true,
+)
+
+const isButton = computed(
+  () => props.button || group?.button.value === true,
 )
 
 const isChecked = computed(() => {
@@ -57,9 +71,11 @@ function onChange() {
       ns.b(),
       ns.is('checked', isChecked),
       ns.is('disabled', isDisabled),
+      ns.is('border', isBorder && !isButton),
+      ns.is('button', isButton),
     ]"
   >
-    <span :class="ns.e('input')">
+    <span v-if="!isButton" :class="ns.e('input')">
       <input
         :class="ns.e('original')"
         type="radio"
@@ -71,6 +87,14 @@ function onChange() {
         <span v-if="isChecked" :class="ns.e('dot')" />
       </span>
     </span>
+    <input
+      v-else
+      :class="ns.e('original')"
+      type="radio"
+      :checked="isChecked"
+      :disabled="isDisabled"
+      @change="onChange"
+    />
     <span v-if="$slots.default || label != null" :class="ns.e('label')">
       <slot>{{ label }}</slot>
     </span>

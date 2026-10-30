@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.27.0
+
+- Radio / RadioGroup：`border` 边框样式、`button` 按钮组样式
+
 ## 2.26.0
 
 - Textarea：字数统计对齐 Input（禁用隐藏、超限样式）；新增 `formatter` / `parser`

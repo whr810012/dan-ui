@@ -11,9 +11,15 @@ const props = withDefaults(
   defineProps<{
     modelValue?: string | number | boolean
     disabled?: boolean
+    /** 组内单选框带边框 */
+    border?: boolean
+    /** 按钮样式组 */
+    button?: boolean
   }>(),
   {
     disabled: false,
+    border: false,
+    button: false,
   },
 )
 
@@ -31,6 +37,8 @@ const groupDisabled = computed(
 provideRadioGroup({
   modelValue: toRef(props, 'modelValue'),
   disabled: groupDisabled,
+  border: toRef(props, 'border'),
+  button: toRef(props, 'button'),
   changeEvent(value) {
     emit('update:modelValue', value)
     emit('change', value)
@@ -40,7 +48,14 @@ provideRadioGroup({
 </script>
 
 <template>
-  <div :class="ns.b()" role="radiogroup">
+  <div
+    :class="[
+      ns.b(),
+      ns.is('disabled', groupDisabled),
+      ns.is('button', button),
+    ]"
+    role="radiogroup"
+  >
     <slot />
   </div>
 </template>

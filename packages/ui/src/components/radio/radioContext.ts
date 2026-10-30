@@ -4,6 +4,8 @@ import { createContext } from '../../utils/createContext'
 export interface RadioGroupContext {
   modelValue: Ref<string | number | boolean | undefined>
   disabled: Ref<boolean>
+  border: Ref<boolean>
+  button: Ref<boolean>
   changeEvent: (value: string | number | boolean) => void
 }
 

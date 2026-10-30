@@ -2,8 +2,10 @@
 import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/radio/basic.vue'
 import Disabled from './demos/radio/disabled.vue'
+import Button from './demos/radio/button.vue'
 import basicSrc from './demos/radio/basic.vue?raw'
 import disabledSrc from './demos/radio/disabled.vue?raw'
+import buttonSrc from './demos/radio/button.vue?raw'
 </script>
 
 # Radio 单选框
@@ -24,6 +26,14 @@ import disabledSrc from './demos/radio/disabled.vue?raw'
   <Disabled />
 </DemoBlock>
 
+## 边框与按钮样式
+
+`border` 为带边框选项；`button` 为按钮组样式（可在 Group 上统一开启）。
+
+<DemoBlock :source="buttonSrc">
+  <Button />
+</DemoBlock>
+
 ## API
 
 ### Radio Props
@@ -33,6 +43,8 @@ import disabledSrc from './demos/radio/disabled.vue?raw'
 | modelValue / v-model | 单独使用时的选中值 | `string \| number \| boolean` | — | 否 |
 | label | 该单选项对应的值（Group 内必用） | `string \| number \| boolean` | — | 组内建议必填 |
 | disabled | 禁用当前项；可继承 Group / Form | `boolean` | `false` | 否 |
+| border | 边框样式 | `boolean` | `false` | 否 |
+| button | 按钮样式 | `boolean` | `false` | 否 |
 
 ### Radio Events
 
@@ -41,7 +53,7 @@ import disabledSrc from './demos/radio/disabled.vue?raw'
 | update:modelValue | 单独使用时的 `v-model` | `(value: string \| number \| boolean) => void` |
 | change | 选中变化 | `(value: string \| number \| boolean) => void` |
 
-### Radio Slots
+### RadioSlots
 
 | 插槽名 | 说明 |
 |--------|------|
@@ -53,6 +65,8 @@ import disabledSrc from './demos/radio/disabled.vue?raw'
 |------|------|------|--------|------|
 | modelValue / v-model | 当前选中值 | `string \| number \| boolean` | — | 否 |
 | disabled | 禁用整组 | `boolean` | `false` | 否 |
+| border | 组内统一边框样式 | `boolean` | `false` | 否 |
+| button | 组内统一按钮样式 | `boolean` | `false` | 否 |
 
 ### RadioGroup Events
 
