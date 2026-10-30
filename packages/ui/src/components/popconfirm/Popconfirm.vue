@@ -18,16 +18,23 @@ const props = withDefaults(
     cancelText?: string
     confirmType?: 'primary' | 'success' | 'warning' | 'danger' | 'info'
     placement?: PopupPlacement
+    /** 触发方式，对齐 Popover */
+    trigger?: 'click' | 'hover' | 'focus' | 'contextmenu'
     disabled?: boolean
     width?: string | number
+    showAfter?: number
+    hideAfter?: number
     offset?: number
     visible?: boolean
   }>(),
   {
     confirmType: 'primary',
     placement: 'top',
+    trigger: 'click',
     disabled: false,
     width: 220,
+    showAfter: 100,
+    hideAfter: 100,
     offset: 8,
     visible: undefined,
   },
@@ -56,6 +63,9 @@ const popperRef = ref<HTMLElement | null>(null)
 const innerVisible = ref(false)
 const popperStyle = ref<Record<string, string>>({})
 
+let showTimer: ReturnType<typeof setTimeout> | null = null
+let hideTimer: ReturnType<typeof setTimeout> | null = null
+
 const isControlled = computed(() => props.visible !== undefined)
 const resolvedVisible = computed(() =>
   isControlled.value ? Boolean(props.visible) : innerVisible.value,
@@ -64,6 +74,17 @@ const resolvedVisible = computed(() =>
 const panelWidth = computed(() =>
   typeof props.width === 'number' ? `${props.width}px` : props.width,
 )
+
+function clearTimers() {
+  if (showTimer != null) {
+    clearTimeout(showTimer)
+    showTimer = null
+  }
+  if (hideTimer != null) {
+    clearTimeout(hideTimer)
+    hideTimer = null
+  }
+}
 
 function setVisible(value: boolean) {
   if (props.disabled && value) return
@@ -93,18 +114,73 @@ function updatePosition() {
 
 async function open() {
   if (props.disabled) return
+  clearTimers()
   setVisible(true)
   await nextTick()
   updatePosition()
 }
 
 function close() {
+  clearTimers()
   setVisible(false)
 }
 
-function onTriggerClick() {
+function scheduleOpen() {
+  clearTimers()
+  showTimer = setTimeout(() => {
+    void open()
+  }, props.showAfter)
+}
+
+function scheduleClose() {
+  clearTimers()
+  hideTimer = setTimeout(() => {
+    close()
+  }, props.hideAfter)
+}
+
+function onTriggerClick(event: MouseEvent) {
+  if (props.trigger !== 'click') return
+  event.stopPropagation()
   if (resolvedVisible.value) close()
   else void open()
+}
+
+function onContextMenu(event: MouseEvent) {
+  if (props.trigger !== 'contextmenu') return
+  event.preventDefault()
+  event.stopPropagation()
+  void open()
+}
+
+function onTriggerEnter() {
+  if (props.trigger !== 'hover') return
+  scheduleOpen()
+}
+
+function onTriggerLeave() {
+  if (props.trigger !== 'hover') return
+  scheduleClose()
+}
+
+function onTriggerFocus() {
+  if (props.trigger !== 'focus') return
+  scheduleOpen()
+}
+
+function onTriggerBlur() {
+  if (props.trigger !== 'focus') return
+  scheduleClose()
+}
+
+function onPopperEnter() {
+  if (props.trigger !== 'hover') return
+  clearTimers()
+}
+
+function onPopperLeave() {
+  if (props.trigger !== 'hover') return
+  scheduleClose()
 }
 
 function onConfirm(event: MouseEvent) {
@@ -119,6 +195,7 @@ function onCancel(event: MouseEvent) {
 
 function onDocumentClick(event: MouseEvent) {
   if (!resolvedVisible.value) return
+  if (props.trigger !== 'click' && props.trigger !== 'contextmenu') return
   const target = event.target as Node
   if (triggerRef.value?.contains(target)) return
   if (popperRef.value?.contains(target)) return
@@ -151,6 +228,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  clearTimers()
   document.removeEventListener('click', onDocumentClick, true)
   document.removeEventListener('keydown', onKeydown)
   window.removeEventListener('scroll', onScrollOrResize, true)
@@ -161,7 +239,16 @@ defineExpose({ show: open, hide: close })
 </script>
 
 <template>
-  <span ref="triggerRef" :class="ns.b()" @click.stop="onTriggerClick">
+  <span
+    ref="triggerRef"
+    :class="ns.b()"
+    @click="onTriggerClick"
+    @contextmenu="onContextMenu"
+    @mouseenter="onTriggerEnter"
+    @mouseleave="onTriggerLeave"
+    @focusin="onTriggerFocus"
+    @focusout="onTriggerBlur"
+  >
     <slot />
   </span>
   <Teleport to="body">
@@ -172,6 +259,8 @@ defineExpose({ show: open, hide: close })
       :style="popperStyle"
       role="dialog"
       aria-modal="false"
+      @mouseenter="onPopperEnter"
+      @mouseleave="onPopperLeave"
       @click.stop
     >
       <div :class="ns.e('title')">

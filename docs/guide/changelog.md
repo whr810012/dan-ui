@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.22.0
+
+- Popconfirm：`trigger` 对齐 Popover（`click` / `hover` / `focus` / `contextmenu`）；补齐 `showAfter` / `hideAfter`
+
 ## 2.21.0
 
 - Upload：拖拽区图标与 locale 文案；`dragText` / `tip` / `#tip`；自动展示 `limit` / `accept` 副文案
