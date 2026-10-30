@@ -13,12 +13,14 @@ const props = withDefaults(
   defineProps<{
     content?: string
     placement?: PopupPlacement
-    trigger?: 'hover' | 'focus'
+    trigger?: 'hover' | 'focus' | 'click'
     disabled?: boolean
     showAfter?: number
     hideAfter?: number
     offset?: number
     visible?: boolean
+    /** 将 content 作为 HTML 渲染（插槽优先） */
+    rawContent?: boolean
   }>(),
   {
     content: '',
@@ -29,6 +31,7 @@ const props = withDefaults(
     hideAfter: 100,
     offset: 8,
     visible: undefined,
+    rawContent: false,
   },
 )
 
@@ -114,6 +117,13 @@ function scheduleClose() {
   }, props.hideAfter)
 }
 
+function onTriggerClick(event: MouseEvent) {
+  if (props.trigger !== 'click') return
+  event.stopPropagation()
+  if (resolvedVisible.value) close()
+  else void open()
+}
+
 function onTriggerEnter() {
   if (props.trigger !== 'hover') return
   scheduleOpen()
@@ -144,6 +154,14 @@ function onPopperLeave() {
   scheduleClose()
 }
 
+function onDocumentClick(event: MouseEvent) {
+  if (!resolvedVisible.value || props.trigger !== 'click') return
+  const target = event.target as Node
+  if (triggerRef.value?.contains(target)) return
+  if (popperRef.value?.contains(target)) return
+  close()
+}
+
 function onScrollOrResize() {
   if (resolvedVisible.value) updatePosition()
 }
@@ -156,12 +174,14 @@ watch(resolvedVisible, async (value) => {
 })
 
 onMounted(() => {
+  document.addEventListener('click', onDocumentClick, true)
   window.addEventListener('scroll', onScrollOrResize, true)
   window.addEventListener('resize', onScrollOrResize)
 })
 
 onBeforeUnmount(() => {
   clearTimers()
+  document.removeEventListener('click', onDocumentClick, true)
   window.removeEventListener('scroll', onScrollOrResize, true)
   window.removeEventListener('resize', onScrollOrResize)
 })
@@ -177,6 +197,7 @@ defineExpose({
   <span
     ref="triggerRef"
     :class="ns.b()"
+    @click="onTriggerClick"
     @mouseenter="onTriggerEnter"
     @mouseleave="onTriggerLeave"
     @focusin="onTriggerFocus"
@@ -194,7 +215,10 @@ defineExpose({
       @mouseenter="onPopperEnter"
       @mouseleave="onPopperLeave"
     >
-      <slot name="content">{{ content }}</slot>
+      <slot name="content">
+        <span v-if="rawContent" v-html="content" />
+        <template v-else>{{ content }}</template>
+      </slot>
     </div>
   </Teleport>
 </template>

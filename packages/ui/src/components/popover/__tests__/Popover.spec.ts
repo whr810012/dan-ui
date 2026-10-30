@@ -28,4 +28,23 @@ describe('DanPopover', () => {
 
     wrapper.unmount()
   })
+
+  it('opens on contextmenu', async () => {
+    const wrapper = mount(DanPopover, {
+      attachTo: document.body,
+      props: {
+        content: '右键内容',
+        trigger: 'contextmenu',
+        showAfter: 0,
+      },
+      slots: { default: '<button>右键</button>' },
+    })
+    await wrapper.find('.dan-popover').trigger('contextmenu')
+    await nextTick()
+    const popper = document.querySelector('.dan-popover__popper') as HTMLElement
+    expect(popper.style.display).not.toBe('none')
+    expect(popper.textContent).toContain('右键内容')
+    wrapper.unmount()
+  })
 })
+

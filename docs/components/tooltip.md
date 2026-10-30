@@ -2,6 +2,8 @@
 import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/tooltip/basic.vue'
 import basicSrc from './demos/tooltip/basic.vue?raw'
+import Raw from './demos/tooltip/raw.vue'
+import rawSrc from './demos/tooltip/raw.vue?raw'
 </script>
 
 # Tooltip 文字提示
@@ -14,13 +16,22 @@ import basicSrc from './demos/tooltip/basic.vue?raw'
   <Basic />
 </DemoBlock>
 
+## HTML 内容
+
+`rawContent` 将 `content` 按 HTML 渲染（请仅使用可信内容）。
+
+<DemoBlock :source="rawSrc">
+  <Raw />
+</DemoBlock>
+
 ## Props
 
 | 属性 | 说明 | 类型 | 默认值 |
 |------|------|------|--------|
 | content | 提示文案 | `string` | `''` |
+| rawContent | 将 content 作为 HTML 渲染 | `boolean` | `false` |
 | placement | 出现位置 | `'top' \| 'bottom' \| 'left' \| 'right'` | `'top'` |
-| trigger | 触发方式 | `'hover' \| 'focus'` | `'hover'` |
+| trigger | 触发方式 | `'hover' \| 'focus' \| 'click'` | `'hover'` |
 | disabled | 是否禁用 | `boolean` | `false` |
 | showAfter | 显示延时（ms） | `number` | `100` |
 | hideAfter | 隐藏延时（ms） | `number` | `100` |

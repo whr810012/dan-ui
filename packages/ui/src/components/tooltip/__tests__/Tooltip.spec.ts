@@ -37,6 +37,23 @@ describe('DanTooltip', () => {
     wrapper.unmount()
   })
 
+  it('renders raw html content', async () => {
+    const wrapper = mount(DanTooltip, {
+      attachTo: document.body,
+      props: {
+        content: '<em>强调</em>',
+        rawContent: true,
+        showAfter: 0,
+        visible: true,
+      },
+      slots: { default: '<button>触发</button>' },
+    })
+    await nextTick()
+    const popper = document.querySelector('.dan-tooltip__popper') as HTMLElement
+    expect(popper.querySelector('em')?.textContent).toBe('强调')
+    wrapper.unmount()
+  })
+
   it('does not open when disabled', async () => {
     const wrapper = mount(DanTooltip, {
       attachTo: document.body,

@@ -2,6 +2,8 @@
 import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/popover/basic.vue'
 import basicSrc from './demos/popover/basic.vue?raw'
+import Triggers from './demos/popover/triggers.vue'
+import triggersSrc from './demos/popover/triggers.vue?raw'
 </script>
 
 # Popover 弹出框
@@ -14,6 +16,14 @@ import basicSrc from './demos/popover/basic.vue?raw'
   <Basic />
 </DemoBlock>
 
+## 触发方式与延时
+
+`trigger` 支持 `click` / `hover` / `focus` / `contextmenu`；`showAfter` / `hideAfter` 控制显隐延时。
+
+<DemoBlock :source="triggersSrc">
+  <Triggers />
+</DemoBlock>
+
 ## Props
 
 | 属性 | 说明 | 类型 | 默认值 |
@@ -21,8 +31,11 @@ import basicSrc from './demos/popover/basic.vue?raw'
 | title | 标题 | `string` | `''` |
 | content | 正文 | `string` | `''` |
 | placement | 位置 | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` |
-| trigger | 触发方式 | `'click' \| 'hover'` | `'click'` |
+| trigger | 触发方式 | `'click' \| 'hover' \| 'focus' \| 'contextmenu'` | `'click'` |
 | width | 面板宽度 | `string \| number` | `240` |
+| showAfter | 显示延时（ms） | `number` | `100` |
+| hideAfter | 隐藏延时（ms） | `number` | `100` |
+| offset | 与触发元素间距 | `number` | `8` |
 | disabled | 禁用 | `boolean` | `false` |
 | visible | 受控显示 | `boolean` | — |
 

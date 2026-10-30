@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.17.0
+
+- Popover：`trigger` 增补 `focus` / `contextmenu`；文档补齐 `showAfter` / `hideAfter`
+- Tooltip：`rawContent` HTML 渲染；`trigger` 增补 `click`
+
 ## 2.16.0
 
 - Message / Notification：`offset`、`grouping`（相同内容合并计数）

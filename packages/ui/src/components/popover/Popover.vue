@@ -14,7 +14,7 @@ const props = withDefaults(
     title?: string
     content?: string
     placement?: PopupPlacement
-    trigger?: 'click' | 'hover'
+    trigger?: 'click' | 'hover' | 'focus' | 'contextmenu'
     disabled?: boolean
     width?: string | number
     showAfter?: number
@@ -125,10 +125,18 @@ function scheduleClose() {
   }, props.hideAfter)
 }
 
-function onTriggerClick() {
+function onTriggerClick(event: MouseEvent) {
   if (props.trigger !== 'click') return
+  event.stopPropagation()
   if (resolvedVisible.value) close()
   else void open()
+}
+
+function onContextMenu(event: MouseEvent) {
+  if (props.trigger !== 'contextmenu') return
+  event.preventDefault()
+  event.stopPropagation()
+  void open()
 }
 
 function onTriggerEnter() {
@@ -138,6 +146,16 @@ function onTriggerEnter() {
 
 function onTriggerLeave() {
   if (props.trigger !== 'hover') return
+  scheduleClose()
+}
+
+function onTriggerFocus() {
+  if (props.trigger !== 'focus') return
+  scheduleOpen()
+}
+
+function onTriggerBlur() {
+  if (props.trigger !== 'focus') return
   scheduleClose()
 }
 
@@ -152,7 +170,8 @@ function onPopperLeave() {
 }
 
 function onDocumentClick(event: MouseEvent) {
-  if (!resolvedVisible.value || props.trigger !== 'click') return
+  if (!resolvedVisible.value) return
+  if (props.trigger !== 'click' && props.trigger !== 'contextmenu') return
   const target = event.target as Node
   if (triggerRef.value?.contains(target)) return
   if (popperRef.value?.contains(target)) return
@@ -200,8 +219,11 @@ defineExpose({ show: open, hide: close })
     ref="triggerRef"
     :class="ns.b()"
     @click="onTriggerClick"
+    @contextmenu="onContextMenu"
     @mouseenter="onTriggerEnter"
     @mouseleave="onTriggerLeave"
+    @focusin="onTriggerFocus"
+    @focusout="onTriggerBlur"
   >
     <slot />
   </span>
