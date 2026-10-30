@@ -36,16 +36,41 @@
   font-size: var(--dan-font-size-sm);
 }
 
+.dan-alert.is-center {
+  justify-content: center;
+}
+
+.dan-alert.is-center .dan-alert__content {
+  flex: 0 1 auto;
+  text-align: center;
+}
+
+.dan-alert.is-center .dan-alert__close {
+  position: absolute;
+  top: var(--dan-spacing-md);
+  right: var(--dan-spacing-lg);
+}
+
 .dan-alert__close {
   flex-shrink: 0;
   display: inline-flex;
+  align-items: center;
   margin: 0;
   padding: 0;
   border: 0;
   background: transparent;
   color: inherit;
+  font: inherit;
+  font-size: var(--dan-font-size-sm);
+  line-height: 1;
   cursor: pointer;
   opacity: 0.7;
+}
+
+.dan-alert__close.is-text {
+  opacity: 0.85;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .dan-alert__close:hover {

@@ -11,6 +11,8 @@ const props = withDefaults(
     size?: 'small' | 'default' | 'large'
     effect?: 'light' | 'dark' | 'plain'
     round?: boolean
+    /** 描边强调（边框跟随时文字色） */
+    hit?: boolean
     closable?: boolean
     disabled?: boolean
   }>(),
@@ -19,6 +21,7 @@ const props = withDefaults(
     size: 'default',
     effect: 'light',
     round: false,
+    hit: false,
     closable: false,
     disabled: false,
   },
@@ -46,6 +49,7 @@ function onClose(event: MouseEvent) {
       ns.m(size),
       ns.m(effect),
       ns.is('round', round),
+      ns.is('hit', hit),
       ns.is('closable', closable),
       ns.is('disabled', disabled),
     ]"

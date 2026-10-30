@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.13.0
+
+- Alert：`center`、`closeText`
+- Tag：`hit` 描边强调
+
 ## 2.12.0
 
 - Switch：`loading`、`beforeChange`（支持异步确认）

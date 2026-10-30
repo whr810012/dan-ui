@@ -30,6 +30,10 @@
   border-radius: var(--dan-radius-full);
 }
 
+.dan-tag.is-hit {
+  border-color: currentColor;
+}
+
 .dan-tag.is-disabled {
   opacity: 0.55;
   cursor: not-allowed;

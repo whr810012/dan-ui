@@ -13,13 +13,18 @@ const props = withDefaults(
     type?: 'success' | 'warning' | 'info' | 'error'
     description?: string
     closable?: boolean
+    /** 自定义关闭按钮文案；有值时显示文字而非图标 */
+    closeText?: string
     showIcon?: boolean
+    /** 标题与描述居中 */
+    center?: boolean
     effect?: 'light' | 'dark'
   }>(),
   {
     type: 'info',
     closable: false,
     showIcon: true,
+    center: false,
     effect: 'light',
   },
 )
@@ -41,6 +46,8 @@ const iconName = computed<IconName>(() => {
   return map[props.type] || 'info'
 })
 
+const showClose = computed(() => props.closable || !!props.closeText)
+
 function onClose(event: MouseEvent) {
   visible.value = false
   emit('close', event)
@@ -56,6 +63,7 @@ function onClose(event: MouseEvent) {
       ns.m(type),
       ns.m(effect),
       ns.is('with-description', !!description || !!$slots.default),
+      ns.is('center', center),
     ]"
   >
     <DanIcon v-if="showIcon" :name="iconName" :class="ns.e('icon')" />
@@ -68,13 +76,14 @@ function onClose(event: MouseEvent) {
       </div>
     </div>
     <button
-      v-if="closable"
+      v-if="showClose"
       type="button"
-      :class="ns.e('close')"
-      aria-label="关闭"
+      :class="[ns.e('close'), ns.is('text', !!closeText)]"
+      :aria-label="closeText || '关闭'"
       @click="onClose"
     >
-      <DanIcon name="close" :size="14" />
+      <template v-if="closeText">{{ closeText }}</template>
+      <DanIcon v-else name="close" :size="14" />
     </button>
   </div>
 </template>
