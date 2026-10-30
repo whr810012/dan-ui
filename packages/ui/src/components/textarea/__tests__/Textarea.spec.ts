@@ -16,6 +16,28 @@ describe('DanTextarea', () => {
     expect(wrapper.emitted('update:modelValue')?.[0]?.[0]).toBe('hello')
   })
 
+  it('shows word limit and formats via formatter/parser', async () => {
+    const wrapper = mount(DanTextarea, {
+      props: {
+        modelValue: 'hello world',
+        maxlength: 20,
+        showWordLimit: true,
+        formatter: (v: string) => v.toUpperCase(),
+        parser: (v: string) => v.toLowerCase(),
+      },
+    })
+    expect(wrapper.find('.dan-textarea__count').text()).toBe('11 / 20')
+    expect(
+      (wrapper.find('textarea').element as HTMLTextAreaElement).value,
+    ).toBe('HELLO WORLD')
+
+    await wrapper.find('textarea').setValue('ABC')
+    expect(wrapper.emitted('update:modelValue')?.[0]?.[0]).toBe('abc')
+
+    await wrapper.setProps({ disabled: true })
+    expect(wrapper.find('.dan-textarea__count').exists()).toBe(false)
+  })
+
   it('applies autosize height style', async () => {
     const value = ref('a\nb\nc')
     const wrapper = mount(DanTextarea, {

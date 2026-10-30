@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.26.0
+
+- Textarea：字数统计对齐 Input（禁用隐藏、超限样式）；新增 `formatter` / `parser`
+
 ## 2.25.0
 
 - Tree：`filter(query)` 过滤高亮、祖先自动展开；无匹配空态；`filterMethod` / `emptyText`

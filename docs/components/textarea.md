@@ -22,7 +22,9 @@ import autosizeSrc from './demos/textarea/autosize.vue?raw'
   <Basic />
 </DemoBlock>
 
-## 字数统计
+## 字数统计与格式化
+
+对齐 Input：`show-word-limit` 需配合 `maxlength`，禁用时隐藏；可用 `formatter` / `parser` 分离展示值与绑定值。
 
 <DemoBlock :source="limitSrc">
   <Limit />
@@ -52,7 +54,9 @@ import autosizeSrc from './demos/textarea/autosize.vue?raw'
 | rows | 可见行数 | `number` | `3` | 否 |
 | autosize | 自适应高度 | `boolean \| { minRows?: number; maxRows?: number }` | `false` | 否 |
 | maxlength | 最大字符数 | `number` | — | 否 |
-| showWordLimit | 是否显示字数统计；需同时设置 `maxlength` | `boolean` | `false` | 否 |
+| showWordLimit | 是否显示字数统计；需同时设置 `maxlength`；禁用时隐藏 | `boolean` | `false` | 否 |
+| formatter | 展示值格式化 | `(value: string) => string` | — | 否 |
+| parser | 将输入解析回 `v-model` | `(value: string) => string` | — | 否 |
 | disabled | 禁用；可继承 Form | `boolean` | `false` | 否 |
 | readonly | 只读 | `boolean` | `false` | 否 |
 | placeholder | 占位文案 | `string` | `''` | 否 |

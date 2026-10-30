@@ -50,4 +50,9 @@
   color: var(--dan-color-text-secondary);
   font-size: var(--dan-font-size-xs);
   text-align: right;
+  line-height: 1;
+}
+
+.dan-textarea.is-exceed .dan-textarea__count {
+  color: var(--dan-color-danger);
 }
