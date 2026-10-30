@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.19.0
+
+- Image：`previewSrcList` / `initialIndex` 多图预览，左右切换与 `switch` 事件
+- Dropdown：`trigger` 增补 `focus` / `contextmenu`
+- Select：`maxCollapseTags` 控制折叠标签展示数量
+
 ## 2.18.0
 
 - Tabs：`closable` / `addable` / `editable`；`tabRemove` / `tabAdd` / `edit`；TabPane 可覆盖 `closable`

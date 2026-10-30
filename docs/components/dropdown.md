@@ -2,6 +2,8 @@
 import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/dropdown/basic.vue'
 import basicSrc from './demos/dropdown/basic.vue?raw'
+import Triggers from './demos/dropdown/triggers.vue'
+import triggersSrc from './demos/dropdown/triggers.vue?raw'
 </script>
 
 # Dropdown 下拉菜单
@@ -14,15 +16,23 @@ import basicSrc from './demos/dropdown/basic.vue?raw'
   <Basic />
 </DemoBlock>
 
+## 触发方式
+
+支持 `click` / `hover` / `focus` / `contextmenu`，可用 `showAfter` / `hideAfter` 控制延时。
+
+<DemoBlock :source="triggersSrc">
+  <Triggers />
+</DemoBlock>
+
 ## Dropdown Props
 
 | 属性 | 说明 | 类型 | 默认值 |
 |------|------|------|--------|
-| trigger | 触发方式 | `'click' \| 'hover'` | `'click'` |
+| trigger | 触发方式 | `'click' \| 'hover' \| 'focus' \| 'contextmenu'` | `'click'` |
 | placement | 菜单位置 | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` |
 | disabled | 是否禁用 | `boolean` | `false` |
 | hideOnClick | 点击菜单项后是否关闭 | `boolean` | `true` |
-| showAfter / hideAfter | 延时（ms，hover） | `number` | `100` |
+| showAfter / hideAfter | 延时（ms，hover / focus） | `number` | `100` |
 | offset | 间距 | `number` | `8` |
 
 ## Dropdown Events

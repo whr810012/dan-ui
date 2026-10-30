@@ -101,4 +101,38 @@ describe('DanDropdown', () => {
 
     wrapper.unmount()
   })
+
+  it('opens on contextmenu trigger', async () => {
+    const wrapper = mount(
+      {
+        components: {
+          DanDropdown,
+          DanDropdownMenu,
+          DanDropdownItem,
+          DanButton,
+        },
+        template: `
+          <DanDropdown trigger="contextmenu">
+            <DanButton>菜单</DanButton>
+            <template #dropdown>
+              <DanDropdownMenu>
+                <DanDropdownItem command="edit">编辑</DanDropdownItem>
+              </DanDropdownMenu>
+            </template>
+          </DanDropdown>
+        `,
+      },
+      { attachTo: document.body },
+    )
+
+    await wrapper.find('.dan-dropdown').trigger('contextmenu')
+    await nextTick()
+    const popper = document.querySelector(
+      '.dan-dropdown__popper',
+    ) as HTMLElement
+    expect(popper.style.display).not.toBe('none')
+
+    wrapper.unmount()
+  })
 })
+

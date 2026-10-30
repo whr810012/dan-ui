@@ -139,6 +139,29 @@ describe('DanSelect', () => {
     wrapper.unmount()
   })
 
+  it('collapses tags with maxCollapseTags', async () => {
+    const wrapper = mount(DanSelect, {
+      props: {
+        modelValue: ['sh', 'bj', 'hz'],
+        multiple: true,
+        collapseTags: true,
+        maxCollapseTags: 2,
+        options: [
+          { label: '上海', value: 'sh' },
+          { label: '北京', value: 'bj' },
+          { label: '杭州', value: 'hz' },
+        ],
+      },
+    })
+
+    const tags = wrapper.findAll('.dan-select__tag')
+    expect(tags).toHaveLength(3)
+    expect(tags[0]!.text()).toContain('上海')
+    expect(tags[1]!.text()).toContain('北京')
+    expect(tags[2]!.text()).toBe('+1')
+    wrapper.unmount()
+  })
+
   it('keeps selected label after remote options change', async () => {
     const value = ref('sh')
     const optionsRef = ref([{ label: '上海', value: 'sh' }])

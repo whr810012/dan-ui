@@ -32,6 +32,8 @@ const props = withDefaults(
     multiple?: boolean
     filterable?: boolean
     collapseTags?: boolean
+    /** collapseTags 时最多展示的标签数，其余折叠为 +N */
+    maxCollapseTags?: number
     virtual?: boolean
     itemHeight?: number
     maxDropdownHeight?: number
@@ -50,6 +52,7 @@ const props = withDefaults(
     multiple: false,
     filterable: false,
     collapseTags: false,
+    maxCollapseTags: 1,
     virtual: false,
     itemHeight: 34,
     maxDropdownHeight: 240,
@@ -163,6 +166,28 @@ const selectedLabels = computed(() =>
 )
 
 const selectedLabel = computed(() => selectedLabels.value[0] ?? '')
+
+const collapseTagCount = computed(() =>
+  Math.max(1, Math.floor(props.maxCollapseTags) || 1),
+)
+
+const showCollapsedTags = computed(
+  () =>
+    props.collapseTags &&
+    selectedLabels.value.length > collapseTagCount.value,
+)
+
+const visibleTagLabels = computed(() =>
+  showCollapsedTags.value
+    ? selectedLabels.value.slice(0, collapseTagCount.value)
+    : selectedLabels.value,
+)
+
+const collapsedTagExtra = computed(() =>
+  showCollapsedTags.value
+    ? selectedLabels.value.length - collapseTagCount.value
+    : 0,
+)
 
 const filteredOptions = computed(() => {
   if (props.remote) return props.options
@@ -452,23 +477,17 @@ onBeforeUnmount(() => {
     >
       <template v-if="multiple && selectedValues.length">
         <span :class="ns.e('tags')">
-          <template v-if="collapseTags && selectedLabels.length > 1">
-            <span :class="ns.e('tag')">
-              {{ selectedLabels[0] }}
-              <i @click="removeTag(selectedValues[0]!, $event)">×</i>
-            </span>
-            <span :class="ns.e('tag')">+{{ selectedLabels.length - 1 }}</span>
-          </template>
-          <template v-else>
-            <span
-              v-for="(label, i) in selectedLabels"
-              :key="String(selectedValues[i])"
-              :class="ns.e('tag')"
-            >
-              {{ label }}
-              <i @click="removeTag(selectedValues[i]!, $event)">×</i>
-            </span>
-          </template>
+          <span
+            v-for="(label, i) in visibleTagLabels"
+            :key="String(selectedValues[i])"
+            :class="ns.e('tag')"
+          >
+            {{ label }}
+            <i @click="removeTag(selectedValues[i]!, $event)">×</i>
+          </span>
+          <span v-if="collapsedTagExtra > 0" :class="ns.e('tag')">
+            +{{ collapsedTagExtra }}
+          </span>
         </span>
       </template>
       <span

@@ -73,6 +73,8 @@ import remoteSrc from './demos/select/remote.vue?raw'
 | disabled | 禁用；可继承 Form | `boolean` | `false` | 否 |
 | size | 尺寸；未传继承 ConfigProvider | `'small' \| 'default' \| 'large'` | — | 否 |
 | multiple / filterable / virtual | 多选 / 本地搜索 / 虚拟列表 | `boolean` | `false` | 否 |
+| collapseTags | 多选时折叠标签 | `boolean` | `false` | 否 |
+| maxCollapseTags | 折叠时最多展示的标签数 | `number` | `1` | 否 |
 | remote | 远程搜索（自动显示搜索框） | `boolean` | `false` | 否 |
 | remoteMethod | 远程查询回调 | `(query: string) => void` | — | 否 |
 | loading | 远程加载中 | `boolean` | `false` | 否 |
