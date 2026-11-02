@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.28.0
+
+- Steps：补齐 `simple` 文档 Demo；新增 `clickable` / `v-model:active` 可点击切换
+
 ## 2.27.0
 
 - Radio / RadioGroup：`border` 边框样式、`button` 按钮组样式

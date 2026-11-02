@@ -13,6 +13,8 @@ const props = withDefaults(
     processStatus?: StepStatus
     finishStatus?: StepStatus
     simple?: boolean
+    /** 允许点击步骤切换（配合 v-model:active） */
+    clickable?: boolean
   }>(),
   {
     active: 0,
@@ -20,10 +22,12 @@ const props = withDefaults(
     processStatus: 'process',
     finishStatus: 'finish',
     simple: false,
+    clickable: false,
   },
 )
 
 const emit = defineEmits<{
+  'update:active': [active: number]
   change: [active: number]
 }>()
 
@@ -40,24 +44,48 @@ function unregister(uid: number) {
   uids.value = uids.value.filter((id) => id !== uid)
 }
 
+function setActive(index: number) {
+  if (index < 0 || index >= uids.value.length) return
+  if (index === props.active) return
+  emit('update:active', index)
+  emit('change', index)
+}
+
+function select(index: number) {
+  if (!props.clickable) return
+  setActive(index)
+}
+
 provideSteps({
   active: computed(() => props.active),
   direction: computed(() => props.direction),
   processStatus: computed(() => props.processStatus),
   finishStatus: computed(() => props.finishStatus),
   simple: computed(() => props.simple),
+  clickable: computed(() => props.clickable),
   uids,
   register,
   unregister,
+  select,
 })
 
 defineExpose({
-  change: (index: number) => emit('change', index),
+  next: () => setActive(props.active + 1),
+  prev: () => setActive(props.active - 1),
+  setActive,
 })
 </script>
 
 <template>
-  <div :class="[ns.b(), ns.m(direction), ns.is('simple', simple)]" role="list">
+  <div
+    :class="[
+      ns.b(),
+      ns.m(direction),
+      ns.is('simple', simple),
+      ns.is('clickable', clickable),
+    ]"
+    role="list"
+  >
     <slot />
   </div>
 </template>

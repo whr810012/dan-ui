@@ -45,6 +45,23 @@ const currentStatus = computed<StepStatus>(() => {
 const isLast = computed(
   () => index.value >= 0 && index.value === steps.uids.value.length - 1,
 )
+
+const isClickable = computed(
+  () => steps.clickable.value && index.value >= 0,
+)
+
+function onSelect() {
+  if (!isClickable.value) return
+  steps.select(index.value)
+}
+
+function onKeydown(event: KeyboardEvent) {
+  if (!isClickable.value) return
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault()
+    onSelect()
+  }
+}
 </script>
 
 <template>
@@ -56,8 +73,13 @@ const isLast = computed(
       ns.is('vertical', steps.direction.value === 'vertical'),
       ns.is('horizontal', steps.direction.value === 'horizontal'),
       ns.is('last', isLast),
+      ns.is('clickable', isClickable),
     ]"
     role="listitem"
+    :tabindex="isClickable ? 0 : undefined"
+    :aria-current="index === steps.active.value ? 'step' : undefined"
+    @click="onSelect"
+    @keydown="onKeydown"
   >
     <div :class="ns.e('head')">
       <div :class="ns.e('icon')">
@@ -90,5 +112,11 @@ const isLast = computed(
         <slot name="description">{{ description }}</slot>
       </div>
     </div>
+    <span
+      v-if="steps.simple.value && !isLast"
+      :class="ns.e('arrow')"
+      aria-hidden="true"
+      >›</span
+    >
   </div>
 </template>

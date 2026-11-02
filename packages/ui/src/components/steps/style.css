@@ -41,6 +41,7 @@
 }
 
 .dan-step.is-simple {
+  position: relative;
   flex: none;
   align-items: center;
   padding: var(--dan-spacing-sm) var(--dan-spacing-md);
@@ -51,6 +52,27 @@
 .dan-step.is-simple.dan-step--process {
   background: var(--dan-color-primary-light);
   color: var(--dan-color-primary);
+}
+
+.dan-step.is-clickable {
+  cursor: pointer;
+}
+
+.dan-step.is-clickable:hover .dan-step__title {
+  color: var(--dan-color-primary);
+}
+
+.dan-step.is-clickable:focus-visible {
+  outline: 2px solid var(--dan-color-primary-light);
+  outline-offset: 2px;
+  border-radius: var(--dan-radius-sm);
+}
+
+.dan-step__arrow {
+  margin-left: var(--dan-spacing-sm);
+  color: var(--dan-color-text-placeholder);
+  font-size: 18px;
+  line-height: 1;
 }
 
 .dan-step__head {

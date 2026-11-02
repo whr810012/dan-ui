@@ -34,4 +34,33 @@ describe('DanSteps', () => {
       'dan-step--process',
     )
   })
+
+  it('supports simple style and clickable v-model', async () => {
+    const active = ref(0)
+    const Comp = defineComponent({
+      components: { DanSteps, DanStep },
+      setup() {
+        return { active }
+      },
+      template: `
+        <DanSteps v-model:active="active" simple clickable>
+          <DanStep title="A" />
+          <DanStep title="B" />
+          <DanStep title="C" />
+        </DanSteps>
+      `,
+    })
+
+    const wrapper = mount(Comp)
+    await nextTick()
+    expect(wrapper.find('.dan-steps.is-simple').exists()).toBe(true)
+    expect(wrapper.findAll('.dan-step.is-clickable')).toHaveLength(3)
+
+    await wrapper.findAll('.dan-step')[2]!.trigger('click')
+    await nextTick()
+    expect(active.value).toBe(2)
+    expect(wrapper.findAll('.dan-step')[2]!.classes()).toContain(
+      'dan-step--process',
+    )
+  })
 })

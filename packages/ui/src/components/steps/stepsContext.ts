@@ -9,9 +9,11 @@ export interface StepsContext {
   processStatus: ComputedRef<StepStatus>
   finishStatus: ComputedRef<StepStatus>
   simple: ComputedRef<boolean>
+  clickable: ComputedRef<boolean>
   uids: Ref<number[]>
   register: (uid: number) => void
   unregister: (uid: number) => void
+  select: (index: number) => void
 }
 
 export const stepsContextKey: InjectionKey<StepsContext> = Symbol('DanSteps')
