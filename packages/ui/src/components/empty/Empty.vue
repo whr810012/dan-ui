@@ -7,6 +7,7 @@ import './style.css'
 defineOptions({ name: 'DanEmpty' })
 
 type EmptyType = 'default' | 'search' | 'network' | 'permission'
+type EmptySize = 'small' | 'default' | 'large'
 
 const props = withDefaults(
   defineProps<{
@@ -16,17 +17,29 @@ const props = withDefaults(
     image?: string
     /** 内置空态类型 */
     type?: EmptyType
+    size?: EmptySize
   }>(),
   {
     description: undefined,
-    imageSize: 96,
+    imageSize: undefined,
     image: '',
     type: 'default',
+    size: 'default',
   },
 )
 
 const ns = useNamespace('empty')
 const { t } = useLocale()
+
+const sizeImageMap: Record<EmptySize, number> = {
+  small: 64,
+  default: 96,
+  large: 128,
+}
+
+const resolvedImageSize = computed(
+  () => props.imageSize ?? sizeImageMap[props.size],
+)
 
 const typeDescription = computed(() => {
   const map: Record<EmptyType, string> = {
@@ -44,8 +57,8 @@ const resolvedDescription = computed(
 </script>
 
 <template>
-  <div :class="[ns.b(), ns.m(type)]">
-    <div :class="ns.e('image')" :style="{ width: `${imageSize}px` }">
+  <div :class="[ns.b(), ns.m(type), ns.m(size)]">
+    <div :class="ns.e('image')" :style="{ width: `${resolvedImageSize}px` }">
       <slot name="image">
         <img
           v-if="image"

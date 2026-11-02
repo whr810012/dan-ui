@@ -2,6 +2,8 @@
 import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/affix/basic.vue'
 import basicSrc from './demos/affix/basic.vue?raw'
+import Disabled from './demos/affix/disabled.vue'
+import disabledSrc from './demos/affix/disabled.vue?raw'
 </script>
 
 # Affix 固钉
@@ -14,6 +16,14 @@ import basicSrc from './demos/affix/basic.vue?raw'
   <Basic />
 </DemoBlock>
 
+## 禁用固钉
+
+`disabled` 时保持文档流位置；也可通过实例方法 `update()` 手动重新计算。
+
+<DemoBlock :source="disabledSrc">
+  <Disabled />
+</DemoBlock>
+
 ## Affix Props
 
 | 属性 | 说明 | 类型 | 默认值 |
@@ -22,6 +32,7 @@ import basicSrc from './demos/affix/basic.vue?raw'
 | position | 固钉位置 | `'top' \| 'bottom'` | `'top'` |
 | zIndex | 层级 | `number` | `100` |
 | target | 滚动容器选择器或元素 | `string \| HTMLElement \| null` | `null`（window） |
+| disabled | 禁用固钉 | `boolean` | `false` |
 
 ## Affix Events
 
@@ -29,3 +40,9 @@ import basicSrc from './demos/affix/basic.vue?raw'
 |------|------|------|
 | change | 固定状态变化 | `(fixed)` |
 | scroll | 滚动时 | `({ scrollTop, fixed })` |
+
+## Affix Methods
+
+| 方法 | 说明 |
+|------|------|
+| update | 手动重新计算固钉状态 |

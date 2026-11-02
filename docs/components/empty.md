@@ -4,6 +4,8 @@ import Basic from './demos/empty/basic.vue'
 import basicSrc from './demos/empty/basic.vue?raw'
 import Types from './demos/empty/types.vue'
 import typesSrc from './demos/empty/types.vue?raw'
+import Size from './demos/empty/size.vue'
+import sizeSrc from './demos/empty/size.vue?raw'
 </script>
 
 # Empty 空状态
@@ -22,14 +24,23 @@ import typesSrc from './demos/empty/types.vue?raw'
   <Types />
 </DemoBlock>
 
+## 尺寸
+
+`size` 控制插画默认宽度与文案字号；`imageSize` 可覆盖插画宽度。
+
+<DemoBlock :source="sizeSrc">
+  <Size />
+</DemoBlock>
+
 ## Props
 
 | 属性 | 说明 | 类型 | 默认值 |
 |------|------|------|--------|
 | description | 描述文案 | `string` | locale / 类型默认 |
-| imageSize | 插画宽度 px | `number` | `96` |
+| imageSize | 插画宽度 px（覆盖 size） | `number` | — |
 | image | 自定义图片 URL | `string` | `''` |
 | type | 内置类型 | `'default' \| 'search' \| 'network' \| 'permission'` | `'default'` |
+| size | 尺寸 | `'small' \| 'default' \| 'large'` | `'default'` |
 
 ## Slots
 

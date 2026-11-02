@@ -11,12 +11,15 @@ const props = withDefaults(
     position?: 'top' | 'bottom'
     zIndex?: number
     target?: string | HTMLElement | null
+    /** 禁用固钉，始终保持文档流位置 */
+    disabled?: boolean
   }>(),
   {
     offset: 0,
     position: 'top',
     zIndex: 100,
     target: null,
+    disabled: false,
   },
 )
 
@@ -65,6 +68,16 @@ function update() {
   const content = contentRef.value
   const container = scrollContainer.value
   if (!root || !content || !container) return
+
+  if (props.disabled) {
+    if (fixed.value) {
+      fixed.value = false
+      emit('change', false)
+    }
+    fixedStyle.value = {}
+    emit('scroll', { scrollTop: getScrollTop(container), fixed: false })
+    return
+  }
 
   const measureEl = fixed.value ? root : content
   const rect = measureEl.getBoundingClientRect()
@@ -128,7 +141,13 @@ onBeforeUnmount(() => {
 })
 
 watch(
-  () => [props.offset, props.position, props.target, props.zIndex],
+  () => [
+    props.offset,
+    props.position,
+    props.target,
+    props.zIndex,
+    props.disabled,
+  ],
   async () => {
     if (typeof window === 'undefined') return
     scrollContainer.value = resolveTarget()
@@ -136,10 +155,12 @@ watch(
     update()
   },
 )
+
+defineExpose({ update })
 </script>
 
 <template>
-  <div ref="rootRef" :class="ns.b()" :style="rootStyle">
+  <div ref="rootRef" :class="[ns.b(), ns.is('disabled', disabled)]" :style="rootStyle">
     <div
       ref="contentRef"
       :class="[ns.e('content'), ns.is('fixed', fixed)]"

@@ -20,4 +20,20 @@ describe('DanEmpty', () => {
       'https://example.com/empty.png',
     )
   })
+
+  it('applies size class and default image width', () => {
+    const small = mount(DanEmpty, { props: { size: 'small' } })
+    expect(small.classes()).toContain('dan-empty--small')
+    expect(small.find('.dan-empty__image').attributes('style')).toContain(
+      '64px',
+    )
+
+    const large = mount(DanEmpty, {
+      props: { size: 'large', imageSize: 140 },
+    })
+    expect(large.classes()).toContain('dan-empty--large')
+    expect(large.find('.dan-empty__image').attributes('style')).toContain(
+      '140px',
+    )
+  })
 })

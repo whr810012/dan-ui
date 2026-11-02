@@ -1,11 +1,15 @@
 .dan-card {
   box-sizing: border-box;
   overflow: hidden;
-  border: 1px solid var(--dan-color-border-light);
+  border: 1px solid transparent;
   border-radius: var(--dan-radius-lg);
   background: var(--dan-color-bg);
   color: var(--dan-color-text);
   transition: box-shadow var(--dan-duration-fast) var(--dan-ease);
+}
+
+.dan-card.is-bordered {
+  border-color: var(--dan-color-border-light);
 }
 
 .dan-card--shadow-always {
@@ -21,11 +25,26 @@
 }
 
 .dan-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--dan-spacing-md);
   padding: var(--dan-spacing-md) var(--dan-spacing-lg);
   border-bottom: 1px solid var(--dan-color-border-light);
   font-size: var(--dan-font-size-md);
   font-weight: var(--dan-font-weight-semibold);
   line-height: 1.5;
+}
+
+.dan-card__header-main {
+  min-width: 0;
+  flex: 1;
+}
+
+.dan-card__extra {
+  flex-shrink: 0;
+  color: var(--dan-color-text-secondary);
+  font-weight: var(--dan-font-weight-regular);
 }
 
 .dan-card__cover {
@@ -46,4 +65,15 @@
 .dan-card__footer {
   padding: var(--dan-spacing-md) var(--dan-spacing-lg);
   border-top: 1px solid var(--dan-color-border-light);
+}
+
+.dan-card--small .dan-card__header,
+.dan-card--small .dan-card__footer {
+  padding: var(--dan-spacing-sm) var(--dan-spacing-md);
+  font-size: var(--dan-font-size-sm);
+}
+
+.dan-card--small .dan-card__body {
+  padding: var(--dan-spacing-md);
+  font-size: var(--dan-font-size-sm);
 }

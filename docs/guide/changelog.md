@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.37.0
+
+- Card：`#extra`、`bordered`、`size`、`bodyClass`
+
+## 2.36.0
+
+- Empty：`size`（`small` / `default` / `large`）；`imageSize` 可覆盖插画宽度
+
+## 2.35.0
+
+- Affix：`disabled`；暴露 `update()` 手动重算
+
 ## 2.34.0
 
 - BackTop：`shape`（`circle` / `square`）
