@@ -26,6 +26,8 @@ const props = withDefaults(
     prop?: string
     required?: boolean
     labelWidth?: string
+    /** 是否展示校验错误文案 */
+    showMessage?: boolean
     /**
      * 依赖的其它字段 prop；依赖值变化时重新校验本字段（trigger: change）
      */
@@ -33,6 +35,7 @@ const props = withDefaults(
   }>(),
   {
     required: undefined,
+    showMessage: true,
     dependencies: () => [],
   },
 )
@@ -164,8 +167,8 @@ onBeforeUnmount(() => {
     </label>
     <div :class="ns.e('content')">
       <slot />
-      <div v-if="validateMessage" :class="ns.e('error')">
-        {{ validateMessage }}
+      <div v-if="showMessage && validateMessage" :class="ns.e('error')">
+        <slot name="error" :error="validateMessage">{{ validateMessage }}</slot>
       </div>
     </div>
   </div>

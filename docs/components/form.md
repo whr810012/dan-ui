@@ -10,11 +10,13 @@ import Controls from './demos/form/controls.vue'
 import LabelTop from './demos/form/label-top.vue'
 import Asterisk from './demos/form/asterisk.vue'
 import FormListDemo from './demos/form/form-list.vue'
+import Inline from './demos/form/inline.vue'
 import basicSrc from './demos/form/basic.vue?raw'
 import controlsSrc from './demos/form/controls.vue?raw'
 import labelTopSrc from './demos/form/label-top.vue?raw'
 import asteriskSrc from './demos/form/asterisk.vue?raw'
 import formListSrc from './demos/form/form-list.vue?raw'
+import inlineSrc from './demos/form/inline.vue?raw'
 </script>
 
 # Form 表单
@@ -59,6 +61,14 @@ import formListSrc from './demos/form/form-list.vue?raw'
   <FormListDemo />
 </DemoBlock>
 
+## 行内表单
+
+`inline` 横向排布；`hide-required-asterisk` 隐藏必填星号；`#error` 可自定义错误展示。
+
+<DemoBlock :source="inlineSrc">
+  <Inline />
+</DemoBlock>
+
 ## API
 
 ### Form Props
@@ -73,6 +83,9 @@ import formListSrc from './demos/form/form-list.vue?raw'
 | labelPosition | 标签布局 | `'left' \| 'right' \| 'top'` | `'right'` | 否 |
 | requireAsteriskPosition | 必填星号位置 | `'left' \| 'right'` | `'left'` | 否 |
 | scrollToError | `validate` 失败时滚到首个错误项 | `boolean` | `false` | 否 |
+| inline | 行内表单 | `boolean` | `false` | 否 |
+| hideRequiredAsterisk | 隐藏必填星号 | `boolean` | `false` | 否 |
+| validateOnRuleChange | `rules` 变化时重新校验 | `boolean` | `true` | 否 |
 
 ### FormRules / FormRule
 
@@ -113,6 +126,7 @@ import formListSrc from './demos/form/form-list.vue?raw'
 | prop | 对应 `model` 的字段路径，支持 `a.b.c` | `string` | — | 校验时必填 |
 | required | 强制显示必填星号；不传则根据 rules 推断 | `boolean` | — | 否 |
 | labelWidth | 覆盖 Form 的标签宽度 | `string` | — | 否 |
+| showMessage | 是否展示错误文案 | `boolean` | `true` | 否 |
 | dependencies | 依赖字段 prop 列表；依赖变化时按 `change` 重校验本字段 | `string[]` | `[]` | 否 |
 
 ### FormItem Slots
@@ -121,6 +135,7 @@ import formListSrc from './demos/form/form-list.vue?raw'
 |--------|------|
 | default | 表单控件（Input / Select 等） |
 | label | 自定义标签内容 |
+| error | 自定义错误文案，作用域 `{ error }` |
 
 ### FormItem 行为
 

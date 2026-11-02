@@ -156,6 +156,43 @@ describe('DanForm', () => {
     expect(wrapper.text()).not.toContain('两次输入不一致')
   })
 
+  it('supports inline and hideRequiredAsterisk', async () => {
+    const Comp = defineComponent({
+      components: { DanForm, DanFormItem, DanInput },
+      setup() {
+        const model = reactive({ name: '' })
+        const rules = {
+          name: [{ required: true, message: '必填', trigger: 'blur' }],
+        }
+        return { model, rules }
+      },
+      template: `
+        <DanForm
+          :model="model"
+          :rules="rules"
+          inline
+          hide-required-asterisk
+        >
+          <DanFormItem label="姓名" prop="name" required>
+            <DanInput v-model="model.name" />
+            <template #error="{ error }">
+              <span class="custom-error">{{ error }}</span>
+            </template>
+          </DanFormItem>
+        </DanForm>
+      `,
+    })
+    const wrapper = mount(Comp)
+    expect(wrapper.find('form').classes()).toContain('is-inline')
+    expect(wrapper.find('form').classes()).toContain(
+      'is-hide-required-asterisk',
+    )
+    const formRef = wrapper.findComponent(DanForm)
+    await formRef.vm.validate()
+    await nextTick()
+    expect(wrapper.find('.custom-error').text()).toBe('必填')
+  })
+
   it('scrollToField scrolls the form item into view', async () => {
     const Comp = defineComponent({
       components: { DanForm, DanFormItem, DanInput },

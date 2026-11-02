@@ -1,4 +1,5 @@
 import { createApp, h, reactive } from 'vue'
+import { getMessageConfig } from './config'
 import MessageHost from './MessageHost.vue'
 import type { MessageHandler, MessageOptions, MessageType } from './types'
 
@@ -40,12 +41,14 @@ function close(id: string) {
 
 function open(options: MessageOptions | string): MessageHandler {
   ensureHost()
+  const global = getMessageConfig()
   const normalized: MessageOptions =
     typeof options === 'string' ? { message: options } : options
   const type = normalized.type || 'info'
   const message = normalized.message
   const grouping = normalized.grouping !== false
-  const offset = normalized.offset ?? 20
+  const offset = normalized.offset ?? global.offset
+  const duration = normalized.duration ?? global.duration
   state.offset = offset
 
   if (grouping) {
@@ -54,11 +57,21 @@ function open(options: MessageOptions | string): MessageHandler {
     )
     if (existing) {
       existing.repeat += 1
-      existing.duration = normalized.duration ?? existing.duration ?? 3000
+      existing.duration = duration
       existing.showClose = normalized.showClose ?? existing.showClose ?? false
       existing.tick += 1
       return { close: () => close(existing.id) }
     }
+  }
+
+  while (
+    Number.isFinite(global.max) &&
+    global.max > 0 &&
+    state.items.length >= global.max
+  ) {
+    const oldest = state.items[0]
+    if (!oldest) break
+    close(oldest.id)
   }
 
   const id = normalized.id || `dan-message-${seed++}`
@@ -66,7 +79,7 @@ function open(options: MessageOptions | string): MessageHandler {
     id,
     message,
     type,
-    duration: normalized.duration ?? 3000,
+    duration,
     showClose: normalized.showClose ?? false,
     offset,
     grouping,

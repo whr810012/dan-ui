@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toRef } from 'vue'
+import { toRef, watch } from 'vue'
 import {
   provideForm,
   type FormContext,
@@ -25,6 +25,12 @@ const props = withDefaults(
     requireAsteriskPosition?: 'left' | 'right'
     /** validate 失败时自动滚到首个错误项 */
     scrollToError?: boolean
+    /** 行内表单 */
+    inline?: boolean
+    /** 隐藏必填星号 */
+    hideRequiredAsterisk?: boolean
+    /** rules 变化时重新校验已注册字段 */
+    validateOnRuleChange?: boolean
   }>(),
   {
     rules: () => ({}),
@@ -32,6 +38,9 @@ const props = withDefaults(
     labelPosition: 'right',
     requireAsteriskPosition: 'left',
     scrollToError: false,
+    inline: false,
+    hideRequiredAsterisk: false,
+    validateOnRuleChange: true,
   },
 )
 
@@ -112,6 +121,15 @@ function clearValidate(propsArg?: string | string[]) {
   list.forEach((field) => field.clearValidate())
 }
 
+watch(
+  () => props.rules,
+  () => {
+    if (!props.validateOnRuleChange) return
+    void validate()
+  },
+  { deep: true },
+)
+
 defineExpose({
   validate,
   validateField,
@@ -129,6 +147,8 @@ defineExpose({
       ns.m(`label-${labelPosition}`),
       ns.m(`asterisk-${requireAsteriskPosition}`),
       ns.is('disabled', disabled),
+      ns.is('inline', inline),
+      ns.is('hide-required-asterisk', hideRequiredAsterisk),
     ]"
     @submit.prevent
   >

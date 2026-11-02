@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.41.0
+
+- ConfigProvider：`message` 全局配置（`duration` / `max` / `offset`）
+
+## 2.40.0
+
+- Form：`inline` / `hideRequiredAsterisk` / `validateOnRuleChange`
+- FormItem：`showMessage`、`#error` 插槽
+
 ## 2.39.0
 
 - Transfer：面板全选与计数；`filterPlaceholder` / `buttonTexts`；左右勾选变化事件

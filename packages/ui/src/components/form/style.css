@@ -3,6 +3,23 @@
   width: 100%;
 }
 
+.dan-form.is-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--dan-spacing-md) var(--dan-spacing-lg);
+}
+
+.dan-form.is-inline .dan-form-item {
+  margin-bottom: 0;
+}
+
+.dan-form.is-hide-required-asterisk .dan-form-item.is-required .dan-form-item__label::before,
+.dan-form.is-hide-required-asterisk .dan-form-item.is-required .dan-form-item__label::after {
+  content: none;
+  display: none;
+}
+
 .dan-form-item {
   display: flex;
   align-items: flex-start;

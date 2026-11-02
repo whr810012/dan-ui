@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { computed, toRef } from 'vue'
+import { computed, onBeforeUnmount, toRef, watch } from 'vue'
 import { provideConfig, type DanSize } from '../../hooks/useConfig'
 import { useNamespace } from '../../hooks/useNamespace'
 import zhCN from '../../locale/zh-CN'
 import type { LocaleMessages } from '../../locale/types'
+import {
+  setMessageConfig,
+  type MessageGlobalConfig,
+} from '../message/config'
 import './style.css'
 
 defineOptions({ name: 'DanConfigProvider' })
@@ -17,6 +21,8 @@ const props = withDefaults(
     locale?: LocaleMessages
     /** CSS 变量覆盖，key 可为 `color-primary` 或完整 `--dan-color-primary` */
     theme?: Record<string, string>
+    /** Message 全局默认：duration / max / offset */
+    message?: Partial<MessageGlobalConfig>
   }>(),
   {
     size: 'default',
@@ -24,6 +30,7 @@ const props = withDefaults(
     namespace: 'dan',
     locale: () => zhCN,
     theme: () => ({}),
+    message: undefined,
   },
 )
 
@@ -34,6 +41,18 @@ provideConfig({
   zIndex: toRef(props, 'zIndex'),
   namespace: toRef(props, 'namespace'),
   locale: toRef(props, 'locale'),
+})
+
+watch(
+  () => props.message,
+  (value) => {
+    setMessageConfig(value)
+  },
+  { immediate: true, deep: true },
+)
+
+onBeforeUnmount(() => {
+  setMessageConfig(undefined)
 })
 
 const themeStyle = computed(() => {

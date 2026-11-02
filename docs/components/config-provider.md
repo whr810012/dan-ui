@@ -2,8 +2,10 @@
 import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/config-provider/basic.vue'
 import Size from './demos/config-provider/size.vue'
+import Message from './demos/config-provider/message.vue'
 import basicSrc from './demos/config-provider/basic.vue?raw'
 import sizeSrc from './demos/config-provider/size.vue?raw'
+import messageSrc from './demos/config-provider/message.vue?raw'
 </script>
 
 # ConfigProvider 全局配置
@@ -26,6 +28,14 @@ import sizeSrc from './demos/config-provider/size.vue?raw'
   <Size />
 </DemoBlock>
 
+## Message 全局默认
+
+通过 `message` 配置 `DanMessage` 的默认 `duration` / `max` / `offset`（全局生效，卸载后恢复默认）。
+
+<DemoBlock :source="messageSrc">
+  <Message />
+</DemoBlock>
+
 ## API
 
 ### Props
@@ -37,6 +47,7 @@ import sizeSrc from './demos/config-provider/size.vue?raw'
 | namespace | CSS / BEM 命名空间前缀 | `string` | `'dan'` | 否 |
 | locale | 轻量文案包（`zhCN` / `en`，不绑 vue-i18n） | `LocaleMessages` | `zhCN` | 否 |
 | theme | 局部覆盖 CSS 变量 | `Record<string, string>` | `{}` | 否 |
+| message | Message 全局默认 | `{ duration?: number; max?: number; offset?: number }` | — | 否 |
 
 ### theme 写法
 
