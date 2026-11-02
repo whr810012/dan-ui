@@ -22,6 +22,7 @@ const ns = useNamespace('sub-menu')
 const menu = injectMenu()
 const opened = computed(() => menu.openedMenus.value.includes(props.index))
 const showList = computed(() => opened.value && !menu.collapse.value)
+const isHorizontal = computed(() => menu.mode.value === 'horizontal')
 
 function onTitleClick() {
   if (props.disabled) return
@@ -47,8 +48,20 @@ function onTitleClick() {
       <slot name="title">{{ title }}</slot>
       <span :class="ns.e('arrow')" aria-hidden="true" />
     </div>
-    <ul v-show="showList" :class="ns.e('list')" role="menu">
-      <slot />
-    </ul>
+    <div
+      v-if="!isHorizontal"
+      :class="[ns.e('collapse'), ns.is('expanded', showList)]"
+    >
+      <div :class="ns.e('collapse-inner')">
+        <ul :class="ns.e('list')" role="menu">
+          <slot />
+        </ul>
+      </div>
+    </div>
+    <Transition v-else name="dan-sub-menu-fade">
+      <ul v-show="showList" :class="ns.e('list')" role="menu">
+        <slot />
+      </ul>
+    </Transition>
   </li>
 </template>

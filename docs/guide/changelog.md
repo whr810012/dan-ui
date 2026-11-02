@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.29.0
+
+- Menu：`uniqueOpened` 手风琴；垂直折叠高度动画、水平淡入；`v-model:openeds`
+
 ## 2.28.0
 
 - Steps：补齐 `simple` 文档 Demo；新增 `clickable` / `v-model:active` 可点击切换

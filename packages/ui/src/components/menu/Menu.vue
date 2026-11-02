@@ -11,32 +11,54 @@ const props = withDefaults(
     mode?: 'vertical' | 'horizontal'
     modelValue?: string
     defaultOpeneds?: string[]
+    /** 受控展开项；传入后与 v-model:openeds 同步 */
+    openeds?: string[]
     collapse?: boolean
+    /** 手风琴：同时只展开一个 SubMenu */
+    uniqueOpened?: boolean
   }>(),
   {
     mode: 'vertical',
     modelValue: '',
     defaultOpeneds: () => [],
+    openeds: undefined,
     collapse: false,
+    uniqueOpened: false,
   },
 )
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
+  'update:openeds': [value: string[]]
   select: [index: string]
   open: [index: string]
   close: [index: string]
 }>()
 
 const ns = useNamespace('menu')
-const openedMenus = ref<string[]>([...props.defaultOpeneds])
+const openedMenus = ref<string[]>(
+  props.openeds ? [...props.openeds] : [...props.defaultOpeneds],
+)
+
+watch(
+  () => props.openeds,
+  (value) => {
+    if (value) openedMenus.value = [...value]
+  },
+)
 
 watch(
   () => props.defaultOpeneds,
   (value) => {
+    if (props.openeds !== undefined) return
     openedMenus.value = [...value]
   },
 )
+
+function setOpeneds(next: string[]) {
+  openedMenus.value = next
+  emit('update:openeds', next)
+}
 
 function select(index: string) {
   emit('update:modelValue', index)
@@ -49,20 +71,18 @@ function toggleOpen(index: string) {
     set.delete(index)
     emit('close', index)
   } else {
+    if (props.uniqueOpened) {
+      for (const open of [...set]) {
+        if (open === index) continue
+        set.delete(open)
+        emit('close', open)
+      }
+    }
     set.add(index)
     emit('open', index)
   }
-  openedMenus.value = [...set]
+  setOpeneds([...set])
 }
-
-provideMenu({
-  mode: computed(() => props.mode),
-  active: computed(() => props.modelValue),
-  select,
-  openedMenus,
-  toggleOpen,
-  collapse: toRef(props, 'collapse'),
-})
 
 function focusableItems(root: HTMLElement) {
   return Array.from(
@@ -98,6 +118,15 @@ function onKeydown(event: KeyboardEvent) {
     items[items.length - 1]?.focus()
   }
 }
+
+provideMenu({
+  mode: computed(() => props.mode),
+  active: computed(() => props.modelValue),
+  select,
+  openedMenus,
+  toggleOpen,
+  collapse: toRef(props, 'collapse'),
+})
 </script>
 
 <template>
@@ -106,6 +135,7 @@ function onKeydown(event: KeyboardEvent) {
       ns.b(),
       ns.m(mode),
       ns.is('collapse', collapse && mode === 'vertical'),
+      ns.is('accordion', uniqueOpened),
     ]"
     role="menu"
     :aria-orientation="mode"

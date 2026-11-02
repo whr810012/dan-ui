@@ -26,7 +26,7 @@ describe('DanMenu', () => {
     expect(active.value).toBe('1')
   })
 
-  it('toggles submenu', async () => {
+  it('toggles submenu with collapse animation class', async () => {
     const Comp = defineComponent({
       components: { DanMenu, DanMenuItem, DanSubMenu },
       template: `
@@ -40,10 +40,41 @@ describe('DanMenu', () => {
 
     const wrapper = mount(Comp)
     expect(wrapper.find('.dan-sub-menu').classes()).not.toContain('is-opened')
+    expect(wrapper.find('.dan-sub-menu__collapse').classes()).not.toContain(
+      'is-expanded',
+    )
     await wrapper.get('.dan-sub-menu__title').trigger('click')
     await nextTick()
     expect(wrapper.find('.dan-sub-menu').classes()).toContain('is-opened')
-    expect(wrapper.find('.dan-sub-menu__list').isVisible()).toBe(true)
+    expect(wrapper.find('.dan-sub-menu__collapse').classes()).toContain(
+      'is-expanded',
+    )
+  })
+
+  it('keeps only one submenu open when uniqueOpened', async () => {
+    const Comp = defineComponent({
+      components: { DanMenu, DanMenuItem, DanSubMenu },
+      template: `
+        <DanMenu unique-opened>
+          <DanSubMenu index="a" title="A">
+            <DanMenuItem index="a-1">A1</DanMenuItem>
+          </DanSubMenu>
+          <DanSubMenu index="b" title="B">
+            <DanMenuItem index="b-1">B1</DanMenuItem>
+          </DanSubMenu>
+        </DanMenu>
+      `,
+    })
+
+    const wrapper = mount(Comp)
+    const titles = wrapper.findAll('.dan-sub-menu__title')
+    await titles[0]!.trigger('click')
+    await nextTick()
+    await titles[1]!.trigger('click')
+    await nextTick()
+    const menus = wrapper.findAll('.dan-sub-menu')
+    expect(menus[0]!.classes()).not.toContain('is-opened')
+    expect(menus[1]!.classes()).toContain('is-opened')
   })
 
   it('moves focus with arrow keys', async () => {
