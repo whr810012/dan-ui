@@ -13,3 +13,7 @@ import basicSrc from './demos/cascader-panel/basic.vue?raw'
 <DemoBlock :source="basicSrc">
   <Basic />
 </DemoBlock>
+
+## Props
+
+与 Cascader 面板相关能力对齐：`options` / `filterable` / `virtual` / `multiple` / `checkStrictly` 等。

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import type { TransferItem } from './types'
@@ -13,6 +13,8 @@ const props = withDefaults(
     data?: TransferItem[]
     titles?: [string, string]
     filterable?: boolean
+    filterPlaceholder?: string
+    buttonTexts?: [string, string]
     disabled?: boolean
   }>(),
   {
@@ -20,6 +22,8 @@ const props = withDefaults(
     data: () => [],
     titles: () => ['列表 1', '列表 2'],
     filterable: false,
+    filterPlaceholder: '搜索',
+    buttonTexts: () => ['', ''],
     disabled: false,
   },
 )
@@ -31,6 +35,8 @@ const emit = defineEmits<{
     direction: 'left' | 'right',
     moved: Array<string | number>,
   ]
+  'left-check-change': [keys: Array<string | number>]
+  'right-check-change': [keys: Array<string | number>]
 }>()
 
 const ns = useNamespace('transfer')
@@ -39,6 +45,8 @@ const leftChecked = ref<Array<string | number>>([])
 const rightChecked = ref<Array<string | number>>([])
 const leftQuery = ref('')
 const rightQuery = ref('')
+const leftSelectAllRef = ref<HTMLInputElement | null>(null)
+const rightSelectAllRef = ref<HTMLInputElement | null>(null)
 
 const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
@@ -59,6 +67,52 @@ function filtered(list: TransferItem[], query: string) {
 
 const leftView = computed(() => filtered(leftData.value, leftQuery.value))
 const rightView = computed(() => filtered(rightData.value, rightQuery.value))
+
+function enabledKeys(list: TransferItem[]) {
+  return list.filter((item) => !item.disabled).map((item) => item.key)
+}
+
+const leftEnabledKeys = computed(() => enabledKeys(leftView.value))
+const rightEnabledKeys = computed(() => enabledKeys(rightView.value))
+
+const leftAllChecked = computed(
+  () =>
+    leftEnabledKeys.value.length > 0 &&
+    leftEnabledKeys.value.every((key) => leftChecked.value.includes(key)),
+)
+const rightAllChecked = computed(
+  () =>
+    rightEnabledKeys.value.length > 0 &&
+    rightEnabledKeys.value.every((key) => rightChecked.value.includes(key)),
+)
+
+const leftIndeterminate = computed(() => {
+  const count = leftChecked.value.filter((key) =>
+    leftEnabledKeys.value.includes(key),
+  ).length
+  return count > 0 && count < leftEnabledKeys.value.length
+})
+
+const rightIndeterminate = computed(() => {
+  const count = rightChecked.value.filter((key) =>
+    rightEnabledKeys.value.includes(key),
+  ).length
+  return count > 0 && count < rightEnabledKeys.value.length
+})
+
+watch([leftIndeterminate, leftAllChecked], async () => {
+  await nextTick()
+  if (leftSelectAllRef.value) {
+    leftSelectAllRef.value.indeterminate = leftIndeterminate.value
+  }
+})
+
+watch([rightIndeterminate, rightAllChecked], async () => {
+  await nextTick()
+  if (rightSelectAllRef.value) {
+    rightSelectAllRef.value.indeterminate = rightIndeterminate.value
+  }
+})
 
 function moveToRight() {
   if (isDisabled.value || !leftChecked.value.length) return
@@ -86,6 +140,7 @@ function toggleLeft(key: string | number, disabled?: boolean) {
   if (set.has(key)) set.delete(key)
   else set.add(key)
   leftChecked.value = [...set]
+  emit('left-check-change', leftChecked.value)
 }
 
 function toggleRight(key: string | number, disabled?: boolean) {
@@ -94,20 +149,56 @@ function toggleRight(key: string | number, disabled?: boolean) {
   if (set.has(key)) set.delete(key)
   else set.add(key)
   rightChecked.value = [...set]
+  emit('right-check-change', rightChecked.value)
 }
+
+function toggleLeftAll() {
+  if (isDisabled.value || !leftEnabledKeys.value.length) return
+  leftChecked.value = leftAllChecked.value ? [] : [...leftEnabledKeys.value]
+  emit('left-check-change', leftChecked.value)
+}
+
+function toggleRightAll() {
+  if (isDisabled.value || !rightEnabledKeys.value.length) return
+  rightChecked.value = rightAllChecked.value ? [] : [...rightEnabledKeys.value]
+  emit('right-check-change', rightChecked.value)
+}
+
+const rightButtonText = computed(() => props.buttonTexts[0] || '›')
+const leftButtonText = computed(() => props.buttonTexts[1] || '‹')
 </script>
 
 <template>
   <div :class="[ns.b(), ns.is('disabled', isDisabled)]">
     <div :class="ns.e('panel')">
-      <div :class="ns.e('header')">{{ titles[0] }}</div>
+      <div :class="ns.e('header')">
+        <label :class="ns.e('header-check')">
+          <input
+            ref="leftSelectAllRef"
+            type="checkbox"
+            :checked="leftAllChecked"
+            :disabled="isDisabled || !leftEnabledKeys.length"
+            @change="toggleLeftAll"
+          />
+          <span>{{ titles[0] }}</span>
+        </label>
+        <span :class="ns.e('count')">
+          {{ leftChecked.length }}/{{ leftView.length }}
+        </span>
+      </div>
       <input
         v-if="filterable"
         v-model="leftQuery"
         :class="ns.e('filter')"
-        placeholder="搜索"
+        :placeholder="filterPlaceholder"
       />
       <ul :class="ns.e('list')">
+        <li
+          v-if="!leftView.length"
+          :class="[ns.e('item'), ns.e('empty')]"
+        >
+          暂无数据
+        </li>
         <li v-for="item in leftView" :key="item.key" :class="ns.e('item')">
           <label>
             <input
@@ -125,31 +216,51 @@ function toggleRight(key: string | number, disabled?: boolean) {
     <div :class="ns.e('buttons')">
       <button
         type="button"
-        :class="ns.e('button')"
+        :class="[ns.e('button'), ns.is('with-text', !!buttonTexts[0])]"
         :disabled="isDisabled || !leftChecked.length"
         @click="moveToRight"
       >
-        ›
+        {{ rightButtonText }}
       </button>
       <button
         type="button"
-        :class="ns.e('button')"
+        :class="[ns.e('button'), ns.is('with-text', !!buttonTexts[1])]"
         :disabled="isDisabled || !rightChecked.length"
         @click="moveToLeft"
       >
-        ‹
+        {{ leftButtonText }}
       </button>
     </div>
 
     <div :class="ns.e('panel')">
-      <div :class="ns.e('header')">{{ titles[1] }}</div>
+      <div :class="ns.e('header')">
+        <label :class="ns.e('header-check')">
+          <input
+            ref="rightSelectAllRef"
+            type="checkbox"
+            :checked="rightAllChecked"
+            :disabled="isDisabled || !rightEnabledKeys.length"
+            @change="toggleRightAll"
+          />
+          <span>{{ titles[1] }}</span>
+        </label>
+        <span :class="ns.e('count')">
+          {{ rightChecked.length }}/{{ rightView.length }}
+        </span>
+      </div>
       <input
         v-if="filterable"
         v-model="rightQuery"
         :class="ns.e('filter')"
-        placeholder="搜索"
+        :placeholder="filterPlaceholder"
       />
       <ul :class="ns.e('list')">
+        <li
+          v-if="!rightView.length"
+          :class="[ns.e('item'), ns.e('empty')]"
+        >
+          暂无数据
+        </li>
         <li v-for="item in rightView" :key="item.key" :class="ns.e('item')">
           <label>
             <input

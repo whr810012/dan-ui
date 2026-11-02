@@ -27,6 +27,12 @@ const props = withDefaults(
     virtual?: boolean
     multiple?: boolean
     maxTagCount?: number
+    /** 是否显示完整路径；false 仅显示末级 */
+    showAllLevels?: boolean
+    /** 路径展示分隔符 */
+    separator?: string
+    /** 可选中任意一级（非仅叶子） */
+    checkStrictly?: boolean
   }>(),
   {
     modelValue: null,
@@ -38,6 +44,9 @@ const props = withDefaults(
     virtual: false,
     multiple: false,
     maxTagCount: 0,
+    showAllLevels: true,
+    separator: ' / ',
+    checkStrictly: false,
   },
 )
 
@@ -72,7 +81,9 @@ function findPathLabel(path: CascaderPath): string {
     labels.push(found.label)
     list = found.children || []
   }
-  return labels.join(' / ')
+  if (!labels.length) return ''
+  if (!props.showAllLevels) return labels[labels.length - 1]!
+  return labels.join(props.separator)
 }
 
 const selectedPaths = computed((): CascaderPath[] =>
@@ -229,6 +240,7 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
           :filter-placeholder="filterPlaceholder"
           :virtual="virtual"
           :multiple="multiple"
+          :check-strictly="checkStrictly"
           @change="onPanelChange"
         />
       </div>

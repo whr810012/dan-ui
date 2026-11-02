@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.39.0
+
+- Transfer：面板全选与计数；`filterPlaceholder` / `buttonTexts`；左右勾选变化事件
+
+## 2.38.0
+
+- Cascader：`showAllLevels` / `separator`；`checkStrictly` 可选任意一级
+
 ## 2.37.0
 
 - Card：`#extra`、`bordered`、`size`、`bodyClass`

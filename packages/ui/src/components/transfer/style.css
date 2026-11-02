@@ -22,10 +22,37 @@
 }
 
 .dan-transfer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   padding: 8px 12px;
   background: var(--dan-color-bg-muted);
   border-bottom: 1px solid var(--dan-color-border-light);
   font-weight: 500;
+}
+
+.dan-transfer__header-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.dan-transfer__count {
+  flex-shrink: 0;
+  color: var(--dan-color-text-secondary);
+  font-size: var(--dan-font-size-sm);
+  font-weight: var(--dan-font-weight-regular);
+}
+
+.dan-transfer__empty {
+  padding: 16px 12px;
+  color: var(--dan-color-text-placeholder);
+  text-align: center;
+  list-style: none;
+  pointer-events: none;
 }
 
 .dan-transfer__filter {
@@ -67,16 +94,22 @@
 }
 
 .dan-transfer__button {
-  width: 32px;
+  min-width: 32px;
   height: 32px;
   margin: 0;
-  padding: 0;
+  padding: 0 8px;
   border: 1px solid var(--dan-color-border);
   border-radius: var(--dan-radius-sm);
   background: var(--dan-color-fill);
   color: inherit;
   font-size: 16px;
+  line-height: 1;
   cursor: pointer;
+}
+
+.dan-transfer__button.is-with-text {
+  width: auto;
+  font-size: var(--dan-font-size-sm);
 }
 
 .dan-transfer__button:hover:not(:disabled) {

@@ -6,6 +6,8 @@ import FilterVirtual from './demos/cascader/filter-virtual.vue'
 import filterVirtualSrc from './demos/cascader/filter-virtual.vue?raw'
 import Multiple from './demos/cascader/multiple.vue'
 import multipleSrc from './demos/cascader/multiple.vue?raw'
+import Strict from './demos/cascader/strict.vue'
+import strictSrc from './demos/cascader/strict.vue?raw'
 </script>
 
 # Cascader 级联选择
@@ -34,6 +36,14 @@ import multipleSrc from './demos/cascader/multiple.vue?raw'
   <Multiple />
 </DemoBlock>
 
+## 展示与任选一级
+
+`show-all-levels=false` 仅显示末级；`separator` 自定义路径分隔符；`check-strictly` 可选中任意一级（非仅叶子）。
+
+<DemoBlock :source="strictSrc">
+  <Strict />
+</DemoBlock>
+
 ## Props
 
 | 属性 | 说明 | 类型 | 默认值 |
@@ -47,3 +57,6 @@ import multipleSrc from './demos/cascader/multiple.vue?raw'
 | virtual | 长列虚拟滚动 | `boolean` | `false` |
 | multiple | 多选路径 | `boolean` | `false` |
 | maxTagCount | 多选标签折叠数量，`0` 不折叠 | `number` | `0` |
+| showAllLevels | 是否显示完整路径 | `boolean` | `true` |
+| separator | 路径分隔符 | `string` | `' / '` |
+| checkStrictly | 可选中任意一级 | `boolean` | `false` |

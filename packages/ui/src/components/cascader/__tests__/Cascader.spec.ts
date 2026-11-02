@@ -69,4 +69,57 @@ describe('DanCascader', () => {
     expect(wrapper.text()).toContain('A / A1')
     wrapper.unmount()
   })
+
+  it('supports showAllLevels false and checkStrictly', async () => {
+    const value = ref<Array<string | number> | null>(['a', 'a1'])
+    const Comp = defineComponent({
+      components: { DanCascader },
+      setup: () => ({
+        value,
+        options: [
+          {
+            value: 'a',
+            label: 'A',
+            children: [{ value: 'a1', label: 'A1' }],
+          },
+        ],
+      }),
+      template: `
+        <DanCascader
+          v-model="value"
+          :options="options"
+          :show-all-levels="false"
+          separator="-"
+        />
+      `,
+    })
+    const wrapper = mount(Comp, { attachTo: document.body })
+    expect(wrapper.text()).toContain('A1')
+    expect(wrapper.text()).not.toContain('A / A1')
+    wrapper.unmount()
+
+    const strict = ref<Array<string | number> | null>(null)
+    const StrictComp = defineComponent({
+      components: { DanCascader },
+      setup: () => ({
+        value: strict,
+        options: [
+          {
+            value: 'a',
+            label: 'A',
+            children: [{ value: 'a1', label: 'A1' }],
+          },
+        ],
+      }),
+      template: `<DanCascader v-model="value" :options="options" check-strictly />`,
+    })
+    const strictWrapper = mount(StrictComp, { attachTo: document.body })
+    await strictWrapper.get('.dan-cascader__trigger').trigger('click')
+    await nextTick()
+    ;(document.querySelectorAll('.dan-cascader__node')[0] as HTMLElement).click()
+    await nextTick()
+    expect(strict.value).toEqual(['a'])
+    strictWrapper.unmount()
+  })
 })
+

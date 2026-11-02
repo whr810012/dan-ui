@@ -24,6 +24,8 @@ const props = withDefaults(
     maxColumnHeight?: number
     /** 多选：v-model 为路径数组 Array<CascaderPath> */
     multiple?: boolean
+    /** 可选中任意一级（非仅叶子） */
+    checkStrictly?: boolean
   }>(),
   {
     modelValue: null,
@@ -34,6 +36,7 @@ const props = withDefaults(
     itemHeight: 34,
     maxColumnHeight: 220,
     multiple: false,
+    checkStrictly: false,
   },
 )
 
@@ -56,13 +59,17 @@ function isPathSelected(path: CascaderPath) {
   return selectedPaths.value.some((item) => cascaderPathEqual(item, path))
 }
 
-function isLeafChecked(level: number, option: CascaderOption) {
-  if (option.children?.length) return false
+function isNodeChecked(level: number, option: CascaderOption) {
+  if (!props.checkStrictly && option.children?.length) return false
   const path = [
     ...activePath.value.slice(0, level).map((item) => item.value),
     option.value,
   ]
   return isPathSelected(path)
+}
+
+function canCheck(option: CascaderOption) {
+  return props.checkStrictly || !option.children?.length
 }
 
 function filterTree(
@@ -171,7 +178,9 @@ function commit(value: CascaderModelValue) {
 function onSelect(level: number, option: CascaderOption) {
   if (option.disabled) return
   activePath.value = [...activePath.value.slice(0, level), option]
-  if (option.children?.length) return
+
+  const hasChildren = !!option.children?.length
+  if (hasChildren && !props.checkStrictly) return
 
   const path = activePath.value.map((item) => item.value)
   if (!props.multiple) {
@@ -198,7 +207,7 @@ function nodeClass(level: number, option: CascaderOption) {
   return [
     ns.e('node'),
     ns.is('active', activePath.value[level]?.value === option.value),
-    ns.is('checked', props.multiple && isLeafChecked(level, option)),
+    ns.is('checked', props.multiple && isNodeChecked(level, option)),
     ns.is('disabled', !!option.disabled),
   ]
 }
@@ -242,7 +251,7 @@ function nodeClass(level: number, option: CascaderOption) {
             @click="onSelect(level, item.option)"
           >
             <span
-              v-if="multiple && !item.option.children?.length"
+              v-if="multiple && canCheck(item.option)"
               :class="ns.e('check')"
               aria-hidden="true"
             />
@@ -265,7 +274,7 @@ function nodeClass(level: number, option: CascaderOption) {
             @click="onSelect(level, option)"
           >
             <span
-              v-if="multiple && !option.children?.length"
+              v-if="multiple && canCheck(option)"
               :class="ns.e('check')"
               aria-hidden="true"
             />
