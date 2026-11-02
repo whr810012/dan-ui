@@ -11,6 +11,24 @@
   user-select: none;
 }
 
+.dan-pagination--small {
+  gap: var(--dan-spacing-xs);
+  font-size: var(--dan-font-size-xs);
+}
+
+.dan-pagination--small .dan-pagination__btn,
+.dan-pagination--small .dan-pagination__number {
+  min-width: var(--dan-control-height-sm);
+  height: var(--dan-control-height-sm);
+  padding: 0 var(--dan-spacing-xs);
+}
+
+.dan-pagination--small .dan-pagination__sizes-select,
+.dan-pagination--small .dan-pagination__jumper-input {
+  height: var(--dan-control-height-sm);
+  font-size: var(--dan-font-size-xs);
+}
+
 .dan-pagination *,
 .dan-pagination *::before,
 .dan-pagination *::after {

@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import {
+  computed,
+  defineComponent,
+  getCurrentInstance,
+  onBeforeUnmount,
+} from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
 import { injectBreadcrumb } from './breadcrumbContext'
 import './style.css'
@@ -20,10 +26,42 @@ defineEmits<{
 
 const ns = useNamespace('breadcrumb-item')
 const breadcrumb = injectBreadcrumb()
+const uid = getCurrentInstance()?.uid ?? Math.floor(Math.random() * 1e9)
+
+breadcrumb?.register(uid)
+onBeforeUnmount(() => {
+  breadcrumb?.unregister(uid)
+})
+
+const visible = computed(() => breadcrumb?.isVisible(uid) ?? true)
+const showEllipsis = computed(
+  () => breadcrumb?.showEllipsisBefore(uid) ?? false,
+)
+
+const ParentSeparator = defineComponent({
+  name: 'DanBreadcrumbParentSeparator',
+  setup() {
+    return () => {
+      const slot = breadcrumb?.separatorSlot.value
+      if (slot) return slot()
+      return breadcrumb?.separator.value ?? '/'
+    }
+  },
+})
 </script>
 
 <template>
-  <li :class="ns.b()">
+  <li
+    v-if="showEllipsis && visible"
+    :class="[ns.b(), ns.m('ellipsis')]"
+    aria-hidden="true"
+  >
+    <span :class="ns.e('ellipsis')">…</span>
+    <span :class="ns.e('separator')">
+      <ParentSeparator />
+    </span>
+  </li>
+  <li v-show="visible" :class="ns.b()">
     <a
       v-if="to"
       :class="ns.e('inner')"
@@ -36,7 +74,9 @@ const breadcrumb = injectBreadcrumb()
       <slot />
     </span>
     <span :class="ns.e('separator')" aria-hidden="true">
-      <slot name="separator">{{ breadcrumb?.separator.value ?? '/' }}</slot>
+      <slot name="separator">
+        <ParentSeparator />
+      </slot>
     </span>
   </li>
 </template>

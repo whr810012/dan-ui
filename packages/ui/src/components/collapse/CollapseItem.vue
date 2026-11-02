@@ -12,10 +12,13 @@ const props = withDefaults(
     title?: string
     name?: string | number
     disabled?: boolean
+    /** 隐藏右侧箭头（自定义 #icon 时仍可显示） */
+    hideIcon?: boolean
   }>(),
   {
     title: '',
     disabled: false,
+    hideIcon: false,
   },
 )
 
@@ -48,14 +51,22 @@ function onClick() {
       <span :class="ns.e('title')">
         <slot name="title">{{ title }}</slot>
       </span>
-      <DanIcon
-        name="chevron-down"
-        :class="[ns.e('arrow'), ns.is('active', isActive)]"
-      />
+      <span v-if="!hideIcon || $slots.icon" :class="ns.e('icon')">
+        <slot name="icon" :active="isActive">
+          <DanIcon
+            name="chevron-down"
+            :class="[ns.e('arrow'), ns.is('active', isActive)]"
+          />
+        </slot>
+      </span>
     </button>
-    <div v-if="isActive" :class="ns.e('wrap')">
-      <div :class="ns.e('content')">
-        <slot />
+    <div :class="[ns.e('collapse'), ns.is('expanded', isActive)]">
+      <div :class="ns.e('collapse-inner')">
+        <div :class="ns.e('wrap')">
+          <div :class="ns.e('content')">
+            <slot />
+          </div>
+        </div>
       </div>
     </div>
   </div>

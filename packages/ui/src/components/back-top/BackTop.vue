@@ -11,12 +11,14 @@ const props = withDefaults(
     right?: number
     bottom?: number
     target?: string | HTMLElement | null
+    shape?: 'circle' | 'square'
   }>(),
   {
     visibilityHeight: 200,
     right: 40,
     bottom: 40,
     target: null,
+    shape: 'circle',
   },
 )
 
@@ -83,7 +85,7 @@ onBeforeUnmount(() => {
       <button
         v-show="visible"
         type="button"
-        :class="ns.b()"
+        :class="[ns.b(), ns.m(shape)]"
         :style="style"
         aria-label="回到顶部"
         @click="scrollToTop"

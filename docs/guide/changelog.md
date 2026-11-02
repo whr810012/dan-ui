@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.34.0
+
+- BackTop：`shape`（`circle` / `square`）
+
+## 2.33.0
+
+- Divider：`borderStyle`（`solid` / `dashed` / `dotted`）；兼容原 `dashed`
+
+## 2.32.0
+
+- Breadcrumb：`#separator` 插槽；`maxItems` 中间折叠
+
+## 2.31.0
+
+- Pagination：`hideOnSinglePage`；`size`（`small` / `default`）
+
+## 2.30.0
+
+- Collapse：`#icon` 插槽 / `hideIcon`；面板展开高度动画
+
 ## 2.29.0
 
 - Menu：`uniqueOpened` 手风琴；垂直折叠高度动画、水平淡入；`v-model:openeds`

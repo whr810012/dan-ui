@@ -4,6 +4,8 @@ import Basic from './demos/pagination/basic.vue'
 import basicSrc from './demos/pagination/basic.vue?raw'
 import Advanced from './demos/pagination/advanced.vue'
 import advancedSrc from './demos/pagination/advanced.vue?raw'
+import Small from './demos/pagination/small.vue'
+import smallSrc from './demos/pagination/small.vue?raw'
 </script>
 
 # Pagination 分页
@@ -26,6 +28,14 @@ import advancedSrc from './demos/pagination/advanced.vue?raw'
   <Advanced />
 </DemoBlock>
 
+## 小尺寸与单页隐藏
+
+`size="small"` 紧凑样式；`hide-on-single-page` 在仅一页时隐藏整块分页。
+
+<DemoBlock :source="smallSrc">
+  <Small />
+</DemoBlock>
+
 ## Pagination Props
 
 | 属性 | 说明 | 类型 | 默认值 |
@@ -37,6 +47,8 @@ import advancedSrc from './demos/pagination/advanced.vue?raw'
 | pagerCount | 页码按钮数量 | `number` | `7` |
 | layout | 布局，逗号分隔：`prev` / `pager` / `next` / `total` / `sizes` / `jumper` | `string` | `'prev, pager, next, total'` |
 | background | 是否带背景色 | `boolean` | `false` |
+| size | 尺寸 | `'small' \| 'default'` | `'default'` |
+| hideOnSinglePage | 仅一页时隐藏 | `boolean` | `false` |
 | disabled | 禁用 | `boolean` | `false` |
 
 ## Pagination Events

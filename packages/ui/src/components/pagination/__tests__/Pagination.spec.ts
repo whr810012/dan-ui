@@ -82,4 +82,27 @@ describe('DanPagination', () => {
     await nextTick()
     expect(size.value).toBe(20)
   })
+
+  it('hides on single page and applies small size', () => {
+    const hidden = mount(DanPagination, {
+      props: {
+        total: 5,
+        pageSize: 10,
+        hideOnSinglePage: true,
+      },
+    })
+    expect(hidden.find('.dan-pagination').exists()).toBe(false)
+
+    const small = mount(DanPagination, {
+      props: {
+        total: 50,
+        pageSize: 10,
+        size: 'small',
+      },
+    })
+    expect(small.find('.dan-pagination').classes()).toContain(
+      'dan-pagination--small',
+    )
+  })
 })
+

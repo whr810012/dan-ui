@@ -22,6 +22,14 @@
     opacity var(--dan-duration-fast) var(--dan-ease);
 }
 
+.dan-back-top--circle {
+  border-radius: var(--dan-radius-full);
+}
+
+.dan-back-top--square {
+  border-radius: var(--dan-radius-md);
+}
+
 .dan-back-top:hover {
   background: var(--dan-color-primary-hover);
 }

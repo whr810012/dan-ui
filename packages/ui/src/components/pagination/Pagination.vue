@@ -14,6 +14,9 @@ const props = withDefaults(
     pagerCount?: number
     disabled?: boolean
     background?: boolean
+    /** 仅一页时隐藏整块分页 */
+    hideOnSinglePage?: boolean
+    size?: 'small' | 'default'
     /** 每页条数候选项；layout 含 sizes 时生效 */
     pageSizes?: number[]
     layout?: string
@@ -25,6 +28,8 @@ const props = withDefaults(
     pagerCount: 7,
     disabled: false,
     background: false,
+    hideOnSinglePage: false,
+    size: 'default',
     pageSizes: () => [10, 20, 50, 100],
     layout: 'prev, pager, next, total',
   },
@@ -43,6 +48,10 @@ const jumperInput = ref(String(props.currentPage))
 
 const pageCount = computed(() =>
   Math.max(1, Math.ceil(props.total / props.pageSize) || 1),
+)
+
+const shouldHide = computed(
+  () => props.hideOnSinglePage && pageCount.value <= 1,
 )
 
 const layoutParts = computed(() =>
@@ -117,8 +126,10 @@ function onJumperConfirm() {
 
 <template>
   <div
+    v-if="!shouldHide"
     :class="[
       ns.b(),
+      ns.m(size),
       ns.is('background', background),
       ns.is('disabled', disabled),
     ]"

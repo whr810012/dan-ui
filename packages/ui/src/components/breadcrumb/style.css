@@ -68,3 +68,14 @@ a.dan-breadcrumb-item__inner:focus-visible {
   color: var(--dan-color-text-placeholder);
   font-weight: var(--dan-font-weight-regular);
 }
+
+.dan-breadcrumb-item--ellipsis {
+  color: var(--dan-color-text-placeholder);
+  pointer-events: none;
+}
+
+.dan-breadcrumb-item__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
