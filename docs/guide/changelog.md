@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.43.0
+
+- AvatarGroup：叠放头像、`max` 折叠 +N；`size` / `shape` 下发子头像
+- Skeleton：`throttle` 延迟显示，避免短时 loading 闪烁
+
 ## 2.42.0
 
 - 交互 / 逻辑打磨：Cascader Escape 与滚动重定位、Affix/BackTop `target` 监听重绑、Form.`size` 真正下发、Transfer 禁用搜框与穿梭去重、Pagination 页码钳制、ConfigProvider Message 配置栈、焦点环与 disabled 样式

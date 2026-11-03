@@ -2,11 +2,13 @@
 import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/avatar/basic.vue'
 import basicSrc from './demos/avatar/basic.vue?raw'
+import Group from './demos/avatar/group.vue'
+import groupSrc from './demos/avatar/group.vue?raw'
 </script>
 
 # Avatar 头像
 
-用于展示用户头像，支持图片与文字回退。
+用于展示用户头像，支持图片与文字回退；可用 `AvatarGroup` 叠放并折叠多余项。
 
 ## 基础用法
 
@@ -14,12 +16,28 @@ import basicSrc from './demos/avatar/basic.vue?raw'
   <Basic />
 </DemoBlock>
 
-## Props
+## 头像组
+
+`max` 超出后显示 `+N`；`size` / `shape` 会下发给子头像。
+
+<DemoBlock :source="groupSrc">
+  <Group />
+</DemoBlock>
+
+## Avatar Props
 
 | 属性 | 说明 | 类型 | 默认值 |
 |------|------|------|--------|
 | src | 图片地址 | `string` | — |
 | alt | 替代文本 / 失败时取首字 | `string` | `''` |
-| size | 尺寸 | `number \| 'small' \| 'default' \| 'large'` | `'default'` |
-| shape | 形状 | `'circle' \| 'square'` | `'circle'` |
+| size | 尺寸（组内可继承） | `number \| 'small' \| 'default' \| 'large'` | `'default'` |
+| shape | 形状（组内可继承） | `'circle' \| 'square'` | `'circle'` |
 | fit | 图片适应 | `'fill' \| 'contain' \| 'cover' \| 'none' \| 'scale-down'` | `'cover'` |
+
+## AvatarGroup Props
+
+| 属性 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| max | 最多展示个数，超出显示 +N | `number` | — |
+| size | 统一尺寸 | `number \| 'small' \| 'default' \| 'large'` | `'default'` |
+| shape | 统一形状 | `'circle' \| 'square'` | `'circle'` |

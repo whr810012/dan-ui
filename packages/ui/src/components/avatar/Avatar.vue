@@ -1,6 +1,11 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, inject, ref, watch } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
+import {
+  avatarGroupContextKey,
+  type AvatarShape,
+  type AvatarSize,
+} from './context'
 import './style.css'
 
 defineOptions({ name: 'DanAvatar' })
@@ -9,19 +14,20 @@ const props = withDefaults(
   defineProps<{
     src?: string
     alt?: string
-    size?: number | 'small' | 'default' | 'large'
-    shape?: 'circle' | 'square'
+    size?: AvatarSize
+    shape?: AvatarShape
     fit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
   }>(),
   {
     alt: '',
-    size: 'default',
-    shape: 'circle',
+    size: undefined,
+    shape: undefined,
     fit: 'cover',
   },
 )
 
 const ns = useNamespace('avatar')
+const group = inject(avatarGroupContextKey, undefined)
 const hasError = ref(false)
 
 watch(
@@ -31,24 +37,34 @@ watch(
   },
 )
 
+const resolvedSize = computed<AvatarSize>(
+  () => props.size ?? group?.size.value ?? 'default',
+)
+const resolvedShape = computed<AvatarShape>(
+  () => props.shape ?? group?.shape.value ?? 'circle',
+)
+
 const sizeStyle = computed(() => {
-  if (typeof props.size === 'number') {
+  if (typeof resolvedSize.value === 'number') {
     return {
-      width: `${props.size}px`,
-      height: `${props.size}px`,
-      fontSize: `${Math.max(12, Math.round(props.size / 2.4))}px`,
+      width: `${resolvedSize.value}px`,
+      height: `${resolvedSize.value}px`,
+      fontSize: `${Math.max(12, Math.round(resolvedSize.value / 2.4))}px`,
     }
   }
   return undefined
 })
 
 const sizeClass = computed(() =>
-  typeof props.size === 'string' ? ns.m(props.size) : undefined,
+  typeof resolvedSize.value === 'string' ? ns.m(resolvedSize.value) : undefined,
 )
 </script>
 
 <template>
-  <span :class="[ns.b(), sizeClass, ns.m(shape)]" :style="sizeStyle">
+  <span
+    :class="[ns.b(), sizeClass, ns.m(resolvedShape)]"
+    :style="sizeStyle"
+  >
     <img
       v-if="src && !hasError"
       :class="ns.e('image')"

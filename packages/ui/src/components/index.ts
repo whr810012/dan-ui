@@ -170,8 +170,8 @@ export type { DanPageHeaderInstance } from './page-header'
 export { DanBadge } from './badge'
 export type { DanBadgeInstance } from './badge'
 
-export { DanAvatar } from './avatar'
-export type { DanAvatarInstance } from './avatar'
+export { DanAvatar, DanAvatarGroup } from './avatar'
+export type { DanAvatarInstance, DanAvatarGroupInstance } from './avatar'
 
 export { DanAlert } from './alert'
 export type { DanAlertInstance } from './alert'
