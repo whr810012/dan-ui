@@ -16,5 +16,3 @@ coverage
 
 # Local planning / design docs — keep out of commits
 docs/plans/
-docs/DOC_PLAN.md
-docs/components-roadmap.md
