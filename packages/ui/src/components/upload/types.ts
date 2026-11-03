@@ -36,9 +36,7 @@ export interface UploadRequestOptions {
 }
 
 export type UploadRequestResult =
-  | void
-  | Promise<unknown>
-  | { abort?: () => void }
+  void | Promise<unknown> | { abort?: () => void }
 
 export type UploadRequestHandler = (
   options: UploadRequestOptions,

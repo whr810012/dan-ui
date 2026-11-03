@@ -17,7 +17,9 @@ const source = [
 function remoteMethod(query) {
   loading.value = true
   window.setTimeout(() => {
-    const q = String(query || '').trim().toLowerCase()
+    const q = String(query || '')
+      .trim()
+      .toLowerCase()
     options.value = q
       ? source.filter((item) => item.label.toLowerCase().includes(q))
       : source.slice(0, 3)

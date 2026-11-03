@@ -12,8 +12,14 @@ describe('DanInfiniteList', () => {
       attachTo: document.body,
     })
     const el = wrapper.element as HTMLElement
-    Object.defineProperty(el, 'scrollHeight', { value: 400, configurable: true })
-    Object.defineProperty(el, 'clientHeight', { value: 100, configurable: true })
+    Object.defineProperty(el, 'scrollHeight', {
+      value: 400,
+      configurable: true,
+    })
+    Object.defineProperty(el, 'clientHeight', {
+      value: 100,
+      configurable: true,
+    })
     Object.defineProperty(el, 'scrollTop', { value: 300, configurable: true })
     el.dispatchEvent(new Event('scroll'))
     expect(wrapper.emitted('load')).toBeTruthy()

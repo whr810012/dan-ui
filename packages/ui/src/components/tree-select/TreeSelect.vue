@@ -131,8 +131,7 @@ const display = computed(() =>
 )
 
 const showClear = computed(
-  () =>
-    props.clearable && selectedKeys.value.length > 0 && !isDisabled.value,
+  () => props.clearable && selectedKeys.value.length > 0 && !isDisabled.value,
 )
 
 function filterTree(nodes: TreeNode[], query: string): TreeNode[] {

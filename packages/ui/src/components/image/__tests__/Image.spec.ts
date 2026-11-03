@@ -49,7 +49,8 @@ describe('DanImage', () => {
       .dispatchEvent(new MouseEvent('click', { bubbles: true }))
     await nextTick()
     expect(
-      (preview.querySelector('.dan-image__preview-img') as HTMLImageElement).src,
+      (preview.querySelector('.dan-image__preview-img') as HTMLImageElement)
+        .src,
     ).toContain('c.png')
     expect(wrapper.emitted('switch')?.[0]?.[0]).toBe(2)
 

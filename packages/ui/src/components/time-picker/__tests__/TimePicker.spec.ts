@@ -38,4 +38,3 @@ describe('DanTimePicker', () => {
     wrapper.unmount()
   })
 })
-

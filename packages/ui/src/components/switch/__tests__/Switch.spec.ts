@@ -42,7 +42,7 @@ describe('DanSwitch', () => {
     await nextTick()
     expect(value.value).toBe(false)
 
-    beforeChange.mockImplementation(() => Promise.resolve(true))
+    beforeChange.mockResolvedValue(true)
     await wrapper.get('.dan-switch').trigger('click')
     await nextTick()
     await Promise.resolve()

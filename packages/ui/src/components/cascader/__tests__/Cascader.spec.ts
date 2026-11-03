@@ -55,7 +55,9 @@ describe('DanCascader', () => {
     const wrapper = mount(Comp, { attachTo: document.body })
     await wrapper.get('.dan-cascader__trigger').trigger('click')
     await nextTick()
-    ;(document.querySelectorAll('.dan-cascader__node')[0] as HTMLElement).click()
+    ;(
+      document.querySelectorAll('.dan-cascader__node')[0] as HTMLElement
+    ).click()
     await nextTick()
     const nodes = document.querySelectorAll('.dan-cascader__node')
     ;(nodes[nodes.length - 2] as HTMLElement).click()
@@ -116,10 +118,11 @@ describe('DanCascader', () => {
     const strictWrapper = mount(StrictComp, { attachTo: document.body })
     await strictWrapper.get('.dan-cascader__trigger').trigger('click')
     await nextTick()
-    ;(document.querySelectorAll('.dan-cascader__node')[0] as HTMLElement).click()
+    ;(
+      document.querySelectorAll('.dan-cascader__node')[0] as HTMLElement
+    ).click()
     await nextTick()
     expect(strict.value).toEqual(['a'])
     strictWrapper.unmount()
   })
 })
-

@@ -54,7 +54,9 @@ function beforeChunkUpload(chunk: UploadChunkInfo) {
 </script>
 
 <template>
-  <div style="display: flex; flex-direction: column; gap: 12px; max-width: 420px">
+  <div
+    style="display: flex; flex-direction: column; gap: 12px; max-width: 420px"
+  >
     <DanUpload
       ref="uploadRef"
       v-model:file-list="fileList"

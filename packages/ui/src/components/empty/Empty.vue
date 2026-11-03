@@ -60,12 +60,7 @@ const resolvedDescription = computed(
   <div :class="[ns.b(), ns.m(type), ns.m(size)]">
     <div :class="ns.e('image')" :style="{ width: `${resolvedImageSize}px` }">
       <slot name="image">
-        <img
-          v-if="image"
-          :src="image"
-          alt=""
-          :class="ns.e('img')"
-        />
+        <img v-if="image" :src="image" alt="" :class="ns.e('img')" />
         <svg
           v-else-if="type === 'search'"
           viewBox="0 0 96 72"

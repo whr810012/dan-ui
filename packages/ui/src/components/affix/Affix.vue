@@ -171,7 +171,11 @@ defineExpose({ update })
 </script>
 
 <template>
-  <div ref="rootRef" :class="[ns.b(), ns.is('disabled', disabled)]" :style="rootStyle">
+  <div
+    ref="rootRef"
+    :class="[ns.b(), ns.is('disabled', disabled)]"
+    :style="rootStyle"
+  >
     <div
       ref="contentRef"
       :class="[ns.e('content'), ns.is('fixed', fixed)]"

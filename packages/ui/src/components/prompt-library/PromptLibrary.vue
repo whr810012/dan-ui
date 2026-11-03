@@ -75,12 +75,12 @@ const filtered = computed(() => {
       <li v-if="!filtered.length" :class="ns.e('empty')">
         {{ t('promptLibrary.empty') }}
       </li>
-      <li
-        v-for="item in filtered"
-        :key="item.id"
-        :class="ns.e('item')"
-      >
-        <button type="button" :class="ns.e('button')" @click="emit('select', item)">
+      <li v-for="item in filtered" :key="item.id" :class="ns.e('item')">
+        <button
+          type="button"
+          :class="ns.e('button')"
+          @click="emit('select', item)"
+        >
           <div :class="ns.e('title')">{{ item.title }}</div>
           <div v-if="item.description" :class="ns.e('desc')">
             {{ item.description }}

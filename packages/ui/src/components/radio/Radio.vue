@@ -40,13 +40,9 @@ const isDisabled = computed(
     form?.disabled.value === true,
 )
 
-const isBorder = computed(
-  () => props.border || group?.border.value === true,
-)
+const isBorder = computed(() => props.border || group?.border.value === true)
 
-const isButton = computed(
-  () => props.button || group?.button.value === true,
-)
+const isButton = computed(() => props.button || group?.button.value === true)
 
 const isChecked = computed(() => {
   const current = group ? group.modelValue.value : props.modelValue

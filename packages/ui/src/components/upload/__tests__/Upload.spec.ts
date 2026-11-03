@@ -87,7 +87,9 @@ describe('DanUpload', () => {
     await input.trigger('change')
     await nextTick()
     expect(httpRequest).toHaveBeenCalled()
-    ;(wrapper.findComponent(DanUpload).vm as { abortAll: () => void }).abortAll()
+    ;(
+      wrapper.findComponent(DanUpload).vm as { abortAll: () => void }
+    ).abortAll()
     await nextTick()
     expect(abortFn).toHaveBeenCalled()
     expect(fileList.value[0]?.status).toBe('fail')

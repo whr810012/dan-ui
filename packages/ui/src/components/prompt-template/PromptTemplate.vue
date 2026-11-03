@@ -56,7 +56,11 @@ watch(
 )
 
 const preview = computed(() =>
-  renderPromptTemplate(props.template, { ...localValues }, { keepMissing: true }),
+  renderPromptTemplate(
+    props.template,
+    { ...localValues },
+    { keepMissing: true },
+  ),
 )
 
 function onField(name: string, value: string) {
@@ -86,11 +90,7 @@ function onApply() {
       </DanButton>
     </header>
     <div v-if="variables.length" :class="ns.e('fields')">
-      <label
-        v-for="name in variables"
-        :key="name"
-        :class="ns.e('field')"
-      >
+      <label v-for="name in variables" :key="name" :class="ns.e('field')">
         <span :class="ns.e('label')">{{ name }}</span>
         <DanInput
           :model-value="localValues[name] ?? ''"

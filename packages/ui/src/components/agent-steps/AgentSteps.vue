@@ -43,10 +43,7 @@ const statusLabel = computed<Record<AgentStepStatus, string>>(() => ({
       <li
         v-for="(step, index) in steps"
         :key="step.id"
-        :class="[
-          ns.e('item'),
-          ns.is(step.status || 'pending', true),
-        ]"
+        :class="[ns.e('item'), ns.is(step.status || 'pending', true)]"
       >
         <button
           type="button"
@@ -56,16 +53,12 @@ const statusLabel = computed<Record<AgentStepStatus, string>>(() => ({
           <span :class="ns.e('index')">{{ index + 1 }}</span>
           <span :class="ns.e('main')">
             <span :class="ns.e('title')">{{ step.title }}</span>
-            <span
-              v-if="step.description"
-              :class="ns.e('desc')"
-            >{{ step.description }}</span>
+            <span v-if="step.description" :class="ns.e('desc')">{{
+              step.description
+            }}</span>
           </span>
           <span
-            :class="[
-              ns.e('badge'),
-              ns.em('badge', step.status || 'pending'),
-            ]"
+            :class="[ns.e('badge'), ns.em('badge', step.status || 'pending')]"
           >
             {{ statusLabel[step.status || 'pending'] }}
           </span>

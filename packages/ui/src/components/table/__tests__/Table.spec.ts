@@ -192,7 +192,9 @@ describe('DanTable', () => {
       },
     })
     await nextTick()
-    await wrapper.find('.dan-table__expandable-cell .dan-table__expand').trigger('click')
+    await wrapper
+      .find('.dan-table__expandable-cell .dan-table__expand')
+      .trigger('click')
     await nextTick()
     expect(wrapper.find('.detail').exists()).toBe(true)
     expect(wrapper.text()).toContain('详情')

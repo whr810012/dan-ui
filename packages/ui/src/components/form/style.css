@@ -14,8 +14,12 @@
   margin-bottom: 0;
 }
 
-.dan-form.is-hide-required-asterisk .dan-form-item.is-required .dan-form-item__label::before,
-.dan-form.is-hide-required-asterisk .dan-form-item.is-required .dan-form-item__label::after {
+.dan-form.is-hide-required-asterisk
+  .dan-form-item.is-required
+  .dan-form-item__label::before,
+.dan-form.is-hide-required-asterisk
+  .dan-form-item.is-required
+  .dan-form-item__label::after {
   content: none;
   display: none;
 }
@@ -50,13 +54,17 @@
   padding-right: 0;
 }
 
-.dan-form--asterisk-left .dan-form-item.is-required .dan-form-item__label::before {
+.dan-form--asterisk-left
+  .dan-form-item.is-required
+  .dan-form-item__label::before {
   content: '*';
   margin-right: 4px;
   color: var(--dan-color-danger);
 }
 
-.dan-form--asterisk-right .dan-form-item.is-required .dan-form-item__label::after {
+.dan-form--asterisk-right
+  .dan-form-item.is-required
+  .dan-form-item__label::after {
   content: '*';
   margin-left: 4px;
   color: var(--dan-color-danger);

@@ -1,6 +1,13 @@
 <script setup>
 import { reactive, ref } from 'vue'
-import { DanButton, DanForm, DanFormItem, DanFormList, DanInput, DanMessage } from '@dandan-ui/ui'
+import {
+  DanButton,
+  DanForm,
+  DanFormItem,
+  DanFormList,
+  DanInput,
+  DanMessage,
+} from '@dandan-ui/ui'
 
 const formRef = ref()
 const model = reactive({

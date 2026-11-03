@@ -5,10 +5,7 @@ import type { ChatAttachment } from '../../types/chat'
 import { useNamespace } from '../../hooks/useNamespace'
 import { DanAttachment } from '../attachment'
 import { DanButton } from '../button'
-import {
-  DanPromptLibrary,
-  type PromptTemplate,
-} from '../prompt-library'
+import { DanPromptLibrary, type PromptTemplate } from '../prompt-library'
 import { DanTextarea } from '../textarea'
 import './style.css'
 
@@ -138,7 +135,9 @@ function addFiles(list: FileList | File[]) {
   for (const file of incoming) {
     if (props.maxSize != null && file.size > props.maxSize) continue
     if (next.length >= props.maxCount) break
-    if (next.some((item) => item.name === file.name && item.size === file.size)) {
+    if (
+      next.some((item) => item.name === file.name && item.size === file.size)
+    ) {
       continue
     }
     next.push(fileToAttachment(file))
@@ -156,7 +155,9 @@ function onFileChange(event: Event) {
 }
 
 function removeFile(file: ChatAttachment) {
-  syncAttachments(files.value.filter((item) => item !== file && item.id !== file.id))
+  syncAttachments(
+    files.value.filter((item) => item !== file && item.id !== file.id),
+  )
 }
 
 function onDrop(event: DragEvent) {
@@ -169,11 +170,7 @@ function onDrop(event: DragEvent) {
 
 <template>
   <div
-    :class="[
-      ns.b(),
-      ns.is('disabled', disabled),
-      ns.is('dragging', dragging),
-    ]"
+    :class="[ns.b(), ns.is('disabled', disabled), ns.is('dragging', dragging)]"
     @dragenter.prevent="dragging = true"
     @dragover.prevent="dragging = true"
     @dragleave.prevent="dragging = false"

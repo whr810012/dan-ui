@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.47.0
+
+- 工程：GitHub Actions CI（build / test / lint / docs / bundle report）
+- 测试：补 ConfigProvider、Loading、Icon、Space、Result、Divider 单测
+- 类型：Button disabled 状态类、AvatarGroup / Breadcrumb slots 类型修正
+- 范围：按完成计划冻结大面新组件，进入质量门禁 → npm 2.x 里程碑
+
 ## 2.46.3
 
 - 文档：补拍 Cascader / Transfer / Drawer / Tour / Splitter / ToolCallCard 等重点组件截图；介绍页增加「重点组件速览」；README 扩充图集

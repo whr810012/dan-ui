@@ -19,7 +19,14 @@ const steps = [
 
 <template>
   <div>
-    <DanButton id="tour-demo-btn" type="primary" @click="open = true; current = 0">
+    <DanButton
+      id="tour-demo-btn"
+      type="primary"
+      @click="
+        open = true
+        current = 0
+      "
+    >
       打开引导
     </DanButton>
     <DanTour v-model="open" v-model:current="current" :steps="steps" />

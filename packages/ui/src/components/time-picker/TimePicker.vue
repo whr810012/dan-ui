@@ -28,9 +28,9 @@ const props = withDefaults(
     isRange: false,
     disabled: false,
     clearable: false,
-    placeholder: 'Ñ¡ÔñÊ±¼ä',
-    startPlaceholder: '¿ªÊ¼Ê±¼ä',
-    endPlaceholder: '½áÊøÊ±¼ä',
+    placeholder: 'Ñ¡ï¿½ï¿½Ê±ï¿½ï¿½',
+    startPlaceholder: 'ï¿½ï¿½Ê¼Ê±ï¿½ï¿½',
+    endPlaceholder: 'ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½',
     step: 5,
   },
 )
@@ -59,7 +59,10 @@ const rangeValue = computed(() => {
   if (!props.isRange || !Array.isArray(props.modelValue)) {
     return { start: null as string | null, end: null as string | null }
   }
-  return { start: props.modelValue[0] ?? null, end: props.modelValue[1] ?? null }
+  return {
+    start: props.modelValue[0] ?? null,
+    end: props.modelValue[1] ?? null,
+  }
 })
 
 const singleValue = computed(() =>
@@ -216,10 +219,10 @@ onBeforeUnmount(() => {
       v-if="showClear"
       type="button"
       :class="ns.e('clear')"
-      aria-label="Çå³ý"
+      aria-label="ï¿½ï¿½ï¿½"
       @click="clearValue"
     >
-      ¡Á
+      ï¿½ï¿½
     </button>
     <Teleport to="body">
       <div

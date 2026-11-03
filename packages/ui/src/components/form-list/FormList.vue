@@ -52,11 +52,7 @@ function remove(index: number) {
 
 <template>
   <div :class="ns.b()">
-    <div
-      v-for="(row, index) in list"
-      :key="index"
-      :class="ns.e('item')"
-    >
+    <div v-for="(row, index) in list" :key="index" :class="ns.e('item')">
       <div :class="ns.e('fields')">
         <slot :row="row" :index="index" :remove="() => remove(index)" />
       </div>

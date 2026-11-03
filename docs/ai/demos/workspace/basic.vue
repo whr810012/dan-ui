@@ -21,7 +21,8 @@ const showArtifact = ref(true)
 const artifact = ref({
   title: '检索摘要',
   type: 'markdown',
-  content: '## 结果\n\n- dan-ui 1.8 新增 ChatWorkspace\n- 支持流式 tool 就地更新',
+  content:
+    '## 结果\n\n- dan-ui 1.8 新增 ChatWorkspace\n- 支持流式 tool 就地更新',
 })
 
 const messages = ref([
@@ -99,10 +100,7 @@ async function demoStreamTool() {
     toolCallId: 'call_stream',
     status: 'done',
   })
-  messages.value = [
-    ...messages.value.slice(0, -1),
-    { ...msg, status: 'done' },
-  ]
+  messages.value = [...messages.value.slice(0, -1), { ...msg, status: 'done' }]
   streaming.value = false
 }
 

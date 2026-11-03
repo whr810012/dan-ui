@@ -73,28 +73,29 @@
 
 ### 阶段 A — 定义冻结与发版基线（0.5 天）
 
-- [ ] 确认「2.x 完成」= 上表 D1–D7  
-- [ ] 更新 `docs/components-roadmap.md` 版本号与「冻结后只修不扩」声明  
-- [ ] 选定发版号策略：建议 **先发 `2.47.0`（质量修补）或直接 `2.50.0` 作为完成里程碑**，避免再无计划冲到 2.99  
+- [x] 确认「2.x 完成」= 上表 D1–D7（用户确认按 plan 执行）  
+- [x] 更新 `docs/components-roadmap.md`：冻结大面新组件 + 指向完成计划  
+- [x] 发版号策略：**`2.47.0` = M1 质量门禁**；**`2.50.0` = M2 完成里程碑（npm 正式 2.x）**  
 
-**产出：** 本文档定稿 + roadmap 一句「完成定义」。
+**产出：** 本文档定稿 + roadmap「完成定义」。
 
 ### 阶段 B — 质量门禁（2–4 天）
 
 1. **补 CI（GitHub Actions）**  
-   - `pnpm build && pnpm test && pnpm lint && pnpm docs:build`  
-   - 可选：`bundle:report` 体积阈值告警  
+   - [x] `.github/workflows/ci.yml`：`build / test / lint / docs:build / bundle:report`  
 2. **补关键单测**  
-   - 必做：`ConfigProvider`、`Loading`、`Icon`、`Space`、`Result`  
-   - 选做：AI 叶子组件各 1 个冒烟（渲染 + 主事件）  
+   - [x] `ConfigProvider`、`Loading`、`Icon`、`Space`、`Result`、`Divider`  
+   - [ ] 选做：AI 叶子组件冒烟（可放 2.47 之后）  
 3. **跑通 checklist**  
-   - 暗色：浮层 / Table / Skeleton / Empty / Message  
-   - 键盘：Dialog、Select、Tabs、Menu  
-   - Locale：`en` 下 Dialog / Table / DatePicker  
+   - [ ] 暗色：浮层 / Table / Skeleton / Empty / Message  
+   - [ ] 键盘：Dialog、Select、Tabs、Menu  
+   - [ ] Locale：`en` 下 Dialog / Table / DatePicker  
 4. **修 High/Medium**  
-   - 构建期 dts 已知噪音（AvatarGroup slots、Breadcrumb separator、Button disabled 类型等）择要清理，避免发版带红  
+   - [x] Button `ns.is` ComputedRef、AvatarGroup / Breadcrumb slots 类型噪音  
+   - [x] ESLint：Drawer 无用赋值、ConversationList 未用 props、Pagination 模板 shadow  
+   - [x] Prettier 全仓格式化，使 `pnpm lint` 可通过  
 
-**产出：** CI 绿；checklist 勾选；无已知 High 缺陷。
+**产出：** CI 配置就绪；关键单测与 lint 本地绿；checklist 人工项仍待勾。
 
 ### 阶段 C — 正式发布 2.x（0.5–1 天）
 

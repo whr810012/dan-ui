@@ -80,9 +80,7 @@ function filterTree(
   if (!q) return options
   const result: CascaderOption[] = []
   for (const opt of options) {
-    const children = opt.children?.length
-      ? filterTree(opt.children, query)
-      : []
+    const children = opt.children?.length ? filterTree(opt.children, query) : []
     if (opt.label.toLowerCase().includes(q)) {
       result.push(opt)
     } else if (children.length) {
@@ -93,7 +91,9 @@ function filterTree(
 }
 
 const displayOptions = computed(() =>
-  props.filterable ? filterTree(props.options, filterQuery.value) : props.options,
+  props.filterable
+    ? filterTree(props.options, filterQuery.value)
+    : props.options,
 )
 
 function syncFromValue() {
@@ -256,10 +256,9 @@ function nodeClass(level: number, option: CascaderOption) {
               aria-hidden="true"
             />
             <span>{{ item.option.label }}</span>
-            <span
-              v-if="item.option.children?.length"
-              :class="ns.e('arrow')"
-            >›</span>
+            <span v-if="item.option.children?.length" :class="ns.e('arrow')"
+              >›</span
+            >
           </li>
           <li
             :style="{ height: `${columnViews[level]!.padBottom}px` }"

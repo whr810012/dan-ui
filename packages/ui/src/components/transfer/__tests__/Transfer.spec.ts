@@ -19,8 +19,9 @@ describe('DanTransfer', () => {
     })
     const wrapper = mount(Comp)
     const leftPanel = wrapper.findAll('.dan-transfer__panel')[0]!
-    const itemChecks = leftPanel
-      .findAll('.dan-transfer__item input[type="checkbox"]')
+    const itemChecks = leftPanel.findAll(
+      '.dan-transfer__item input[type="checkbox"]',
+    )
     await itemChecks[0]!.setValue(true)
     await wrapper.findAll('.dan-transfer__button')[0]!.trigger('click')
     await nextTick()
@@ -49,7 +50,9 @@ describe('DanTransfer', () => {
       `,
     })
     const wrapper = mount(Comp)
-    expect(wrapper.find('.dan-transfer__filter').attributes('disabled')).toBeDefined()
+    expect(
+      wrapper.find('.dan-transfer__filter').attributes('disabled'),
+    ).toBeDefined()
     wrapper.unmount()
 
     const active = ref<Array<string | number>>([1])
@@ -98,9 +101,9 @@ describe('DanTransfer', () => {
     })
     const wrapper = mount(Comp)
     expect(wrapper.text()).toContain('加入')
-    expect(wrapper.find('.dan-transfer__filter').attributes('placeholder')).toBe(
-      '找一找',
-    )
+    expect(
+      wrapper.find('.dan-transfer__filter').attributes('placeholder'),
+    ).toBe('找一找')
     const leftPanel = wrapper.findAll('.dan-transfer__panel')[0]!
     await leftPanel.get('.dan-transfer__header-check input').setValue(true)
     await nextTick()

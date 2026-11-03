@@ -47,4 +47,6 @@ if (files.length > 20) {
 console.log('─'.repeat(48))
 console.log(`${formatKb(total).padStart(12)}  TOTAL (${files.length} files)`)
 console.log('')
-console.log('Tips: compare index.js / style.css across versions; prefer on-demand import for apps.')
+console.log(
+  'Tips: compare index.js / style.css across versions; prefer on-demand import for apps.',
+)

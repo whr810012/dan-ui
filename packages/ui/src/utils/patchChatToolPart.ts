@@ -54,10 +54,7 @@ export function patchChatToolPart(
       toolCallId: patch.toolCallId,
       name: patch.name ?? 'tool',
       input: patch.input,
-      output:
-        patch.appendOutput != null
-          ? patch.appendOutput
-          : patch.output,
+      output: patch.appendOutput != null ? patch.appendOutput : patch.output,
       status: patch.status ?? 'running',
     })
   }

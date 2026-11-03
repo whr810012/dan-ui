@@ -127,4 +127,3 @@ describe('DanPagination', () => {
     expect(page.value).toBe(2)
   })
 })
-

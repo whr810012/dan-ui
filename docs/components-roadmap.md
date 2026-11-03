@@ -1,12 +1,16 @@
 # dan-ui 组件路线图
 
-> 当前基线：仓库 **`2.46.3`**（npm 公开发布仍为 **`1.2.0`**，见完成计划）。  
-> 早期「一期～五期」交付目标已完成；下文为**现状与后续方向**。  
+> 当前基线：仓库 **`2.47.0`（质量门禁中）**｜npm 公开发布仍为 **`1.2.0`**。  
 > **完整开发完成定义与排期：** [`plans/2026-11-03-completion-plan.md`](./plans/2026-11-03-completion-plan.md)
+
+## 完成定义（已确认执行）
+
+满足计划中的 D1–D7（功能面 + 单测/CI + 文档 + checklist + **npm 发 2.x** + 范围冻结）即视为完整。  
+**自本文件起：默认不再开大面新组件**；只做 bugfix、文档、测试、小增强与发版。新组件需求进入「完成后维护池」。
 
 ## 现状一句话
 
-中后台常用面（布局 / 表单 / 表格 / 浮层 / 导航）+ AI 对话壳 + TipTap 富文本已齐；功能面基本到位。真正卡「完整」的是 **质量门禁、checklist 闭环、以及把 2.x 正式发到 npm**。
+中后台常用面 + AI 壳 + RichText 已齐。执行中：**M1 质量门禁 → M2 npm 发布 2.50.0 里程碑**。
 
 ## 已覆盖（按文档侧栏）
 
@@ -20,8 +24,6 @@
 | AI | Chat 系列、ConversationList、ToolCallCard、AgentSteps、PromptLibrary… |
 | 富文本 | RichText + TipTap 扩展说明 |
 
-完整 API 与 Demo 见文档站侧栏；变更见 [Changelog](/guide/changelog)。
-
 ## 明确不做
 
 - 图表库（ECharts 等）
@@ -29,12 +31,12 @@
 - 移动端专用组件包 / React 版
 - 富文本 CRDT 协作
 
-## 后续方向（按需排期）
+## 冻结后允许做
 
-| 优先级 | 方向 | 示例 |
-|--------|------|------|
-| P0 | 高频组件深度 | Table/Form/Select 边界、无障碍与暗色回归 |
-| P1 | 展示与反馈补齐 | Watermark 图水印、Carousel 竖向、Skeleton 更多形态 |
-| P2 | 工程体验 | 按组件拆 CSS、更多 SSR 示例、视觉回归 |
+| 类型 | 示例 |
+|------|------|
+| P0 发版阻塞 | CI、关键单测、checklist、npm 2.x |
+| P1 深度 | Form/Table/Select 边界、a11y、暗色回归 |
+| P2 工程 | 按组件 CSS、视觉回归、Nuxt/starter 示例 |
 
 发版前抽检见 [发布与视觉清单](/guide/checklist)。

@@ -19,13 +19,7 @@ const ns = useNamespace('paragraph')
 </script>
 
 <template>
-  <p
-    :class="[
-      ns.b(),
-      ns.m(type),
-      ns.m(spacing),
-    ]"
-  >
+  <p :class="[ns.b(), ns.m(type), ns.m(spacing)]">
     <slot />
   </p>
 </template>

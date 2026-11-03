@@ -136,22 +136,30 @@
   text-align: right;
 }
 
-.dan-timeline--alternate .dan-timeline-item:nth-child(odd) .dan-timeline-item__tail {
+.dan-timeline--alternate
+  .dan-timeline-item:nth-child(odd)
+  .dan-timeline-item__tail {
   left: 5px;
   right: auto;
 }
 
-.dan-timeline--alternate .dan-timeline-item:nth-child(even) .dan-timeline-item__tail {
+.dan-timeline--alternate
+  .dan-timeline-item:nth-child(even)
+  .dan-timeline-item__tail {
   left: auto;
   right: 5px;
 }
 
-.dan-timeline--alternate .dan-timeline-item:nth-child(odd) .dan-timeline-item__node {
+.dan-timeline--alternate
+  .dan-timeline-item:nth-child(odd)
+  .dan-timeline-item__node {
   left: 0;
   right: auto;
 }
 
-.dan-timeline--alternate .dan-timeline-item:nth-child(even) .dan-timeline-item__node {
+.dan-timeline--alternate
+  .dan-timeline-item:nth-child(even)
+  .dan-timeline-item__node {
   left: auto;
   right: 0;
 }

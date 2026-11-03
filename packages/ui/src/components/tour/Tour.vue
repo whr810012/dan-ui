@@ -168,11 +168,7 @@ onBeforeUnmount(() => {
             <DanButton size="small" text @click="close">
               {{ t('tour.skip') }}
             </DanButton>
-            <DanButton
-              v-if="current > 0"
-              size="small"
-              @click="prev"
-            >
+            <DanButton v-if="current > 0" size="small" @click="prev">
               {{ t('tour.prev') }}
             </DanButton>
             <DanButton size="small" type="primary" @click="next">

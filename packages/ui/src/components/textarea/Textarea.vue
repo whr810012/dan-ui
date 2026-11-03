@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import {
-  computed,
-  nextTick,
-  onMounted,
-  ref,
-  useAttrs,
-  watch,
-} from 'vue'
+import { computed, nextTick, onMounted, ref, useAttrs, watch } from 'vue'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import './style.css'
@@ -23,13 +16,13 @@ const props = withDefaults(
     placeholder?: string
     rows?: number
     maxlength?: number
-    /** Õ¹Ê¾×ÖÊýÍ³¼Æ£¨ÐèÅäºÏ maxlength£»½ûÓÃÊ±²»Õ¹Ê¾£© */
+    /** Õ¹Ê¾ï¿½ï¿½ï¿½ï¿½Í³ï¿½Æ£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ maxlengthï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Õ¹Ê¾ï¿½ï¿½ */
     showWordLimit?: boolean
-    /** ÏÔÊ¾Öµ¸ñÊ½»¯ */
+    /** ï¿½ï¿½Ê¾Öµï¿½ï¿½Ê½ï¿½ï¿½ */
     formatter?: (value: string) => string
-    /** ½«ÊäÈë½âÎö»Ø modelValue */
+    /** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ modelValue */
     parser?: (value: string) => string
-    /** ×ÔÊÊÓ¦¸ß¶È£»¿É´« `{ minRows, maxRows }` */
+    /** ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ß¶È£ï¿½ï¿½É´ï¿½ `{ minRows, maxRows }` */
     autosize?: AutosizeOption
   }>(),
   {

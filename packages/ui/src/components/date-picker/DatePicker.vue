@@ -46,7 +46,7 @@ const props = withDefaults(
     endPlaceholder?: string
     disabledDate?: (date: Date) => boolean
     shortcuts?: DatePickerShortcut[]
-    /** ·¶Î§Ä£Ê½ÏÂ×óÓÒÃæ°åÔÂ·Ý¿É¶ÀÁ¢ÇÐ»» */
+    /** ï¿½ï¿½Î§Ä£Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·Ý¿É¶ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ */
     unlinkPanels?: boolean
   }>(),
   {
@@ -140,7 +140,7 @@ const viewEndDate = ref(
 const monthCells = computed(() =>
   Array.from({ length: 12 }, (_, i) => ({
     month: i,
-    label: `${i + 1}ÔÂ`,
+    label: `${i + 1}ï¿½ï¿½`,
   })),
 )
 
@@ -207,11 +207,11 @@ const showClear = computed(
 )
 const monthLabel = computed(
   () =>
-    `${viewDate.value.getFullYear()} Äê ${viewDate.value.getMonth() + 1} ÔÂ`,
+    `${viewDate.value.getFullYear()} ï¿½ï¿½ ${viewDate.value.getMonth() + 1} ï¿½ï¿½`,
 )
 const endMonthLabel = computed(
   () =>
-    `${viewEndDate.value.getFullYear()} Äê ${viewEndDate.value.getMonth() + 1} ÔÂ`,
+    `${viewEndDate.value.getFullYear()} ï¿½ï¿½ ${viewEndDate.value.getMonth() + 1} ï¿½ï¿½`,
 )
 const cells = computed(() => buildCalendarDays(viewDate.value))
 const endCells = computed(() => buildCalendarDays(viewEndDate.value))
@@ -229,9 +229,7 @@ watch(
 )
 
 const hours = computed(() => Array.from({ length: 24 }, (_, i) => i))
-const minutes = computed(() =>
-  Array.from({ length: 12 }, (_, i) => i * 5),
-)
+const minutes = computed(() => Array.from({ length: 12 }, (_, i) => i * 5))
 
 watch(
   () => props.modelValue,
@@ -471,11 +469,13 @@ function confirmDateTime() {
     combineDateTime(draftDate.value, draftHour.value, draftMinute.value),
   )
   const end = formatDateTime(
-    combineDateTime(draftEndDate.value, draftEndHour.value, draftEndMinute.value),
+    combineDateTime(
+      draftEndDate.value,
+      draftEndHour.value,
+      draftEndMinute.value,
+    ),
   )
-  setValue(
-    start <= end ? [start, end] : [end, start],
-  )
+  setValue(start <= end ? [start, end] : [end, start])
   closePanel()
 }
 
@@ -641,20 +641,23 @@ onBeforeUnmount(() => {
       v-if="showClear"
       type="button"
       :class="ns.e('clear')"
-      aria-label="Çå³ý"
+      aria-label="ï¿½ï¿½ï¿½"
       @click="clearValue"
     >
-      ¡Á
+      ï¿½ï¿½
     </button>
 
     <Teleport to="body">
       <div
         v-if="opened"
         ref="panelRef"
-        :class="[ns.e('panel'), shortcuts.length ? ns.is('with-shortcuts', true) : '']"
+        :class="[
+          ns.e('panel'),
+          shortcuts.length ? ns.is('with-shortcuts', true) : '',
+        ]"
         :style="panelStyle"
         role="dialog"
-        aria-label="ÈÕÆÚÃæ°å"
+        aria-label="ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
       >
         <div v-if="shortcuts.length" :class="ns.e('shortcuts')">
           <button
@@ -672,7 +675,7 @@ onBeforeUnmount(() => {
             <button
               type="button"
               :class="ns.e('nav')"
-              aria-label="ÉÏÒ»²½"
+              aria-label="ï¿½ï¿½Ò»ï¿½ï¿½"
               @click="
                 isYear ? prevDecade() : isMonth ? prevYear() : prevMonth()
               "
@@ -691,7 +694,7 @@ onBeforeUnmount(() => {
             <button
               type="button"
               :class="ns.e('nav')"
-              aria-label="ÏÂÒ»²½"
+              aria-label="ï¿½ï¿½Ò»ï¿½ï¿½"
               @click="
                 isYear ? nextDecade() : isMonth ? nextYear() : nextMonth()
               "
@@ -726,7 +729,9 @@ onBeforeUnmount(() => {
                 ns.is(
                   'selected',
                   modelValue ===
-                    formatMonth(new Date(viewDate.getFullYear(), cell.month, 1)),
+                    formatMonth(
+                      new Date(viewDate.getFullYear(), cell.month, 1),
+                    ),
                 ),
               ]"
               @click="selectMonth(cell.month)"
@@ -736,18 +741,13 @@ onBeforeUnmount(() => {
           </div>
 
           <template v-else-if="showDualPanels">
-            <div
-              :class="[
-                ns.e('calendars'),
-                ns.is('unlink', unlinkPanels),
-              ]"
-            >
+            <div :class="[ns.e('calendars'), ns.is('unlink', unlinkPanels)]">
               <div :class="ns.e('calendar')">
                 <div :class="ns.e('header')">
                   <button
                     type="button"
                     :class="ns.e('nav')"
-                    aria-label="ÉÏÒ»ÔÂ"
+                    aria-label="ï¿½ï¿½Ò»ï¿½ï¿½"
                     @click="prevMonth"
                   >
                     ?
@@ -756,7 +756,7 @@ onBeforeUnmount(() => {
                   <button
                     type="button"
                     :class="ns.e('nav')"
-                    aria-label="ÏÂÒ»ÔÂ"
+                    aria-label="ï¿½ï¿½Ò»ï¿½ï¿½"
                     @click="nextMonth"
                   >
                     ?
@@ -785,7 +785,7 @@ onBeforeUnmount(() => {
                   <button
                     type="button"
                     :class="ns.e('nav')"
-                    aria-label="ÉÏÒ»ÔÂ"
+                    aria-label="ï¿½ï¿½Ò»ï¿½ï¿½"
                     @click="prevEndMonth"
                   >
                     ?
@@ -794,7 +794,7 @@ onBeforeUnmount(() => {
                   <button
                     type="button"
                     :class="ns.e('nav')"
-                    aria-label="ÏÂÒ»ÔÂ"
+                    aria-label="ï¿½ï¿½Ò»ï¿½ï¿½"
                     @click="nextEndMonth"
                   >
                     ?
@@ -841,7 +841,7 @@ onBeforeUnmount(() => {
 
           <div v-if="isDateTime" :class="ns.e('time')">
             <div :class="ns.e('time-block')">
-              <span>{{ isRange ? '¿ªÊ¼' : 'Ê±¼ä' }}</span>
+              <span>{{ isRange ? 'ï¿½ï¿½Ê¼' : 'Ê±ï¿½ï¿½' }}</span>
               <select
                 :class="ns.e('time-select')"
                 :value="draftHour"
@@ -869,7 +869,7 @@ onBeforeUnmount(() => {
               </select>
             </div>
             <div v-if="isRange" :class="ns.e('time-block')">
-              <span>½áÊø</span>
+              <span>ï¿½ï¿½ï¿½ï¿½</span>
               <select
                 :class="ns.e('time-select')"
                 :value="draftEndHour"

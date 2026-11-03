@@ -202,4 +202,3 @@ describe('DanDatePicker', () => {
     wrapper.unmount()
   })
 })
-

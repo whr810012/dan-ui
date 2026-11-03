@@ -32,11 +32,10 @@ describe('DanNotification', () => {
     })
     await nextTick()
     expect(document.querySelectorAll('.dan-notification__item').length).toBe(1)
-    expect(document.querySelector('.dan-notification__badge')?.textContent).toBe(
-      '2',
-    )
+    expect(
+      document.querySelector('.dan-notification__badge')?.textContent,
+    ).toBe('2')
     DanNotification.closeAll()
     await nextTick()
   })
 })
-

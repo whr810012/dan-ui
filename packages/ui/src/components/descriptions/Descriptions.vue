@@ -52,10 +52,7 @@ const style = computed(() => {
     :class="[ns.b(), ns.m(size), ns.m(direction), ns.is('bordered', border)]"
     :style="style"
   >
-    <div
-      v-if="title || $slots.title || $slots.extra"
-      :class="ns.e('header')"
-    >
+    <div v-if="title || $slots.title || $slots.extra" :class="ns.e('header')">
       <div :class="ns.e('title')">
         <slot name="title">{{ title }}</slot>
       </div>

@@ -13,11 +13,6 @@ const value = ref(1)
       :precision="2"
       controls-position="right"
     />
-    <DanInputNumber
-      v-model="value"
-      :step="0.5"
-      :precision="1"
-      step-strictly
-    />
+    <DanInputNumber v-model="value" :step="0.5" :precision="1" step-strictly />
   </DanSpace>
 </template>

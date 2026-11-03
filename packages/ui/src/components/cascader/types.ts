@@ -28,4 +28,3 @@ export function normalizeCascaderPaths(
   if (Array.isArray(value[0])) return []
   return [value as CascaderPath]
 }
-

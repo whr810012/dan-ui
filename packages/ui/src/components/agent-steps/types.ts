@@ -1,4 +1,5 @@
-export type AgentStepStatus = 'pending' | 'running' | 'done' | 'error' | 'skipped'
+export type AgentStepStatus =
+  'pending' | 'running' | 'done' | 'error' | 'skipped'
 
 export interface AgentStepItem {
   id: string

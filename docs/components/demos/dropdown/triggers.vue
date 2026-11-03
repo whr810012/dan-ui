@@ -1,5 +1,11 @@
 <script setup>
-import { DanButton, DanDropdown, DanDropdownItem, DanDropdownMenu, DanSpace } from '@dandan-ui/ui'
+import {
+  DanButton,
+  DanDropdown,
+  DanDropdownItem,
+  DanDropdownMenu,
+  DanSpace,
+} from '@dandan-ui/ui'
 </script>
 
 <template>

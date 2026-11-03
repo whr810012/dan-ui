@@ -67,4 +67,3 @@ describe('DanInputNumber', () => {
     expect(wrapper.get('input').element.value).toBe('1.20')
   })
 })
-

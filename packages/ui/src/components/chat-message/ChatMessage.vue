@@ -98,7 +98,9 @@ async function onCopy() {
             <DanStreamText
               v-else-if="part.type === 'text'"
               :content="part.content"
-              :streaming="streaming && index === (message.parts?.length ?? 0) - 1"
+              :streaming="
+                streaming && index === (message.parts?.length ?? 0) - 1
+              "
               :as-markdown="message.role !== 'user'"
             />
             <DanToolCallCard

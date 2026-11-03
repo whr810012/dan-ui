@@ -36,8 +36,8 @@ describe('DanAutocomplete', () => {
   it('supports keyboard selection with debounce', async () => {
     vi.useFakeTimers()
     const value = ref('')
-    const fetchSuggestions = vi.fn(
-      (_q: string, cb: (list: string[]) => void) => cb(['one', 'two']),
+    const fetchSuggestions = vi.fn((_q: string, cb: (list: string[]) => void) =>
+      cb(['one', 'two']),
     )
     const Comp = defineComponent({
       components: { DanAutocomplete },

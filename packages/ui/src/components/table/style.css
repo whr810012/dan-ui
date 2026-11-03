@@ -179,7 +179,9 @@
   background: var(--dan-color-bg-muted);
 }
 
-.dan-table.is-stripe .dan-table__row:nth-child(even) .dan-table__cell.is-fixed-left,
+.dan-table.is-stripe
+  .dan-table__row:nth-child(even)
+  .dan-table__cell.is-fixed-left,
 .dan-table.is-stripe
   .dan-table__row:nth-child(even)
   .dan-table__cell.is-fixed-right {

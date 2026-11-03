@@ -31,17 +31,17 @@ const props = withDefaults(
     multiple?: boolean
     filterable?: boolean
     collapseTags?: boolean
-    /** collapseTags Ê±×î¶àÕ¹Ê¾µÄ±êÇ©Êý£¬ÆäÓàÕÛµþÎª +N */
+    /** collapseTags Ê±ï¿½ï¿½ï¿½Õ¹Ê¾ï¿½Ä±ï¿½Ç©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ûµï¿½Îª +N */
     maxCollapseTags?: number
     virtual?: boolean
     itemHeight?: number
     maxDropdownHeight?: number
-    /** Ô¶³ÌËÑË÷£º²»¹ýÂË±¾µØ options£¬¸ÄÓÉ remoteMethod À­Êý */
+    /** Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë±ï¿½ï¿½ï¿½ optionsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ remoteMethod ï¿½ï¿½ï¿½ï¿½ */
     remote?: boolean
     remoteMethod?: (query: string) => void
-    /** Ô¶³ÌÇëÇóÖÐ£¨ÓÉÒµÎñ¿ØÖÆ£© */
+    /** Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½Æ£ï¿½ */
     loading?: boolean
-    /** Ô¶³Ì·½·¨·À¶¶ºÁÃë */
+    /** Ô¶ï¿½Ì·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
     remoteDebounce?: number
   }>(),
   {
@@ -131,7 +131,6 @@ watch(filterQuery, (query) => {
   scheduleRemote(query)
 })
 
-
 const rootClass = computed(() => attrs.class)
 const rootStyle = computed(
   () => attrs.style as string | Record<string, string> | undefined,
@@ -171,8 +170,7 @@ const collapseTagCount = computed(() =>
 
 const showCollapsedTags = computed(
   () =>
-    props.collapseTags &&
-    selectedLabels.value.length > collapseTagCount.value,
+    props.collapseTags && selectedLabels.value.length > collapseTagCount.value,
 )
 
 const visibleTagLabels = computed(() =>
@@ -236,10 +234,7 @@ const virtualPadBottom = computed(() =>
 )
 
 const showClear = computed(
-  () =>
-    props.clearable &&
-    selectedValues.value.length > 0 &&
-    !isDisabled.value,
+  () => props.clearable && selectedValues.value.length > 0 && !isDisabled.value,
 )
 
 function isSelected(value: SelectOption['value']) {
@@ -325,7 +320,9 @@ function selectOption(item: SelectOption) {
   rememberLabels([item])
   if (props.multiple) {
     const next = [...selectedValues.value]
-    const index = next.findIndex((value) => String(value) === String(item.value))
+    const index = next.findIndex(
+      (value) => String(value) === String(item.value),
+    )
     if (index >= 0) next.splice(index, 1)
     else next.push(item.value)
     emit('update:modelValue', next)
@@ -481,7 +478,7 @@ onBeforeUnmount(() => {
             :class="ns.e('tag')"
           >
             {{ label }}
-            <i @click="removeTag(selectedValues[i]!, $event)">¡Á</i>
+            <i @click="removeTag(selectedValues[i]!, $event)">ï¿½ï¿½</i>
           </span>
           <span v-if="collapsedTagExtra > 0" :class="ns.e('tag')">
             +{{ collapsedTagExtra }}
@@ -502,7 +499,7 @@ onBeforeUnmount(() => {
       @mousedown.prevent
       @click="onClear"
     >
-      ¡Á
+      ï¿½ï¿½
     </span>
     <span :class="ns.e('arrow')" aria-hidden="true" />
   </div>

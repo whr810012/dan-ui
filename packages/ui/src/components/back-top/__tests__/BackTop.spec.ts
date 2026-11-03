@@ -45,4 +45,3 @@ describe('DanBackTop', () => {
     wrapper.unmount()
   })
 })
-

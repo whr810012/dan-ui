@@ -90,10 +90,7 @@ function resolveOpenIndex() {
   const list = previewList.value
   if (!list.length) return 0
   if (props.previewSrcList.length) {
-    const clamped = Math.min(
-      Math.max(0, props.initialIndex),
-      list.length - 1,
-    )
+    const clamped = Math.min(Math.max(0, props.initialIndex), list.length - 1)
     const current = props.previewSrc || props.src
     if (current) {
       const hit = list.indexOf(current)
@@ -159,7 +156,11 @@ onBeforeUnmount(() => {
 
 <template>
   <div
-    :class="[ns.b(), ns.is('error', hasError), ns.is('loading', showPlaceholder)]"
+    :class="[
+      ns.b(),
+      ns.is('error', hasError),
+      ns.is('loading', showPlaceholder),
+    ]"
     @click="openPreview"
   >
     <div v-if="showPlaceholder" :class="ns.e('placeholder')">

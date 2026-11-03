@@ -506,9 +506,7 @@ function cellText(row: TableRow, prop: string) {
 }
 
 function isEditing(rowKey: string | number, prop: string) {
-  return (
-    editingCell.value?.key === rowKey && editingCell.value.prop === prop
-  )
+  return editingCell.value?.key === rowKey && editingCell.value.prop === prop
 }
 
 function startEdit(row: TableRow, prop: string, index: number) {
@@ -551,7 +549,9 @@ function onColumnDrop(targetProp: string | undefined, event: DragEvent) {
   if (!from || !targetProp || from === targetProp || !canReorderColumns.value) {
     return
   }
-  const targetCol = displayColumns.value.find((item) => item.prop === targetProp)
+  const targetCol = displayColumns.value.find(
+    (item) => item.prop === targetProp,
+  )
   if (targetCol?.fixed) return
   const next = [...columnOrder.value]
   const fromIndex = next.indexOf(from)
@@ -798,7 +798,9 @@ function sortPriority(prop?: string) {
 function sortOrderOf(prop?: string): TableSortOrder {
   if (!prop) return null
   if (props.multiSort) {
-    return multiSortState.value.find((item) => item.prop === prop)?.order ?? null
+    return (
+      multiSortState.value.find((item) => item.prop === prop)?.order ?? null
+    )
   }
   return sortState.value.prop === prop ? sortState.value.order : null
 }
@@ -1234,8 +1236,7 @@ function colMinWidth(col: TableColumn) {
                   :width="220"
                   :visible="openFilterProp === cell.column.prop"
                   @update:visible="
-                    (v) =>
-                      onFilterVisibleChange(cell.column.prop as string, v)
+                    (v) => onFilterVisibleChange(cell.column.prop as string, v)
                   "
                 >
                   <button
@@ -1281,9 +1282,7 @@ function colMinWidth(col: TableColumn) {
                           :model-value="
                             filterDrafts[cell.column.prop as string] == null
                               ? ''
-                              : String(
-                                  filterDrafts[cell.column.prop as string],
-                                )
+                              : String(filterDrafts[cell.column.prop as string])
                           "
                           clearable
                           :placeholder="t('table.filterPlaceholder')"
@@ -1448,8 +1447,7 @@ function colMinWidth(col: TableColumn) {
                   >
                     <input
                       v-if="
-                        col.editable &&
-                        isEditing(item.key, col.prop as string)
+                        col.editable && isEditing(item.key, col.prop as string)
                       "
                       v-model="editingValue"
                       :class="ns.e('edit-input')"
@@ -1508,11 +1506,7 @@ function colMinWidth(col: TableColumn) {
               :class="ns.e('expanded-row')"
             >
               <td :colspan="tableColSpan" :class="ns.e('expanded-cell')">
-                <slot
-                  name="expand"
-                  :row="item.row"
-                  :index="item.index"
-                />
+                <slot name="expand" :row="item.row" :index="item.index" />
               </td>
             </tr>
           </template>
@@ -1578,7 +1572,9 @@ function colMinWidth(col: TableColumn) {
               ]"
               :style="leafFixedStyle(col.prop)"
             >
-              <template v-if="colIndex === 0 && summaryCells[col.prop!] == null">
+              <template
+                v-if="colIndex === 0 && summaryCells[col.prop!] == null"
+              >
                 {{ t('table.summary') }}
               </template>
               <template v-else>

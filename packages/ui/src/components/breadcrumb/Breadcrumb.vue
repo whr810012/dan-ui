@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, toRef, useSlots } from 'vue'
+import { computed, ref, toRef, useSlots, type Slot } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
 import { provideBreadcrumb } from './breadcrumbContext'
 import './style.css'
@@ -77,7 +77,7 @@ function isLastVisible(uid: number) {
 
 provideBreadcrumb({
   separator: toRef(props, 'separator'),
-  separatorSlot: computed(() => slots.separator),
+  separatorSlot: computed(() => slots.separator as Slot | undefined),
   register,
   unregister,
   isVisible,

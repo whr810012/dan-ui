@@ -101,7 +101,9 @@ describe('DanTree', () => {
   })
 
   it('emits node-drag-end with reordered data', async () => {
-    const data = ref<Array<{ id: number; label: string; children?: unknown[] }>>([
+    const data = ref<
+      Array<{ id: number; label: string; children?: unknown[] }>
+    >([
       { id: 1, label: 'A', children: [{ id: 11, label: 'A1' }] },
       { id: 2, label: 'B' },
     ])
@@ -131,7 +133,17 @@ describe('DanTree', () => {
       dataTransfer: { setData: () => undefined, effectAllowed: 'move' },
     })
     Object.defineProperty(drop.element, 'getBoundingClientRect', {
-      value: () => ({ top: 0, height: 40, bottom: 40, left: 0, right: 100, width: 100, x: 0, y: 0, toJSON: () => ({}) }),
+      value: () => ({
+        top: 0,
+        height: 40,
+        bottom: 40,
+        left: 0,
+        right: 100,
+        width: 100,
+        x: 0,
+        y: 0,
+        toJSON: () => ({}),
+      }),
     })
     await drop.trigger('dragover', { clientY: 20, currentTarget: drop.element })
     await drop.trigger('drop', {
@@ -141,8 +153,8 @@ describe('DanTree', () => {
     })
     await nextTick()
     expect(data.value.map((n) => n.id)).toEqual([1])
-    expect(data.value[0]?.children?.map((n) => (n as { id: number }).id)).toEqual([
-      11, 2,
-    ])
+    expect(
+      data.value[0]?.children?.map((n) => (n as { id: number }).id),
+    ).toEqual([11, 2])
   })
 })

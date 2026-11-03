@@ -75,9 +75,7 @@ function forwardDrop(node: TreeNode, event: DragEvent) {
   <div
     class="dan-tree-node"
     role="treeitem"
-    :aria-expanded="
-      node.children?.length ? expanded.has(node.id) : undefined
-    "
+    :aria-expanded="node.children?.length ? expanded.has(node.id) : undefined"
     :aria-selected="focusedId === node.id"
     :aria-disabled="node.disabled || undefined"
   >

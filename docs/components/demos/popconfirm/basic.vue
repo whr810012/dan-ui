@@ -7,7 +7,11 @@ function onConfirm() {
 </script>
 
 <template>
-  <DanPopconfirm title="确定删除这条记录？" confirm-type="danger" @confirm="onConfirm">
+  <DanPopconfirm
+    title="确定删除这条记录？"
+    confirm-type="danger"
+    @confirm="onConfirm"
+  >
     <DanButton type="danger" plain>删除</DanButton>
   </DanPopconfirm>
 </template>

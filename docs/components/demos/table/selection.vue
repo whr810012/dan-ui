@@ -18,7 +18,9 @@ const selectedRowKeys = ref<(string | number)[]>([1])
 
 <template>
   <div>
-    <p style="margin-bottom: 8px">已选：{{ selectedRowKeys.join(', ') || '无' }}</p>
+    <p style="margin-bottom: 8px">
+      已选：{{ selectedRowKeys.join(', ') || '无' }}
+    </p>
     <DanTable
       v-model:selected-row-keys="selectedRowKeys"
       selection

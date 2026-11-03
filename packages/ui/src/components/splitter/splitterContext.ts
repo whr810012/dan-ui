@@ -18,7 +18,9 @@ export function provideSplitter(value: SplitterContext) {
 export function injectSplitter() {
   const ctx = inject(splitterContextKey)
   if (!ctx) {
-    throw new Error('[dan-ui] <DanSplitterPanel> must be used inside <DanSplitter>.')
+    throw new Error(
+      '[dan-ui] <DanSplitterPanel> must be used inside <DanSplitter>.',
+    )
   }
   return ctx
 }

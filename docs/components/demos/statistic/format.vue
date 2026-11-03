@@ -13,10 +13,6 @@ import { DanSpace, DanStatistic } from '@dandan-ui/ui'
       decimal-separator=","
       suffix="€"
     />
-    <DanStatistic
-      title="自定义"
-      :value="42"
-      :formatter="(v) => `No.${v}`"
-    />
+    <DanStatistic title="自定义" :value="42" :formatter="(v) => `No.${v}`" />
   </DanSpace>
 </template>

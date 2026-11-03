@@ -318,9 +318,7 @@ async function upload(file: UploadFile) {
     if (chunkSize > 0 && file.raw.size > chunkSize) {
       const chunks = buildChunks(file.raw, chunkSize)
       const uploaded = new Set(
-        props.getUploadedChunks
-          ? await props.getUploadedChunks(file)
-          : [],
+        props.getUploadedChunks ? await props.getUploadedChunks(file) : [],
       )
       const responses: unknown[] = []
       for (const chunk of chunks) {
@@ -341,8 +339,7 @@ async function upload(file: UploadFile) {
           file: file.raw,
           chunk,
           onProgress: (percent) => {
-            const overall =
-              ((chunk.index + percent / 100) / chunk.total) * 100
+            const overall = ((chunk.index + percent / 100) / chunk.total) * 100
             file.percentage = Math.min(100, Math.round(overall))
             file.status = 'uploading'
             syncList([...files.value])
@@ -548,7 +545,9 @@ defineExpose({
         >
           <slot>
             <span :class="ns.e('card-add-icon')">+</span>
-            <span :class="ns.e('card-add-text')">{{ t('upload.cardAdd') }}</span>
+            <span :class="ns.e('card-add-text')">{{
+              t('upload.cardAdd')
+            }}</span>
           </slot>
         </li>
       </ul>

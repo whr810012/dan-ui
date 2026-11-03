@@ -46,9 +46,7 @@ const isLast = computed(
   () => index.value >= 0 && index.value === steps.uids.value.length - 1,
 )
 
-const isClickable = computed(
-  () => steps.clickable.value && index.value >= 0,
-)
+const isClickable = computed(() => steps.clickable.value && index.value >= 0)
 
 function onSelect() {
   if (!isClickable.value) return

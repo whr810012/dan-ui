@@ -12,10 +12,20 @@ import { DanButton, DanPopover, DanSpace } from '@dandan-ui/ui'
     >
       <DanButton>click</DanButton>
     </DanPopover>
-    <DanPopover title="悬停" content="hover 延迟显示" trigger="hover" :show-after="200">
+    <DanPopover
+      title="悬停"
+      content="hover 延迟显示"
+      trigger="hover"
+      :show-after="200"
+    >
       <DanButton>hover</DanButton>
     </DanPopover>
-    <DanPopover title="聚焦" content="focus 触发" trigger="focus" :show-after="0">
+    <DanPopover
+      title="聚焦"
+      content="focus 触发"
+      trigger="focus"
+      :show-after="0"
+    >
       <DanButton>focus</DanButton>
     </DanPopover>
     <DanPopover

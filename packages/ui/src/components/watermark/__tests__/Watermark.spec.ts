@@ -17,4 +17,3 @@ describe('DanWatermark', () => {
     expect(wrapper.find('.dan-watermark__layer').exists()).toBe(true)
   })
 })
-

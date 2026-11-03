@@ -1,10 +1,7 @@
 export type NotificationType = 'success' | 'warning' | 'info' | 'error'
 
 export type NotificationPosition =
-  | 'top-right'
-  | 'top-left'
-  | 'bottom-right'
-  | 'bottom-left'
+  'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
 
 export interface NotificationOptions {
   id?: string

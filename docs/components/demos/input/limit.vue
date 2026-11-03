@@ -20,7 +20,12 @@ const phone = ref('13800138000')
       maxlength="11"
       show-word-limit
       placeholder="手机号"
-      :formatter="(v) => String(v).replace(/(\d{3})(\d{0,4})(\d{0,4})/, (_, a, b, c) => [a, b, c].filter(Boolean).join(' '))"
+      :formatter="
+        (v) =>
+          String(v).replace(/(\d{3})(\d{0,4})(\d{0,4})/, (_, a, b, c) =>
+            [a, b, c].filter(Boolean).join(' '),
+          )
+      "
       :parser="(v) => v.replace(/\s/g, '')"
     />
   </DanSpace>

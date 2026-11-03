@@ -43,7 +43,9 @@ describe('DanBreadcrumb', () => {
     expect(wrapper.text()).toContain('…')
     expect(wrapper.text()).toContain('A')
     expect(wrapper.text()).toContain('E')
-    const items = wrapper.findAll('.dan-breadcrumb-item:not(.dan-breadcrumb-item--ellipsis)')
+    const items = wrapper.findAll(
+      '.dan-breadcrumb-item:not(.dan-breadcrumb-item--ellipsis)',
+    )
     const visibleTexts = items
       .filter((item) => (item.element as HTMLElement).style.display !== 'none')
       .map((item) => item.find('.dan-breadcrumb-item__inner').text())

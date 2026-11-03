@@ -20,7 +20,9 @@ describe('DanAgentSteps', () => {
     expect(wrapper.text()).toContain('检索')
     expect(wrapper.text()).toContain('进行中')
     await wrapper.findAll('.dan-agent-steps__button')[1]!.trigger('click')
-    expect(wrapper.findComponent(DanAgentSteps).emitted('select')?.[0]?.[0]).toMatchObject({
+    expect(
+      wrapper.findComponent(DanAgentSteps).emitted('select')?.[0]?.[0],
+    ).toMatchObject({
       id: '2',
     })
   })

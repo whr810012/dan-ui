@@ -330,10 +330,7 @@ export type {
 } from './float-button'
 
 export { DanSplitter, DanSplitterPanel } from './splitter'
-export type {
-  DanSplitterInstance,
-  DanSplitterPanelInstance,
-} from './splitter'
+export type { DanSplitterInstance, DanSplitterPanelInstance } from './splitter'
 
 export { DanTour } from './tour'
 export type { DanTourInstance, TourStep } from './tour'
@@ -364,10 +361,7 @@ export { DanArtifactPanel } from './artifact-panel'
 export type { DanArtifactPanelInstance } from './artifact-panel'
 
 export { DanPromptLibrary } from './prompt-library'
-export type {
-  DanPromptLibraryInstance,
-  PromptTemplate,
-} from './prompt-library'
+export type { DanPromptLibraryInstance, PromptTemplate } from './prompt-library'
 
 export { DanConversationList } from './conversation-list'
 export type { DanConversationListInstance } from './conversation-list'

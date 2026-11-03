@@ -139,15 +139,24 @@ function logout() {
             演示登录与权限菜单（不请求后端）。用户名含 edit / view 切换角色。
           </div>
         </div>
-        <DanInput v-model="username" placeholder="用户名，如 admin / editor / viewer" />
+        <DanInput
+          v-model="username"
+          placeholder="用户名，如 admin / editor / viewer"
+        />
         <DanInput v-model="password" type="password" placeholder="任意密码" />
         <DanButton type="primary" style="width: 100%" @click="onLogin">
           登录
         </DanButton>
         <div style="display: flex; flex-wrap: wrap; gap: 8px">
-          <DanButton size="small" @click="loginAs('admin')">一键管理员</DanButton>
-          <DanButton size="small" @click="loginAs('editor')">一键编辑</DanButton>
-          <DanButton size="small" @click="loginAs('viewer')">一键访客</DanButton>
+          <DanButton size="small" @click="loginAs('admin')"
+            >一键管理员</DanButton
+          >
+          <DanButton size="small" @click="loginAs('editor')"
+            >一键编辑</DanButton
+          >
+          <DanButton size="small" @click="loginAs('viewer')"
+            >一键访客</DanButton
+          >
         </div>
       </div>
     </div>
@@ -171,7 +180,9 @@ function logout() {
           <template v-for="item in menus" :key="item.index">
             <DanSubMenu v-if="item.children?.length" :index="item.index">
               <template #title>
-                <span style="display: inline-flex; gap: 8px; align-items: center">
+                <span
+                  style="display: inline-flex; gap: 8px; align-items: center"
+                >
                   <DanIcon :name="item.icon" />
                   {{ item.label }}
                 </span>
@@ -217,7 +228,9 @@ function logout() {
                   cursor: pointer;
                 "
               >
-                <DanAvatar size="small">{{ session.name.slice(0, 1) }}</DanAvatar>
+                <DanAvatar size="small">{{
+                  session.name.slice(0, 1)
+                }}</DanAvatar>
                 {{ session.name }}
               </span>
               <template #dropdown>
@@ -236,7 +249,13 @@ function logout() {
             菜单由 <code>permission</code> 过滤。业务侧把 permissions
             换成接口返回即可，dan-ui 只提供 Layout / Menu / 表单表格等壳。
           </p>
-          <ul style="margin: 12px 0 0; padding-left: 18px; color: var(--dan-color-text-secondary)">
+          <ul
+            style="
+              margin: 12px 0 0;
+              padding-left: 18px;
+              color: var(--dan-color-text-secondary);
+            "
+          >
             <li v-for="p in session.permissions" :key="p">{{ p }}</li>
           </ul>
         </DanMain>

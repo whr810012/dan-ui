@@ -20,7 +20,13 @@ function onRemove(item) {
 </script>
 
 <template>
-  <div style="height: 220px; width: 240px; border: 1px solid var(--dan-color-border)">
+  <div
+    style="
+      height: 220px;
+      width: 240px;
+      border: 1px solid var(--dan-color-border);
+    "
+  >
     <DanConversationList
       v-model="active"
       :items="items"

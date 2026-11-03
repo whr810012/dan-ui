@@ -69,7 +69,9 @@ describe('DanTabs', () => {
 
     const wrapper = mount(Comp)
     await nextTick()
-    await wrapper.find('.dan-tabs__nav').trigger('keydown', { key: 'ArrowRight' })
+    await wrapper
+      .find('.dan-tabs__nav')
+      .trigger('keydown', { key: 'ArrowRight' })
     await nextTick()
     expect(active.value).toBe('c')
     await wrapper.find('.dan-tabs__nav').trigger('keydown', { key: 'Home' })

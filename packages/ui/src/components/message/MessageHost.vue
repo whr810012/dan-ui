@@ -22,11 +22,7 @@ const ns = useNamespace('message')
 </script>
 
 <template>
-  <div
-    :class="ns.b()"
-    aria-live="polite"
-    :style="{ top: `${offset ?? 20}px` }"
-  >
+  <div :class="ns.b()" aria-live="polite" :style="{ top: `${offset ?? 20}px` }">
     <MessageItem
       v-for="item in items"
       :id="item.id"

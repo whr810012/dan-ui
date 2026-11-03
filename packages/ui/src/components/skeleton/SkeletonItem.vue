@@ -21,9 +21,7 @@ const props = withDefaults(
 const ns = useNamespace('skeleton-item')
 const ctx = inject(skeletonContextKey, undefined)
 
-const isAnimated = computed(
-  () => props.animated ?? ctx?.animated.value ?? true,
-)
+const isAnimated = computed(() => props.animated ?? ctx?.animated.value ?? true)
 
 const style = computed(() => {
   const result: Record<string, string> = {}

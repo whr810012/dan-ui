@@ -65,8 +65,9 @@ export function formatDateTime(date: Date): string {
 
 export function parseDateTime(value?: string | null): Date | null {
   if (!value) return null
-  const matched =
-    /^(\d{4})-(\d{2})-(\d{2})(?:\s+(\d{1,2}):(\d{2}))?$/.exec(value.trim())
+  const matched = /^(\d{4})-(\d{2})-(\d{2})(?:\s+(\d{1,2}):(\d{2}))?$/.exec(
+    value.trim(),
+  )
   if (!matched) return null
   const year = Number(matched[1])
   const month = Number(matched[2])

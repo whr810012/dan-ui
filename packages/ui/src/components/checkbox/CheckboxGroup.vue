@@ -50,11 +50,7 @@ provideCheckboxGroup({
 
 <template>
   <div
-    :class="[
-      ns.b(),
-      ns.is('disabled', groupDisabled),
-      ns.is('button', button),
-    ]"
+    :class="[ns.b(), ns.is('disabled', groupDisabled), ns.is('button', button)]"
     role="group"
   >
     <slot />

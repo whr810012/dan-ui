@@ -17,9 +17,9 @@ const props = withDefaults(
     placeholder?: string
     clearable?: boolean
     triggerOnFocus?: boolean
-    /** ÇëÇó·À¶¶ºÁÃë */
+    /** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
     debounce?: number
-    /** ÓÉÒµÎñ¿ØÖÆµÄ¼ÓÔØÌ¬ */
+    /** ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½ÆµÄ¼ï¿½ï¿½ï¿½Ì¬ */
     loading?: boolean
     fetchSuggestions?: (
       query: string,
@@ -163,8 +163,7 @@ function onKeydown(event: KeyboardEvent) {
   if (event.key === 'ArrowDown') {
     event.preventDefault()
     if (!suggestions.value.length) return
-    highlightIndex.value =
-      (highlightIndex.value + 1) % suggestions.value.length
+    highlightIndex.value = (highlightIndex.value + 1) % suggestions.value.length
   } else if (event.key === 'ArrowUp') {
     event.preventDefault()
     if (!suggestions.value.length) return
@@ -221,10 +220,10 @@ onBeforeUnmount(() => {
       v-if="clearable && modelValue && !isDisabled"
       type="button"
       :class="ns.e('clear')"
-      aria-label="Çå³ý"
+      aria-label="ï¿½ï¿½ï¿½"
       @click="clear"
     >
-      ¡Á
+      ï¿½ï¿½
     </button>
     <Teleport to="body">
       <ul

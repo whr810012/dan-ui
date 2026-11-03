@@ -27,7 +27,10 @@ async function onLoad() {
     <div
       v-for="item in items"
       :key="item"
-      style="padding: 10px 14px; border-bottom: 1px solid var(--dan-color-border-light)"
+      style="
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--dan-color-border-light);
+      "
     >
       行 {{ item }}
     </div>

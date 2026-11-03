@@ -1,5 +1,10 @@
 <script setup>
-import { DanButton, DanConfigProvider, DanMessage, DanSpace } from '@dandan-ui/ui'
+import {
+  DanButton,
+  DanConfigProvider,
+  DanMessage,
+  DanSpace,
+} from '@dandan-ui/ui'
 
 function notify() {
   DanMessage.success('配置了 duration / max 的全局 Message')

@@ -72,7 +72,8 @@ const markList = computed(() => {
     .filter((value) => value >= props.min && value <= props.max)
     .map((value) => {
       const mark = props.marks![value]!
-      const label = typeof mark === 'string' ? mark : (mark.label ?? String(value))
+      const label =
+        typeof mark === 'string' ? mark : (mark.label ?? String(value))
       const style = typeof mark === 'string' ? undefined : mark.style
       return {
         value,

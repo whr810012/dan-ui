@@ -33,7 +33,9 @@ const props = withDefaults(
 
 const ns = useNamespace('avatar-group')
 const avatarNs = useNamespace('avatar')
-const slots = useSlots()
+const slots = useSlots() as {
+  default?: () => VNode[]
+}
 
 provide(avatarGroupContextKey, {
   size: toRef(props, 'size'),
@@ -54,9 +56,7 @@ function flatten(nodes: VNode[]): VNode[] {
   return result
 }
 
-const allAvatars = computed(() =>
-  flatten((slots.default?.() as VNode[] | undefined) ?? []),
-)
+const allAvatars = computed(() => flatten(slots.default?.() ?? []))
 
 const visibleAvatars = computed(() => {
   if (props.max == null || props.max <= 0) return allAvatars.value

@@ -35,10 +35,7 @@ const ns = useNamespace('card')
       ns.is('bordered', bordered),
     ]"
   >
-    <div
-      v-if="header || $slots.header || $slots.extra"
-      :class="ns.e('header')"
-    >
+    <div v-if="header || $slots.header || $slots.extra" :class="ns.e('header')">
       <div :class="ns.e('header-main')">
         <slot name="header">{{ header }}</slot>
       </div>

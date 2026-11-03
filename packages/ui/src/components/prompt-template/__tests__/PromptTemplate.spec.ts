@@ -13,9 +13,9 @@ describe('prompt template utils', () => {
       'name',
       'topic',
     ])
-    expect(
-      renderPromptTemplate('你好 {{name}}', { name: 'Ada' }),
-    ).toBe('你好 Ada')
+    expect(renderPromptTemplate('你好 {{name}}', { name: 'Ada' })).toBe(
+      '你好 Ada',
+    )
   })
 })
 

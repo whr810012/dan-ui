@@ -57,7 +57,7 @@ const classes = computed(() => [
   ns.is('circle', props.circle),
   ns.is('text', props.text),
   ns.is('link', props.link),
-  ns.is('disabled', isDisabled),
+  ns.is('disabled', isDisabled.value),
   ns.is('loading', props.loading),
 ])
 

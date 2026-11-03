@@ -21,10 +21,13 @@ export function renderPromptTemplate(
   options?: { keepMissing?: boolean },
 ): string {
   const keepMissing = options?.keepMissing ?? false
-  return template.replace(/\{\{\s*([a-zA-Z_][\w]*)\s*\}\}/g, (full, name: string) => {
-    if (Object.prototype.hasOwnProperty.call(values, name)) {
-      return values[name] ?? ''
-    }
-    return keepMissing ? full : ''
-  })
+  return template.replace(
+    /\{\{\s*([a-zA-Z_][\w]*)\s*\}\}/g,
+    (full, name: string) => {
+      if (Object.prototype.hasOwnProperty.call(values, name)) {
+        return values[name] ?? ''
+      }
+      return keepMissing ? full : ''
+    },
+  )
 }

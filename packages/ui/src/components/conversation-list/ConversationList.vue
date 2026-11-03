@@ -7,7 +7,7 @@ import './style.css'
 
 defineOptions({ name: 'DanConversationList' })
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     items?: ChatConversationItem[]
     modelValue?: string
@@ -60,7 +60,9 @@ function onSelect(item: ChatConversationItem) {
         @click="onSelect(item)"
       >
         <div :class="ns.e('title')">{{ item.title }}</div>
-        <div v-if="item.preview" :class="ns.e('preview')">{{ item.preview }}</div>
+        <div v-if="item.preview" :class="ns.e('preview')">
+          {{ item.preview }}
+        </div>
         <button
           type="button"
           :class="ns.e('remove')"

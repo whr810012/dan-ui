@@ -29,10 +29,7 @@ const style = computed(() => ({
 </script>
 
 <template>
-  <div
-    :class="[ns.b(), ns.m(shape), ns.is('open', open)]"
-    :style="style"
-  >
+  <div :class="[ns.b(), ns.m(shape), ns.is('open', open)]" :style="style">
     <div v-show="open" :class="ns.e('list')">
       <slot />
     </div>

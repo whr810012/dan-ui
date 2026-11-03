@@ -135,4 +135,3 @@ describe('DanDropdown', () => {
     wrapper.unmount()
   })
 })
-

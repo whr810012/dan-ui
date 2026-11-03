@@ -113,14 +113,12 @@ function onKeydown(event: KeyboardEvent) {
   if (event.key === 'ArrowDown') {
     event.preventDefault()
     if (!filtered.value.length) return
-    highlightIndex.value =
-      (highlightIndex.value + 1) % filtered.value.length
+    highlightIndex.value = (highlightIndex.value + 1) % filtered.value.length
   } else if (event.key === 'ArrowUp') {
     event.preventDefault()
     if (!filtered.value.length) return
     highlightIndex.value =
-      (highlightIndex.value - 1 + filtered.value.length) %
-      filtered.value.length
+      (highlightIndex.value - 1 + filtered.value.length) % filtered.value.length
   } else if (event.key === 'Enter') {
     const option = filtered.value[highlightIndex.value]
     if (option) {

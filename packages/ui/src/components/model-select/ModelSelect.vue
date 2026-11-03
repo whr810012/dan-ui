@@ -27,7 +27,8 @@ const emit = defineEmits<{
 const ns = useNamespace('model-select')
 
 function unwrap(
-  value: string | number | boolean | null | Array<string | number | boolean | null>,
+  value:
+    string | number | boolean | null | Array<string | number | boolean | null>,
 ) {
   return Array.isArray(value) ? (value[0] ?? null) : value
 }

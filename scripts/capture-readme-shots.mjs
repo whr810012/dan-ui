@@ -13,7 +13,10 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const outDir = join(root, 'docs', 'public', 'readme')
 mkdirSync(outDir, { recursive: true })
 
-const base = (process.argv[2] || 'http://127.0.0.1:4173/dan-ui').replace(/\/$/, '')
+const base = (process.argv[2] || 'http://127.0.0.1:4173/dan-ui').replace(
+  /\/$/,
+  '',
+)
 const only = new Set(
   (process.argv[3] || '')
     .split(',')
@@ -90,12 +93,13 @@ const shots = [
   { name: 'conversation-list', path: '/ai/conversation-list' },
 ]
 
-const selected = only.size
-  ? shots.filter((shot) => only.has(shot.name))
-  : shots
+const selected = only.size ? shots.filter((shot) => only.has(shot.name)) : shots
 
 if (!selected.length) {
-  console.error('No matching shots. Known names:', shots.map((s) => s.name).join(','))
+  console.error(
+    'No matching shots. Known names:',
+    shots.map((s) => s.name).join(','),
+  )
   process.exit(1)
 }
 
@@ -109,9 +113,12 @@ const page = await context.newPage()
 for (const shot of selected) {
   const url = `${base}${shot.path === '/' ? '/' : shot.path}`
   console.log('capture', shot.name, url)
-  await page.addInitScript((appearance) => {
-    localStorage.setItem('vitepress-theme-appearance', appearance)
-  }, shot.dark ? 'dark' : 'light')
+  await page.addInitScript(
+    (appearance) => {
+      localStorage.setItem('vitepress-theme-appearance', appearance)
+    },
+    shot.dark ? 'dark' : 'light',
+  )
 
   await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 })
   await page.waitForTimeout(500)

@@ -42,7 +42,9 @@ function onExport(csv) {
       multi-sort
       @export-csv="onExport"
     />
-    <p style="margin: 0; color: var(--dan-color-text-secondary); font-size: 13px">
+    <p
+      style="margin: 0; color: var(--dan-color-text-secondary); font-size: 13px"
+    >
       开启 multi-sort 后，按住 Shift 点击表头可叠加多列排序。
     </p>
   </DanSpace>

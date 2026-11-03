@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import {
-  computed,
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  watch,
-} from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
 import './style.css'
 
@@ -75,16 +68,21 @@ const showBar = computed(() => props.always || hovering.value)
 function update() {
   const wrap = wrapRef.value
   if (!wrap) return
-  const { clientWidth, clientHeight, scrollWidth, scrollHeight, scrollLeft, scrollTop } =
-    wrap
+  const {
+    clientWidth,
+    clientHeight,
+    scrollWidth,
+    scrollHeight,
+    scrollLeft,
+    scrollTop,
+  } = wrap
 
   if (scrollHeight > clientHeight) {
     const ratio = (clientHeight / scrollHeight) * 100
     const thumb = Math.max(props.minSize, (clientHeight * ratio) / 100)
     sizeHeight.value = `${thumb}px`
     moveY.value =
-      scrollTop /
-      Math.max(1, scrollHeight - clientHeight) *
+      (scrollTop / Math.max(1, scrollHeight - clientHeight)) *
       Math.max(0, clientHeight - thumb)
   } else {
     sizeHeight.value = '0'
@@ -96,8 +94,7 @@ function update() {
     const thumb = Math.max(props.minSize, (clientWidth * ratio) / 100)
     sizeWidth.value = `${thumb}px`
     moveX.value =
-      scrollLeft /
-      Math.max(1, scrollWidth - clientWidth) *
+      (scrollLeft / Math.max(1, scrollWidth - clientWidth)) *
       Math.max(0, clientWidth - thumb)
   } else {
     sizeWidth.value = '0'
@@ -176,11 +173,7 @@ defineExpose({
       :style="wrapStyle"
       @scroll="onScroll"
     >
-      <component
-        :is="tag"
-        ref="viewRef"
-        :class="[ns.e('view'), viewClass]"
-      >
+      <component :is="tag" ref="viewRef" :class="[ns.e('view'), viewClass]">
         <slot />
       </component>
     </div>

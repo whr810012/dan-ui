@@ -86,7 +86,10 @@ const componentsSidebar = collapsible([
       { text: 'Alert（警告）', link: '/components/alert' },
       { text: 'Empty（空状态）', link: '/components/empty' },
       { text: 'Progress（进度条）', link: '/components/progress' },
-      { text: 'Skeleton / SkeletonItem（骨架屏）', link: '/components/skeleton' },
+      {
+        text: 'Skeleton / SkeletonItem（骨架屏）',
+        link: '/components/skeleton',
+      },
       { text: 'Statistic（统计数值）', link: '/components/statistic' },
       { text: 'Countdown（倒计时）', link: '/components/countdown' },
       { text: 'QRCode（二维码）', link: '/components/qrcode' },

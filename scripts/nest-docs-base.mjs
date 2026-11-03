@@ -58,4 +58,6 @@ if (existsSync(sitemapPath)) {
   console.log('Rewrote sitemap.xml locs to include /dan-ui/')
 }
 
-console.log(`Nested ${entries.length} entries into docs/.vitepress/dist/dan-ui/`)
+console.log(
+  `Nested ${entries.length} entries into docs/.vitepress/dist/dan-ui/`,
+)

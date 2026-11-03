@@ -17,7 +17,7 @@ const props = withDefaults(
     collapseTags?: boolean
     max?: number
     placeholder?: string
-    /** ¶îÍâ·Ö¸ô·û£¨Enter Ê¼ÖÕÌí¼Ó£©£»Ä¬ÈÏ `,` */
+    /** ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Enter Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½ `,` */
     delimiter?: string
   }>(),
   {
@@ -56,8 +56,7 @@ const atMax = computed(
   () => props.max != null && tags.value.length >= props.max,
 )
 const showClear = computed(
-  () =>
-    props.clearable && !isDisabled.value && tags.value.length > 0,
+  () => props.clearable && !isDisabled.value && tags.value.length > 0,
 )
 const visibleTags = computed(() => {
   if (!props.collapseTags || tags.value.length <= 1) return tags.value
@@ -115,11 +114,7 @@ function onKeydown(event: KeyboardEvent) {
     commit(draft.value)
     return
   }
-  if (
-    event.key === 'Backspace' &&
-    !draft.value &&
-    tags.value.length > 0
-  ) {
+  if (event.key === 'Backspace' && !draft.value && tags.value.length > 0) {
     event.preventDefault()
     removeAt(tags.value.length - 1)
   }
@@ -202,10 +197,10 @@ defineExpose({ focus: focusInput })
       v-if="showClear"
       type="button"
       :class="ns.e('clear')"
-      aria-label="Çå¿Õ"
+      aria-label="ï¿½ï¿½ï¿½"
       @click.stop="onClear"
     >
-      ¡Á
+      ï¿½ï¿½
     </button>
   </div>
 </template>

@@ -18,10 +18,7 @@ export function pageUrl(relativePath: string): string {
   return `${SITE_URL}/${path}`
 }
 
-export function pageTitle(
-  title: string | undefined,
-  isHome = false,
-): string {
+export function pageTitle(title: string | undefined, isHome = false): string {
   if (isHome) return `${SITE_NAME} · Vue 3 组件库`
   if (!title) return SITE_NAME
   if (title.includes(SITE_NAME)) return title
@@ -29,8 +26,7 @@ export function pageTitle(
 }
 
 export type HeadTuple =
-  | [string, Record<string, string>]
-  | [string, Record<string, string>, string]
+  [string, Record<string, string>] | [string, Record<string, string>, string]
 
 export function socialHead(options: {
   title: string
@@ -53,11 +49,7 @@ export function socialHead(options: {
 }
 
 export function jsonLdScript(data: Record<string, unknown>): HeadTuple {
-  return [
-    'script',
-    { type: 'application/ld+json' },
-    JSON.stringify(data),
-  ]
+  return ['script', { type: 'application/ld+json' }, JSON.stringify(data)]
 }
 
 export function homeJsonLd(): HeadTuple[] {

@@ -115,8 +115,7 @@ const displayLabel = computed(() => {
 })
 
 const showClear = computed(
-  () =>
-    props.clearable && selectedPaths.value.length > 0 && !isDisabled.value,
+  () => props.clearable && selectedPaths.value.length > 0 && !isDisabled.value,
 )
 
 function updatePanelPosition() {

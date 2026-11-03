@@ -49,7 +49,8 @@ async function render() {
       },
     })
   } catch (error) {
-    errorText.value = error instanceof Error ? error.message : 'QR render failed'
+    errorText.value =
+      error instanceof Error ? error.message : 'QR render failed'
   }
 }
 

@@ -6,7 +6,11 @@ import { DanAvatar, DanSpace } from '@dandan-ui/ui'
 <template>
   <DanSpace>
     <DanAvatar :src="withBase('/images/starburst.png')" alt="星空" />
-    <DanAvatar :src="withBase('/images/blackhole.png')" alt="黑洞" size="large" />
+    <DanAvatar
+      :src="withBase('/images/blackhole.png')"
+      alt="黑洞"
+      size="large"
+    />
     <DanAvatar
       :src="withBase('/images/wall-sunset.png')"
       alt="日落"

@@ -113,11 +113,10 @@ function onResizePointerDown(event: PointerEvent) {
     const delta = isVertical.value
       ? ev.clientY - startPos
       : ev.clientX - startPos
-    let next = startSize
-    if (props.direction === 'rtl') next = startSize - delta
-    else if (props.direction === 'ltr') next = startSize + delta
-    else if (props.direction === 'ttb') next = startSize + delta
-    else next = startSize - delta
+    const next =
+      props.direction === 'rtl' || props.direction === 'btt'
+        ? startSize - delta
+        : startSize + delta
     sizePx.value = clampSize(next)
   }
 

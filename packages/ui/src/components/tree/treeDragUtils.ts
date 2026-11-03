@@ -23,10 +23,7 @@ export function findNode(
   return null
 }
 
-export function isDescendant(
-  ancestor: TreeNode,
-  id: string | number,
-): boolean {
+export function isDescendant(ancestor: TreeNode, id: string | number): boolean {
   if (!ancestor.children?.length) return false
   for (const child of ancestor.children) {
     if (child.id === id || isDescendant(child, id)) return true
@@ -43,7 +40,10 @@ export function removeNode(
   let removed: TreeNode | null = null
   for (const node of nodes) {
     if (node.id === id) {
-      removed = { ...node, children: node.children ? [...node.children] : undefined }
+      removed = {
+        ...node,
+        children: node.children ? [...node.children] : undefined,
+      }
       continue
     }
     if (node.children?.length) {
@@ -108,10 +108,7 @@ export function reorderTree(
   return insertNode(next, dropId, removed, dropType)
 }
 
-export function resolveDropType(
-  clientY: number,
-  rect: DOMRect,
-): TreeDropType {
+export function resolveDropType(clientY: number, rect: DOMRect): TreeDropType {
   const ratio = (clientY - rect.top) / Math.max(rect.height, 1)
   if (ratio < 0.25) return 'before'
   if (ratio > 0.75) return 'after'

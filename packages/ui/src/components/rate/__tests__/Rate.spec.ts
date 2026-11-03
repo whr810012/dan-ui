@@ -83,4 +83,3 @@ describe('DanRate', () => {
     expect(value.value).toBe(2.5)
   })
 })
-

@@ -45,4 +45,3 @@ describe('DanSlider', () => {
     expect(value.value).toBe(50)
   })
 })
-

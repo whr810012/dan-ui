@@ -60,18 +60,8 @@ const outputText = computed(() =>
 </script>
 
 <template>
-  <div
-    :class="[
-      ns.b(),
-      ns.is(status, true),
-      ns.is('expanded', expanded),
-    ]"
-  >
-    <button
-      type="button"
-      :class="ns.e('header')"
-      @click="expanded = !expanded"
-    >
+  <div :class="[ns.b(), ns.is(status, true), ns.is('expanded', expanded)]">
+    <button type="button" :class="ns.e('header')" @click="expanded = !expanded">
       <span :class="ns.e('name')">{{ name }}</span>
       <span :class="[ns.e('badge'), ns.em('badge', status)]">
         {{ statusLabel }}

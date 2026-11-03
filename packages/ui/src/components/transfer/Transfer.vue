@@ -209,10 +209,7 @@ const leftButtonText = computed(() => props.buttonTexts[1] || '‹')
         :disabled="isDisabled"
       />
       <ul :class="ns.e('list')">
-        <li
-          v-if="!leftView.length"
-          :class="[ns.e('item'), ns.e('empty')]"
-        >
+        <li v-if="!leftView.length" :class="[ns.e('item'), ns.e('empty')]">
           暂无数据
         </li>
         <li v-for="item in leftView" :key="item.key" :class="ns.e('item')">
@@ -272,10 +269,7 @@ const leftButtonText = computed(() => props.buttonTexts[1] || '‹')
         :disabled="isDisabled"
       />
       <ul :class="ns.e('list')">
-        <li
-          v-if="!rightView.length"
-          :class="[ns.e('item'), ns.e('empty')]"
-        >
+        <li v-if="!rightView.length" :class="[ns.e('item'), ns.e('empty')]">
           暂无数据
         </li>
         <li v-for="item in rightView" :key="item.key" :class="ns.e('item')">

@@ -107,10 +107,7 @@ const showInsideText = computed(
     :aria-busy="indeterminate || undefined"
   >
     <div v-if="type === 'line'" :class="ns.e('bar-wrap')">
-      <div
-        :class="ns.e('bar-outer')"
-        :style="{ height: `${lineStroke}px` }"
-      >
+      <div :class="ns.e('bar-outer')" :style="{ height: `${lineStroke}px` }">
         <div
           :class="[
             ns.e('bar-inner'),

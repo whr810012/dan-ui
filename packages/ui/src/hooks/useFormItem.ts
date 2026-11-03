@@ -10,8 +10,7 @@ import {
 export function useFormItem() {
   const form = inject(formContextKey, undefined) as FormContext | undefined
   const formItem = inject(formItemContextKey, undefined) as
-    | FormItemContext
-    | undefined
+    FormItemContext | undefined
   const config = injectConfig()
 
   const emitChange = (trigger: 'change' | 'blur' = 'change') => {

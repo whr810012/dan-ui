@@ -55,7 +55,10 @@ const shouldHide = computed(
 )
 
 const layoutParts = computed(() =>
-  props.layout.split(',').map((item) => item.trim()).filter(Boolean),
+  props.layout
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean),
 )
 
 const sizeOptions = computed(() => {
@@ -125,9 +128,7 @@ function onJumperConfirm() {
     return
   }
   go(page)
-  jumperInput.value = String(
-    Math.min(Math.max(page, 1), pageCount.value),
-  )
+  jumperInput.value = String(Math.min(Math.max(page, 1), pageCount.value))
 }
 </script>
 
@@ -195,8 +196,12 @@ function onJumperConfirm() {
           :disabled="disabled"
           @change="onSizeChange"
         >
-          <option v-for="size in sizeOptions" :key="size" :value="size">
-            {{ t('pagination.pageSize', { size }) }}
+          <option
+            v-for="optionSize in sizeOptions"
+            :key="optionSize"
+            :value="optionSize"
+          >
+            {{ t('pagination.pageSize', { size: optionSize }) }}
           </option>
         </select>
       </label>

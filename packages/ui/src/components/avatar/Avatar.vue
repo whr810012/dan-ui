@@ -76,10 +76,7 @@ function onLoad(event: Event) {
 </script>
 
 <template>
-  <span
-    :class="[ns.b(), sizeClass, ns.m(resolvedShape)]"
-    :style="sizeStyle"
-  >
+  <span :class="[ns.b(), sizeClass, ns.m(resolvedShape)]" :style="sizeStyle">
     <img
       v-if="(src || srcset) && !hasError"
       :class="ns.e('image')"

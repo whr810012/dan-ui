@@ -41,7 +41,8 @@ const resolvedType = computed(() => {
 })
 
 const displayName = computed(
-  () => props.name || props.src?.split('/').pop() || t('mediaPreview.attachment'),
+  () =>
+    props.name || props.src?.split('/').pop() || t('mediaPreview.attachment'),
 )
 </script>
 

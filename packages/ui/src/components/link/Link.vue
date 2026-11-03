@@ -44,12 +44,7 @@ function onClick(event: MouseEvent) {
 
 <template>
   <a
-    :class="[
-      ns.b(),
-      ns.m(type),
-      underlineClass,
-      ns.is('disabled', disabled),
-    ]"
+    :class="[ns.b(), ns.m(type), underlineClass, ns.is('disabled', disabled)]"
     :href="disabled ? undefined : href"
     :target="target"
     :rel="target === '_blank' ? 'noopener noreferrer' : undefined"
