@@ -37,4 +37,7 @@ pnpm add @dandan-ui/ui @dandan-ui/theme
 
 ## 版本如何升级？
 
-查看 [更新日志](/guide/changelog)。次版本（如 1.3 → 1.4）通常兼容；破坏性变更会写在 changelog。
+查看 [更新日志](/guide/changelog) 与 [版本与迁移](/guide/versioning)。  
+次版本（如 `2.45` → `2.46`）通常兼容；破坏性变更会写在 changelog，并按 major 处理。
+
+当前文档站与 npm 包对齐 **2.x**（`@dandan-ui/ui` / `@dandan-ui/theme` 同号发布）。

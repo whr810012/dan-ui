@@ -29,7 +29,7 @@ import '@dandan-ui/theme'
 import '@dandan-ui/ui/style.css'
 ```
 
-一期推荐引入全量组件样式 `@dandan-ui/ui/style.css`；按组件拆分 CSS 可在后续版本再细化。
+推荐引入全量组件样式 `@dandan-ui/ui/style.css`；按组件拆分 CSS 可在后续版本再细化。
 
 ## unplugin-vue-components
 

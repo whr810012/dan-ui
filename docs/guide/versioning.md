@@ -5,7 +5,8 @@ description: dan-ui 语义化版本约定、弃用策略与跨 major 迁移要�
 
 # 版本与迁移
 
-从 **2.0** 起，公开 API 的兼容承诺按下列约定执行（npm：`@dandan-ui/ui` / `@dandan-ui/theme` 同步升版本）。
+从 **2.0** 起，公开 API 的兼容承诺按下列约定执行（npm：`@dandan-ui/ui` / `@dandan-ui/theme` 同步升版本）。  
+当前发布主线为 **2.x**（功能次版本持续增加可选 Props / 组件；详见 [更新日志](/guide/changelog)）。
 
 ## 语义化版本
 

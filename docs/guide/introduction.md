@@ -17,12 +17,14 @@ description: dan-ui 是面向中后台与 AI 界面的 Vue 3 组件库，提供�
 | 是什么 | Layout / Form / Table / 浮层 / Chat 壳 / TipTap RichText 等界面组件 |
 | 不是什么 | 大模型 SDK、图表库、云厂商上传 SDK、移动端专用包 |
 | 适用 | Vue 3 中后台、运营系统、需要对话 UI 但不想自研基础控件的项目 |
+| 当前主线 | **2.x**（组件面已齐，次版本持续打磨 API 与体验；见 [更新日志](/guide/changelog)） |
 
 ## 能做什么
 
 - 搭建中后台常用界面：表单、展示、反馈浮层、表格增强（筛选、固定列、多选、虚拟滚动等）
 - 组合 AI 对话与富文本能力（均作为组件提供）
 - 通过 CSS 变量快速调整主题与暗色
+- 覆盖展示增强能力（AvatarGroup、Skeleton 模板、Timeline 排布、Statistic 格式化等）
 
 ## 设计原则
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.46.1
+
+- 文档：指南 / FAQ / checklist / roadmap 对齐 2.x；侧栏标明 AvatarGroup / SkeletonItem；Message 补充 `max` 与 ConfigProvider 说明
+
 ## 2.46.0
 
 - Statistic：`groupSeparator` / `decimalSeparator` / `formatter`

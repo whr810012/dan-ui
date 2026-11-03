@@ -40,3 +40,5 @@ DanMessage.closeAll()
 | showClose | 显示关闭按钮 | `boolean` | `false` |
 | offset | 距顶部偏移（px） | `number` | `20` |
 | grouping | 相同消息合并计数 | `boolean` | `true` |
+
+全局默认的 `duration` / `max`（同时存在上限）/ `offset` 可通过 [ConfigProvider](/components/config-provider) 的 `message` 配置。

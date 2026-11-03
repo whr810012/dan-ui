@@ -1,7 +1,7 @@
 # 发布与视觉清单
 
 面向次版本发布前的人工抽检，不替代单测与 `pnpm` 门禁。  
-**1.9「可上生产」目标：** 下列工程门禁 + 暗色 / 键盘 / SSR 注意点全部勾过再发 npm。
+**2.x 发版目标：** 下列工程门禁 + 暗色 / 键盘 / SSR 注意点全部勾过再发 npm。
 
 ## 工程门禁
 
@@ -14,9 +14,9 @@ pnpm bundle:report   # 对比 index.js / style.css 体积是否异常膨胀
 
 1. 文档站切换暗色，扫一遍侧栏各组件 Demo。
 2. 重点看浮层（Dialog / Drawer / Dropdown / Select / DatePicker）背景是否用 elevated Token。
-3. 检查 Loading 遮罩、代码块、Empty / Skeleton 在暗色下是否发灰发糊。
+3. 检查 Loading 遮罩、代码块、Empty / Skeleton / Image 占位在暗色下是否发灰发糊。
 4. 主色按钮、危险色 Tag / Alert 对比度是否足够。
-5. Table 固定列阴影、Carousel 指示器是否随暗色 Token 变化（避免死写 `rgba(0,0,0,…)` / 纯白）。
+5. Table 固定列阴影、Carousel 指示器、AvatarGroup 描边是否随暗色 Token 变化。
 
 ## 键盘与朗读抽检
 
@@ -44,16 +44,17 @@ pnpm bundle:report   # 对比 index.js / style.css 体积是否异常膨胀
 
 ## 文档
 
-1. 新组件必须有 Demo + API 表 + 侧栏入口。
+1. 新组件 / 新 Props 必须有 Demo（或变体段）+ API 表 + 侧栏入口（若新页）。
 2. 中后台组合页参考 [最佳实践](/guide/best-practices)。
 3. 无障碍约定见 [无障碍与键盘](/guide/accessibility)。
 4. 发版后确认 `/dan-ui/sitemap.xml`、`/dan-ui/robots.txt`、抽样页含 canonical / og meta。
+5. 指南总览（介绍 / FAQ / roadmap）勿长期停留在过期版号表述。
 
 ## 可上生产勾选（摘要）
 
 - [ ] `pnpm build && pnpm test && pnpm docs:build`
 - [ ] `pnpm bundle:report` 无异常膨胀
-- [ ] 暗色扫尾（浮层 / Table / Loading）
+- [ ] 暗色扫尾（浮层 / Table / Loading / Skeleton）
 - [ ] 键盘抽检（Dialog / Select / Tabs）
 - [ ] Locale zh / en 抽样
 - [ ] SSR 注意点已告知接入方或已写进业务脚手架
