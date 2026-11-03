@@ -4,6 +4,16 @@
   list-style: none;
 }
 
+.dan-timeline--right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.dan-timeline--alternate {
+  --dan-timeline-center: 50%;
+}
+
 .dan-timeline-item {
   position: relative;
   padding-bottom: var(--dan-spacing-lg);
@@ -77,4 +87,71 @@
   margin-top: 4px;
   color: var(--dan-color-text-secondary);
   font-size: var(--dan-font-size-sm);
+}
+
+.dan-timeline-item--placement-top .dan-timeline-item__timestamp {
+  margin-top: 0;
+  margin-bottom: 4px;
+}
+
+/* right mode：内容在轴线左侧 */
+.dan-timeline--right .dan-timeline-item,
+.dan-timeline-item--right {
+  padding-left: 0;
+  padding-right: 28px;
+  text-align: right;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dan-timeline--right .dan-timeline-item__tail,
+.dan-timeline-item--right .dan-timeline-item__tail {
+  left: auto;
+  right: 5px;
+}
+
+.dan-timeline--right .dan-timeline-item__node,
+.dan-timeline-item--right .dan-timeline-item__node {
+  left: auto;
+  right: 0;
+}
+
+/* alternate：中轴线，奇右偶左 */
+.dan-timeline--alternate .dan-timeline-item {
+  width: 50%;
+  box-sizing: border-box;
+}
+
+.dan-timeline--alternate .dan-timeline-item:nth-child(odd) {
+  margin-left: 50%;
+  padding-left: 28px;
+  padding-right: 0;
+  text-align: left;
+}
+
+.dan-timeline--alternate .dan-timeline-item:nth-child(even) {
+  margin-left: 0;
+  padding-left: 0;
+  padding-right: 28px;
+  text-align: right;
+}
+
+.dan-timeline--alternate .dan-timeline-item:nth-child(odd) .dan-timeline-item__tail {
+  left: 5px;
+  right: auto;
+}
+
+.dan-timeline--alternate .dan-timeline-item:nth-child(even) .dan-timeline-item__tail {
+  left: auto;
+  right: 5px;
+}
+
+.dan-timeline--alternate .dan-timeline-item:nth-child(odd) .dan-timeline-item__node {
+  left: 0;
+  right: auto;
+}
+
+.dan-timeline--alternate .dan-timeline-item:nth-child(even) .dan-timeline-item__node {
+  left: auto;
+  right: 0;
 }

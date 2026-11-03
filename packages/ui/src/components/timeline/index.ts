@@ -16,3 +16,4 @@ export const DanTimeline = withInstall(
 export default DanTimeline
 export type DanTimelineInstance = InstanceType<typeof Timeline>
 export type DanTimelineItemInstance = InstanceType<typeof TimelineItem>
+export type { TimelineMode } from './context'

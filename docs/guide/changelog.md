@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.45.0
+
+- Timeline：`mode`（`left` / `right` / `alternate`）；TimelineItem.`placement` 控制时间戳上下
+
 ## 2.44.0
 
 - Skeleton：`SkeletonItem`、`#template` / `count`；`throttle` 支持 `{ leading, trailing, initVal }`

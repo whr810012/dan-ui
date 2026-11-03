@@ -202,7 +202,11 @@ export type {
 } from './descriptions'
 
 export { DanTimeline, DanTimelineItem } from './timeline'
-export type { DanTimelineInstance, DanTimelineItemInstance } from './timeline'
+export type {
+  DanTimelineInstance,
+  DanTimelineItemInstance,
+  TimelineMode,
+} from './timeline'
 
 export { DanCollapse, DanCollapseItem } from './collapse'
 export type { DanCollapseInstance, DanCollapseItemInstance } from './collapse'
