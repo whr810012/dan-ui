@@ -26,6 +26,28 @@ description: dan-ui 是面向中后台与 AI 界面的 Vue 3 组件库，提供�
 - 通过 CSS 变量快速调整主题与暗色
 - 覆盖展示增强能力（AvatarGroup、Skeleton 模板、Timeline 排布、Statistic 格式化等）
 
+## 重点组件速览
+
+截图来自文档站 Demo；点标题进入完整文档。
+
+| [Cascader 级联](/components/cascader) | [Transfer 穿梭框](/components/transfer) |
+|:---:|:---:|
+| ![Cascader](/readme/cascader.png) | ![Transfer](/readme/transfer.png) |
+
+| [Descriptions 描述列表](/components/descriptions) | [Steps 步骤条](/components/steps) |
+|:---:|:---:|
+| ![Descriptions](/readme/descriptions.png) | ![Steps](/readme/steps.png) |
+
+| [Drawer 抽屉](/components/drawer) | [Tour 漫游引导](/components/tour) |
+|:---:|:---:|
+| ![Drawer](/readme/drawer.png) | ![Tour](/readme/tour.png) |
+
+| [Splitter 分割面板](/components/splitter) | [ToolCallCard 工具卡片](/ai/tool-call-card) |
+|:---:|:---:|
+| ![Splitter](/readme/splitter.png) | ![ToolCallCard](/readme/tool-call-card.png) |
+
+更多组件截图见仓库 [README 图集](https://github.com/whr810012/dan-ui#dan-ui)（含 Mentions、Carousel、Watermark、ConversationList 等）。
+
 ## 设计原则
 
 - 只做 Vue 3

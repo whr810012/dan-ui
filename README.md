@@ -51,6 +51,14 @@ dan-ui 面向 **中后台与 AI 应用界面**：表单 / 表格 / 浮层 / Chat
 |:---:|:---:|
 | ![Upload](./docs/public/readme/upload.png) | ![Button](./docs/public/readme/button.png) |
 
+| Cascader 级联 | Transfer 穿梭框 |
+|:---:|:---:|
+| ![Cascader](./docs/public/readme/cascader.png) | ![Transfer](./docs/public/readme/transfer.png) |
+
+| TreeSelect 树选择 | Mentions 提及 |
+|:---:|:---:|
+| ![TreeSelect](./docs/public/readme/tree-select.png) | ![Mentions](./docs/public/readme/mentions.png) |
+
 ---
 
 ## 数据展示：表格 · 树 · 图片
@@ -77,13 +85,47 @@ Table 支持筛选、列显隐、固定列、多选、虚拟滚动等；Tree / I
 |:---:|:---:|
 | ![Timeline](./docs/public/readme/timeline.png) | ![Statistic](./docs/public/readme/statistic.png) |
 
+| Descriptions | Carousel / Progress / Empty |
+|:---:|:---:|
+| ![Descriptions](./docs/public/readme/descriptions.png) | ![Carousel](./docs/public/readme/carousel.png) |
+
+| Progress | Empty / Badge |
+|:---:|:---:|
+| ![Progress](./docs/public/readme/progress.png) | ![Empty](./docs/public/readme/empty.png) |
+
+| Badge | Watermark / Segmented / Splitter |
+|:---:|:---:|
+| ![Badge](./docs/public/readme/badge.png) | ![Watermark](./docs/public/readme/watermark.png) |
+
+| Segmented | Splitter |
+|:---:|:---:|
+| ![Segmented](./docs/public/readme/segmented.png) | ![Splitter](./docs/public/readme/splitter.png) |
+
+---
+
+## 导航
+
+| Steps | Menu |
+|:---:|:---:|
+| ![Steps](./docs/public/readme/steps.png) | ![Menu](./docs/public/readme/menu.png) |
+
+| Tabs | Pagination |
+|:---:|:---:|
+| ![Tabs](./docs/public/readme/tabs.png) | ![Pagination](./docs/public/readme/pagination.png) |
+
 ---
 
 ## 反馈浮层
 
-Dialog / Message / Drawer 等与主题 Token 一致，文档内可直接点开 Demo。
+Dialog / Drawer / Tour / FloatButton 等与主题 Token 一致，文档内可直接点开 Demo。
 
-![Dialog 对话框](./docs/public/readme/dialog.png)
+| Dialog | Drawer |
+|:---:|:---:|
+| ![Dialog](./docs/public/readme/dialog.png) | ![Drawer](./docs/public/readme/drawer.png) |
+
+| Tour | FloatButton |
+|:---:|:---:|
+| ![Tour](./docs/public/readme/tour.png) | ![FloatButton](./docs/public/readme/float-button.png) |
 
 ---
 
@@ -91,9 +133,13 @@ Dialog / Message / Drawer 等与主题 Token 一致，文档内可直接点开 D
 
 只提供界面与事件：消息列表、流式文本、工具卡片等；模型请求由业务侧接入。
 
-| AI 概览 / 假流式 Demo | Chat 对话容器 |
+| AI 概览 / 假流式 Demo | Chat 工作台 |
 |:---:|:---:|
 | ![Chat overview](./docs/public/readme/chat.png) | ![Chat](./docs/public/readme/workspace.png) |
+
+| ToolCallCard | ConversationList |
+|:---:|:---:|
+| ![ToolCallCard](./docs/public/readme/tool-call-card.png) | ![ConversationList](./docs/public/readme/conversation-list.png) |
 
 ---
 

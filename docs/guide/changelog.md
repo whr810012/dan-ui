@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.46.3
+
+- 文档：补拍 Cascader / Transfer / Drawer / Tour / Splitter / ToolCallCard 等重点组件截图；介绍页增加「重点组件速览」；README 扩充图集
+
 ## 2.46.2
 
 - 文档：重拍 README / 文档站截图；新增 Avatar、Skeleton、Timeline、Statistic 展示图；提供 `pnpm shots` 截图脚本
