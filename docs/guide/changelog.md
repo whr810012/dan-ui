@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.46.2
+
+- 文档：重拍 README / 文档站截图；新增 Avatar、Skeleton、Timeline、Statistic 展示图；提供 `pnpm shots` 截图脚本
+
 ## 2.46.1
 
 - 文档：指南 / FAQ / checklist / roadmap 对齐 2.x；侧栏标明 AvatarGroup / SkeletonItem；Message 补充 `max` 与 ConfigProvider 说明

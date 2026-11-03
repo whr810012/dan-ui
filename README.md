@@ -65,6 +65,20 @@ Table 支持筛选、列显隐、固定列、多选、虚拟滚动等；Tree / I
 
 ---
 
+## 展示增强：头像组 · 骨架 · 时间线 · 统计
+
+近期补齐的展示能力：AvatarGroup 折叠、Skeleton 自定义模板、Timeline 交替排布、Statistic 千分位格式化。
+
+| Avatar / AvatarGroup | Skeleton |
+|:---:|:---:|
+| ![Avatar](./docs/public/readme/avatar.png) | ![Skeleton](./docs/public/readme/skeleton.png) |
+
+| Timeline | Statistic |
+|:---:|:---:|
+| ![Timeline](./docs/public/readme/timeline.png) | ![Statistic](./docs/public/readme/statistic.png) |
+
+---
+
 ## 反馈浮层
 
 Dialog / Message / Drawer 等与主题 Token 一致，文档内可直接点开 Demo。
@@ -175,6 +189,7 @@ pnpm dev:docs   # http://localhost:5173/dan-ui/
 | `pnpm lint` | ESLint + Prettier |
 | `pnpm gen <name>` | 组件脚手架 |
 | `pnpm docs:build` | 构建文档站 |
+| `pnpm shots` | 对本地文档预览重拍 `docs/public/readme` 截图 |
 
 ```text
 packages/ui      组件
@@ -191,7 +206,7 @@ playground/      联调
 
 - **基础**：ConfigProvider、Button、Icon、Space、Typography、主题 Token
 - **表单**：Input / Select / Cascader / DatePicker / Upload / Form / FormList …
-- **数据**：Table、Tree、Image、Calendar、Carousel、Descriptions …
+- **数据**：Table、Tree、Image、AvatarGroup、Skeleton、Timeline、Statistic、Calendar、Carousel、Descriptions …
 - **反馈**：Dialog、Drawer、Message、Notification、Tooltip、Popconfirm、Tour …
 - **AI**：Chat、ChatWorkspace、ToolCallCard、AgentSteps、MediaPreview、PromptTemplate …
 - **富文本**：RichText、EditorToolbar、EditorBubbleMenu
