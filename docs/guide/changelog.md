@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.44.0
+
+- Skeleton：`SkeletonItem`、`#template` / `count`；`throttle` 支持 `{ leading, trailing, initVal }`
+- Avatar：`srcset`；`load` / `error` 事件
+- Descriptions：`#extra`、`labelWidth`
+
 ## 2.43.0
 
 - AvatarGroup：叠放头像、`max` 折叠 +N；`size` / `shape` 下发子头像

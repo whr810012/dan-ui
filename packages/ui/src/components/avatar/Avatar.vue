@@ -13,6 +13,7 @@ defineOptions({ name: 'DanAvatar' })
 const props = withDefaults(
   defineProps<{
     src?: string
+    srcset?: string
     alt?: string
     size?: AvatarSize
     shape?: AvatarShape
@@ -26,12 +27,17 @@ const props = withDefaults(
   },
 )
 
+const emit = defineEmits<{
+  error: [event: Event]
+  load: [event: Event]
+}>()
+
 const ns = useNamespace('avatar')
 const group = inject(avatarGroupContextKey, undefined)
 const hasError = ref(false)
 
 watch(
-  () => props.src,
+  () => [props.src, props.srcset] as const,
   () => {
     hasError.value = false
   },
@@ -58,6 +64,15 @@ const sizeStyle = computed(() => {
 const sizeClass = computed(() =>
   typeof resolvedSize.value === 'string' ? ns.m(resolvedSize.value) : undefined,
 )
+
+function onError(event: Event) {
+  hasError.value = true
+  emit('error', event)
+}
+
+function onLoad(event: Event) {
+  emit('load', event)
+}
 </script>
 
 <template>
@@ -66,12 +81,14 @@ const sizeClass = computed(() =>
     :style="sizeStyle"
   >
     <img
-      v-if="src && !hasError"
+      v-if="(src || srcset) && !hasError"
       :class="ns.e('image')"
       :src="src"
+      :srcset="srcset"
       :alt="alt"
       :style="{ objectFit: fit }"
-      @error="hasError = true"
+      @error="onError"
+      @load="onLoad"
     />
     <span v-else :class="ns.e('fallback')">
       <slot>{{ alt ? alt.slice(0, 1).toUpperCase() : '?' }}</slot>

@@ -29,10 +29,18 @@ import groupSrc from './demos/avatar/group.vue?raw'
 | 属性 | 说明 | 类型 | 默认值 |
 |------|------|------|--------|
 | src | 图片地址 | `string` | — |
+| srcset | 响应式图片源 | `string` | — |
 | alt | 替代文本 / 失败时取首字 | `string` | `''` |
 | size | 尺寸（组内可继承） | `number \| 'small' \| 'default' \| 'large'` | `'default'` |
 | shape | 形状（组内可继承） | `'circle' \| 'square'` | `'circle'` |
 | fit | 图片适应 | `'fill' \| 'contain' \| 'cover' \| 'none' \| 'scale-down'` | `'cover'` |
+
+## Avatar Events
+
+| 事件 | 说明 | 参数 |
+|------|------|------|
+| load | 图片加载成功 | `Event` |
+| error | 图片加载失败（同时回退到插槽） | `Event` |
 
 ## AvatarGroup Props
 

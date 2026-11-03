@@ -1,6 +1,11 @@
 <script setup lang="ts">
-import { onBeforeUnmount, ref, watch } from 'vue'
+import { onBeforeUnmount, provide, ref, toRef, watch } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
+import {
+  normalizeThrottle,
+  skeletonContextKey,
+  type SkeletonThrottle,
+} from './context'
 import './style.css'
 
 defineOptions({ name: 'DanSkeleton' })
@@ -11,21 +16,28 @@ const props = withDefaults(
     rows?: number
     animated?: boolean
     avatar?: boolean
-    /** 延迟显示骨架的毫秒数，避免短暂 loading 闪烁 */
-    throttle?: number
+    count?: number
+    /** 延迟显示/隐藏骨架；数字等同 `{ leading }` */
+    throttle?: SkeletonThrottle
   }>(),
   {
     loading: true,
     rows: 3,
     animated: true,
     avatar: false,
+    count: 1,
     throttle: 0,
   },
 )
 
 const ns = useNamespace('skeleton')
-const renderSkeleton = ref(props.loading && props.throttle <= 0)
+provide(skeletonContextKey, {
+  animated: toRef(props, 'animated'),
+})
+
+const renderSkeleton = ref(false)
 let timer: ReturnType<typeof setTimeout> | null = null
+let initialized = false
 
 function clearTimer() {
   if (timer) {
@@ -34,23 +46,59 @@ function clearTimer() {
   }
 }
 
+function showSkeleton() {
+  renderSkeleton.value = true
+}
+
+function hideSkeleton() {
+  renderSkeleton.value = false
+}
+
 watch(
   () => [props.loading, props.throttle] as const,
-  ([loading, throttle]) => {
+  ([loading]) => {
     clearTimer()
-    if (!loading) {
-      renderSkeleton.value = false
+    const { leading, trailing, initVal } = normalizeThrottle(props.throttle)
+
+    if (!initialized) {
+      initialized = true
+      if (!loading) {
+        hideSkeleton()
+        return
+      }
+      if (initVal || leading <= 0) {
+        showSkeleton()
+        return
+      }
+      hideSkeleton()
+      timer = setTimeout(() => {
+        timer = null
+        if (props.loading) showSkeleton()
+      }, leading)
       return
     }
-    if (!throttle || throttle <= 0) {
-      renderSkeleton.value = true
+
+    if (loading) {
+      if (leading <= 0) {
+        showSkeleton()
+        return
+      }
+      hideSkeleton()
+      timer = setTimeout(() => {
+        timer = null
+        if (props.loading) showSkeleton()
+      }, leading)
       return
     }
-    renderSkeleton.value = false
+
+    if (trailing <= 0) {
+      hideSkeleton()
+      return
+    }
     timer = setTimeout(() => {
       timer = null
-      if (props.loading) renderSkeleton.value = true
-    }, throttle)
+      if (!props.loading) hideSkeleton()
+    }, trailing)
   },
   { immediate: true },
 )
@@ -59,17 +107,25 @@ onBeforeUnmount(clearTimer)
 </script>
 
 <template>
-  <div v-if="renderSkeleton" :class="[ns.b(), ns.is('animated', animated)]">
-    <div v-if="avatar" :class="ns.e('avatar')" />
-    <div :class="ns.e('content')">
-      <div :class="[ns.e('item'), ns.e('title')]" />
-      <div
-        v-for="index in rows"
-        :key="index"
-        :class="ns.e('item')"
-        :style="{ width: index === rows ? '60%' : '100%' }"
-      />
+  <template v-if="renderSkeleton">
+    <div
+      v-for="index in Math.max(1, count)"
+      :key="index"
+      :class="[ns.b(), ns.is('animated', animated)]"
+    >
+      <slot name="template">
+        <div v-if="avatar" :class="ns.e('avatar')" />
+        <div :class="ns.e('content')">
+          <div :class="[ns.e('item'), ns.e('title')]" />
+          <div
+            v-for="row in rows"
+            :key="row"
+            :class="ns.e('item')"
+            :style="{ width: row === rows ? '60%' : '100%' }"
+          />
+        </div>
+      </slot>
     </div>
-  </div>
+  </template>
   <slot v-else />
 </template>

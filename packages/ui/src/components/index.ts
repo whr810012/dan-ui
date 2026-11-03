@@ -182,8 +182,12 @@ export type { DanEmptyInstance } from './empty'
 export { DanProgress } from './progress'
 export type { DanProgressInstance } from './progress'
 
-export { DanSkeleton } from './skeleton'
-export type { DanSkeletonInstance } from './skeleton'
+export { DanSkeleton, DanSkeletonItem } from './skeleton'
+export type {
+  DanSkeletonInstance,
+  DanSkeletonItemInstance,
+  SkeletonThrottle,
+} from './skeleton'
 
 export { DanStatistic } from './statistic'
 export type { DanStatisticInstance } from './statistic'

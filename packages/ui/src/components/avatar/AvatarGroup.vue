@@ -54,7 +54,9 @@ function flatten(nodes: VNode[]): VNode[] {
   return result
 }
 
-const allAvatars = computed(() => flatten(slots.default?.() ?? []))
+const allAvatars = computed(() =>
+  flatten((slots.default?.() as VNode[] | undefined) ?? []),
+)
 
 const visibleAvatars = computed(() => {
   if (props.max == null || props.max <= 0) return allAvatars.value

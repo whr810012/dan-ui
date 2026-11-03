@@ -13,6 +13,8 @@ const props = withDefaults(
     border?: boolean
     direction?: 'horizontal' | 'vertical'
     size?: 'small' | 'default' | 'large'
+    /** 统一标签列宽，如 `120px` */
+    labelWidth?: string | number
   }>(),
   {
     title: '',
@@ -31,9 +33,18 @@ provide(descriptionsContextKey, {
   column: toRef(props, 'column'),
 })
 
-const style = computed(() => ({
-  '--dan-descriptions-columns': String(props.column),
-}))
+const style = computed(() => {
+  const result: Record<string, string> = {
+    '--dan-descriptions-columns': String(props.column),
+  }
+  if (props.labelWidth != null) {
+    result['--dan-descriptions-label-width'] =
+      typeof props.labelWidth === 'number'
+        ? `${props.labelWidth}px`
+        : props.labelWidth
+  }
+  return result
+})
 </script>
 
 <template>
@@ -41,8 +52,16 @@ const style = computed(() => ({
     :class="[ns.b(), ns.m(size), ns.m(direction), ns.is('bordered', border)]"
     :style="style"
   >
-    <div v-if="title || $slots.title" :class="ns.e('header')">
-      <slot name="title">{{ title }}</slot>
+    <div
+      v-if="title || $slots.title || $slots.extra"
+      :class="ns.e('header')"
+    >
+      <div :class="ns.e('title')">
+        <slot name="title">{{ title }}</slot>
+      </div>
+      <div v-if="$slots.extra" :class="ns.e('extra')">
+        <slot name="extra" />
+      </div>
     </div>
     <div :class="ns.e('body')">
       <slot />

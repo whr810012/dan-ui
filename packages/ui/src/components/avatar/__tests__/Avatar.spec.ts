@@ -9,6 +9,15 @@ describe('DanAvatar', () => {
     expect(wrapper.find('.dan-avatar__fallback').text()).toBe('D')
   })
 
+  it('emits error and shows fallback', async () => {
+    const wrapper = mount(DanAvatar, {
+      props: { src: 'broken.png', alt: 'Dan' },
+    })
+    await wrapper.find('img').trigger('error')
+    expect(wrapper.emitted('error')).toBeTruthy()
+    expect(wrapper.find('.dan-avatar__fallback').text()).toBe('D')
+  })
+
   it('inherits size from AvatarGroup', () => {
     const wrapper = mount(DanAvatarGroup, {
       props: { size: 'large' },
