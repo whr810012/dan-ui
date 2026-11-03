@@ -77,7 +77,7 @@ function isLastVisible(uid: number) {
 
 provideBreadcrumb({
   separator: toRef(props, 'separator'),
-  separatorSlot: computed(() => slots.separator as Slot | undefined),
+  separatorSlot: computed(() => (slots as { separator?: Slot }).separator),
   register,
   unregister,
   isVisible,

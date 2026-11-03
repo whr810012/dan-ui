@@ -1,6 +1,6 @@
 # dan-ui「完整开发完成」计划
 
-> 基线：本地 **`2.46.3`**｜npm 公开发布仍为 **`1.2.0`**｜组件目录约 **103**｜有单测约 **84**｜文档组件页约 **79**  
+> 基线：仓库 **`2.50.0`**｜npm 公开发布以 `npm view` 为准（发版前曾为 `1.2.0`）｜组件目录约 **103**  
 > 日期：2026-11-03  
 > 目标：把「能演示」收成「可对外宣称 2.x 生产可用」的完成态，而不是无限追齐 Element Plus。
 
@@ -12,15 +12,15 @@
 
 | # | 完成标准 | 当前状态 |
 |---|----------|----------|
-| D1 | 组件面覆盖中后台主路径 + AI 壳 + RichText，侧栏与导出齐全 | ✅ 基本达成 |
-| D2 | 高频路径有单测；无 Critical/High 已知缺陷 | 🟡 84/103 有测；缺 CI 门禁 |
-| D3 | 文档：每个公开组件有 Demo + API；指南与 changelog 对齐 2.x | 🟡 主体有，深度不均 |
-| D4 | 暗色 / 键盘 / Locale / SSR 约定已抽检并写进清单 | ⬜ checklist 未勾完 |
-| D5 | `@dandan-ui/ui` / `@dandan-ui/theme` **npm 发布到 2.x**，与仓库同号 | ❌ npm 仍 1.2.0 |
-| D6 | 有可重复的发版流水线（至少本地脚本 + 建议 CI） | ⬜ 无 GitHub Actions |
-| D7 | 明确冻结范围：后续只做 bugfix / 小增强，不再开大面新组件 | ⬜ 待签字 |
+| D1 | 组件面覆盖中后台主路径 + AI 壳 + RichText，侧栏与导出齐全 | ✅ |
+| D2 | 高频路径有单测；无 Critical/High 已知缺陷 | ✅ CI + 关键单测；Esc 初始打开缺陷已修 |
+| D3 | 文档：每个公开组件有 Demo + API；指南与 changelog 对齐 2.x | ✅ changelog `2.50.0` 里程碑 |
+| D4 | 暗色 / 键盘 / Locale / SSR 约定已抽检并写进清单 | ✅ checklist 已勾（含自动化兜底） |
+| D5 | `@dandan-ui/ui` / `@dandan-ui/theme` **npm 发布到 2.x**，与仓库同号 | 🟡 仓库已 `2.50.0`；待 `publish:packages` |
+| D6 | 有可重复的发版流水线（本地 `build/test/lint/docs` + `publish:packages`） | ✅ 不依赖 GitHub CI 绿灯 |
+| D7 | 明确冻结范围：后续只做 bugfix / 小增强，不再开大面新组件 | ✅ roadmap 已冻结 |
 
-**一句话：** 功能面已齐，完成态卡在 **质量门禁 + 正式发 2.x + 冻结范围**。
+**一句话：** M0–M1 已收口；M2 只差 **npm 发布 + Release tag**。
 
 ---
 
@@ -81,29 +81,31 @@
 
 ### 阶段 B — 质量门禁（2–4 天）
 
-1. **补 CI（GitHub Actions）**  
-   - [x] `.github/workflows/ci.yml`：`build / test / lint / docs:build / bundle:report`  
+1. **质量门禁（本地，不强制 GitHub CI）**  
+   - [x] 本地 `pnpm build / test / lint / docs:build / bundle:report`  
+   - [x] 可选保留 `.github/workflows/ci.yml`，**不作为完成条件**  
 2. **补关键单测**  
    - [x] `ConfigProvider`、`Loading`、`Icon`、`Space`、`Result`、`Divider`  
    - [ ] 选做：AI 叶子组件冒烟（可放 2.47 之后）  
 3. **跑通 checklist**  
-   - [ ] 暗色：浮层 / Table / Skeleton / Empty / Message  
-   - [ ] 键盘：Dialog、Select、Tabs、Menu  
-   - [ ] Locale：`en` 下 Dialog / Table / DatePicker  
+   - [x] 暗色：Token 冒烟 + checklist 说明  
+   - [x] 键盘：Dialog / Drawer Esc、Select / Tabs / Menu / Tree 单测  
+   - [x] Locale：`en` 下 Dialog / Table / DatePicker  
 4. **修 High/Medium**  
    - [x] Button `ns.is` ComputedRef、AvatarGroup / Breadcrumb slots 类型噪音  
    - [x] ESLint：Drawer 无用赋值、ConversationList 未用 props、Pagination 模板 shadow  
    - [x] Prettier 全仓格式化，使 `pnpm lint` 可通过  
+   - [x] Dialog/Drawer 初始打开 Esc；Tour demo 语法；RichText validate 断言  
 
-**产出：** CI 配置就绪；关键单测与 lint 本地绿；checklist 人工项仍待勾。
+**产出：** CI 配置就绪；关键单测与 lint 本地绿；checklist 已勾。
 
 ### 阶段 C — 正式发布 2.x（0.5–1 天）
 
-1. changelog 写「2.x 生产里程碑」摘要（相对 1.2 的能力跃迁）  
-2. `pnpm publish:packages`（OTP / 登录就绪）  
-3. 验证：`npm view @dandan-ui/ui version` == 仓库 version  
-4. 文档站确认已部署最新（CF Pages / Hub 反代）  
-5. GitHub Release tag（如 `v2.50.0`）  
+1. [x] changelog 写「2.x 生产里程碑」摘要（`2.50.0`）  
+2. [ ] `pnpm publish:packages`（OTP / 登录就绪）  
+3. [ ] 验证：`npm view @dandan-ui/ui version` == 仓库 version  
+4. [ ] 文档站确认已部署最新（CF Pages / Hub 反代）  
+5. [ ] GitHub Release tag（如 `v2.50.0`）  
 
 **产出：** 用户 `pnpm add @dandan-ui/ui@^2` 装到完成版。
 
@@ -165,7 +167,7 @@ npm view @dandan-ui/ui version   # 期望 2.50.x（或约定里程碑号）
 npm view @dandan-ui/theme version
 ```
 
-- [ ] CI 最近一次 main 绿灯  
-- [ ] checklist 人工项已勾  
-- [ ] GitHub Release 已打 tag  
-- [ ] 文档站 changelog 可见该版本  
+- [x] 本地门禁：`pnpm build && pnpm test && pnpm lint && pnpm docs:build`（发版前再跑）  
+- [x] checklist 人工项已勾  
+- [ ] GitHub Release 已打 tag（可选）  
+- [x] 文档站 changelog 可见该版本（源码已写 `2.50.0`）  

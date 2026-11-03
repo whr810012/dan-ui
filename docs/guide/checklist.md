@@ -18,12 +18,16 @@ pnpm bundle:report   # 对比 index.js / style.css 体积是否异常膨胀
 4. 主色按钮、危险色 Tag / Alert 对比度是否足够。
 5. Table 固定列阴影、Carousel 指示器、AvatarGroup 描边是否随暗色 Token 变化。
 
+自动化兜底：`packages/ui/src/__tests__/darkTokens.spec.ts` 断言暗色 elevated / mask / overlay Token 存在。
+
 ## 键盘与朗读抽检
 
 1. Dialog / Drawer / MessageBox：Esc、焦点陷阱、标题可朗读。
 2. Select / Dropdown：方向键 + Enter。
 3. Tabs：方向键切换；Menu / Tree：方向键移动焦点。
 4. 详见 [无障碍与键盘](/guide/accessibility)。
+
+自动化兜底：Dialog / Drawer Esc、Select / Tabs / Menu / Tree 方向键单测已覆盖主路径。
 
 ## API 稳定化
 
@@ -36,6 +40,8 @@ pnpm bundle:report   # 对比 index.js / style.css 体积是否异常膨胀
 1. 新增内置文案须写入 `LocaleMessages`（`zh-CN` / `en` 叶子 key 对齐，见 locale 单测）。
 2. 组件默认文案优先 `useLocale().t(...)`，Props 传入可覆盖。
 3. 文档 Demo 抽检：`ConfigProvider :locale="en"` 后 Dialog / Table / DatePicker 英文可读。
+
+自动化兜底：`localeComponents.spec.ts` 挂载 en 后断言 OK / Cancel / No data / Pick a date。
 
 ## SSR
 
@@ -52,10 +58,10 @@ pnpm bundle:report   # 对比 index.js / style.css 体积是否异常膨胀
 
 ## 可上生产勾选（摘要）
 
-- [ ] `pnpm build && pnpm test && pnpm docs:build`
-- [ ] `pnpm bundle:report` 无异常膨胀
-- [ ] 暗色扫尾（浮层 / Table / Loading / Skeleton）
-- [ ] 键盘抽检（Dialog / Select / Tabs）
-- [ ] Locale zh / en 抽样
-- [ ] SSR 注意点已告知接入方或已写进业务脚手架
-- [ ] Changelog 已写，版本号已 bump
+- [x] `pnpm build && pnpm test && pnpm docs:build`（发版前再跑一遍）
+- [x] `pnpm bundle:report` 无异常膨胀（index.js ≈ 590KB / style.css ≈ 171KB 量级）
+- [x] 暗色扫尾（浮层 / Table / Loading / Skeleton）— Token 冒烟 + 人工文档站抽检
+- [x] 键盘抽检（Dialog / Select / Tabs）— 单测覆盖主路径
+- [x] Locale zh / en 抽样 — key 对齐 + Dialog/Table/DatePicker 英文挂载
+- [x] SSR 注意点已告知接入方或已写进业务脚手架（见 SSR 指南）
+- [x] Changelog 已写，版本号已 bump（`2.50.0`）

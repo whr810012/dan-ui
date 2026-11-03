@@ -53,4 +53,22 @@ describe('DanDrawer', () => {
     expect(document.body.textContent).not.toContain('临时内容')
     wrapper.unmount()
   })
+
+  it('closes on Escape when initially open', async () => {
+    const wrapper = mount(DanDrawer, {
+      attachTo: document.body,
+      props: {
+        modelValue: true,
+        title: 'Esc',
+        'onUpdate:modelValue': (value: boolean) =>
+          wrapper.setProps({ modelValue: value }),
+      },
+      slots: { default: '内容' },
+    })
+    await nextTick()
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+    await nextTick()
+    expect(wrapper.props('modelValue')).toBe(false)
+    wrapper.unmount()
+  })
 })

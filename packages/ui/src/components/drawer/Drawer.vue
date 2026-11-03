@@ -147,6 +147,7 @@ watch(
       document.body.style.overflow = ''
     }
   },
+  { immediate: true },
 )
 
 onBeforeUnmount(() => {

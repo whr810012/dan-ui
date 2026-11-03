@@ -15,18 +15,16 @@ const steps = [
     description: '这是第二步，可以点完成结束。',
   },
 ]
+
+function startTour() {
+  current.value = 0
+  open.value = true
+}
 </script>
 
 <template>
   <div>
-    <DanButton
-      id="tour-demo-btn"
-      type="primary"
-      @click="
-        open = true
-        current = 0
-      "
-    >
+    <DanButton id="tour-demo-btn" type="primary" @click="startTour">
       打开引导
     </DanButton>
     <DanTour v-model="open" v-model:current="current" :steps="steps" />

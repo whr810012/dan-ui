@@ -42,4 +42,26 @@ describe('DanDialog', () => {
     expect(document.body.textContent).not.toContain('仅打开时存在')
     wrapper.unmount()
   })
+
+  it('closes on Escape and exposes labelled dialog role', async () => {
+    const wrapper = mount(DanDialog, {
+      attachTo: document.body,
+      props: {
+        modelValue: true,
+        title: '可关闭',
+        'onUpdate:modelValue': (value: boolean) =>
+          wrapper.setProps({ modelValue: value }),
+      },
+      slots: { default: '面板内容' },
+    })
+    await nextTick()
+    const panel = document.querySelector('.dan-dialog__panel')
+    expect(panel?.getAttribute('role')).toBe('dialog')
+    expect(panel?.getAttribute('aria-modal')).toBe('true')
+    expect(panel?.getAttribute('aria-labelledby')).toBeTruthy()
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+    await nextTick()
+    expect(wrapper.props('modelValue')).toBe(false)
+    wrapper.unmount()
+  })
 })

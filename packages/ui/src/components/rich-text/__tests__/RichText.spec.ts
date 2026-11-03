@@ -55,8 +55,8 @@ describe('DanRichText', () => {
 
     const wrapper = mount(Comp, { attachTo: document.body })
     await flushPromises()
-    const ok = await (wrapper.vm as any).formRef.validate()
-    expect(ok).toBe(false)
+    const result = await (wrapper.vm as any).formRef.validate()
+    expect(result.valid).toBe(false)
     expect(wrapper.text()).toContain('请填写正文')
     wrapper.unmount()
   })

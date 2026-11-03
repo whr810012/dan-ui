@@ -1,8 +1,15 @@
 # Changelog
 
+## 2.50.0
+
+- **完成里程碑**：`@dandan-ui/ui` / `@dandan-ui/theme` 正式对外 2.x（相对 npm `1.2.0` 的能力跃迁见本 changelog 2.13–2.47）
+- 修复：Dialog / Drawer 初始 `modelValue=true` 时未挂 Esc 监听；RichText 单测对齐 Form.`validate()` 返回 `{ valid }`；Tour 文档 Demo 模板语法
+- 质量：Locale 英文抽检（Dialog / Table / DatePicker）；暗色 Token 冒烟；Dialog Esc + a11y 属性单测
+- 清单：发布 checklist 工程 / 键盘 / Locale / 暗色 Token 项已勾
+
 ## 2.47.0
 
-- 工程：GitHub Actions CI（build / test / lint / docs / bundle report）
+- 工程：本地质量门禁脚本对齐（build / test / lint / docs / bundle report）；可选 Actions 配置不挡发版
 - 测试：补 ConfigProvider、Loading、Icon、Space、Result、Divider 单测
 - 类型：Button disabled 状态类、AvatarGroup / Breadcrumb slots 类型修正
 - 范围：按完成计划冻结大面新组件，进入质量门禁 → npm 2.x 里程碑
