@@ -8,7 +8,6 @@ import {
   useAttrs,
   watch,
 } from 'vue'
-import { injectConfig } from '../../hooks/useConfig'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useLocale } from '../../locale'
 import { useNamespace } from '../../hooks/useNamespace'
@@ -32,17 +31,17 @@ const props = withDefaults(
     multiple?: boolean
     filterable?: boolean
     collapseTags?: boolean
-    /** collapseTags æ—¶æœ€å¤šå±•ç¤ºçš„æ ‡ç­¾æ•°ï¼Œå…¶ä½™æŠ˜å ä¸º +N */
+    /** collapseTags Ê±×î¶àÕ¹Ê¾µÄ±êÇ©Êý£¬ÆäÓàÕÛµþÎª +N */
     maxCollapseTags?: number
     virtual?: boolean
     itemHeight?: number
     maxDropdownHeight?: number
-    /** è¿œç¨‹æœç´¢ï¼šä¸è¿‡æ»¤æœ¬åœ° optionsï¼Œæ”¹ç”± remoteMethod æ‹‰æ•° */
+    /** Ô¶³ÌËÑË÷£º²»¹ýÂË±¾µØ options£¬¸ÄÓÉ remoteMethod À­Êý */
     remote?: boolean
     remoteMethod?: (query: string) => void
-    /** è¿œç¨‹è¯·æ±‚ä¸­ï¼ˆç”±ä¸šåŠ¡æŽ§åˆ¶ï¼‰ */
+    /** Ô¶³ÌÇëÇóÖÐ£¨ÓÉÒµÎñ¿ØÖÆ£© */
     loading?: boolean
-    /** è¿œç¨‹æ–¹æ³•é˜²æŠ–æ¯«ç§’ */
+    /** Ô¶³Ì·½·¨·À¶¶ºÁÃë */
     remoteDebounce?: number
   }>(),
   {
@@ -71,8 +70,7 @@ const emit = defineEmits<{
 }>()
 
 const attrs = useAttrs()
-const config = injectConfig()
-const { form, emitChange } = useFormItem()
+const { form, emitChange, resolveSize } = useFormItem()
 const ns = useNamespace('select')
 const { t } = useLocale()
 const resolvedPlaceholder = computed(
@@ -91,7 +89,7 @@ const scrollTop = ref(0)
 const labelCache = ref(new Map<string, string>())
 let remoteTimer: ReturnType<typeof setTimeout> | null = null
 
-const resolvedSize = computed(() => props.size ?? config.size.value)
+const resolvedSize = computed(() => resolveSize(props.size))
 const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )
@@ -483,7 +481,7 @@ onBeforeUnmount(() => {
             :class="ns.e('tag')"
           >
             {{ label }}
-            <i @click="removeTag(selectedValues[i]!, $event)">Ã—</i>
+            <i @click="removeTag(selectedValues[i]!, $event)">¡Á</i>
           </span>
           <span v-if="collapsedTagExtra > 0" :class="ns.e('tag')">
             +{{ collapsedTagExtra }}
@@ -504,7 +502,7 @@ onBeforeUnmount(() => {
       @mousedown.prevent
       @click="onClear"
     >
-      Ã—
+      ¡Á
     </span>
     <span :class="ns.e('arrow')" aria-hidden="true" />
   </div>
@@ -559,7 +557,7 @@ onBeforeUnmount(() => {
             @mouseenter="!item.disabled && (highlightIndex = index)"
           >
             <span v-if="multiple" :class="ns.e('check')">
-              {{ isSelected(item.value) ? 'âœ“' : '' }}
+              {{ isSelected(item.value) ? '?' : '' }}
             </span>
             {{ item.label }}
           </div>

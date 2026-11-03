@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue'
-import { injectConfig } from '../../hooks/useConfig'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import type { DanSize } from '../../hooks/useConfig'
@@ -18,7 +17,7 @@ const props = withDefaults(
     collapseTags?: boolean
     max?: number
     placeholder?: string
-    /** é¢å¤–åˆ†éš”ç¬¦ï¼ˆEnter å§‹ç»ˆæ·»åŠ ï¼‰ï¼›é»˜è®¤ `,` */
+    /** ¶îÍâ·Ö¸ô·û£¨Enter Ê¼ÖÕÌí¼Ó£©£»Ä¬ÈÏ `,` */
     delimiter?: string
   }>(),
   {
@@ -42,14 +41,13 @@ const emit = defineEmits<{
   blur: [event: FocusEvent]
 }>()
 
-const config = injectConfig()
-const { form, emitChange } = useFormItem()
+const { form, emitChange, resolveSize } = useFormItem()
 const ns = useNamespace('input-tag')
 const inputRef = ref<HTMLInputElement>()
 const draft = ref('')
 const focused = ref(false)
 
-const resolvedSize = computed(() => props.size ?? config.size.value)
+const resolvedSize = computed(() => resolveSize(props.size))
 const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )
@@ -204,10 +202,10 @@ defineExpose({ focus: focusInput })
       v-if="showClear"
       type="button"
       :class="ns.e('clear')"
-      aria-label="æ¸…ç©º"
+      aria-label="Çå¿Õ"
       @click.stop="onClear"
     >
-      Ã—
+      ¡Á
     </button>
   </div>
 </template>

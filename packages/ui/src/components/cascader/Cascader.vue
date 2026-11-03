@@ -119,10 +119,7 @@ const showClear = computed(
     props.clearable && selectedPaths.value.length > 0 && !isDisabled.value,
 )
 
-async function openPanel() {
-  if (isDisabled.value) return
-  opened.value = true
-  await nextTick()
+function updatePanelPosition() {
   const rect = rootRef.value?.getBoundingClientRect()
   if (!rect) return
   panelStyle.value = {
@@ -133,11 +130,19 @@ async function openPanel() {
   }
 }
 
+async function openPanel() {
+  if (isDisabled.value) return
+  opened.value = true
+  await nextTick()
+  updatePanelPosition()
+}
+
 function closePanel() {
   opened.value = false
 }
 
 function toggle() {
+  if (isDisabled.value) return
   if (opened.value) closePanel()
   else void openPanel()
 }
@@ -176,8 +181,34 @@ function onDoc(event: MouseEvent) {
   closePanel()
 }
 
-onMounted(() => document.addEventListener('mousedown', onDoc))
-onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
+function onKeydown(event: KeyboardEvent) {
+  if (isDisabled.value) return
+  if (event.key === 'Escape' && opened.value) {
+    event.preventDefault()
+    closePanel()
+    return
+  }
+  if (event.key === 'ArrowDown' && !opened.value) {
+    event.preventDefault()
+    void openPanel()
+  }
+}
+
+function onScrollOrResize() {
+  if (opened.value) updatePanelPosition()
+}
+
+onMounted(() => {
+  document.addEventListener('mousedown', onDoc)
+  window.addEventListener('scroll', onScrollOrResize, true)
+  window.addEventListener('resize', onScrollOrResize)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('mousedown', onDoc)
+  window.removeEventListener('scroll', onScrollOrResize, true)
+  window.removeEventListener('resize', onScrollOrResize)
+})
 </script>
 
 <template>
@@ -194,7 +225,10 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
       type="button"
       :class="ns.e('trigger')"
       :disabled="isDisabled"
+      :aria-expanded="opened"
+      aria-haspopup="listbox"
       @click="toggle"
+      @keydown="onKeydown"
     >
       <template v-if="multiple && visibleTags.length">
         <span :class="ns.e('tags')">
@@ -204,7 +238,14 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
             :class="ns.e('tag')"
           >
             {{ tag.label }}
-            <i @click="removeTag(tag.path, $event)">×</i>
+            <button
+              type="button"
+              :class="ns.e('tag-close')"
+              aria-label="移除"
+              @click="removeTag(tag.path, $event)"
+            >
+              ×
+            </button>
           </span>
           <span v-if="hiddenTagCount" :class="ns.e('tag-more')">
             +{{ hiddenTagCount }}

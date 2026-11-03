@@ -65,6 +65,18 @@
   font: inherit;
 }
 
+.dan-transfer__filter:disabled {
+  color: var(--dan-color-text-disabled);
+  background: var(--dan-color-bg-muted);
+  cursor: not-allowed;
+}
+
+.dan-transfer__filter:focus-visible,
+.dan-transfer__button:focus-visible {
+  outline: 2px solid var(--dan-color-primary-light);
+  outline-offset: 2px;
+}
+
 .dan-transfer__list {
   flex: 1;
   max-height: 220px;

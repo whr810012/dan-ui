@@ -74,15 +74,28 @@
   white-space: nowrap;
 }
 
-.dan-cascader__tag i {
+.dan-cascader__tag-close {
   flex-shrink: 0;
-  font-style: normal;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: 1;
   cursor: pointer;
   opacity: 0.7;
 }
 
-.dan-cascader__tag i:hover {
+.dan-cascader__tag-close:hover {
   opacity: 1;
+}
+
+.dan-cascader__trigger:focus-visible,
+.dan-cascader__clear:focus-visible,
+.dan-cascader__tag-close:focus-visible {
+  outline: 2px solid var(--dan-color-primary-light);
+  outline-offset: 2px;
 }
 
 .dan-cascader__tag-more {
@@ -171,18 +184,19 @@
   cursor: pointer;
 }
 
-.dan-cascader__node:hover,
-.dan-cascader__node.is-active {
+.dan-cascader__node:hover:not(.is-disabled),
+.dan-cascader__node.is-active:not(.is-disabled) {
   color: var(--dan-color-primary);
   background: var(--dan-color-primary-light);
 }
 
-.dan-cascader__node.is-checked {
+.dan-cascader__node.is-checked:not(.is-disabled) {
   color: var(--dan-color-primary);
 }
 
 .dan-cascader__node.is-disabled {
   color: var(--dan-color-text-disabled);
+  background: transparent;
   cursor: not-allowed;
 }
 

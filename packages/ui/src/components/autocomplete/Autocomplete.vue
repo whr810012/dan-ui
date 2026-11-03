@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
-import { injectConfig } from '../../hooks/useConfig'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useLocale } from '../../locale'
 import { useNamespace } from '../../hooks/useNamespace'
@@ -18,9 +17,9 @@ const props = withDefaults(
     placeholder?: string
     clearable?: boolean
     triggerOnFocus?: boolean
-    /** è¯·æ±‚é˜²æŠ–æ¯«ç§’ */
+    /** ÇëÇó·À¶¶ºÁÃë */
     debounce?: number
-    /** ç”±ä¸šåŠ¡æ§åˆ¶çš„åŠ è½½æ€ */
+    /** ÓÉÒµÎñ¿ØÖÆµÄ¼ÓÔØÌ¬ */
     loading?: boolean
     fetchSuggestions?: (
       query: string,
@@ -45,8 +44,7 @@ const emit = defineEmits<{
   clear: []
 }>()
 
-const config = injectConfig()
-const { form, emitChange } = useFormItem()
+const { form, emitChange, resolveSize } = useFormItem()
 const { t } = useLocale()
 const ns = useNamespace('autocomplete')
 const opened = ref(false)
@@ -58,7 +56,7 @@ const panelStyle = ref<Record<string, string>>({})
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
 let requestId = 0
 
-const resolvedSize = computed(() => props.size ?? config.size.value)
+const resolvedSize = computed(() => resolveSize(props.size))
 const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )
@@ -223,10 +221,10 @@ onBeforeUnmount(() => {
       v-if="clearable && modelValue && !isDisabled"
       type="button"
       :class="ns.e('clear')"
-      aria-label="æ¸…é™¤"
+      aria-label="Çå³ı"
       @click="clear"
     >
-      Ã—
+      ¡Á
     </button>
     <Teleport to="body">
       <ul

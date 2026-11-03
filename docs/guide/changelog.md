@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.42.0
+
+- 交互 / 逻辑打磨：Cascader Escape 与滚动重定位、Affix/BackTop `target` 监听重绑、Form.`size` 真正下发、Transfer 禁用搜框与穿梭去重、Pagination 页码钳制、ConfigProvider Message 配置栈、焦点环与 disabled 样式
+
 ## 2.41.0
 
 - ConfigProvider：`message` 全局配置（`duration` / `max` / `offset`）

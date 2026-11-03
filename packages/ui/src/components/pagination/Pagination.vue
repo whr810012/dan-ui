@@ -89,6 +89,13 @@ watch(
   },
 )
 
+watch(pageCount, (count) => {
+  if (props.currentPage > count) {
+    emit('update:currentPage', count)
+    emit('current-change', count)
+  }
+})
+
 function go(page: number) {
   if (props.disabled) return
   const next = Math.min(Math.max(page, 1), pageCount.value)

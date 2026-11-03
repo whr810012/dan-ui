@@ -123,34 +123,45 @@ function onScroll() {
   update()
 }
 
-onMounted(async () => {
-  await nextTick()
-  scrollContainer.value = resolveTarget()
+function unbindScroll() {
+  scrollContainer.value?.removeEventListener('scroll', onScroll)
+}
+
+function bindScroll(target: Window | HTMLElement | null) {
+  unbindScroll()
+  scrollContainer.value = target
   scrollContainer.value?.addEventListener('scroll', onScroll, {
     passive: true,
   })
+}
+
+onMounted(async () => {
+  await nextTick()
+  bindScroll(resolveTarget())
   window.addEventListener('resize', onScroll)
   update()
 })
 
 onBeforeUnmount(() => {
-  scrollContainer.value?.removeEventListener('scroll', onScroll)
+  unbindScroll()
   if (typeof window !== 'undefined') {
     window.removeEventListener('resize', onScroll)
   }
 })
 
 watch(
-  () => [
-    props.offset,
-    props.position,
-    props.target,
-    props.zIndex,
-    props.disabled,
-  ],
+  () => props.target,
   async () => {
     if (typeof window === 'undefined') return
-    scrollContainer.value = resolveTarget()
+    bindScroll(resolveTarget())
+    await nextTick()
+    update()
+  },
+)
+
+watch(
+  () => [props.offset, props.position, props.zIndex, props.disabled],
+  async () => {
     await nextTick()
     update()
   },

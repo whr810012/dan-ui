@@ -7,7 +7,6 @@ import {
   useAttrs,
   watch,
 } from 'vue'
-import { injectConfig } from '../../hooks/useConfig'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import './style.css'
@@ -24,13 +23,13 @@ const props = withDefaults(
     placeholder?: string
     rows?: number
     maxlength?: number
-    /** å±•ç¤ºå­—æ•°ç»Ÿè®¡ï¼ˆéœ€é…åˆ maxlengthï¼›ç¦ç”¨æ—¶ä¸å±•ç¤ºï¼‰ */
+    /** Õ¹Ê¾×ÖÊýÍ³¼Æ£¨ÐèÅäºÏ maxlength£»½ûÓÃÊ±²»Õ¹Ê¾£© */
     showWordLimit?: boolean
-    /** æ˜¾ç¤ºå€¼æ ¼å¼åŒ– */
+    /** ÏÔÊ¾Öµ¸ñÊ½»¯ */
     formatter?: (value: string) => string
-    /** å°†è¾“å…¥è§£æžå›ž modelValue */
+    /** ½«ÊäÈë½âÎö»Ø modelValue */
     parser?: (value: string) => string
-    /** è‡ªé€‚åº”é«˜åº¦ï¼›å¯ä¼  `{ minRows, maxRows }` */
+    /** ×ÔÊÊÓ¦¸ß¶È£»¿É´« `{ minRows, maxRows }` */
     autosize?: AutosizeOption
   }>(),
   {
@@ -53,8 +52,7 @@ const emit = defineEmits<{
 }>()
 
 const attrs = useAttrs()
-const config = injectConfig()
-const { form, emitChange } = useFormItem()
+const { form, emitChange, resolveSize } = useFormItem()
 const ns = useNamespace('textarea')
 const focused = ref(false)
 const textareaRef = ref<HTMLTextAreaElement | null>(null)
@@ -181,7 +179,7 @@ onMounted(() => void nextTick(resize))
   <div
     :class="[
       ns.b(),
-      ns.m(config.size.value),
+      ns.m(resolveSize()),
       ns.is('disabled', isDisabled),
       ns.is('focus', focused),
       ns.is('autosize', isAutosize),

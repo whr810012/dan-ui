@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { injectConfig } from '../../hooks/useConfig'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import type { DanSize } from '../../hooks/useConfig'
@@ -44,13 +43,12 @@ const emit = defineEmits<{
   focus: [event: FocusEvent]
 }>()
 
-const config = injectConfig()
-const { form, emitChange } = useFormItem()
+const { form, emitChange, resolveSize } = useFormItem()
 const ns = useNamespace('input-number')
 const focused = ref(false)
 const userInput = ref<string | null>(null)
 
-const resolvedSize = computed(() => props.size ?? config.size.value)
+const resolvedSize = computed(() => resolveSize(props.size))
 const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )
@@ -199,10 +197,10 @@ watch(
         ns.is('disabled', isDisabled || readonly || minDisabled),
       ]"
       :disabled="isDisabled || readonly || minDisabled"
-      aria-label="å‡å°‘"
+      aria-label="¼õÉÙ"
       @click="decrease"
     >
-      âˆ’
+      ?
     </button>
     <input
       :class="ns.e('inner')"
@@ -233,7 +231,7 @@ watch(
         ns.is('disabled', isDisabled || readonly || maxDisabled),
       ]"
       :disabled="isDisabled || readonly || maxDisabled"
-      aria-label="å¢žåŠ "
+      aria-label="Ôö¼Ó"
       @click="increase"
     >
       +

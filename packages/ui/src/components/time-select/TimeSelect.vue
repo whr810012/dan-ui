@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
-import { injectConfig } from '../../hooks/useConfig'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import type { DanSize } from '../../hooks/useConfig'
@@ -16,22 +15,22 @@ const props = withDefaults(
     disabled?: boolean
     clearable?: boolean
     placeholder?: string
-    /** èµ·å§‹æ—¶åˆ» HH:mm */
+    /** ÆğÊ¼Ê±¿Ì HH:mm */
     start?: string
-    /** ç»“æŸæ—¶åˆ» HH:mm */
+    /** ½áÊøÊ±¿Ì HH:mm */
     end?: string
-    /** æ­¥è¿›ï¼Œæ”¯æŒåˆ†é’Ÿæ•°æˆ– HH:mm æ—¶é•¿ */
+    /** ²½½ø£¬Ö§³Ö·ÖÖÓÊı»ò HH:mm Ê±³¤ */
     step?: number | string
-    /** å¯é€‰ä¸‹é™ï¼ˆå«ï¼‰ */
+    /** ¿ÉÑ¡ÏÂÏŞ£¨º¬£© */
     minTime?: string | null
-    /** å¯é€‰ä¸Šé™ï¼ˆå«ï¼‰ */
+    /** ¿ÉÑ¡ÉÏÏŞ£¨º¬£© */
     maxTime?: string | null
   }>(),
   {
     modelValue: null,
     disabled: false,
     clearable: false,
-    placeholder: 'é€‰æ‹©æ—¶é—´',
+    placeholder: 'Ñ¡ÔñÊ±¼ä',
     start: '09:00',
     end: '18:00',
     step: '00:30',
@@ -46,15 +45,14 @@ const emit = defineEmits<{
   clear: []
 }>()
 
-const config = injectConfig()
-const { form, emitChange } = useFormItem()
+const { form, emitChange, resolveSize } = useFormItem()
 const ns = useNamespace('time-select')
 const opened = ref(false)
 const rootRef = ref<HTMLElement | null>(null)
 const panelRef = ref<HTMLElement | null>(null)
 const panelStyle = ref<Record<string, string>>({})
 
-const resolvedSize = computed(() => props.size ?? config.size.value)
+const resolvedSize = computed(() => resolveSize(props.size))
 const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )
@@ -169,10 +167,10 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
       v-if="showClear"
       type="button"
       :class="ns.e('clear')"
-      aria-label="æ¸…é™¤"
+      aria-label="Çå³ı"
       @click="clearValue"
     >
-      Ã—
+      ¡Á
     </button>
     <Teleport to="body">
       <div
@@ -190,7 +188,7 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
           >
             {{ item }}
           </li>
-          <li v-if="!options.length" :class="ns.e('empty')">æ— å¯ç”¨æ—¶é—´</li>
+          <li v-if="!options.length" :class="ns.e('empty')">ÎŞ¿ÉÓÃÊ±¼ä</li>
         </ul>
       </div>
     </Teleport>

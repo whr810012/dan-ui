@@ -5,4 +5,9 @@ export const DanMessage = withInstallFunction(messageMethod, '$message')
 export default DanMessage
 export type { MessageOptions, MessageType, MessageHandler } from './types'
 export type { MessageGlobalConfig } from './config'
-export { getMessageConfig, setMessageConfig } from './config'
+export {
+  getMessageConfig,
+  setMessageConfig,
+  pushMessageConfig,
+  popMessageConfig,
+} from './config'

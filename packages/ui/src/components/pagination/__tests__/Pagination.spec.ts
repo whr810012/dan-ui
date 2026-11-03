@@ -104,5 +104,27 @@ describe('DanPagination', () => {
       'dan-pagination--small',
     )
   })
+
+  it('clamps current page when total shrinks', async () => {
+    const page = ref(5)
+    const Comp = defineComponent({
+      components: { DanPagination },
+      setup() {
+        return { page, total: ref(50) }
+      },
+      template: `
+        <DanPagination
+          v-model:current-page="page"
+          :total="total"
+          :page-size="10"
+        />
+      `,
+    })
+    const wrapper = mount(Comp)
+    expect(page.value).toBe(5)
+    ;(wrapper.vm as any).total = 12
+    await nextTick()
+    expect(page.value).toBe(2)
+  })
 })
 

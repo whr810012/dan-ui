@@ -5,6 +5,25 @@ import { DanForm, DanFormItem } from '../index'
 import { DanInput } from '../../input'
 
 describe('DanForm', () => {
+  it('inherits size to form controls', () => {
+    const Comp = defineComponent({
+      components: { DanForm, DanFormItem, DanInput },
+      setup() {
+        const model = reactive({ name: '' })
+        return { model }
+      },
+      template: `
+        <DanForm :model="model" size="small">
+          <DanFormItem prop="name">
+            <DanInput v-model="model.name" />
+          </DanFormItem>
+        </DanForm>
+      `,
+    })
+    const wrapper = mount(Comp)
+    expect(wrapper.find('.dan-input').classes()).toContain('dan-input--small')
+  })
+
   it('applies asterisk position class', () => {
     const Comp = defineComponent({
       components: { DanForm, DanFormItem, DanInput },

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs } from 'vue'
-import { injectConfig } from '../../hooks/useConfig'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import type { DanSize } from '../../hooks/useConfig'
@@ -46,12 +45,11 @@ const emit = defineEmits<{
 }>()
 
 const attrs = useAttrs()
-const config = injectConfig()
-const { form, emitChange } = useFormItem()
+const { form, emitChange, resolveSize } = useFormItem()
 const ns = useNamespace('input')
 const focused = ref(false)
 
-const resolvedSize = computed(() => props.size ?? config.size.value)
+const resolvedSize = computed(() => resolveSize(props.size))
 const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )

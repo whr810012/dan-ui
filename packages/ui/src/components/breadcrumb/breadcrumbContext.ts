@@ -8,6 +8,7 @@ export interface BreadcrumbContext {
   unregister: (uid: number) => void
   isVisible: (uid: number) => boolean
   showEllipsisBefore: (uid: number) => boolean
+  isLastVisible: (uid: number) => boolean
 }
 
 export const breadcrumbContextKey: InjectionKey<BreadcrumbContext> =

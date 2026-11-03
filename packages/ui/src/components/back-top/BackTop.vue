@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
 import './style.css'
 
@@ -62,6 +62,17 @@ function scrollToTop(event: MouseEvent) {
   }
 }
 
+function unbindScroll() {
+  scrollEl?.removeEventListener('scroll', onScroll)
+}
+
+function bindScroll(target: Window | HTMLElement | null) {
+  unbindScroll()
+  scrollEl = target
+  scrollEl?.addEventListener('scroll', onScroll, { passive: true })
+  onScroll()
+}
+
 const style = computed(() => ({
   right: `${props.right}px`,
   bottom: `${props.bottom}px`,
@@ -69,14 +80,19 @@ const style = computed(() => ({
 
 onMounted(() => {
   mounted.value = true
-  scrollEl = resolveTarget()
-  scrollEl?.addEventListener('scroll', onScroll, { passive: true })
-  onScroll()
+  bindScroll(resolveTarget())
 })
 
 onBeforeUnmount(() => {
-  scrollEl?.removeEventListener('scroll', onScroll)
+  unbindScroll()
 })
+
+watch(
+  () => [props.target, props.visibilityHeight] as const,
+  () => {
+    bindScroll(resolveTarget())
+  },
+)
 </script>
 
 <template>

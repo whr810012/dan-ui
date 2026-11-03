@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
-import { injectConfig } from '../../hooks/useConfig'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import type { DanSize } from '../../hooks/useConfig'
@@ -29,9 +28,9 @@ const props = withDefaults(
     isRange: false,
     disabled: false,
     clearable: false,
-    placeholder: 'é€‰æ‹©æ—¶é—´',
-    startPlaceholder: 'å¼€å§‹æ—¶é—´',
-    endPlaceholder: 'ç»“æŸæ—¶é—´',
+    placeholder: 'Ñ¡ÔñÊ±¼ä',
+    startPlaceholder: '¿ªÊ¼Ê±¼ä',
+    endPlaceholder: '½áÊøÊ±¼ä',
     step: 5,
   },
 )
@@ -43,8 +42,7 @@ const emit = defineEmits<{
   visibleChange: [visible: boolean]
 }>()
 
-const config = injectConfig()
-const { form, emitChange } = useFormItem()
+const { form, emitChange, resolveSize } = useFormItem()
 const ns = useNamespace('time-picker')
 const opened = ref(false)
 const rootRef = ref<HTMLElement | null>(null)
@@ -52,7 +50,7 @@ const panelRef = ref<HTMLElement | null>(null)
 const panelStyle = ref<Record<string, string>>({})
 const activeSide = ref<'start' | 'end'>('start')
 
-const resolvedSize = computed(() => props.size ?? config.size.value)
+const resolvedSize = computed(() => resolveSize(props.size))
 const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )
@@ -218,10 +216,10 @@ onBeforeUnmount(() => {
       v-if="showClear"
       type="button"
       :class="ns.e('clear')"
-      aria-label="æ¸…é™¤"
+      aria-label="Çå³ı"
       @click="clearValue"
     >
-      Ã—
+      ¡Á
     </button>
     <Teleport to="body">
       <div

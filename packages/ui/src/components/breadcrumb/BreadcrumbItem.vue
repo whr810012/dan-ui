@@ -37,6 +37,7 @@ const visible = computed(() => breadcrumb?.isVisible(uid) ?? true)
 const showEllipsis = computed(
   () => breadcrumb?.showEllipsisBefore(uid) ?? false,
 )
+const isLast = computed(() => breadcrumb?.isLastVisible(uid) ?? false)
 
 const ParentSeparator = defineComponent({
   name: 'DanBreadcrumbParentSeparator',
@@ -61,16 +62,21 @@ const ParentSeparator = defineComponent({
       <ParentSeparator />
     </span>
   </li>
-  <li v-show="visible" :class="ns.b()">
+  <li v-if="visible" :class="[ns.b(), ns.is('last', isLast)]">
     <a
       v-if="to"
       :class="ns.e('inner')"
       :href="to"
+      :aria-current="isLast ? 'page' : undefined"
       @click="$emit('click', $event)"
     >
       <slot />
     </a>
-    <span v-else :class="ns.e('inner')">
+    <span
+      v-else
+      :class="ns.e('inner')"
+      :aria-current="isLast ? 'page' : undefined"
+    >
       <slot />
     </span>
     <span :class="ns.e('separator')" aria-hidden="true">

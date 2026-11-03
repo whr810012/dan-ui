@@ -5,7 +5,8 @@ import { useNamespace } from '../../hooks/useNamespace'
 import zhCN from '../../locale/zh-CN'
 import type { LocaleMessages } from '../../locale/types'
 import {
-  setMessageConfig,
+  popMessageConfig,
+  pushMessageConfig,
   type MessageGlobalConfig,
 } from '../message/config'
 import './style.css'
@@ -35,6 +36,7 @@ const props = withDefaults(
 )
 
 const ns = useNamespace('config-provider')
+const instanceId = Symbol('DanConfigProviderMessage')
 
 provideConfig({
   size: toRef(props, 'size'),
@@ -46,13 +48,14 @@ provideConfig({
 watch(
   () => props.message,
   (value) => {
-    setMessageConfig(value)
+    if (value == null) popMessageConfig(instanceId)
+    else pushMessageConfig(instanceId, value)
   },
   { immediate: true, deep: true },
 )
 
 onBeforeUnmount(() => {
-  setMessageConfig(undefined)
+  popMessageConfig(instanceId)
 })
 
 const themeStyle = computed(() => {

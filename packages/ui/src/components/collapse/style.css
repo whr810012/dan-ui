@@ -21,6 +21,12 @@
   cursor: pointer;
 }
 
+.dan-collapse-item__header:focus-visible {
+  outline: 2px solid var(--dan-color-primary-light);
+  outline-offset: 2px;
+  border-radius: var(--dan-radius-sm);
+}
+
 .dan-collapse-item:last-child .dan-collapse-item__header {
   border-bottom: 0;
 }

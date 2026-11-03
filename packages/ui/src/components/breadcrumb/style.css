@@ -53,12 +53,18 @@ a.dan-breadcrumb-item__inner:focus-visible {
   border-radius: var(--dan-radius-sm);
 }
 
+.dan-breadcrumb-item.is-last .dan-breadcrumb-item__inner,
 .dan-breadcrumb-item:last-child .dan-breadcrumb-item__inner {
   color: var(--dan-color-text);
   font-weight: var(--dan-font-weight-medium);
+}
+
+.dan-breadcrumb-item.is-last > span.dan-breadcrumb-item__inner,
+.dan-breadcrumb-item:last-child > span.dan-breadcrumb-item__inner {
   cursor: default;
 }
 
+.dan-breadcrumb-item.is-last .dan-breadcrumb-item__separator,
 .dan-breadcrumb-item:last-child .dan-breadcrumb-item__separator {
   display: none;
 }

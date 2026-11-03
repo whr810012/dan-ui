@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { injectConfig } from '../../hooks/useConfig'
+import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import { DanIcon } from '../icon'
 import type { ButtonNativeType, ButtonSize, ButtonType } from './types'
@@ -40,10 +40,13 @@ const emit = defineEmits<{
   click: [event: MouseEvent]
 }>()
 
-const config = injectConfig()
+const { form, resolveSize } = useFormItem()
 const ns = useNamespace('button')
 
-const resolvedSize = computed(() => props.size ?? config.size.value)
+const resolvedSize = computed(() => resolveSize(props.size))
+const isDisabled = computed(
+  () => props.disabled || props.loading || form?.disabled.value === true,
+)
 
 const classes = computed(() => [
   ns.b(),
@@ -54,12 +57,12 @@ const classes = computed(() => [
   ns.is('circle', props.circle),
   ns.is('text', props.text),
   ns.is('link', props.link),
-  ns.is('disabled', props.disabled || props.loading),
+  ns.is('disabled', isDisabled),
   ns.is('loading', props.loading),
 ])
 
 function onClick(event: MouseEvent) {
-  if (props.disabled || props.loading) {
+  if (isDisabled.value) {
     event.preventDefault()
     return
   }
@@ -71,9 +74,9 @@ function onClick(event: MouseEvent) {
   <button
     :class="classes"
     :type="nativeType"
-    :disabled="disabled || loading"
+    :disabled="isDisabled"
     :autofocus="autofocus"
-    :aria-disabled="disabled || loading || undefined"
+    :aria-disabled="isDisabled || undefined"
     :aria-busy="loading || undefined"
     @click="onClick"
   >

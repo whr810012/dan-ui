@@ -64,6 +64,17 @@ function showEllipsisBefore(uid: number) {
   return index === visibleIndexes.value[1]
 }
 
+const lastVisibleUid = computed(() => {
+  const indexes = visibleIndexes.value
+  if (!indexes.length) return null
+  const lastIndex = indexes[indexes.length - 1]!
+  return itemUids.value[lastIndex] ?? null
+})
+
+function isLastVisible(uid: number) {
+  return lastVisibleUid.value === uid
+}
+
 provideBreadcrumb({
   separator: toRef(props, 'separator'),
   separatorSlot: computed(() => slots.separator),
@@ -71,6 +82,7 @@ provideBreadcrumb({
   unregister,
   isVisible,
   showEllipsisBefore,
+  isLastVisible,
 })
 </script>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { injectConfig } from '../../hooks/useConfig'
+import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import type { DanSize } from '../../hooks/useConfig'
 import './style.css'
@@ -33,9 +33,9 @@ const emit = defineEmits<{
   change: [value: string | number]
 }>()
 
-const config = injectConfig()
+const { resolveSize } = useFormItem()
 const ns = useNamespace('segmented')
-const resolvedSize = computed(() => props.size ?? config.size.value)
+const resolvedSize = computed(() => resolveSize(props.size))
 
 function select(option: SegmentedOption) {
   if (props.disabled || option.disabled) return

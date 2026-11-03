@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { injectConfig } from '../../hooks/useConfig'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import { useLocale } from '../../locale'
@@ -47,7 +46,7 @@ const props = withDefaults(
     endPlaceholder?: string
     disabledDate?: (date: Date) => boolean
     shortcuts?: DatePickerShortcut[]
-    /** ËåÉÂõ¥Ê®°Âºè‰∏ãÂ∑¶Âè≥Èù¢ÊùøÊúà‰ªΩÂèØÁã¨Á´ãÂàáÊç¢ */
+    /** ∑∂Œßƒ£ Ωœ¬◊Û”“√Ê∞Â‘¬∑›ø…∂¿¡¢«–ªª */
     unlinkPanels?: boolean
   }>(),
   {
@@ -80,8 +79,7 @@ const emit = defineEmits<{
   visibleChange: [visible: boolean]
 }>()
 
-const config = injectConfig()
-const { form, emitChange } = useFormItem()
+const { form, emitChange, resolveSize } = useFormItem()
 const ns = useNamespace('date-picker')
 
 const opened = ref(false)
@@ -142,7 +140,7 @@ const viewEndDate = ref(
 const monthCells = computed(() =>
   Array.from({ length: 12 }, (_, i) => ({
     month: i,
-    label: `${i + 1}Êúà`,
+    label: `${i + 1}‘¬`,
   })),
 )
 
@@ -175,7 +173,7 @@ function nextDecade() {
   viewDate.value = new Date(viewDate.value.getFullYear() + 10, 0, 1)
 }
 
-const resolvedSize = computed(() => props.size ?? config.size.value)
+const resolvedSize = computed(() => resolveSize(props.size))
 const isDisabled = computed(
   () => props.disabled || form?.disabled.value === true,
 )
@@ -209,11 +207,11 @@ const showClear = computed(
 )
 const monthLabel = computed(
   () =>
-    `${viewDate.value.getFullYear()} Âπ¥ ${viewDate.value.getMonth() + 1} Êúà`,
+    `${viewDate.value.getFullYear()} ƒÍ ${viewDate.value.getMonth() + 1} ‘¬`,
 )
 const endMonthLabel = computed(
   () =>
-    `${viewEndDate.value.getFullYear()} Âπ¥ ${viewEndDate.value.getMonth() + 1} Êúà`,
+    `${viewEndDate.value.getFullYear()} ƒÍ ${viewEndDate.value.getMonth() + 1} ‘¬`,
 )
 const cells = computed(() => buildCalendarDays(viewDate.value))
 const endCells = computed(() => buildCalendarDays(viewEndDate.value))
@@ -643,10 +641,10 @@ onBeforeUnmount(() => {
       v-if="showClear"
       type="button"
       :class="ns.e('clear')"
-      aria-label="Ê∏ÖÈô§"
+      aria-label="«Â≥˝"
       @click="clearValue"
     >
-      √ó
+      °¡
     </button>
 
     <Teleport to="body">
@@ -656,7 +654,7 @@ onBeforeUnmount(() => {
         :class="[ns.e('panel'), shortcuts.length ? ns.is('with-shortcuts', true) : '']"
         :style="panelStyle"
         role="dialog"
-        aria-label="Êó•ÊúüÈù¢Êùø"
+        aria-label="»’∆⁄√Ê∞Â"
       >
         <div v-if="shortcuts.length" :class="ns.e('shortcuts')">
           <button
@@ -674,12 +672,12 @@ onBeforeUnmount(() => {
             <button
               type="button"
               :class="ns.e('nav')"
-              aria-label="‰∏ä‰∏ÄÊ≠•"
+              aria-label="…œ“ª≤Ω"
               @click="
                 isYear ? prevDecade() : isMonth ? prevYear() : prevMonth()
               "
             >
-              ‚Äπ
+              ?
             </button>
             <span :class="ns.e('month')">
               {{
@@ -693,12 +691,12 @@ onBeforeUnmount(() => {
             <button
               type="button"
               :class="ns.e('nav')"
-              aria-label="‰∏ã‰∏ÄÊ≠•"
+              aria-label="œ¬“ª≤Ω"
               @click="
                 isYear ? nextDecade() : isMonth ? nextYear() : nextMonth()
               "
             >
-              ‚Ä∫
+              ?
             </button>
           </div>
 
@@ -749,19 +747,19 @@ onBeforeUnmount(() => {
                   <button
                     type="button"
                     :class="ns.e('nav')"
-                    aria-label="‰∏ä‰∏ÄÊúà"
+                    aria-label="…œ“ª‘¬"
                     @click="prevMonth"
                   >
-                    ‚Äπ
+                    ?
                   </button>
                   <span :class="ns.e('month')">{{ monthLabel }}</span>
                   <button
                     type="button"
                     :class="ns.e('nav')"
-                    aria-label="‰∏ã‰∏ÄÊúà"
+                    aria-label="œ¬“ª‘¬"
                     @click="nextMonth"
                   >
-                    ‚Ä∫
+                    ?
                   </button>
                 </div>
                 <div :class="ns.e('weekdays')">
@@ -787,19 +785,19 @@ onBeforeUnmount(() => {
                   <button
                     type="button"
                     :class="ns.e('nav')"
-                    aria-label="‰∏ä‰∏ÄÊúà"
+                    aria-label="…œ“ª‘¬"
                     @click="prevEndMonth"
                   >
-                    ‚Äπ
+                    ?
                   </button>
                   <span :class="ns.e('month')">{{ endMonthLabel }}</span>
                   <button
                     type="button"
                     :class="ns.e('nav')"
-                    aria-label="‰∏ã‰∏ÄÊúà"
+                    aria-label="œ¬“ª‘¬"
                     @click="nextEndMonth"
                   >
-                    ‚Ä∫
+                    ?
                   </button>
                 </div>
                 <div :class="ns.e('weekdays')">
@@ -843,7 +841,7 @@ onBeforeUnmount(() => {
 
           <div v-if="isDateTime" :class="ns.e('time')">
             <div :class="ns.e('time-block')">
-              <span>{{ isRange ? 'ÂºÄÂßã' : 'Êó∂Èó¥' }}</span>
+              <span>{{ isRange ? 'ø™ º' : ' ±º‰' }}</span>
               <select
                 :class="ns.e('time-select')"
                 :value="draftHour"
@@ -871,7 +869,7 @@ onBeforeUnmount(() => {
               </select>
             </div>
             <div v-if="isRange" :class="ns.e('time-block')">
-              <span>ÁªìÊùü</span>
+              <span>Ω· ¯</span>
               <select
                 :class="ns.e('time-select')"
                 :value="draftEndHour"

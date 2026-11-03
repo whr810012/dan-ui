@@ -114,10 +114,22 @@ watch([rightIndeterminate, rightAllChecked], async () => {
   }
 })
 
+watch(
+  () => [props.modelValue, props.data] as const,
+  () => {
+    const leftKeys = new Set(leftData.value.map((item) => item.key))
+    const rightKeys = new Set(rightData.value.map((item) => item.key))
+    leftChecked.value = leftChecked.value.filter((key) => leftKeys.has(key))
+    rightChecked.value = rightChecked.value.filter((key) => rightKeys.has(key))
+  },
+)
+
 function moveToRight() {
   if (isDisabled.value || !leftChecked.value.length) return
-  const moved = [...leftChecked.value]
-  const next = [...props.modelValue, ...moved]
+  const leftKeys = new Set(leftData.value.map((item) => item.key))
+  const moved = leftChecked.value.filter((key) => leftKeys.has(key))
+  if (!moved.length) return
+  const next = Array.from(new Set([...props.modelValue, ...moved]))
   leftChecked.value = []
   emit('update:modelValue', next)
   emit('change', next, 'right', moved)
@@ -126,8 +138,11 @@ function moveToRight() {
 
 function moveToLeft() {
   if (isDisabled.value || !rightChecked.value.length) return
-  const moved = [...rightChecked.value]
-  const next = props.modelValue.filter((key) => !moved.includes(key))
+  const rightKeys = new Set(rightData.value.map((item) => item.key))
+  const moved = rightChecked.value.filter((key) => rightKeys.has(key))
+  if (!moved.length) return
+  const movedSet = new Set(moved)
+  const next = props.modelValue.filter((key) => !movedSet.has(key))
   rightChecked.value = []
   emit('update:modelValue', next)
   emit('change', next, 'left', moved)
@@ -191,6 +206,7 @@ const leftButtonText = computed(() => props.buttonTexts[1] || '‹')
         v-model="leftQuery"
         :class="ns.e('filter')"
         :placeholder="filterPlaceholder"
+        :disabled="isDisabled"
       />
       <ul :class="ns.e('list')">
         <li
@@ -253,6 +269,7 @@ const leftButtonText = computed(() => props.buttonTexts[1] || '‹')
         v-model="rightQuery"
         :class="ns.e('filter')"
         :placeholder="filterPlaceholder"
+        :disabled="isDisabled"
       />
       <ul :class="ns.e('list')">
         <li
