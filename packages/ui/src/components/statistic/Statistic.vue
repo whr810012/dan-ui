@@ -12,6 +12,12 @@ const props = withDefaults(
     prefix?: string
     suffix?: string
     precision?: number
+    /** 千分位分隔符，传空字符串可关闭 */
+    groupSeparator?: string
+    /** 小数点字符 */
+    decimalSeparator?: string
+    /** 自定义格式化；优先于分隔符逻辑 */
+    formatter?: (value: string | number) => string
     valueStyle?: Record<string, string>
   }>(),
   {
@@ -20,15 +26,29 @@ const props = withDefaults(
     prefix: '',
     suffix: '',
     precision: 0,
+    groupSeparator: ',',
+    decimalSeparator: '.',
   },
 )
 
 const ns = useNamespace('statistic')
 
+function formatNumber(value: number): string {
+  const fixed = value.toFixed(props.precision)
+  const [intPart, fracPart] = fixed.split('.')
+  const negative = intPart.startsWith('-')
+  const digits = negative ? intPart.slice(1) : intPart
+  const grouped = props.groupSeparator
+    ? digits.replace(/\B(?=(\d{3})+(?!\d))/g, props.groupSeparator)
+    : digits
+  const signed = negative ? `-${grouped}` : grouped
+  if (fracPart == null) return signed
+  return `${signed}${props.decimalSeparator}${fracPart}`
+}
+
 const displayValue = computed(() => {
-  if (typeof props.value === 'number') {
-    return props.value.toFixed(props.precision)
-  }
+  if (props.formatter) return props.formatter(props.value)
+  if (typeof props.value === 'number') return formatNumber(props.value)
   return props.value
 })
 </script>

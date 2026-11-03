@@ -25,6 +25,8 @@ import basicSrc from './demos/carousel/basic.vue?raw'
 | loop | 循环 | `boolean` | `true` |
 | arrow | 箭头显示 | `'always' \| 'hover' \| 'never'` | `'hover'` |
 | indicator | 指示器 | `boolean` | `true` |
+| pauseOnHover | 悬停暂停自动播放 | `boolean` | `true` |
+| trigger | 指示器触发方式 | `'click' \| 'hover'` | `'click'` |
 
 ## Events
 

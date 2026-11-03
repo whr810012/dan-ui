@@ -24,6 +24,10 @@ const props = withDefaults(
     loop?: boolean
     arrow?: 'always' | 'hover' | 'never'
     indicator?: boolean
+    /** 鼠标悬停是否暂停自动播放 */
+    pauseOnHover?: boolean
+    /** 指示器触发方式 */
+    trigger?: 'click' | 'hover'
   }>(),
   {
     modelValue: 0,
@@ -33,6 +37,8 @@ const props = withDefaults(
     loop: true,
     arrow: 'hover',
     indicator: true,
+    pauseOnHover: true,
+    trigger: 'click',
   },
 )
 
@@ -116,12 +122,16 @@ provide(carouselContextKey, {
 
 function onMouseEnter() {
   hover.value = true
-  clearTimer()
+  if (props.pauseOnHover) clearTimer()
 }
 
 function onMouseLeave() {
   hover.value = false
-  startTimer()
+  if (props.pauseOnHover) startTimer()
+}
+
+function onIndicatorEnter(index: number) {
+  if (props.trigger === 'hover') setActive(index)
 }
 
 defineExpose({
@@ -171,6 +181,7 @@ defineExpose({
           type="button"
           :aria-label="`切换到第 ${index + 1} 张`"
           @click="setActive(index)"
+          @mouseenter="onIndicatorEnter(index)"
         />
       </li>
     </ul>

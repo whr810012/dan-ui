@@ -38,6 +38,14 @@ import gallerySrc from './demos/image/gallery.vue?raw'
 | previewSrc | 预览大图，默认用 src | `string` | `''` |
 | previewSrcList | 多图预览列表 | `string[]` | `[]` |
 | initialIndex | 打开预览时的初始下标 | `number` | `0` |
+| zIndex | 预览层 z-index | `number` | 主题模态层 |
+
+## Slots
+
+| 插槽 | 说明 |
+|------|------|
+| placeholder | 加载中占位 |
+| error | 加载失败占位 |
 
 ## Events
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.46.0
+
+- Statistic：`groupSeparator` / `decimalSeparator` / `formatter`
+- Carousel：`pauseOnHover`、指示器 `trigger`（click / hover）
+- Image：`#placeholder` 加载态、`zIndex` 预览层级
+
 ## 2.45.0
 
 - Timeline：`mode`（`left` / `right` / `alternate`）；TimelineItem.`placement` 控制时间戳上下

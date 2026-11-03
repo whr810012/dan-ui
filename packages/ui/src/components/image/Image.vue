@@ -18,6 +18,8 @@ const props = withDefaults(
     previewSrcList?: string[]
     /** 打开预览时的初始下标（相对 previewSrcList） */
     initialIndex?: number
+    /** 预览层 z-index */
+    zIndex?: number
   }>(),
   {
     src: '',
@@ -28,6 +30,7 @@ const props = withDefaults(
     previewSrc: '',
     previewSrcList: () => [],
     initialIndex: 0,
+    zIndex: undefined,
   },
 )
 
@@ -40,6 +43,7 @@ const emit = defineEmits<{
 
 const ns = useNamespace('image')
 const hasError = ref(false)
+const loaded = ref(false)
 const previewVisible = ref(false)
 const previewIndex = ref(0)
 
@@ -55,15 +59,30 @@ const currentPreviewSrc = computed(
 
 const showNav = computed(() => previewList.value.length > 1)
 
+const showPlaceholder = computed(
+  () => Boolean(props.src) && !hasError.value && !loaded.value,
+)
+
+const previewStyle = computed(() =>
+  props.zIndex == null ? undefined : { zIndex: String(props.zIndex) },
+)
+
 watch(
   () => props.src,
   () => {
     hasError.value = false
+    loaded.value = false
   },
 )
 
+function onLoad(event: Event) {
+  loaded.value = true
+  emit('load', event)
+}
+
 function onError(event: Event) {
   hasError.value = true
+  loaded.value = false
   emit('error', event)
 }
 
@@ -86,7 +105,7 @@ function resolveOpenIndex() {
 }
 
 function openPreview() {
-  if (!props.preview || hasError.value) return
+  if (!props.preview || hasError.value || !loaded.value) return
   if (!previewList.value.length) return
   previewIndex.value = resolveOpenIndex()
   previewVisible.value = true
@@ -139,18 +158,27 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div :class="[ns.b(), ns.is('error', hasError)]" @click="openPreview">
+  <div
+    :class="[ns.b(), ns.is('error', hasError), ns.is('loading', showPlaceholder)]"
+    @click="openPreview"
+  >
+    <div v-if="showPlaceholder" :class="ns.e('placeholder')">
+      <slot name="placeholder">
+        <div :class="ns.e('skeleton')" />
+      </slot>
+    </div>
     <img
+      v-show="src && !hasError && loaded"
       v-if="src && !hasError"
       :class="ns.e('inner')"
       :src="src"
       :alt="alt"
       :loading="lazy ? 'lazy' : 'eager'"
       :style="{ objectFit: fit }"
-      @load="emit('load', $event)"
+      @load="onLoad"
       @error="onError"
     />
-    <div v-else :class="ns.e('placeholder')">
+    <div v-else-if="!src || hasError" :class="ns.e('placeholder')">
       <slot name="error">
         <DanIcon name="error" :size="28" />
         <span>加载失败</span>
@@ -161,6 +189,7 @@ onBeforeUnmount(() => {
       <div
         v-if="previewVisible"
         :class="ns.e('preview')"
+        :style="previewStyle"
         role="dialog"
         aria-modal="true"
         @click="closePreview"
