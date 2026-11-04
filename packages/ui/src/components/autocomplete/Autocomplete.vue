@@ -17,9 +17,9 @@ const props = withDefaults(
     placeholder?: string
     clearable?: boolean
     triggerOnFocus?: boolean
-    /** ����������� */
+    /** 请求防抖毫秒 */
     debounce?: number
-    /** ��ҵ����Ƶļ���̬ */
+    /** 由业务控制的加载态 */
     loading?: boolean
     fetchSuggestions?: (
       query: string,
@@ -220,10 +220,10 @@ onBeforeUnmount(() => {
       v-if="clearable && modelValue && !isDisabled"
       type="button"
       :class="ns.e('clear')"
-      aria-label="���"
+      aria-label="清除"
       @click="clear"
     >
-      ��
+      ×
     </button>
     <Teleport to="body">
       <ul

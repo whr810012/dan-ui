@@ -16,13 +16,13 @@ const props = withDefaults(
     placeholder?: string
     rows?: number
     maxlength?: number
-    /** չʾ����ͳ�ƣ������ maxlength������ʱ��չʾ�� */
+    /** 展示字数统计（需配合 maxlength；禁用时不展示） */
     showWordLimit?: boolean
-    /** ��ʾֵ��ʽ�� */
+    /** 显示值格式化 */
     formatter?: (value: string) => string
-    /** ����������� modelValue */
+    /** 将输入解析回 modelValue */
     parser?: (value: string) => string
-    /** ����Ӧ�߶ȣ��ɴ� `{ minRows, maxRows }` */
+    /** 自适应高度；可传 `{ minRows, maxRows }` */
     autosize?: AutosizeOption
   }>(),
   {

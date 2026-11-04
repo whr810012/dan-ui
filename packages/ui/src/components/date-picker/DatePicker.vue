@@ -46,7 +46,7 @@ const props = withDefaults(
     endPlaceholder?: string
     disabledDate?: (date: Date) => boolean
     shortcuts?: DatePickerShortcut[]
-    /** ��Χģʽ����������·ݿɶ����л� */
+    /** 范围模式下左右面板月份可独立切换 */
     unlinkPanels?: boolean
   }>(),
   {
@@ -140,7 +140,7 @@ const viewEndDate = ref(
 const monthCells = computed(() =>
   Array.from({ length: 12 }, (_, i) => ({
     month: i,
-    label: `${i + 1}��`,
+    label: `${i + 1}月`,
   })),
 )
 
@@ -207,11 +207,11 @@ const showClear = computed(
 )
 const monthLabel = computed(
   () =>
-    `${viewDate.value.getFullYear()} �� ${viewDate.value.getMonth() + 1} ��`,
+    `${viewDate.value.getFullYear()} 年 ${viewDate.value.getMonth() + 1} 月`,
 )
 const endMonthLabel = computed(
   () =>
-    `${viewEndDate.value.getFullYear()} �� ${viewEndDate.value.getMonth() + 1} ��`,
+    `${viewEndDate.value.getFullYear()} 年 ${viewEndDate.value.getMonth() + 1} 月`,
 )
 const cells = computed(() => buildCalendarDays(viewDate.value))
 const endCells = computed(() => buildCalendarDays(viewEndDate.value))
@@ -641,10 +641,10 @@ onBeforeUnmount(() => {
       v-if="showClear"
       type="button"
       :class="ns.e('clear')"
-      aria-label="���"
+      aria-label="清除"
       @click="clearValue"
     >
-      ��
+      ×
     </button>
 
     <Teleport to="body">
@@ -657,7 +657,7 @@ onBeforeUnmount(() => {
         ]"
         :style="panelStyle"
         role="dialog"
-        aria-label="�������"
+        aria-label="日期面板"
       >
         <div v-if="shortcuts.length" :class="ns.e('shortcuts')">
           <button
@@ -675,12 +675,12 @@ onBeforeUnmount(() => {
             <button
               type="button"
               :class="ns.e('nav')"
-              aria-label="��һ��"
+              aria-label="上一步"
               @click="
                 isYear ? prevDecade() : isMonth ? prevYear() : prevMonth()
               "
             >
-              ?
+              ‹
             </button>
             <span :class="ns.e('month')">
               {{
@@ -694,12 +694,12 @@ onBeforeUnmount(() => {
             <button
               type="button"
               :class="ns.e('nav')"
-              aria-label="��һ��"
+              aria-label="下一步"
               @click="
                 isYear ? nextDecade() : isMonth ? nextYear() : nextMonth()
               "
             >
-              ?
+              ›
             </button>
           </div>
 
@@ -747,19 +747,19 @@ onBeforeUnmount(() => {
                   <button
                     type="button"
                     :class="ns.e('nav')"
-                    aria-label="��һ��"
+                    aria-label="上一月"
                     @click="prevMonth"
                   >
-                    ?
+                    ‹
                   </button>
                   <span :class="ns.e('month')">{{ monthLabel }}</span>
                   <button
                     type="button"
                     :class="ns.e('nav')"
-                    aria-label="��һ��"
+                    aria-label="下一月"
                     @click="nextMonth"
                   >
-                    ?
+                    ›
                   </button>
                 </div>
                 <div :class="ns.e('weekdays')">
@@ -785,19 +785,19 @@ onBeforeUnmount(() => {
                   <button
                     type="button"
                     :class="ns.e('nav')"
-                    aria-label="��һ��"
+                    aria-label="上一月"
                     @click="prevEndMonth"
                   >
-                    ?
+                    ‹
                   </button>
                   <span :class="ns.e('month')">{{ endMonthLabel }}</span>
                   <button
                     type="button"
                     :class="ns.e('nav')"
-                    aria-label="��һ��"
+                    aria-label="下一月"
                     @click="nextEndMonth"
                   >
-                    ?
+                    ›
                   </button>
                 </div>
                 <div :class="ns.e('weekdays')">
@@ -841,7 +841,7 @@ onBeforeUnmount(() => {
 
           <div v-if="isDateTime" :class="ns.e('time')">
             <div :class="ns.e('time-block')">
-              <span>{{ isRange ? '��ʼ' : 'ʱ��' }}</span>
+              <span>{{ isRange ? '开始' : '时间' }}</span>
               <select
                 :class="ns.e('time-select')"
                 :value="draftHour"
@@ -869,7 +869,7 @@ onBeforeUnmount(() => {
               </select>
             </div>
             <div v-if="isRange" :class="ns.e('time-block')">
-              <span>����</span>
+              <span>结束</span>
               <select
                 :class="ns.e('time-select')"
                 :value="draftEndHour"

@@ -31,17 +31,17 @@ const props = withDefaults(
     multiple?: boolean
     filterable?: boolean
     collapseTags?: boolean
-    /** collapseTags ʱ���չʾ�ı�ǩ���������۵�Ϊ +N */
+    /** collapseTags 时最多展示的标签数，其余折叠为 +N */
     maxCollapseTags?: number
     virtual?: boolean
     itemHeight?: number
     maxDropdownHeight?: number
-    /** Զ�������������˱��� options������ remoteMethod ���� */
+    /** 远程搜索：不过滤本地 options，改由 remoteMethod 拉数 */
     remote?: boolean
     remoteMethod?: (query: string) => void
-    /** Զ�������У���ҵ����ƣ� */
+    /** 远程请求中（由业务控制） */
     loading?: boolean
-    /** Զ�̷����������� */
+    /** 远程方法防抖毫秒 */
     remoteDebounce?: number
   }>(),
   {
@@ -478,7 +478,7 @@ onBeforeUnmount(() => {
             :class="ns.e('tag')"
           >
             {{ label }}
-            <i @click="removeTag(selectedValues[i]!, $event)">��</i>
+            <i @click="removeTag(selectedValues[i]!, $event)">×</i>
           </span>
           <span v-if="collapsedTagExtra > 0" :class="ns.e('tag')">
             +{{ collapsedTagExtra }}
@@ -499,7 +499,7 @@ onBeforeUnmount(() => {
       @mousedown.prevent
       @click="onClear"
     >
-      ��
+      ×
     </span>
     <span :class="ns.e('arrow')" aria-hidden="true" />
   </div>
@@ -554,7 +554,7 @@ onBeforeUnmount(() => {
             @mouseenter="!item.disabled && (highlightIndex = index)"
           >
             <span v-if="multiple" :class="ns.e('check')">
-              {{ isSelected(item.value) ? '?' : '' }}
+              {{ isSelected(item.value) ? '✓' : '' }}
             </span>
             {{ item.label }}
           </div>

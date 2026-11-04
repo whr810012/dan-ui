@@ -17,7 +17,7 @@ const props = withDefaults(
     collapseTags?: boolean
     max?: number
     placeholder?: string
-    /** ����ָ�����Enter ʼ�����ӣ���Ĭ�� `,` */
+    /** 额外分隔符（Enter 始终添加）；默认 `,` */
     delimiter?: string
   }>(),
   {
@@ -197,10 +197,10 @@ defineExpose({ focus: focusInput })
       v-if="showClear"
       type="button"
       :class="ns.e('clear')"
-      aria-label="���"
+      aria-label="清空"
       @click.stop="onClear"
     >
-      ��
+      ×
     </button>
   </div>
 </template>

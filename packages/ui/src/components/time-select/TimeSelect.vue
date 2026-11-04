@@ -15,22 +15,22 @@ const props = withDefaults(
     disabled?: boolean
     clearable?: boolean
     placeholder?: string
-    /** ÆðÊ¼Ê±¿Ì HH:mm */
+    /** èµ·å§‹æ—¶åˆ» HH:mm */
     start?: string
-    /** ½áÊøÊ±¿Ì HH:mm */
+    /** ç»“æŸæ—¶åˆ» HH:mm */
     end?: string
-    /** ²½½ø£¬Ö§³Ö·ÖÖÓÊý»ò HH:mm Ê±³¤ */
+    /** æ­¥è¿›ï¼Œæ”¯æŒåˆ†é’Ÿæ•°æˆ– HH:mm æ—¶é•¿ */
     step?: number | string
-    /** ¿ÉÑ¡ÏÂÏÞ£¨º¬£© */
+    /** å¯é€‰ä¸‹é™ï¼ˆå«ï¼‰ */
     minTime?: string | null
-    /** ¿ÉÑ¡ÉÏÏÞ£¨º¬£© */
+    /** å¯é€‰ä¸Šé™ï¼ˆå«ï¼‰ */
     maxTime?: string | null
   }>(),
   {
     modelValue: null,
     disabled: false,
     clearable: false,
-    placeholder: 'Ñ¡ÔñÊ±¼ä',
+    placeholder: 'é€‰æ‹©æ—¶é—´',
     start: '09:00',
     end: '18:00',
     step: '00:30',
@@ -167,10 +167,10 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
       v-if="showClear"
       type="button"
       :class="ns.e('clear')"
-      aria-label="Çå³ý"
+      aria-label="æ¸…é™¤"
       @click="clearValue"
     >
-      ¡Á
+      Ã—
     </button>
     <Teleport to="body">
       <div
@@ -188,7 +188,7 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
           >
             {{ item }}
           </li>
-          <li v-if="!options.length" :class="ns.e('empty')">ÎÞ¿ÉÓÃÊ±¼ä</li>
+          <li v-if="!options.length" :class="ns.e('empty')">æ— å¯ç”¨æ—¶é—´</li>
         </ul>
       </div>
     </Teleport>

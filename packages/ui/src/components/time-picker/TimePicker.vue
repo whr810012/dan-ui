@@ -28,9 +28,9 @@ const props = withDefaults(
     isRange: false,
     disabled: false,
     clearable: false,
-    placeholder: 'ѡ��ʱ��',
-    startPlaceholder: '��ʼʱ��',
-    endPlaceholder: '����ʱ��',
+    placeholder: '选择时间',
+    startPlaceholder: '开始时间',
+    endPlaceholder: '结束时间',
     step: 5,
   },
 )
@@ -219,10 +219,10 @@ onBeforeUnmount(() => {
       v-if="showClear"
       type="button"
       :class="ns.e('clear')"
-      aria-label="���"
+      aria-label="清除"
       @click="clearValue"
     >
-      ��
+      ×
     </button>
     <Teleport to="body">
       <div

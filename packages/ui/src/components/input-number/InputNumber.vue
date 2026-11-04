@@ -197,10 +197,10 @@ watch(
         ns.is('disabled', isDisabled || readonly || minDisabled),
       ]"
       :disabled="isDisabled || readonly || minDisabled"
-      aria-label="¼õÉÙ"
+      aria-label="å‡å°‘"
       @click="decrease"
     >
-      ?
+      âˆ’
     </button>
     <input
       :class="ns.e('inner')"
@@ -231,7 +231,7 @@ watch(
         ns.is('disabled', isDisabled || readonly || maxDisabled),
       ]"
       :disabled="isDisabled || readonly || maxDisabled"
-      aria-label="Ôö¼Ó"
+      aria-label="å¢žåŠ "
       @click="increase"
     >
       +
