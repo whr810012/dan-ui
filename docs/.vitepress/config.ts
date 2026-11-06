@@ -182,8 +182,12 @@ export default defineConfig({
   description: 'Vue 3 通用基础 UI 组件库',
   lang: 'zh-CN',
   srcExclude: ['**/plans/**', 'DOC_PLAN.md', 'components-roadmap.md'],
+  head: [
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/dan-ui/logo.svg' }],
+  ],
   themeConfig: {
-    logo: undefined,
+    logo: '/logo.svg',
+    darkLogo: '/logo-dark.svg',
     nav: [
       { text: '指南', link: '/guide/introduction' },
       { text: '组件', link: '/components/button' },

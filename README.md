@@ -1,4 +1,8 @@
-# dan-ui
+<p align="center">
+  <img src="https://raw.githubusercontent.com/whr810012/dan-ui/master/docs/public/logo.svg" width="96" height="96" alt="dan-ui logo" />
+</p>
+
+<h1 align="center">dan-ui</h1>
 
 <p align="center">
   <strong>Vue 3</strong> 通用 UI 组件库 · 中后台 · 表格表单 · AI 对话壳 · 富文本
