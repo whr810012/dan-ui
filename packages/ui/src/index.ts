@@ -1,4 +1,5 @@
 import type { App, Plugin } from 'vue'
+import './styles/animations.css'
 import * as components from './components'
 
 export * from './components'

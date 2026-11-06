@@ -1,0 +1,23 @@
+@keyframes dan-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dan-select__dropdown,
+  .dan-date-picker__panel,
+  .dan-cascader__panel,
+  .dan-time-picker__panel,
+  .dan-time-select__panel,
+  .dan-autocomplete__panel,
+  .dan-tree-select__panel {
+    animation: none;
+  }
+}

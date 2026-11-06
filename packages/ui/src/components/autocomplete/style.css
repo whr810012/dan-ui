@@ -58,9 +58,11 @@
   border: 1px solid var(--dan-color-border);
   border-radius: var(--dan-radius-md);
   background: var(--dan-color-bg-elevated);
-  box-shadow: var(--dan-shadow-md);
+  box-shadow: var(--dan-shadow-lg);
   max-height: 220px;
   overflow: auto;
+  transform-origin: top;
+  animation: dan-pop var(--dan-duration-normal) var(--dan-ease);
 }
 
 .dan-autocomplete__item {

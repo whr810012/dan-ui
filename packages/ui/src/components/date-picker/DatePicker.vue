@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { DanIcon } from '../icon'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useNamespace } from '../../hooks/useNamespace'
 import { useLocale } from '../../locale'
@@ -635,7 +636,12 @@ onBeforeUnmount(() => {
             : resolvedPlaceholder
         }}
       </span>
-      <span :class="ns.e('suffix')" aria-hidden="true" />
+      <DanIcon
+        name="chevron-down"
+        :size="14"
+        :class="ns.e('suffix')"
+        aria-hidden="true"
+      />
     </button>
     <button
       v-if="showClear"
@@ -644,7 +650,7 @@ onBeforeUnmount(() => {
       aria-label="清除"
       @click="clearValue"
     >
-      ×
+      <DanIcon name="close" :size="12" />
     </button>
 
     <Teleport to="body">
@@ -680,7 +686,7 @@ onBeforeUnmount(() => {
                 isYear ? prevDecade() : isMonth ? prevYear() : prevMonth()
               "
             >
-              ‹
+              <DanIcon name="chevron-left" :size="14" />
             </button>
             <span :class="ns.e('month')">
               {{
@@ -699,7 +705,7 @@ onBeforeUnmount(() => {
                 isYear ? nextDecade() : isMonth ? nextYear() : nextMonth()
               "
             >
-              ›
+              <DanIcon name="chevron-right" :size="14" />
             </button>
           </div>
 
@@ -750,7 +756,7 @@ onBeforeUnmount(() => {
                     aria-label="上一月"
                     @click="prevMonth"
                   >
-                    ‹
+                    <DanIcon name="chevron-left" :size="14" />
                   </button>
                   <span :class="ns.e('month')">{{ monthLabel }}</span>
                   <button
@@ -759,7 +765,7 @@ onBeforeUnmount(() => {
                     aria-label="下一月"
                     @click="nextMonth"
                   >
-                    ›
+                    <DanIcon name="chevron-right" :size="14" />
                   </button>
                 </div>
                 <div :class="ns.e('weekdays')">
@@ -788,7 +794,7 @@ onBeforeUnmount(() => {
                     aria-label="上一月"
                     @click="prevEndMonth"
                   >
-                    ‹
+                    <DanIcon name="chevron-left" :size="14" />
                   </button>
                   <span :class="ns.e('month')">{{ endMonthLabel }}</span>
                   <button
@@ -797,7 +803,7 @@ onBeforeUnmount(() => {
                     aria-label="下一月"
                     @click="nextEndMonth"
                   >
-                    ›
+                    <DanIcon name="chevron-right" :size="14" />
                   </button>
                 </div>
                 <div :class="ns.e('weekdays')">

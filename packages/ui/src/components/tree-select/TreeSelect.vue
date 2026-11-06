@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useFormItem } from '../../hooks/useFormItem'
+import { DanIcon } from '../icon'
 import { useNamespace } from '../../hooks/useNamespace'
 import { useLocale } from '../../locale'
 import { DanTree } from '../tree'
@@ -260,7 +261,16 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
             :class="ns.e('tag')"
           >
             {{ item.label }}
-            <i @click="removeTag(item.id, $event)">×</i>
+            <span
+              :class="ns.e('tag-close')"
+              role="button"
+              tabindex="-1"
+              aria-label="移除"
+              @mousedown.prevent
+              @click="removeTag(item.id, $event)"
+            >
+              <DanIcon name="close" :size="12" />
+            </span>
           </span>
           <span v-if="hiddenTagCount" :class="ns.e('tag-more')">
             +{{ hiddenTagCount }}
@@ -269,7 +279,12 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
       </template>
       <span v-else-if="display" :class="ns.e('value')">{{ display }}</span>
       <span v-else :class="ns.e('placeholder')">{{ resolvedPlaceholder }}</span>
-      <span :class="ns.e('suffix')" aria-hidden="true" />
+      <DanIcon
+        name="chevron-down"
+        :size="14"
+        :class="ns.e('suffix')"
+        aria-hidden="true"
+      />
     </button>
     <button
       v-if="showClear"
@@ -278,7 +293,7 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
       aria-label="清除"
       @click="clear"
     >
-      ×
+      <DanIcon name="close" :size="12" />
     </button>
     <Teleport to="body">
       <div

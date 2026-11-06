@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs } from 'vue'
 import { useFormItem } from '../../hooks/useFormItem'
+import { DanIcon } from '../icon'
 import { useNamespace } from '../../hooks/useNamespace'
 import type { DanSize } from '../../hooks/useConfig'
 import './style.css'
@@ -170,7 +171,7 @@ function onClear() {
       @mousedown.prevent
       @click="onClear"
     >
-      ×
+      <DanIcon name="close" :size="12" />
     </span>
     <span v-if="$slots.suffix" :class="ns.e('suffix')">
       <slot name="suffix" />

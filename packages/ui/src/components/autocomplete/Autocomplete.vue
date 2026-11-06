@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useFormItem } from '../../hooks/useFormItem'
+import { DanIcon } from '../icon'
 import { useLocale } from '../../locale'
 import { useNamespace } from '../../hooks/useNamespace'
 import type { DanSize } from '../../hooks/useConfig'
@@ -223,7 +224,7 @@ onBeforeUnmount(() => {
       aria-label="清除"
       @click="clear"
     >
-      ×
+      <DanIcon name="close" :size="12" />
     </button>
     <Teleport to="body">
       <ul

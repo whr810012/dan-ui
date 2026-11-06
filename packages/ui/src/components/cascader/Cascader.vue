@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useFormItem } from '../../hooks/useFormItem'
+import { DanIcon } from '../icon'
 import { useNamespace } from '../../hooks/useNamespace'
 import { useLocale } from '../../locale'
 import { DanCascaderPanel } from '../cascader-panel'
@@ -237,14 +238,16 @@ onBeforeUnmount(() => {
             :class="ns.e('tag')"
           >
             {{ tag.label }}
-            <button
-              type="button"
+            <span
               :class="ns.e('tag-close')"
+              role="button"
+              tabindex="-1"
               aria-label="移除"
+              @mousedown.prevent
               @click="removeTag(tag.path, $event)"
             >
-              ×
-            </button>
+              <DanIcon name="close" :size="12" />
+            </span>
           </span>
           <span v-if="hiddenTagCount" :class="ns.e('tag-more')">
             +{{ hiddenTagCount }}
@@ -255,7 +258,12 @@ onBeforeUnmount(() => {
         displayLabel
       }}</span>
       <span v-else :class="ns.e('placeholder')">{{ resolvedPlaceholder }}</span>
-      <span :class="ns.e('suffix')" aria-hidden="true" />
+      <DanIcon
+        name="chevron-down"
+        :size="14"
+        :class="ns.e('suffix')"
+        aria-hidden="true"
+      />
     </button>
     <button
       v-if="showClear"
@@ -264,7 +272,7 @@ onBeforeUnmount(() => {
       aria-label="清除"
       @click="clear"
     >
-      ×
+      <DanIcon name="close" :size="12" />
     </button>
     <Teleport to="body">
       <div

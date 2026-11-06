@@ -92,11 +92,7 @@
   position: absolute;
   top: 50%;
   right: 12px;
-  width: 0;
-  height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 5px solid var(--dan-color-text-placeholder);
+  color: var(--dan-color-text-placeholder);
   transform: translateY(-50%);
   pointer-events: none;
   transition: transform var(--dan-duration-fast) var(--dan-ease);
@@ -130,10 +126,18 @@
   line-height: 22px;
 }
 
-.dan-select__tag i {
-  font-style: normal;
-  cursor: pointer;
+.dan-select__tag-close {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
   color: var(--dan-color-text-secondary);
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.dan-select__tag-close:hover {
+  color: var(--dan-color-text);
+  opacity: 1;
 }
 
 .dan-select__dropdown {
@@ -147,8 +151,10 @@
   background: var(--dan-color-bg-elevated);
   border: 1px solid var(--dan-color-border);
   border-radius: var(--dan-radius-md);
-  box-shadow: var(--dan-shadow-md);
+  box-shadow: var(--dan-shadow-lg);
   color: var(--dan-color-text);
+  transform-origin: top;
+  animation: dan-pop var(--dan-duration-normal) var(--dan-ease);
 }
 
 .dan-select__filter {

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useFormItem } from '../../hooks/useFormItem'
+import { DanIcon } from '../icon'
 import { useNamespace } from '../../hooks/useNamespace'
 import type { DanSize } from '../../hooks/useConfig'
 import { formatTime, parseTime } from '../date-picker/dateUtils'
@@ -161,7 +162,12 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
     >
       <span v-if="modelValue" :class="ns.e('value')">{{ modelValue }}</span>
       <span v-else :class="ns.e('placeholder')">{{ placeholder }}</span>
-      <span :class="ns.e('suffix')" aria-hidden="true" />
+      <DanIcon
+        name="chevron-down"
+        :size="14"
+        :class="ns.e('suffix')"
+        aria-hidden="true"
+      />
     </button>
     <button
       v-if="showClear"
@@ -170,7 +176,7 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onDoc))
       aria-label="清除"
       @click="clearValue"
     >
-      ×
+      <DanIcon name="close" :size="12" />
     </button>
     <Teleport to="body">
       <div

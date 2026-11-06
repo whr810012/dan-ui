@@ -8,6 +8,7 @@ import {
   useAttrs,
   watch,
 } from 'vue'
+import { DanIcon } from '../icon'
 import { useFormItem } from '../../hooks/useFormItem'
 import { useLocale } from '../../locale'
 import { useNamespace } from '../../hooks/useNamespace'
@@ -478,7 +479,16 @@ onBeforeUnmount(() => {
             :class="ns.e('tag')"
           >
             {{ label }}
-            <i @click="removeTag(selectedValues[i]!, $event)">×</i>
+            <span
+              :class="ns.e('tag-close')"
+              role="button"
+              tabindex="-1"
+              aria-label="移除"
+              @mousedown.prevent
+              @click="removeTag(selectedValues[i]!, $event)"
+            >
+              <DanIcon name="close" :size="12" />
+            </span>
           </span>
           <span v-if="collapsedTagExtra > 0" :class="ns.e('tag')">
             +{{ collapsedTagExtra }}
@@ -499,9 +509,14 @@ onBeforeUnmount(() => {
       @mousedown.prevent
       @click="onClear"
     >
-      ×
+      <DanIcon name="close" :size="12" />
     </span>
-    <span :class="ns.e('arrow')" aria-hidden="true" />
+    <DanIcon
+      name="chevron-down"
+      :size="14"
+      :class="ns.e('arrow')"
+      aria-hidden="true"
+    />
   </div>
 
   <Teleport to="body">

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue'
 import { useFormItem } from '../../hooks/useFormItem'
+import { DanIcon } from '../icon'
 import { useNamespace } from '../../hooks/useNamespace'
 import type { DanSize } from '../../hooks/useConfig'
 import { DanTag } from '../tag'
@@ -200,7 +201,7 @@ defineExpose({ focus: focusInput })
       aria-label="清空"
       @click.stop="onClear"
     >
-      ×
+      <DanIcon name="close" :size="12" />
     </button>
   </div>
 </template>
