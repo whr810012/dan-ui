@@ -1,34 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="dan-ui">
   <defs>
-    <linearGradient id="dan-egg-shell" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#60a5fa" />
-      <stop offset="1" stop-color="#2563eb" />
-    </linearGradient>
-    <linearGradient id="dan-egg-shine" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff" stop-opacity="0.45" />
-      <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+    <linearGradient id="dan-egg-shell" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3b82f6" />
+      <stop offset="1" stop-color="#1d4ed8" />
     </linearGradient>
   </defs>
-
-  <!-- egg shell -->
   <path
-    d="M32 3.5C20.6 3.5 11 17.8 11 34.4c0 15 9.4 26.1 21 26.1s21-11.1 21-26.1C53 17.8 43.4 3.5 32 3.5Z"
+    d="M32 4C22.6 4 15 13.4 14.2 25.6 13.3 39.5 21.5 58 32 58s18.7-18.5 17.8-32.4C49 13.4 41.4 4 32 4Z"
     fill="url(#dan-egg-shell)"
   />
-
-  <!-- top-left shine -->
-  <ellipse cx="25.5" cy="20" rx="8" ry="10.5" fill="url(#dan-egg-shine)" transform="rotate(-20 25.5 20)" />
-
-  <!-- code glyph -->
   <g
     fill="none"
     stroke="#ffffff"
-    stroke-width="3.6"
+    stroke-width="3.4"
     stroke-linecap="round"
     stroke-linejoin="round"
   >
-    <path d="M24.5 28.5 18 35l6.5 6.5" />
-    <path d="M39.5 28.5 46 35l-6.5 6.5" />
-    <path d="M35 25.5 29 44.5" />
+    <path d="M25.5 27 19.5 33l6 6" />
+    <path d="M38.5 27 44.5 33l-6 6" />
   </g>
+  <circle cx="32" cy="33" r="3.4" fill="#fbbf24" />
 </svg>
