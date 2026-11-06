@@ -6,6 +6,7 @@
     </linearGradient>
   </defs>
   <path
+    transform="rotate(15 32 31.75) translate(32 31.75) scale(0.92) translate(-32 -31.75)"
     d="M32 4C20.5 4 10.5 17 10.5 34c0 14.5 9.5 25.5 21.5 25.5S53.5 48.5 53.5 34C53.5 17 43.5 4 32 4Z"
     fill="url(#dan-egg-shell)"
   />
