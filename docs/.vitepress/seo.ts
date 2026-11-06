@@ -45,10 +45,12 @@ export function socialHead(options: {
     ['meta', { property: 'og:image', content: ogImage }],
     ['meta', { property: 'og:image:width', content: '1200' }],
     ['meta', { property: 'og:image:height', content: '630' }],
+    ['meta', { property: 'og:image:alt', content: 'dan-ui · Vue 3 通用 UI 组件库' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:title', content: title }],
     ['meta', { name: 'twitter:description', content: description }],
     ['meta', { name: 'twitter:image', content: ogImage }],
+    ['meta', { name: 'twitter:image:alt', content: 'dan-ui · Vue 3 通用 UI 组件库' }],
     ['link', { rel: 'canonical', href: url }],
   ]
 }
@@ -99,6 +101,19 @@ export function homeJsonLd(version: string): HeadTuple[] {
     }),
     jsonLdScript({
       '@context': 'https://schema.org',
+      '@type': 'SoftwareSourceCode',
+      name: SITE_NAME,
+      description: SITE_DESCRIPTION,
+      url: `${SITE_URL}/`,
+      codeRepository: 'https://github.com/whr810012/dan-ui',
+      programmingLanguage: 'TypeScript',
+      runtimePlatform: 'Vue 3',
+      license: 'https://opensource.org/licenses/MIT',
+      softwareVersion: version,
+      author: organization,
+    }),
+    jsonLdScript({
+      '@context': 'https://schema.org',
       ...organization,
     }),
   ]
@@ -108,6 +123,7 @@ export function techArticleJsonLd(options: {
   title: string
   description: string
   url: string
+  lastUpdated?: number
 }): HeadTuple {
   return jsonLdScript({
     '@context': 'https://schema.org',
@@ -116,6 +132,9 @@ export function techArticleJsonLd(options: {
     description: options.description,
     url: options.url,
     inLanguage: 'zh-CN',
+    ...(options.lastUpdated
+      ? { dateModified: new Date(options.lastUpdated).toISOString() }
+      : {}),
     about: { '@id': `${SITE_URL}/#software` },
     author: {
       '@type': 'Organization',
@@ -123,6 +142,30 @@ export function techArticleJsonLd(options: {
     },
   })
 }
+
+export function breadcrumbJsonLd(
+  items: Array<{ name: string; url: string }>,
+): HeadTuple {
+  return jsonLdScript({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  })
+}
+
+/** 各版块落地页（目录本身没有 index 页，面包屑中间层必须指向真实 URL） */
+export const SECTION_NAMES: Record<string, { name: string; landing: string }> =
+  {
+    '/guide/': { name: '指南', landing: '/guide/introduction' },
+    '/components/': { name: '组件', landing: '/components/button' },
+    '/ai/': { name: 'AI 组件', landing: '/ai/overview' },
+    '/editor/': { name: '富文本', landing: '/editor/rich-text' },
+  }
 
 export const FAQ_ITEMS: Array<{ q: string; a: string }> = [
   {
@@ -144,6 +187,14 @@ export const FAQ_ITEMS: Array<{ q: string; a: string }> = [
   {
     q: 'npm 包名与文档地址是什么？',
     a: `包名为 @dandan-ui/ui 与 @dandan-ui/theme；官方文档为 ${SITE_URL}/。`,
+  },
+  {
+    q: '和 Element Plus / Ant Design Vue 是什么关系？',
+    a: '都是 Vue 3 组件库。dan-ui 额外把 AI 对话壳与富文本收进同一文档站，并强调不绑定模型与云厂商 SDK。',
+  },
+  {
+    q: '版本如何升级？',
+    a: '次版本（如 2.45 → 2.46）通常兼容；破坏性变更会写在更新日志并按 major 处理。文档站与 npm 包同号发布。',
   },
 ]
 

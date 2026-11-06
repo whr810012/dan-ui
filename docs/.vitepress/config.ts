@@ -2,10 +2,12 @@ import { defineConfig } from 'vitepress'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import {
+  SECTION_NAMES,
   SITE_DESCRIPTION,
   SITE_NAME,
   SITE_ORIGIN,
   SITE_URL,
+  breadcrumbJsonLd,
   faqJsonLd,
   homeJsonLd,
   pageTitle,
@@ -246,6 +248,10 @@ export default defineConfig({
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/dan-ui/logo.svg' }],
   ],
   themeConfig: {
+    lastUpdated: {
+      text: '最后更新',
+      formatOptions: { dateStyle: 'medium' },
+    },
     logo: '/logo.svg',
     darkLogo: '/logo-dark.svg',
     nav: [
@@ -338,7 +344,26 @@ export default defineConfig({
       pageData.relativePath.startsWith('editor/') ||
       pageData.relativePath.startsWith('guide/')
     ) {
-      head.push(techArticleJsonLd({ title, description, url }))
+      head.push(
+        techArticleJsonLd({
+          title,
+          description,
+          url,
+          lastUpdated: pageData.lastUpdated,
+        }),
+      )
+      const section = Object.entries(SECTION_NAMES).find(
+        ([prefix]) => pageData.relativePath.startsWith(prefix.slice(1)),
+      )
+      if (section) {
+        head.push(
+          breadcrumbJsonLd([
+            { name: '首页', url: `${SITE_URL}/` },
+            { name: section[1].name, url: `${SITE_URL}${section[1].landing}` },
+            { name: title.replace(` · ${SITE_NAME}`, ''), url },
+          ]),
+        )
+      }
     }
 
     return head
