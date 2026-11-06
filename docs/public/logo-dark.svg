@@ -1,23 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="dan-ui">
   <defs>
-    <linearGradient id="dan-egg-shell" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="dan-egg-shell" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#60a5fa" />
       <stop offset="1" stop-color="#2563eb" />
     </linearGradient>
   </defs>
   <path
-    d="M32 4C22.6 4 15 13.4 14.2 25.6 13.3 39.5 21.5 58 32 58s18.7-18.5 17.8-32.4C49 13.4 41.4 4 32 4Z"
+    d="M32 4C20.5 4 10.5 17 10.5 34c0 14.5 9.5 25.5 21.5 25.5S53.5 48.5 53.5 34C53.5 17 43.5 4 32 4Z"
     fill="url(#dan-egg-shell)"
   />
-  <g
-    fill="none"
-    stroke="#ffffff"
-    stroke-width="3.4"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path d="M25.5 27 19.5 33l6 6" />
-    <path d="M38.5 27 44.5 33l-6 6" />
-  </g>
-  <circle cx="32" cy="33" r="3.4" fill="#fcd34d" />
 </svg>
