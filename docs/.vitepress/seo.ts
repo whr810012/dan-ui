@@ -57,7 +57,18 @@ export function jsonLdScript(data: Record<string, unknown>): HeadTuple {
   return ['script', { type: 'application/ld+json' }, JSON.stringify(data)]
 }
 
-export function homeJsonLd(): HeadTuple[] {
+export function homeJsonLd(version: string): HeadTuple[] {
+  const softwareId = `${SITE_URL}/#software`
+  const organization = {
+    '@type': 'Organization',
+    name: SITE_NAME,
+    url: `${SITE_URL}/`,
+    sameAs: [
+      'https://github.com/whr810012/dan-ui',
+      'https://www.npmjs.com/package/@dandan-ui/ui',
+      'https://www.npmjs.com/package/@dandan-ui/theme',
+    ],
+  }
   return [
     jsonLdScript({
       '@context': 'https://schema.org',
@@ -66,27 +77,29 @@ export function homeJsonLd(): HeadTuple[] {
       url: `${SITE_URL}/`,
       description: SITE_DESCRIPTION,
       inLanguage: 'zh-CN',
+      publisher: organization,
     }),
     jsonLdScript({
       '@context': 'https://schema.org',
       '@type': 'SoftwareApplication',
+      '@id': softwareId,
       name: SITE_NAME,
       applicationCategory: 'DeveloperApplication',
       operatingSystem: 'Web',
       url: `${SITE_URL}/`,
       description: SITE_DESCRIPTION,
       downloadUrl: 'https://www.npmjs.com/package/@dandan-ui/ui',
-      softwareVersion: '1.4.0',
+      softwareVersion: version,
       offers: {
         '@type': 'Offer',
         price: '0',
         priceCurrency: 'USD',
       },
-      author: {
-        '@type': 'Organization',
-        name: 'dan-ui',
-        url: SITE_ORIGIN,
-      },
+      author: organization,
+    }),
+    jsonLdScript({
+      '@context': 'https://schema.org',
+      ...organization,
     }),
   ]
 }
@@ -103,6 +116,7 @@ export function techArticleJsonLd(options: {
     description: options.description,
     url: options.url,
     inLanguage: 'zh-CN',
+    about: { '@id': `${SITE_URL}/#software` },
     author: {
       '@type': 'Organization',
       name: SITE_NAME,

@@ -1,28 +1,49 @@
 # dan-ui
 
-> Vue 3 UI component library for mid-admin apps, tables, AI chat UI, and rich text.
-> npm: @dandan-ui/ui, @dandan-ui/theme
-> Docs: https://dandanhub.vip/dan-ui/
+> Vue 3 UI component library for mid/back-office apps: forms, tables, overlays, AI chat UI, and rich text.
+> npm: @dandan-ui/ui, @dandan-ui/theme (v2.x, MIT, 100+ components)
+> Docs: https://dandanhub.vip/dan-ui/ · GitHub: https://github.com/whr810012/dan-ui
 
 ## What it is
-- Vue 3 component library (Chinese docs first)
-- Layout, Form, Table, overlays, AI Chat shells, TipTap RichText
-- CSS variables theme (`--dan-*`); dark mode via `html.dark`
-- Does NOT embed LLM SDKs or cloud storage SDKs
+- Vue 3 + TypeScript component library, Chinese-first docs, 103 components
+- Basics & layout: Layout, Grid, Splitter, Segmented, Watermark, Typography
+- Forms: Input, Select, Cascader, TreeSelect, DatePicker, Form validation, Upload
+- Data display: Table (filter / fixed columns / multi-select / virtual scroll), Tree, Calendar, Descriptions
+- Feedback overlays: Dialog, Drawer, Message, Notification, Tooltip, Popover, Popconfirm, Dropdown, Tour
+- AI chat UI: Chat, ChatMessage, ChatInput, ConversationList, ToolCallCard, AgentSteps, StreamText, Markdown, Thinking, Prompt library
+- Rich text: TipTap-based RichText with toolbar, upload hooks, html/json/markdown output
+- Theming: `--dan-*` CSS variables + DanConfigProvider; dark mode via `html.dark` or `data-theme="dark"`
+- Tree-shakable: unplugin-vue-components + DanUIResolver; SSR / Nuxt supported
+- Does NOT embed LLM SDKs or cloud storage SDKs — SSE/WebSocket and model calls stay on the app side
 
 ## Key pages
 - Home: https://dandanhub.vip/dan-ui/
 - Introduction: https://dandanhub.vip/dan-ui/guide/introduction
 - Quick start: https://dandanhub.vip/dan-ui/guide/quickstart
-- Import: https://dandanhub.vip/dan-ui/guide/import
+- Import methods: https://dandanhub.vip/dan-ui/guide/import
 - Why dan-ui: https://dandanhub.vip/dan-ui/guide/why-dan-ui
 - FAQ: https://dandanhub.vip/dan-ui/guide/faq
 - Theming: https://dandanhub.vip/dan-ui/guide/theming
+- Accessibility: https://dandanhub.vip/dan-ui/guide/accessibility
+- SSR / Nuxt: https://dandanhub.vip/dan-ui/guide/ssr
 - Table: https://dandanhub.vip/dan-ui/components/table
 - Form: https://dandanhub.vip/dan-ui/components/form
+- Select: https://dandanhub.vip/dan-ui/components/select
 - AI overview: https://dandanhub.vip/dan-ui/ai/overview
 - Chat: https://dandanhub.vip/dan-ui/ai/chat
 - RichText: https://dandanhub.vip/dan-ui/editor/rich-text
 - Changelog: https://dandanhub.vip/dan-ui/guide/changelog
 - npm ui: https://www.npmjs.com/package/@dandan-ui/ui
+- npm theme: https://www.npmjs.com/package/@dandan-ui/theme
 - GitHub: https://github.com/whr810012/dan-ui
+
+## Install
+```bash
+pnpm add @dandan-ui/ui @dandan-ui/theme
+```
+```ts
+import '@dandan-ui/theme'
+import '@dandan-ui/ui/style.css'
+import DanUI from '@dandan-ui/ui'
+app.use(DanUI)
+```

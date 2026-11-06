@@ -1,8 +1,11 @@
 import { defineConfig } from 'vitepress'
+import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import {
   SITE_DESCRIPTION,
+  SITE_NAME,
   SITE_ORIGIN,
+  SITE_URL,
   faqJsonLd,
   homeJsonLd,
   pageTitle,
@@ -175,6 +178,63 @@ const componentsSidebar = collapsible([
   },
 ])
 
+const guideSidebar = collapsible([
+  {
+    text: '指南',
+    collapsed: false,
+    items: [
+      { text: '介绍', link: '/guide/introduction' },
+      { text: '快速开始', link: '/guide/quickstart' },
+      { text: '从零搭建', link: '/guide/scaffold' },
+      { text: 'Admin 模板配方', link: '/guide/admin-template' },
+      { text: '引入方式', link: '/guide/import' },
+      { text: '何时用 dan-ui', link: '/guide/why-dan-ui' },
+      { text: '主题定制', link: '/guide/theming' },
+      { text: '图标扩展', link: '/guide/icons' },
+      { text: 'SSR / Nuxt', link: '/guide/ssr' },
+      { text: '最佳实践', link: '/guide/best-practices' },
+      { text: '版本与迁移', link: '/guide/versioning' },
+      { text: '无障碍与键盘', link: '/guide/accessibility' },
+      { text: '常见问题', link: '/guide/faq' },
+      { text: '发布清单', link: '/guide/checklist' },
+      { text: '更新日志', link: '/guide/changelog' },
+    ],
+  },
+])
+
+/** slug → 侧栏标签，用于缺省 description 时生成页面级描述 */
+const PAGE_LABELS: Record<string, string> = {}
+for (const group of [...componentsSidebar, ...guideSidebar]) {
+  for (const item of group.items) {
+    PAGE_LABELS[item.link] = item.text
+  }
+}
+
+const PKG_VERSION: string = JSON.parse(
+  readFileSync(resolve(__dirname, '../../packages/ui/package.json'), 'utf-8'),
+).version
+
+/** 侧栏中混入的说明页，不适用组件 API 描述模板 */
+const DOC_ONLY_SLUGS = new Set(['/editor/extensions'])
+
+function autoDescription(slug: string, title: string | undefined): string {
+  const label = PAGE_LABELS[slug] || title || SITE_NAME
+  if (DOC_ONLY_SLUGS.has(slug)) {
+    return `dan-ui「${label}」：组件库扩展能力与开发说明。`
+  }
+  if (
+    slug.startsWith('/components/') ||
+    slug.startsWith('/ai/') ||
+    slug.startsWith('/editor/')
+  ) {
+    return `dan-ui ${label} 组件文档：可运行示例、Props / Events / Slots / Expose API 与主题变量，适用于 Vue 3 中后台与 AI 界面。`
+  }
+  if (slug.startsWith('/guide/')) {
+    return `dan-ui 官方指南「${label}」：@dandan-ui/ui 与 @dandan-ui/theme 的安装、主题、SSR、无障碍与工程实践。`
+  }
+  return SITE_DESCRIPTION
+}
+
 export default defineConfig({
   // 生产挂载在 https://dandanhub.vip/dan-ui/
   base: '/dan-ui/',
@@ -216,29 +276,7 @@ export default defineConfig({
       },
     },
     sidebar: {
-      '/guide/': collapsible([
-        {
-          text: '指南',
-          collapsed: false,
-          items: [
-            { text: '介绍', link: '/guide/introduction' },
-            { text: '快速开始', link: '/guide/quickstart' },
-            { text: '从零搭建', link: '/guide/scaffold' },
-            { text: 'Admin 模板配方', link: '/guide/admin-template' },
-            { text: '引入方式', link: '/guide/import' },
-            { text: '何时用 dan-ui', link: '/guide/why-dan-ui' },
-            { text: '主题定制', link: '/guide/theming' },
-            { text: '图标扩展', link: '/guide/icons' },
-            { text: 'SSR / Nuxt', link: '/guide/ssr' },
-            { text: '最佳实践', link: '/guide/best-practices' },
-            { text: '版本与迁移', link: '/guide/versioning' },
-            { text: '无障碍与键盘', link: '/guide/accessibility' },
-            { text: '常见问题', link: '/guide/faq' },
-            { text: '发布清单', link: '/guide/checklist' },
-            { text: '更新日志', link: '/guide/changelog' },
-          ],
-        },
-      ]),
+      '/guide/': guideSidebar,
       '/components/': componentsSidebar,
       '/ai/': componentsSidebar,
       '/editor/': componentsSidebar,
@@ -263,10 +301,11 @@ export default defineConfig({
   },
   transformPageData(pageData) {
     const isHome = pageData.relativePath === 'index.md'
+    const slug = pageUrl(pageData.relativePath).slice(SITE_URL.length) || '/'
     const description =
       pageData.description ||
       pageData.frontmatter.description ||
-      SITE_DESCRIPTION
+      (isHome ? SITE_DESCRIPTION : autoDescription(slug, pageData.title))
     pageData.description = description
     pageData.title = pageTitle(
       pageData.frontmatter.title || pageData.title,
@@ -290,7 +329,7 @@ export default defineConfig({
     ]
 
     if (isHome) {
-      head.push(...homeJsonLd())
+      head.push(...homeJsonLd(PKG_VERSION))
     } else if (pageData.relativePath.includes('guide/faq')) {
       head.push(faqJsonLd())
     } else if (
