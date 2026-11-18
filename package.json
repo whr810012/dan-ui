@@ -9,6 +9,7 @@
     "build": "pnpm --filter @dandan-ui/theme build && pnpm --filter @dandan-ui/ui build",
     "build:theme": "pnpm --filter @dandan-ui/theme build",
     "build:ui": "pnpm --filter @dandan-ui/ui build",
+    "build:styles": "node ./scripts/build-styles.mjs",
     "docs:build": "pnpm --filter @dan-ui/docs build",
     "test": "pnpm --filter @dandan-ui/ui test",
     "lint": "eslint . && prettier --check \"**/*.{ts,tsx,vue,js,mjs,cjs,css,json}\"",

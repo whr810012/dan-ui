@@ -29,7 +29,7 @@ import '@dandan-ui/theme'
 import '@dandan-ui/ui/style.css'
 ```
 
-推荐引入全量组件样式 `@dandan-ui/ui/style.css`；按组件拆分 CSS 可在后续版本再细化。
+全量样式最省事；需要控制体积时可按组件加载（见下节）。
 
 ## unplugin-vue-components
 
@@ -54,6 +54,20 @@ export default {
 ```ts
 DanUIResolver({ importStyle: false })
 ```
+
+## 按组件加载样式
+
+构建产物同时输出 `dist/styles/<component>.css`（组件目录名，如 `button.css`、`table.css`），可按需引入：
+
+```ts
+import { DanButton } from '@dandan-ui/ui'
+import '@dandan-ui/theme'
+import '@dandan-ui/ui/styles/button.css'
+```
+
+- 文件名与组件目录同名（kebab-case），`animations.css` 提供浮层弹出动画等公共关键帧，用到浮层时一并引入；
+- Token 来自 `@dandan-ui/theme`，始终需要引入；
+- 全量 `@dandan-ui/ui/style.css` 仍然可用，两种方式不要重复引入同一组件的样式。
 
 ## 样式两件套
 

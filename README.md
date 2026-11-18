@@ -238,6 +238,7 @@ pnpm dev:docs   # http://localhost:5173/dan-ui/
 | `pnpm test` | 单元测试 |
 | `pnpm lint` | ESLint + Prettier |
 | `pnpm gen <name>` | 组件脚手架 |
+| `pnpm build:styles` | 单独产出按组件拆分的样式（`dist/styles/*.css`） |
 | `pnpm docs:build` | 构建文档站 |
 | `pnpm shots` | 对本地文档预览重拍 `docs/public/readme` 截图 |
 

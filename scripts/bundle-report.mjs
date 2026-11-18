@@ -32,8 +32,12 @@ async function listFiles(dir, base = dir) {
   return files
 }
 
-const files = (await listFiles(dist)).sort((a, b) => b.bytes - a.bytes)
-const total = files.reduce((sum, f) => sum + f.bytes, 0)
+const allFiles = (await listFiles(dist)).sort((a, b) => b.bytes - a.bytes)
+const total = allFiles.reduce((sum, f) => sum + f.bytes, 0)
+// 按组件拆分的样式单独汇总，避免把几十个几 kB 的文件挤进榜单
+const files = allFiles.filter((f) => !f.name.startsWith('styles/'))
+const styles = allFiles.filter((f) => f.name.startsWith('styles/'))
+const stylesBytes = styles.reduce((sum, f) => sum + f.bytes, 0)
 
 console.log('dan-ui @dandan-ui/ui dist report')
 console.log(`dir: ${dist}`)
@@ -44,8 +48,13 @@ for (const file of files.slice(0, 20)) {
 if (files.length > 20) {
   console.log(`… and ${files.length - 20} more files`)
 }
+if (styles.length) {
+  console.log(
+    `${formatKb(stylesBytes).padStart(12)}  styles/ (${styles.length} per-component css)`,
+  )
+}
 console.log('─'.repeat(48))
-console.log(`${formatKb(total).padStart(12)}  TOTAL (${files.length} files)`)
+console.log(`${formatKb(total).padStart(12)}  TOTAL (${allFiles.length} files)`)
 console.log('')
 console.log(
   'Tips: compare index.js / style.css across versions; prefer on-demand import for apps.',
