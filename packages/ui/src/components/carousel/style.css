@@ -27,7 +27,7 @@
   z-index: 1;
 }
 
-.dan-carousel-item :deep(img) {
+.dan-carousel-item img {
   display: block;
   width: 100%;
   height: 100%;

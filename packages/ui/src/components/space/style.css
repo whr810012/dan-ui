@@ -16,16 +16,16 @@
   flex-wrap: wrap;
 }
 
-.dan-space.is-compact > :deep(*) {
+.dan-space.is-compact > * {
   border-radius: 0;
 }
 
-.dan-space.is-compact.dan-space--horizontal > :deep(*:first-child) {
+.dan-space.is-compact.dan-space--horizontal > *:first-child {
   border-top-left-radius: var(--dan-radius-md);
   border-bottom-left-radius: var(--dan-radius-md);
 }
 
-.dan-space.is-compact.dan-space--horizontal > :deep(*:last-child) {
+.dan-space.is-compact.dan-space--horizontal > *:last-child {
   border-top-right-radius: var(--dan-radius-md);
   border-bottom-right-radius: var(--dan-radius-md);
 }

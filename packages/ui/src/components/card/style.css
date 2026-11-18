@@ -51,7 +51,7 @@
   line-height: 0;
 }
 
-.dan-card__cover :deep(img) {
+.dan-card__cover img {
   display: block;
   width: 100%;
 }
