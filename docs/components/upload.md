@@ -10,6 +10,8 @@ import Chunk from './demos/upload/chunk.vue'
 import chunkSrc from './demos/upload/chunk.vue?raw'
 import PictureCard from './demos/upload/picture-card.vue'
 import pictureCardSrc from './demos/upload/picture-card.vue?raw'
+import BeforeUpload from './demos/upload/before-upload.vue'
+import beforeUploadSrc from './demos/upload/before-upload.vue?raw'
 </script>
 
 # Upload 上传
@@ -54,6 +56,14 @@ import pictureCardSrc from './demos/upload/picture-card.vue?raw'
   <PictureCard />
 </DemoBlock>
 
+## 上传前校验
+
+`before-upload` 在文件进入列表之前调用，返回 `false` 或抛错即丢弃该文件；支持异步，`limit` 只统计通过校验的文件。
+
+<DemoBlock :source="beforeUploadSrc">
+  <BeforeUpload />
+</DemoBlock>
+
 ## Upload Props
 
 | 属性 | 说明 | 类型 | 默认值 |
@@ -69,6 +79,7 @@ import pictureCardSrc from './demos/upload/picture-card.vue?raw'
 | autoUpload | 选中后是否自动上传 | `boolean` | `true` |
 | listType | 列表样式 | `'text' \| 'picture-card'` | `'text'` |
 | httpRequest | 自定义上传方法 | `UploadRequestHandler` | 内置 mock |
+| beforeUpload | 入列表前校验，返回 `false` / 抛错即丢弃 | `(file) => boolean \| Promise<boolean>` | — |
 | chunkSize | 分片大小（字节）；`>0` 且文件更大时启用分片 | `number` | `0` |
 | beforeChunkUpload | 每片上传前钩子，返回 `false` 中断 | `(chunk, file) => boolean \| Promise<boolean>` | — |
 

@@ -6,6 +6,7 @@ export default DanUpload
 export type DanUploadInstance = InstanceType<typeof Upload>
 export type {
   UploadBeforeChunkHook,
+  UploadBeforeUploadHook,
   UploadChunkInfo,
   UploadFile,
   UploadGetUploadedChunks,

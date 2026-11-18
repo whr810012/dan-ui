@@ -6,6 +6,7 @@ import { useNamespace } from '../../hooks/useNamespace'
 import { DanIcon } from '../icon'
 import type {
   UploadBeforeChunkHook,
+  UploadBeforeUploadHook,
   UploadChunkInfo,
   UploadFile,
   UploadGetUploadedChunks,
@@ -32,6 +33,8 @@ const props = withDefaults(
     autoUpload?: boolean
     httpRequest?: UploadRequestHandler
     listType?: 'text' | 'picture-card'
+    /** 选中文件后、入列表前的校验钩子；返回 false 或抛错即丢弃 */
+    beforeUpload?: UploadBeforeUploadHook
     /** 分片大小（字节）；>0 时启用分片上传 */
     chunkSize?: number
     beforeChunkUpload?: UploadBeforeChunkHook
@@ -145,19 +148,36 @@ function openFileDialog() {
   inputRef.value?.click()
 }
 
-function handleFiles(fileList: FileList | File[]) {
+async function handleFiles(fileList: FileList | File[]) {
   const selected = Array.from(fileList)
   if (!selected.length) return
 
+  // beforeUpload 先过一遍：返回 false 或抛错的文件直接丢弃，不进入列表
+  let accepted = selected
+  if (props.beforeUpload) {
+    const hook = props.beforeUpload
+    const results = await Promise.all(
+      selected.map(async (file) => {
+        try {
+          return (await hook(file as UploadRawFile)) !== false ? file : null
+        } catch {
+          return null
+        }
+      }),
+    )
+    accepted = results.filter((file): file is File => file != null)
+  }
+  if (!accepted.length) return
+
   if (
     props.limit != null &&
-    files.value.length + selected.length > props.limit
+    files.value.length + accepted.length > props.limit
   ) {
-    emit('exceed', selected, files.value)
+    emit('exceed', accepted, files.value)
     return
   }
 
-  for (const file of selected) {
+  for (const file of accepted) {
     addFile(file)
   }
 }

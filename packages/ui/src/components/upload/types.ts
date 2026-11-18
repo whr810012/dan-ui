@@ -47,6 +47,11 @@ export type UploadBeforeChunkHook = (
   file: UploadFile,
 ) => boolean | Promise<boolean>
 
+/** 选中文件后、加入列表前的钩子；返回 false 或抛错即丢弃该文件 */
+export type UploadBeforeUploadHook = (
+  file: UploadRawFile,
+) => boolean | Promise<boolean>
+
 /** 返回已上传完成的分片 index，用于断点续传跳过 */
 export type UploadGetUploadedChunks = (
   file: UploadFile,
