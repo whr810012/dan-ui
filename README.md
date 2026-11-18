@@ -250,6 +250,8 @@ playground/      联调
 
 文档部署：`base` 为 `/dan-ui/`；Cloudflare Pages 输出 `docs/.vitepress/dist`，由 dandanhub Worker 反代 `/dan-ui/*`。
 
+提交前请先读 [CONTRIBUTING.md](./CONTRIBUTING.md)：包含组件结构约定、单测要求、jsdom 测试备忘与提交规范。
+
 ---
 
 ## 能力一览
