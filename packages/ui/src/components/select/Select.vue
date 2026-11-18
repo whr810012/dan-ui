@@ -565,6 +565,7 @@ onBeforeUnmount(() => {
             :style="virtual ? { height: `${itemHeight}px` } : undefined"
             role="option"
             :aria-selected="isSelected(item.value)"
+            :aria-disabled="item.disabled || undefined"
             @click="selectOption(item)"
             @mouseenter="!item.disabled && (highlightIndex = index)"
           >

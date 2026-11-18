@@ -11,6 +11,8 @@
 - 质量：新增 `popperPolish.spec.ts` 回归（中文文案 / 动画样式 / reduced-motion / 面板统一动画，10 例）；修正 SEO 配置的 Prettier 格式，使 `pnpm lint` 恢复全绿
 - 测试：补齐 AI 叶子组件冒烟用例（`chat-input` / `chat-message` / `markdown` / `stream-text` / `thinking` / `prompt`，28 例），覆盖 Markdown XSS 清洗、流式光标、思考折叠、附件拖拽与斜杠指令、消息事件回传
 - 测试：补齐 Form / Select / Table 边界用例（20 例）：定向 `clearValidate`、`validateOnRuleChange`、可选规则空值跳过、`disabled` 透传；Select 禁用项、清空、多选反选、标签删除、空态与 `aria-expanded`；Table 三态排序、多列排序优先级、全选、`reserveSelection`、`summaryMethod`、`filterMode: remote`
+- 无障碍：Select 的禁用选项补充 `aria-disabled`，屏幕阅读器可正确播报不可选状态
+- 测试：新增 a11y 专项用例（22 例）：Dialog 焦点陷阱 / 关闭后焦点还原 / `aria-labelledby` 与关闭按钮 `aria-label`；Tabs 角色关联与 roving `tabindex`、End 与 ArrowLeft 环绕、Enter 选中；Menu 角色 / 子菜单 `aria-expanded` / Home / End / Enter / Space；Tree 角色与 `aria-expanded` / `aria-selected`、跳过禁用节点、Space 勾选；Select `listbox` / `aria-multiselectable` / `aria-selected` / 禁用项 `aria-disabled`
 
 ## 2.50.0
 
