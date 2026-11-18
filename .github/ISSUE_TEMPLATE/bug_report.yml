@@ -1,0 +1,72 @@
+name: Bug 报告
+description: 组件行为、样式或类型不符合预期
+title: 'bug: '
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提交前请先搜索已有 issue。能在 playground 或最小仓库复现的问题处理最快。
+  - type: input
+    id: version
+    attributes:
+      label: dan-ui 版本
+      description: 执行 `npm ls @dandan-ui/ui` 或查看 package.json
+      placeholder: 2.51.0
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: 运行环境
+      description: Vue 版本、包管理器、浏览器与操作系统
+      placeholder: Vue 3.5.13 / pnpm 9 / Chrome 130 / macOS 15
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: 影响范围
+      options:
+        - 组件渲染或样式
+        - 交互与事件
+        - 表单校验
+        - 类型定义（TypeScript）
+        - 无障碍（键盘 / 屏幕阅读器）
+        - 文档或示例
+        - 构建与发布产物
+    validations:
+      required: true
+  - type: input
+    id: component
+    attributes:
+      label: 相关组件
+      placeholder: DanTable / DanSelect ...
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 附最小可复现片段（模板 + 关键 props），或仓库链接
+      render: vue
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望行为
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际行为
+      description: 有报错请贴完整堆栈
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 自查
+      options:
+        - label: 已确认不是主题或样式未引入导致（`@dandan-ui/theme` + `style.css`）
+        - label: 已在最新版本复现

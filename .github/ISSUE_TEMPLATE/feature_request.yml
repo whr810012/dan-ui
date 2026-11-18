@@ -1,0 +1,44 @@
+name: 功能建议
+description: 新增能力、API 调整或体验改进
+title: 'feat: '
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        本仓库当前处于「不新开大面组件」的维护期，优先接受 bugfix、测试、文档与组件内的小增强。
+  - type: textarea
+    id: scenario
+    attributes:
+      label: 使用场景
+      description: 你在做什么，现有能力卡在哪里
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 期望的 API 或行为
+      description: 如涉及新 props / 事件，请给出签名与默认值
+      render: ts
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 现有替代方案
+      description: 是否已有 workaround，代价是什么
+  - type: dropdown
+    id: scope
+    attributes:
+      label: 改动范围
+      options:
+        - 单组件内的小增强
+        - 跨组件的一致性问题
+        - 工程 / 构建 / 发布
+        - 文档与示例
+    validations:
+      required: true
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: 参与意愿
+      options:
+        - label: 我愿意提交 PR（可参考 CONTRIBUTING.md）
