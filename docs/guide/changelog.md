@@ -10,6 +10,7 @@
 - 文档站：SEO/GEO 增强（页面级 description、实体 JSON-LD、面包屑与更新时间、源码 schema、`llms.txt` 刷新、`robots.txt` 显式欢迎 AI 爬虫）
 - 质量：新增 `popperPolish.spec.ts` 回归（中文文案 / 动画样式 / reduced-motion / 面板统一动画，10 例）；修正 SEO 配置的 Prettier 格式，使 `pnpm lint` 恢复全绿
 - 测试：补齐 AI 叶子组件冒烟用例（`chat-input` / `chat-message` / `markdown` / `stream-text` / `thinking` / `prompt`，28 例），覆盖 Markdown XSS 清洗、流式光标、思考折叠、附件拖拽与斜杠指令、消息事件回传
+- 测试：补齐 Form / Select / Table 边界用例（20 例）：定向 `clearValidate`、`validateOnRuleChange`、可选规则空值跳过、`disabled` 透传；Select 禁用项、清空、多选反选、标签删除、空态与 `aria-expanded`；Table 三态排序、多列排序优先级、全选、`reserveSelection`、`summaryMethod`、`filterMode: remote`
 
 ## 2.50.0
 
