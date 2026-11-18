@@ -26,6 +26,14 @@ import gallerySrc from './demos/image/gallery.vue?raw'
   <Gallery />
 </DemoBlock>
 
+## 键盘与焦点
+
+开启 `preview` 后缩略图可通过 Tab 聚焦，Enter / Space 打开预览：
+
+- 打开时焦点移到关闭按钮，关闭后回到缩略图，键盘操作不会丢失位置；
+- 预览层声明 `role="dialog"` / `aria-modal="true"`，打开时锁定页面滚动，关闭或组件卸载时自动还原；
+- Esc 关闭，方向键在多图之间切换。
+
 ## Props
 
 | 属性 | 说明 | 类型 | 默认值 |

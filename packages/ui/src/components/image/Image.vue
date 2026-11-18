@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { useNamespace } from '../../hooks/useNamespace'
 import { DanIcon } from '../icon'
 import './style.css'
@@ -42,10 +42,28 @@ const emit = defineEmits<{
 }>()
 
 const ns = useNamespace('image')
+const rootRef = ref<HTMLElement | null>(null)
+const closeButtonRef = ref<HTMLButtonElement | null>(null)
 const hasError = ref(false)
 const loaded = ref(false)
 const previewVisible = ref(false)
 const previewIndex = ref(0)
+
+let bodyOverflow = ''
+let scrollLocked = false
+
+function lockBodyScroll() {
+  if (scrollLocked || typeof document === 'undefined') return
+  bodyOverflow = document.body.style.overflow
+  document.body.style.overflow = 'hidden'
+  scrollLocked = true
+}
+
+function unlockBodyScroll() {
+  if (!scrollLocked) return
+  document.body.style.overflow = bodyOverflow
+  scrollLocked = false
+}
 
 const previewList = computed(() => {
   if (props.previewSrcList.length) return props.previewSrcList
@@ -107,12 +125,17 @@ function openPreview() {
   previewIndex.value = resolveOpenIndex()
   previewVisible.value = true
   document.addEventListener('keydown', onPreviewKeydown)
+  lockBodyScroll()
+  // 打开后把焦点移进对话框，关闭时再还给缩略图，键盘用户不会丢失位置
+  nextTick(() => closeButtonRef.value?.focus())
 }
 
 function closePreview() {
   if (!previewVisible.value) return
   previewVisible.value = false
   document.removeEventListener('keydown', onPreviewKeydown)
+  unlockBodyScroll()
+  nextTick(() => rootRef.value?.focus())
   emit('close')
 }
 
@@ -151,17 +174,24 @@ function onPreviewKeydown(event: KeyboardEvent) {
 
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', onPreviewKeydown)
+  unlockBodyScroll()
 })
 </script>
 
 <template>
   <div
+    ref="rootRef"
     :class="[
       ns.b(),
       ns.is('error', hasError),
       ns.is('loading', showPlaceholder),
     ]"
+    :tabindex="preview ? 0 : undefined"
+    :role="preview ? 'button' : undefined"
+    :aria-haspopup="preview ? 'dialog' : undefined"
     @click="openPreview"
+    @keydown.enter.prevent="openPreview"
+    @keydown.space.prevent="openPreview"
   >
     <div v-if="showPlaceholder" :class="ns.e('placeholder')">
       <slot name="placeholder">
@@ -196,6 +226,7 @@ onBeforeUnmount(() => {
         @click="closePreview"
       >
         <button
+          ref="closeButtonRef"
           type="button"
           :class="ns.e('preview-close')"
           aria-label="关闭预览"
