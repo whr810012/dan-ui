@@ -16,3 +16,6 @@ coverage
 
 # Local planning / design docs — keep out of commits
 docs/plans/
+
+# WorkBuddy local session data
+.workbuddy/

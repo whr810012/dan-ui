@@ -352,8 +352,8 @@ export default defineConfig({
           lastUpdated: pageData.lastUpdated,
         }),
       )
-      const section = Object.entries(SECTION_NAMES).find(
-        ([prefix]) => pageData.relativePath.startsWith(prefix.slice(1)),
+      const section = Object.entries(SECTION_NAMES).find(([prefix]) =>
+        pageData.relativePath.startsWith(prefix.slice(1)),
       )
       if (section) {
         head.push(

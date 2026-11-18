@@ -45,12 +45,18 @@ export function socialHead(options: {
     ['meta', { property: 'og:image', content: ogImage }],
     ['meta', { property: 'og:image:width', content: '1200' }],
     ['meta', { property: 'og:image:height', content: '630' }],
-    ['meta', { property: 'og:image:alt', content: 'dan-ui · Vue 3 通用 UI 组件库' }],
+    [
+      'meta',
+      { property: 'og:image:alt', content: 'dan-ui · Vue 3 通用 UI 组件库' },
+    ],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:title', content: title }],
     ['meta', { name: 'twitter:description', content: description }],
     ['meta', { name: 'twitter:image', content: ogImage }],
-    ['meta', { name: 'twitter:image:alt', content: 'dan-ui · Vue 3 通用 UI 组件库' }],
+    [
+      'meta',
+      { name: 'twitter:image:alt', content: 'dan-ui · Vue 3 通用 UI 组件库' },
+    ],
     ['link', { rel: 'canonical', href: url }],
   ]
 }

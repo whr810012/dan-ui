@@ -1,7 +1,8 @@
 # dan-ui 组件路线图
 
-> 当前基线：仓库 **`2.50.0`（完成里程碑）**｜npm 公开发布以 registry 为准（目标同步 `2.50.0`）。  
-> **完整开发完成定义与排期：** [`plans/2026-11-03-completion-plan.md`](./plans/2026-11-03-completion-plan.md)
+> 当前基线：仓库 **`2.51.0`（待发布）**｜npm 公开发布以 registry 为准（当前 `2.50.0`，2026-11-03 发布）。  
+> **完整开发完成定义与排期：** [`plans/2026-11-03-completion-plan.md`](./plans/2026-11-03-completion-plan.md)  
+> **当前收尾计划：** [`plans/2026-11-13-next-development.md`](./plans/2026-11-13-next-development.md)
 
 ## 完成定义（已确认执行）
 
@@ -10,7 +11,8 @@
 
 ## 现状一句话
 
-中后台常用面 + AI 壳 + RichText 已齐。**M0–M1 已完成；M2 = 发布 `2.50.0` 到 npm + Release tag。**
+中后台常用面 + AI 壳 + RichText 已齐（103 组件）。**M0–M1 已完成；M2 的 npm 2.x 发布已完成（`2.50.0`）。**  
+当前收尾 = **发布 `2.51.0` 同步 11-04～11-06 的仓库增量 + 打 2.x Release tag + 文档叙述对齐**。
 
 ## 已覆盖（按文档侧栏）
 
@@ -35,8 +37,8 @@
 
 | 类型 | 示例 |
 |------|------|
-| P0 发版阻塞 | CI、关键单测、checklist、npm 2.x |
-| P1 深度 | Form/Table/Select 边界、a11y、暗色回归 |
+| P0 发版收尾 | `2.51.0` 同步发布、CI 转绿、2.x Release tag |
+| P1 深度 | AI 叶子组件冒烟、Form/Table/Select 边界、a11y、暗色回归 |
 | P2 工程 | 按组件 CSS、视觉回归、Nuxt/starter 示例 |
 
 发版前抽检见 [发布与视觉清单](/guide/checklist)。

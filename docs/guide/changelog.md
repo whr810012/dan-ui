@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.51.0
+
+- **同步发布**：把 npm `2.50.0`（2026-11-03）之后的仓库增量正式发版，消除线上包与仓库源码不一致；升级后即包含下列修复与增强
+- 修复：表单浮层组件（Autocomplete / DatePicker / InputNumber / InputTag / Select / Textarea / TimePicker / TimeSelect）中文文案乱码，恢复月份、清除、上一步 / 下一步等可读文案与 `aria-label`
+- 交互：Popper 类表单组件统一 `DanIcon` 字形与弹出动画；新增 `styles/animations.css`，`@keyframes dan-pop` 由包入口自动引入，无需额外配置
+- 无障碍：7 个下拉面板在 `prefers-reduced-motion: reduce` 下关闭动画，见 [浮层动效与减少动效](/guide/accessibility)
+- 品牌：渐变蛋形 Logo / 暗色 Logo / OG 图定稿，文档顶栏、favicon、README 同步引用
+- 文档站：SEO/GEO 增强（页面级 description、实体 JSON-LD、面包屑与更新时间、源码 schema、`llms.txt` 刷新、`robots.txt` 显式欢迎 AI 爬虫）
+- 质量：新增 `popperPolish.spec.ts` 回归（中文文案 / 动画样式 / reduced-motion / 面板统一动画，10 例）；修正 SEO 配置的 Prettier 格式，使 `pnpm lint` 恢复全绿
+
 ## 2.50.0
 
 - **完成里程碑**：`@dandan-ui/ui` / `@dandan-ui/theme` 正式对外 2.x（相对 npm `1.2.0` 的能力跃迁见本 changelog 2.13–2.47）

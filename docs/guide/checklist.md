@@ -59,9 +59,10 @@ pnpm bundle:report   # 对比 index.js / style.css 体积是否异常膨胀
 ## 可上生产勾选（摘要）
 
 - [x] `pnpm build && pnpm test && pnpm docs:build`（发版前再跑一遍）
-- [x] `pnpm bundle:report` 无异常膨胀（index.js ≈ 590KB / style.css ≈ 171KB 量级）
+- [x] `pnpm bundle:report` 无异常膨胀（index.js ≈ 606KB / style.css ≈ 175KB 量级）
 - [x] 暗色扫尾（浮层 / Table / Loading / Skeleton）— Token 冒烟 + 人工文档站抽检
 - [x] 键盘抽检（Dialog / Select / Tabs）— 单测覆盖主路径
 - [x] Locale zh / en 抽样 — key 对齐 + Dialog/Table/DatePicker 英文挂载
 - [x] SSR 注意点已告知接入方或已写进业务脚手架（见 SSR 指南）
-- [x] Changelog 已写，版本号已 bump（`2.50.0`）
+- [x] 浮层动效在 `prefers-reduced-motion: reduce` 下关闭（`popperPolish.spec.ts` 回归）
+- [x] Changelog 已写，版本号已 bump（`2.51.0`）
