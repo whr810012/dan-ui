@@ -104,3 +104,33 @@
   width: 18px;
   background: var(--dan-color-on-media-strong);
 }
+
+/* 竖向：箭头改为上 / 下居中，指示器移到右侧竖排 */
+.dan-carousel--vertical .dan-carousel__arrow {
+  top: auto;
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dan-carousel--vertical .dan-carousel__arrow-left {
+  top: 12px;
+}
+
+.dan-carousel--vertical .dan-carousel__arrow-right {
+  bottom: 12px;
+}
+
+.dan-carousel--vertical .dan-carousel__indicators {
+  top: 0;
+  right: 12px;
+  bottom: 0;
+  left: auto;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dan-carousel--vertical .dan-carousel__indicator.is-active button {
+  width: 8px;
+  height: 18px;
+}

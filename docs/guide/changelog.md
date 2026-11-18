@@ -13,6 +13,7 @@
 - 测试：补齐 Form / Select / Table 边界用例（20 例）：定向 `clearValidate`、`validateOnRuleChange`、可选规则空值跳过、`disabled` 透传；Select 禁用项、清空、多选反选、标签删除、空态与 `aria-expanded`；Table 三态排序、多列排序优先级、全选、`reserveSelection`、`summaryMethod`、`filterMode: remote`
 - 无障碍：Select 的禁用选项补充 `aria-disabled`，屏幕阅读器可正确播报不可选状态
 - 增强：Watermark 支持图片水印（`image` / `imageWidth` / `imageHeight` / `imageOpacity` / `crossOrigin`）；图片等比适配且不超出平铺单元，加载失败自动退回文字水印，加载中不绘制以免文字水印闪现
+- 增强：Carousel 支持 `direction="vertical"`，箭头切换为上下方向并居中、指示器移到右侧竖排，分页与 `v-model` 行为不变
 - 测试：新增 a11y 专项用例（22 例）：Dialog 焦点陷阱 / 关闭后焦点还原 / `aria-labelledby` 与关闭按钮 `aria-label`；Tabs 角色关联与 roving `tabindex`、End 与 ArrowLeft 环绕、Enter 选中；Menu 角色 / 子菜单 `aria-expanded` / Home / End / Enter / Space；Tree 角色与 `aria-expanded` / `aria-selected`、跳过禁用节点、Space 勾选；Select `listbox` / `aria-multiselectable` / `aria-selected` / 禁用项 `aria-disabled`
 
 ## 2.50.0

@@ -28,6 +28,8 @@ const props = withDefaults(
     pauseOnHover?: boolean
     /** 指示器触发方式 */
     trigger?: 'click' | 'hover'
+    /** 轮播方向 */
+    direction?: 'horizontal' | 'vertical'
   }>(),
   {
     modelValue: 0,
@@ -39,6 +41,7 @@ const props = withDefaults(
     indicator: true,
     pauseOnHover: true,
     trigger: 'click',
+    direction: 'horizontal',
   },
 )
 
@@ -54,6 +57,7 @@ const hover = ref(false)
 let timer: number | null = null
 
 const count = computed(() => items.value.length)
+const isVertical = computed(() => props.direction === 'vertical')
 
 function registerItem(id: symbol) {
   items.value.push(id)
@@ -143,7 +147,12 @@ defineExpose({
 
 <template>
   <div
-    :class="[ns.b(), ns.m(`arrow-${arrow}`), ns.is('hover', hover)]"
+    :class="[
+      ns.b(),
+      ns.m('arrow-' + arrow),
+      ns.m(direction),
+      ns.is('hover', hover),
+    ]"
     :style="{ height }"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
@@ -159,7 +168,7 @@ defineExpose({
       aria-label="上一张"
       @click="prev"
     >
-      <DanIcon name="chevron-left" />
+      <DanIcon :name="isVertical ? 'chevron-up' : 'chevron-left'" />
     </button>
     <button
       v-if="arrow !== 'never' && count > 1"
@@ -168,7 +177,7 @@ defineExpose({
       aria-label="下一张"
       @click="nextSlide"
     >
-      <DanIcon name="chevron-right" />
+      <DanIcon :name="isVertical ? 'chevron-down' : 'chevron-right'" />
     </button>
 
     <ul v-if="indicator && count > 1" :class="ns.e('indicators')">

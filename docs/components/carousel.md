@@ -1,7 +1,9 @@
 <script setup>
 import DemoBlock from '../.vitepress/components/DemoBlock.vue'
 import Basic from './demos/carousel/basic.vue'
+import Vertical from './demos/carousel/vertical.vue'
 import basicSrc from './demos/carousel/basic.vue?raw'
+import verticalSrc from './demos/carousel/vertical.vue?raw'
 </script>
 
 # Carousel 走马灯
@@ -14,12 +16,21 @@ import basicSrc from './demos/carousel/basic.vue?raw'
   <Basic />
 </DemoBlock>
 
+## 竖向轮播
+
+`direction="vertical"` 把箭头换成上下方向并居中，指示器移到右侧竖排；分页与 `v-model` 行为不变。
+
+<DemoBlock :source="verticalSrc">
+  <Vertical />
+</DemoBlock>
+
 ## Carousel Props
 
 | 属性 | 说明 | 类型 | 默认值 |
 |------|------|------|--------|
 | modelValue / v-model | 当前索引 | `number` | `0` |
 | height | 高度 | `string` | `'220px'` |
+| direction | 轮播方向 | `'horizontal' \| 'vertical'` | `'horizontal'` |
 | autoplay | 自动播放 | `boolean` | `true` |
 | interval | 间隔毫秒 | `number` | `3000` |
 | loop | 循环 | `boolean` | `true` |
