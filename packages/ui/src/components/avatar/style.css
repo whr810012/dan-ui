@@ -69,7 +69,7 @@
 .dan-avatar-group__more {
   z-index: 1;
   margin-left: -8px;
-  background: var(--dan-color-fill-secondary, var(--dan-color-fill));
+  background: var(--dan-color-fill);
   color: var(--dan-color-text-secondary);
   border: 2px solid var(--dan-color-bg);
 }

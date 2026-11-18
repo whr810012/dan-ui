@@ -14,6 +14,7 @@
 - 无障碍：Select 的禁用选项补充 `aria-disabled`，屏幕阅读器可正确播报不可选状态
 - 增强：Watermark 支持图片水印（`image` / `imageWidth` / `imageHeight` / `imageOpacity` / `crossOrigin`）；图片等比适配且不超出平铺单元，加载失败自动退回文字水印，加载中不绘制以免文字水印闪现
 - 增强：Carousel 支持 `direction="vertical"`，箭头切换为上下方向并居中、指示器移到右侧竖排，分页与 `v-model` 行为不变
+- 质量：新增 Token 守卫用例（暗色块覆盖全部 `--dan-color-*`、组件样式里的 `var(--dan-*)` 必须可解析或带兜底），并清掉 Avatar 组一处从未定义的 `--dan-color-fill-secondary` 引用
 - 修复：Card 封面图、Carousel 轮播图与 Space 紧凑模式的样式失效——三处独立 `style.css` 误用了 Vue 作用域的 `:deep()`，普通 CSS 无法编译该语法，浏览器会整条丢弃规则；改为等价的后代 / 子选择器，并新增守卫用例防止回归
 - 工程：构建额外产出按组件拆分的样式 `dist/styles/<component>.css`（104 个）并新增 `./styles/*` 导出，可 `import '@dandan-ui/ui/styles/button.css'` 按需加载；`bundle:report` 把这一组单独汇总，避免淹没主产物
 - 增强：Upload 新增 `before-upload` 钩子，在文件进入列表前校验（支持异步，返回 `false` 或抛错即丢弃），`limit` 只统计通过校验的文件
